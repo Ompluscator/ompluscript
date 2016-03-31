@@ -3,27 +3,28 @@ module.exports = function (grunt) {
 		uglify: {
 			base: {
 				files: {
-					'build/main.min.js': ['build/main.js']
+					'build/main.min.js': ['build/main.js'],
 				}
 			}
 		},
 		typescript: {
 			base: {
-				src: ['typescript/**/*.ts'],
+				src: ['src/typescript/**/*.ts'],
 				dest: 'build/main.js',
 				options: {
 					module: 'amd',
 					sourceMap: true,
-					declaration: false
+					declaration: false,
+					removeComments: true,
 				}
 			}
 		},
 		tslint: {
 			options: {
-				configuration: "configuration/tslint.json"
+				configuration: "configuration/tslint.json",
 			},
 			files: {
-				src: ['typescript/**/*.ts']
+				src: ['src/typescript/**/*.ts'],
 			}
 		}
 	});

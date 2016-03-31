@@ -1,4 +1,4 @@
-/// <reference path="../Core/IBase.ts" />
+/// <reference path="../core/IBase.ts" />
 
 module Ompluscript.Model {
     "use strict";
@@ -12,6 +12,6 @@ module Ompluscript.Model {
         }
 
     }
-
 }
+
 

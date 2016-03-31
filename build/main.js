@@ -5,7 +5,24 @@ var Ompluscript;
         "use strict";
     })(Core = Ompluscript.Core || (Ompluscript.Core = {}));
 })(Ompluscript || (Ompluscript = {}));
-/// <reference path="../../Core/IBase.ts" />
+/// <reference path="../core/IBase.ts" />
+var Ompluscript;
+(function (Ompluscript) {
+    var Model;
+    (function (Model_1) {
+        "use strict";
+        var Model = (function () {
+            function Model() {
+            }
+            Model.prototype.getStackTrace = function () {
+                return "Class Model";
+            };
+            return Model;
+        })();
+        Model_1.Model = Model;
+    })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
+})(Ompluscript || (Ompluscript = {}));
+/// <reference path="../../core/IBase.ts" />
 var Ompluscript;
 (function (Ompluscript) {
     var Model;
@@ -229,23 +246,6 @@ var Ompluscript;
             })(Attribute.AbstractAttribute);
             Attribute.String = String;
         })(Attribute = Model.Attribute || (Model.Attribute = {}));
-    })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
-})(Ompluscript || (Ompluscript = {}));
-/// <reference path="../Core/IBase.ts" />
-var Ompluscript;
-(function (Ompluscript) {
-    var Model;
-    (function (Model_1) {
-        "use strict";
-        var Model = (function () {
-            function Model() {
-            }
-            Model.prototype.getStackTrace = function () {
-                return "Class Model";
-            };
-            return Model;
-        })();
-        Model_1.Model = Model;
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
 //# sourceMappingURL=main.js.map
