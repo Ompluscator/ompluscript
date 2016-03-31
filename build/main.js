@@ -1,3 +1,10 @@
+var Ompluscript;
+(function (Ompluscript) {
+    var Core;
+    (function (Core) {
+        "use strict";
+    })(Core = Ompluscript.Core || (Ompluscript.Core = {}));
+})(Ompluscript || (Ompluscript = {}));
 /// <reference path="../../Core/IBase.ts" />
 var Ompluscript;
 (function (Ompluscript) {
@@ -5,8 +12,11 @@ var Ompluscript;
     (function (Model) {
         var Attribute;
         (function (Attribute) {
+            "use strict";
             var AbstractAttribute = (function () {
                 function AbstractAttribute(name, value, required) {
+                    if (value === void 0) { value = undefined; }
+                    if (required === void 0) { required = false; }
                     this.name = name;
                     this.value = value;
                     this.required = required;
@@ -26,8 +36,8 @@ var Ompluscript;
                 AbstractAttribute.prototype.getStackTrace = function () {
                     var trace = {
                         name: this.name,
-                        value: this.value,
-                        required: this.required
+                        required: this.required,
+                        value: this.value
                     };
                     return trace;
                 };
@@ -49,14 +59,15 @@ var Ompluscript;
     (function (Model) {
         var Attribute;
         (function (Attribute) {
+            "use strict";
             var Boolean = (function (_super) {
                 __extends(Boolean, _super);
                 function Boolean() {
                     _super.apply(this, arguments);
                 }
                 Boolean.prototype.validate = function () {
-                    if ((this.required === true && this.value === null) || typeof this.value !== 'boolean') {
-                        throw new TypeError('Attribute ' + this.name + ' is not a boolean.');
+                    if ((this.required === true && this.value === undefined) || typeof this.value !== "boolean") {
+                        throw new TypeError("Attribute " + this.name + " is not a boolean.");
                     }
                 };
                 return Boolean;
@@ -72,9 +83,14 @@ var Ompluscript;
     (function (Model) {
         var Attribute;
         (function (Attribute) {
+            "use strict";
             var Datetime = (function (_super) {
                 __extends(Datetime, _super);
                 function Datetime(name, value, required, minimum, maximum) {
+                    if (value === void 0) { value = undefined; }
+                    if (required === void 0) { required = false; }
+                    if (minimum === void 0) { minimum = undefined; }
+                    if (maximum === void 0) { maximum = undefined; }
                     _super.call(this, name, value, required);
                     this.minimum = new Date(minimum);
                     this.maximum = new Date(maximum);
@@ -82,24 +98,36 @@ var Ompluscript;
                 Datetime.prototype.getDateObject = function () {
                     return new Date(this.value);
                 };
+                Datetime.prototype.getMinimum = function () {
+                    return this.minimum;
+                };
+                Datetime.prototype.getMaximum = function () {
+                    return this.maximum;
+                };
                 Datetime.prototype.validate = function () {
                     try {
-                        if (this.required === true && this.value === null) {
-                            throw new TypeError('Attribute ' + this.name + ' is not in right date format.');
+                        if (this.required === true && this.value === undefined) {
+                            throw new TypeError("Attribute " + this.name + " is not in right date format.");
                         }
-                        else if (this.value !== null) {
-                            new Date(this.value);
+                        else if (this.value !== undefined) {
+                            this.getDateObject();
                         }
                     }
                     catch (ex) {
-                        throw new TypeError('Attribute ' + this.name + ' is not in right date format.');
+                        throw new TypeError("Attribute " + this.name + " is not in right date format.");
                     }
-                    if (this.value !== null && this.minimum !== null && this.getDateObject().getTime() < this.minimum.getTime()) {
-                        throw new RangeError('Attribute ' + this.name + ' is date with less value than minimum allowed.');
+                    if (this.value !== undefined && this.minimum !== undefined && this.getDateObject().getTime() < this.minimum.getTime()) {
+                        throw new RangeError("Attribute " + this.name + " is date with less value than minimum allowed.");
                     }
-                    else if (this.value !== null && this.maximum !== null && this.getDateObject().getTime() > this.maximum.getTime()) {
-                        throw new RangeError('Attribute ' + this.name + ' is date with greater value than maximum allowed.');
+                    else if (this.value !== undefined && this.maximum !== undefined && this.getDateObject().getTime() > this.maximum.getTime()) {
+                        throw new RangeError("Attribute " + this.name + " is date with greater value than maximum allowed.");
                     }
+                };
+                Datetime.prototype.getStackTrace = function () {
+                    var trace = _super.prototype.getStackTrace.call(this);
+                    trace["minimum"] = this.minimum;
+                    trace["maximum"] = this.maximum;
+                    return trace;
                 };
                 return Datetime;
             })(Attribute.AbstractAttribute);
@@ -114,9 +142,14 @@ var Ompluscript;
     (function (Model) {
         var Attribute;
         (function (Attribute) {
+            "use strict";
             var Number = (function (_super) {
                 __extends(Number, _super);
                 function Number(name, value, required, minimum, maximum) {
+                    if (value === void 0) { value = undefined; }
+                    if (required === void 0) { required = false; }
+                    if (minimum === void 0) { minimum = undefined; }
+                    if (maximum === void 0) { maximum = undefined; }
                     _super.call(this, name, value, required);
                     this.minimum = minimum;
                     this.maximum = maximum;
@@ -128,15 +161,21 @@ var Ompluscript;
                     return this.maximum;
                 };
                 Number.prototype.validate = function () {
-                    if ((this.required === true && this.value === null) || typeof this.value !== 'number') {
-                        throw new TypeError('Attribute ' + this.name + ' is not a number.');
+                    if ((this.required === true && this.value === undefined) || typeof this.value !== "number") {
+                        throw new TypeError("Attribute " + this.name + " is not a number.");
                     }
-                    else if (this.value !== null && this.minimum !== null && this.value < this.minimum) {
-                        throw new RangeError('Attribute ' + this.name + ' is less than minimum allowed number.');
+                    else if (this.value !== undefined && this.minimum !== undefined && this.value < this.minimum) {
+                        throw new RangeError("Attribute " + this.name + " is less than minimum allowed number.");
                     }
-                    else if (this.value !== null && this.maximum !== null && this.value > this.maximum) {
-                        throw new RangeError('Attribute ' + this.name + ' is greater than maximum allowed number.');
+                    else if (this.value !== undefined && this.maximum !== undefined && this.value > this.maximum) {
+                        throw new RangeError("Attribute " + this.name + " is greater than maximum allowed number.");
                     }
+                };
+                Number.prototype.getStackTrace = function () {
+                    var trace = _super.prototype.getStackTrace.call(this);
+                    trace["minimum"] = this.minimum;
+                    trace["maximum"] = this.maximum;
+                    return trace;
                 };
                 return Number;
             })(Attribute.AbstractAttribute);
@@ -151,9 +190,14 @@ var Ompluscript;
     (function (Model) {
         var Attribute;
         (function (Attribute) {
+            "use strict";
             var String = (function (_super) {
                 __extends(String, _super);
                 function String(name, value, required, minimumLength, maximumLength) {
+                    if (value === void 0) { value = undefined; }
+                    if (required === void 0) { required = false; }
+                    if (minimumLength === void 0) { minimumLength = undefined; }
+                    if (maximumLength === void 0) { maximumLength = undefined; }
                     _super.call(this, name, value, required);
                     this.minimumLength = minimumLength;
                     this.maximumLength = maximumLength;
@@ -165,15 +209,21 @@ var Ompluscript;
                     return this.maximumLength;
                 };
                 String.prototype.validate = function () {
-                    if ((this.required === true && this.value === null) || typeof this.value !== 'string') {
-                        throw new TypeError('Attribute ' + this.name + ' is not a string.');
+                    if ((this.required === true && this.value === undefined) || typeof this.value !== "string") {
+                        throw new TypeError("Attribute " + this.name + " is not a string.");
                     }
-                    else if (this.value !== null && this.minimumLength !== null && this.value.length < this.minimumLength) {
-                        throw new RangeError('Attribute ' + this.name + ' is string with less length than minimum allowed.');
+                    else if (this.value !== undefined && this.minimumLength !== undefined && this.value.length < this.minimumLength) {
+                        throw new RangeError("Attribute " + this.name + " is string with less length than minimum allowed.");
                     }
-                    else if (this.value !== null && this.maximumLength !== null && this.value.length > this.maximumLength) {
-                        throw new RangeError('Attribute ' + this.name + ' is string with greater length than maximum allowed.');
+                    else if (this.value !== undefined && this.maximumLength !== undefined && this.value.length > this.maximumLength) {
+                        throw new RangeError("Attribute " + this.name + " is string with greater length than maximum allowed.");
                     }
+                };
+                String.prototype.getStackTrace = function () {
+                    var trace = _super.prototype.getStackTrace.call(this);
+                    trace["minimumLength"] = this.minimumLength;
+                    trace["maximumLength"] = this.maximumLength;
+                    return trace;
                 };
                 return String;
             })(Attribute.AbstractAttribute);
@@ -186,11 +236,12 @@ var Ompluscript;
 (function (Ompluscript) {
     var Model;
     (function (Model_1) {
+        "use strict";
         var Model = (function () {
             function Model() {
             }
             Model.prototype.getStackTrace = function () {
-                return 'Class Model';
+                return "Class Model";
             };
             return Model;
         })();

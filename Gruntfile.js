@@ -17,13 +17,21 @@ module.exports = function (grunt) {
 					declaration: false
 				}
 			}
-
+		},
+		tslint: {
+			options: {
+				configuration: "configuration/tslint.json"
+			},
+			files: {
+				src: ['typescript/**/*.ts']
+			}
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-typescript');
+	grunt.loadNpmTasks('grunt-tslint');
 
-	grunt.registerTask('debug', ['typescript:base']);
-	grunt.registerTask('deploy', ['typescript:base', 'uglify:base']);
+	grunt.registerTask('debug', ['tslint', 'typescript:base']);
+	grunt.registerTask('deploy', ['debug', 'uglify:base']);
 };

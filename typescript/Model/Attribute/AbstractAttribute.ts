@@ -1,6 +1,7 @@
 /// <reference path="../../Core/IBase.ts" />
 
 module Ompluscript.Model.Attribute {
+    "use strict";
 
     import IBase = Ompluscript.Core.IBase;
 
@@ -10,7 +11,7 @@ module Ompluscript.Model.Attribute {
         protected value: T;
         protected required: boolean;
         
-        constructor(name: string, value: T, required: boolean) {
+        constructor(name: string, value: T = undefined, required: boolean = false) {
             this.name = name;
             this.value = value;
             this.required = required;
@@ -35,10 +36,10 @@ module Ompluscript.Model.Attribute {
         public abstract validate(): void;
         
         public getStackTrace(): Object {
-            let trace = {
+            let trace: Object = {
                 name: this.name,
+                required: this.required,
                 value: this.value,
-                required: this. required
             };
             return trace;
         }
