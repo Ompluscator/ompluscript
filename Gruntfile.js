@@ -12,7 +12,7 @@ module.exports = function (grunt) {
 				src: ['src/typescript/**/*.ts'],
 				dest: 'build/main.js',
 				options: {
-					module: 'amd',
+					module: 'commonjs',
 					sourceMap: true,
 					declaration: false,
 					removeComments: true,
