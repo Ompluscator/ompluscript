@@ -1,4 +1,4 @@
-/// <reference path="../../core/IBase.ts" />
+/// <reference path="../../Core/IBase.ts" />
 
 module Ompluscript.Model.Attribute {
     "use strict";
