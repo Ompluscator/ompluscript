@@ -1,21 +1,16 @@
 module.exports = function (grunt) {
 	grunt.initConfig({
 		uglify: {
-			dist: {
-				options: {
-					sourceMap: 'js/main.min.map',
-					sourceMapIn: 'js/main.js.map',
-					sourceMapRoot: 'ts/'
-				},
+			base: {
 				files: {
-					'js/main.min.js': ['js/main.js']
+					'build/main.min.js': ['build/main.js']
 				}
 			}
 		},
 		typescript: {
 			base: {
-				src: ['ts/**/*.ts'],
-				dest: 'js/main.js',
+				src: ['typescript/**/*.ts'],
+				dest: 'build/main.js',
 				options: {
 					module: 'amd',
 					sourceMap: true,
@@ -29,5 +24,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-typescript');
 
-	grunt.registerTask('deploy', ['typescript:base', 'uglify:dist']);
+	grunt.registerTask('debug', ['typescript:base']);
+	grunt.registerTask('deploy', ['typescript:base', 'uglify:base']);
 };
