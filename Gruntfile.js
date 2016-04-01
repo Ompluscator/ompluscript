@@ -1,38 +1,13 @@
 module.exports = function (grunt) {
-	grunt.initConfig({
-		uglify: {
-			base: {
-				files: {
-					'build/main.min.js': ['build/main.js'],
-				}
-			}
-		},
-		typescript: {
-			base: {
-				src: ['src/typescript/**/*.ts'],
-				dest: 'build/main.js',
-				options: {
-					module: 'commonjs',
-					sourceMap: true,
-					declaration: false,
-					removeComments: true,
-				}
-			}
-		},
-		tslint: {
-			options: {
-				configuration: "configuration/tslint.json",
-			},
-			files: {
-				src: ['src/typescript/**/*.ts'],
-			}
-		}
-	});
+	"use strict";
 
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-typescript');
-	grunt.loadNpmTasks('grunt-tslint');
+    var path = require('path');
+	require('load-grunt-tasks')(grunt);
+	require('time-grunt')(grunt);
+	require('load-grunt-config')(grunt, {
+        configPath: path.join(process.cwd(), 'build/conf')
+    });
 
-	grunt.registerTask('debug', ['tslint', 'typescript:base']);
-	grunt.registerTask('deploy', ['debug', 'uglify:base']);
+	grunt.loadTasks('build/tasks');
+
 };
