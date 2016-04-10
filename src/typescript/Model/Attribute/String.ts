@@ -15,6 +15,9 @@ module Ompluscript.Model.Attribute {
      */
     export class String extends AbstractAttribute<string> {
 
+        public static ERROR_BELOW_MINIMUM_LENGTH: string = "211";
+        public static ERROR_OVER_MAXIMUM_LENGTH: string = "212";
+
         private minimumLength: number;
         private maximumLength: number;
 
@@ -62,12 +65,14 @@ module Ompluscript.Model.Attribute {
          * @throws {RangeError} when it's over its minimum or maximum length
          */
         public validate(): void {
-            if ((this.required === true && this.value === undefined) || typeof this.value !== "string") {
-                throw new TypeError("Attribute " + this.name + " is not a string.");
+            if (this.required === true && typeof this.value !== "string") {
+                throw new TypeError(AbstractAttribute.ERROR_IS_REQUIRED);
+            } else if (typeof this.value !== "string" && this.value !== undefined) {
+                throw new TypeError(AbstractAttribute.ERROR_WRONG_TYPE);
             } else if (this.value !== undefined && this.minimumLength !== undefined && this.value.length < this.minimumLength) {
-                throw new RangeError("Attribute " + this.name + " is string with less length than minimum allowed.");
+                throw new RangeError(String.ERROR_BELOW_MINIMUM_LENGTH);
             } else if (this.value !== undefined && this.maximumLength !== undefined && this.value.length > this.maximumLength) {
-                throw new RangeError("Attribute " + this.name + " is string with greater length than maximum allowed.");
+                throw new RangeError(String.ERROR_OVER_MAXIMUM_LENGTH);
             }
         }
 

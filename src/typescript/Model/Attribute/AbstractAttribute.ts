@@ -7,6 +7,9 @@ module Ompluscript.Model.Attribute {
 
     export abstract class AbstractAttribute<T> implements IBase {
         
+        public static ERROR_WRONG_TYPE: string = "101";
+        public static ERROR_IS_REQUIRED: string = "102";
+        
         protected name: string;
         protected value: T;
         protected required: boolean;
@@ -23,6 +26,10 @@ module Ompluscript.Model.Attribute {
 
         public getValue(): T {
             return this.value;
+        }
+
+        public resetValue(): void {
+            this.value = undefined;
         }
         
         public getName(): string {
