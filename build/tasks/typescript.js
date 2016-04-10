@@ -4,7 +4,7 @@ module.exports = function (grunt) {
     grunt.registerTask('truncate-main', 'Truncate additional rows from main.js', function() {
         
         var ompluscriptDeclaration = 'var Ompluscript;\n';
-        var destination = 'dist/js/main.js';
+        var destination = 'dist/javascript/main.js';
         var content = grunt.file.read(destination);
         
         content = ompluscriptDeclaration + content.replace(new RegExp(ompluscriptDeclaration, 'g'), '');

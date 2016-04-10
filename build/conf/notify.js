@@ -14,7 +14,7 @@ module.exports = {
     test: {
         options: {
             title: 'Unit tests are done',
-            message: 'QUnit process has finished successfully',
+            message: 'Jasmine process has finished successfully',
         }
     },
 };

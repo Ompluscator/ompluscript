@@ -1,4 +1,3 @@
 module.exports = {
-    javascript: ["dist/js"],
-    test: ["dist/test"]
+    javascript: ["dist/javascript"],
 }

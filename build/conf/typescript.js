@@ -1,7 +1,7 @@
 module.exports = {
     base: {
         src: ['src/typescript/**/*.ts'],
-        dest: 'dist/js/main.js',
+        dest: 'dist/javascript/main.js',
         options: {
             module: 'commonjs',
             sourceMap: false,

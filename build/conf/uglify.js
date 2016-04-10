@@ -1,7 +1,7 @@
 module.exports = {
     base: {
         files: {
-            'dist/js/main.min.js': ['dist/js/main.js'],
+            'dist/javascript/main.min.js': ['dist/javascript/main.js'],
         }
     }
 };
