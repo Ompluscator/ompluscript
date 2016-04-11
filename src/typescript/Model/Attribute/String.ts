@@ -1,7 +1,7 @@
 /// <reference path="AbstractAttribute.ts" />
 
 /**
- * Module that containes attributes' classes.
+ * Module that contains attributes' classes.
  *
  * @module Ompluscript.Model.Attribute
  */

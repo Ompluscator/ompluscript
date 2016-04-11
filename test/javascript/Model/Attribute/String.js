@@ -120,6 +120,14 @@ describe("String class tests - with limits and required", function() {
         expect(stringObject.isRequired()).toBeTruthy();
 
         expect(stringObject.getName()).toBe(name);
+
+        expect(stringObject.getStackTrace()).toEqual({
+            name: name,
+            required: true,
+            value: value,
+            minimumLength: minimum,
+            maximumLength: maximum,
+        });
     });
 
     it("validate undefined value", function() {
@@ -211,6 +219,14 @@ describe("String class tests - with limits and not required", function() {
         expect(stringObject.isRequired()).toBeFalsy();
 
         expect(stringObject.getName()).toBe(name);
+
+        expect(stringObject.getStackTrace()).toEqual({
+            name: name,
+            required: false,
+            value: value,
+            minimumLength: minimum,
+            maximumLength: maximum,
+        });
     });
 
     it("validate undefined value", function() {

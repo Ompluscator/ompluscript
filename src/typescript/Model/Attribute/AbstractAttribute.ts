@@ -40,8 +40,6 @@ module Ompluscript.Model.Attribute {
             return this.required;
         }
         
-        public abstract validate(): void;
-        
         public getStackTrace(): Object {
             let trace: Object = {
                 name: this.name,
@@ -50,6 +48,8 @@ module Ompluscript.Model.Attribute {
             };
             return trace;
         }
+
+        public abstract validate(): void;
 
     }
 
