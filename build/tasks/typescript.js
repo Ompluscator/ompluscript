@@ -13,6 +13,6 @@ module.exports = function (grunt) {
         
     });
 
-    grunt.registerTask('typescript-process', ['clean:javascript', 'tslint', 'typescript:base', 'truncate-main']);
+    grunt.registerTask('typescript-process', ['clean:javascript', 'tslint', 'ts:base', 'truncate-main']);
 
 };
