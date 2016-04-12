@@ -1,4 +1,4 @@
-/// <reference path="AbstractAttribute.ts" />
+/// <reference path="Unit.ts" />
 
 /**
  * Module that contains attributes' classes.
@@ -13,12 +13,26 @@ module Ompluscript.Model.Attribute {
      *
      * @class String
      */
-    export class String extends AbstractAttribute<string> {
+    export class String extends Unit<string> {
 
+        /**
+         * @param {string} ERROR_BELOW_MINIMUM_LENGTH Error code for invalid minimum length of the string.
+         */
         public static ERROR_BELOW_MINIMUM_LENGTH: string = "211";
+
+        /**
+         * @param {string} ERROR_OVER_MAXIMUM_LENGTH Error code for invalid maximum length of the string.
+         */
         public static ERROR_OVER_MAXIMUM_LENGTH: string = "212";
 
+        /**
+         * @param {number} minimumLength Minimum allowed length of the string
+         */
         private minimumLength: number;
+
+        /**
+         * @param {number} maximumLength Maximum allowed length of the string
+         */
         private maximumLength: number;
 
         /**
@@ -26,16 +40,15 @@ module Ompluscript.Model.Attribute {
          *
          * Calls superclass constructor and sets minimum and maximum allowed string length.
          *
-         * @param {string} name
          * @param {string} value
          * @param {boolean} required
          * @param {number} minimumLength
          * @param {number} maximumLength
          * @constructs
          */
-        constructor(name: string, value: string = undefined, required: boolean = false, 
+        constructor(value: string = undefined, required: boolean = false, 
                     minimumLength: number = undefined, maximumLength: number = undefined) {
-            super(name, value, required);
+            super("string", value, required);
             this.minimumLength = minimumLength;
             this.maximumLength = maximumLength;
         }
@@ -65,11 +78,8 @@ module Ompluscript.Model.Attribute {
          * @throws {RangeError} when it's over its minimum or maximum length
          */
         public validate(): void {
-            if (this.required === true && typeof this.value !== "string") {
-                throw new TypeError(AbstractAttribute.ERROR_IS_REQUIRED);
-            } else if (typeof this.value !== "string" && this.value !== undefined) {
-                throw new TypeError(AbstractAttribute.ERROR_WRONG_TYPE);
-            } else if (this.value !== undefined && this.minimumLength !== undefined && this.value.length < this.minimumLength) {
+            super.validate();
+            if (this.value !== undefined && this.minimumLength !== undefined && this.value.length < this.minimumLength) {
                 throw new RangeError(String.ERROR_BELOW_MINIMUM_LENGTH);
             } else if (this.value !== undefined && this.maximumLength !== undefined && this.value.length > this.maximumLength) {
                 throw new RangeError(String.ERROR_OVER_MAXIMUM_LENGTH);

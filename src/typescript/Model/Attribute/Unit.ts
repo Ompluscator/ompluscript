@@ -5,17 +5,20 @@ module Ompluscript.Model.Attribute {
 
     import IBase = Ompluscript.Core.IBase;
 
-    export abstract class AbstractAttribute<T> implements IBase {
+    export class Unit<T> implements IBase {
         
         public static ERROR_WRONG_TYPE: string = "101";
         public static ERROR_IS_REQUIRED: string = "102";
+
+        public static ERROR_BELOW_MINIMUM: string = "201";
+        public static ERROR_OVER_MAXIMUM: string = "202";
         
-        protected name: string;
+        protected type: string;
         protected value: T;
         protected required: boolean;
         
-        constructor(name: string, value: T = undefined, required: boolean = false) {
-            this.name = name;
+        constructor(type: string, value: T = undefined, required: boolean = false) {
+            this.type = type;
             this.value = value;
             this.required = required;
         }
@@ -32,24 +35,26 @@ module Ompluscript.Model.Attribute {
             this.value = undefined;
         }
         
-        public getName(): string {
-            return this.name;
-        }
-        
         public isRequired(): boolean {
             return this.required;
         }
         
         public getStackTrace(): Object {
             let trace: Object = {
-                name: this.name,
                 required: this.required,
+                type: this.type,
                 value: this.value,
             };
             return trace;
         }
 
-        public abstract validate(): void;
+        public validate(): void {
+            if (this.required === true && typeof this.value !== this.type) {
+                throw new TypeError(Unit.ERROR_IS_REQUIRED);
+            } else if (typeof this.value !== this.type && this.value !== undefined) {
+                throw new TypeError(Unit.ERROR_WRONG_TYPE);
+            }
+        }
 
     }
 

@@ -2,10 +2,8 @@ describe("String class tests - without limits and not required", function() {
 
     var stringObject;
 
-    var name = "string";
-
     beforeAll(function() {
-        stringObject = new Ompluscript.Model.Attribute.String(name);
+        stringObject = new Ompluscript.Model.Attribute.String();
     });
 
     it("get configuration", function() {
@@ -15,7 +13,6 @@ describe("String class tests - without limits and not required", function() {
 
         expect(stringObject.isRequired()).toBeFalsy();
 
-        expect(stringObject.getName()).toBe(name);
     });
 
     it("validate undefined value", function() {
@@ -57,12 +54,10 @@ describe("String class tests - without limits and required", function() {
 
     var stringObject;
 
-    var name = "string";
-
     var value = "value";
 
     beforeAll(function() {
-        stringObject = new Ompluscript.Model.Attribute.String(name, value, true);
+        stringObject = new Ompluscript.Model.Attribute.String(value, true);
     });
 
     it("get configuration", function() {
@@ -72,7 +67,6 @@ describe("String class tests - without limits and required", function() {
 
         expect(stringObject.isRequired()).toBeTruthy();
 
-        expect(stringObject.getName()).toBe(name);
     });
 
     it("validate undefined value", function() {
@@ -100,16 +94,16 @@ describe("String class tests - with limits and required", function() {
 
     var stringObject;
 
-    var name = "string";
-
     var value = "value";
+
+    var type = "string";
 
     var minimum = value.length * 2;
 
     var maximum = value.length * 4;
 
     beforeAll(function() {
-        stringObject = new Ompluscript.Model.Attribute.String(name, value, true, minimum, maximum);
+        stringObject = new Ompluscript.Model.Attribute.String(value, true, minimum, maximum);
     });
 
     it("get configuration", function() {
@@ -119,10 +113,8 @@ describe("String class tests - with limits and required", function() {
 
         expect(stringObject.isRequired()).toBeTruthy();
 
-        expect(stringObject.getName()).toBe(name);
-
         expect(stringObject.getStackTrace()).toEqual({
-            name: name,
+            type: type,
             required: true,
             value: value,
             minimumLength: minimum,
@@ -199,16 +191,16 @@ describe("String class tests - with limits and not required", function() {
 
     var stringObject;
 
-    var name = "string";
-
     var value = "value";
+
+    var type = "string";
 
     var minimum = value.length * 2;
 
     var maximum = value.length * 4;
 
     beforeAll(function() {
-        stringObject = new Ompluscript.Model.Attribute.String(name, value, false, minimum, maximum);
+        stringObject = new Ompluscript.Model.Attribute.String(value, false, minimum, maximum);
     });
 
     it("get configuration", function() {
@@ -218,10 +210,8 @@ describe("String class tests - with limits and not required", function() {
 
         expect(stringObject.isRequired()).toBeFalsy();
 
-        expect(stringObject.getName()).toBe(name);
-
         expect(stringObject.getStackTrace()).toEqual({
-            name: name,
+            type: type,
             required: false,
             value: value,
             minimumLength: minimum,

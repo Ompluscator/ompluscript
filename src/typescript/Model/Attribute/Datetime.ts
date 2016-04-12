@@ -1,16 +1,16 @@
-/// <reference path="AbstractAttribute.ts" />
+/// <reference path="Unit.ts" />
 
 module Ompluscript.Model.Attribute {
     "use strict";
 
-    export class Datetime extends AbstractAttribute<string> {
+    export class Datetime extends Unit<string> {
 
         private minimum: Date;
         private maximum: Date;
 
-        constructor(name: string, value: string = undefined, required: boolean = false,
+        constructor(value: string = undefined, required: boolean = false,
                     minimum: string = undefined, maximum: string = undefined) {
-            super(name, value, required);
+            super("string", value, required);
             this.minimum = new Date(minimum);
             this.maximum = new Date(maximum);
         }
@@ -29,18 +29,17 @@ module Ompluscript.Model.Attribute {
 
         public validate(): void {
             try {
-                if (this.required === true && this.value === undefined) {
-                    throw new TypeError("Attribute " + this.name + " is not in right date format.");
-                } else if (this.value !== undefined) {
+                this.validate();
+                if (this.value !== undefined) {
                     this.getDateObject();
                 }
             } catch (ex) {
-                throw new TypeError("Attribute " + this.name + " is not in right date format.");
+                throw new TypeError(Unit.ERROR_WRONG_TYPE);
             }
             if (this.value !== undefined && this.minimum !== undefined && this.getDateObject().getTime() < this.minimum.getTime()) {
-                throw new RangeError("Attribute " + this.name + " is date with less value than minimum allowed.");
+                throw new RangeError(Unit.ERROR_BELOW_MINIMUM);
             } else if (this.value !== undefined && this.maximum !== undefined && this.getDateObject().getTime() > this.maximum.getTime()) {
-                throw new RangeError("Attribute " + this.name + " is date with greater value than maximum allowed.");
+                throw new RangeError(Unit.ERROR_OVER_MAXIMUM);
             }
         }
 
