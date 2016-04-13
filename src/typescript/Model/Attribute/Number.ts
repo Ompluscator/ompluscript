@@ -21,9 +21,19 @@ module Ompluscript.Model.Attribute {
         private minimum: number;
 
         /**
+         * @param {boolean} includeMinimum Defines if value can be equal to minimum
+         */
+        private includeMinimum: boolean;
+
+        /**
          * @param {number} maximum Maximum allowed value of the number
          */
         private maximum: number;
+
+        /**
+         * @param {boolean} includeMaximum Defines if value can be equal to maximum
+         */
+        private includeMaximum: boolean;
 
         /**
          * Class constructor.
@@ -33,14 +43,20 @@ module Ompluscript.Model.Attribute {
          * @param {string} value
          * @param {boolean} required
          * @param {number} minimum
+         * @param {boolean} includeMinimum
          * @param {number} maximum
+         * @param {boolean} includeMaximum
          * @constructs
          */
         constructor(value: number = undefined, required: boolean = false,
-                    minimum: number = undefined, maximum: number = undefined) {
+                    minimum: number = undefined, includeMinimum: boolean = false, 
+                    maximum: number = undefined, includeMaximum: boolean = false) {
             super("number", value, required);
             this.minimum = minimum;
             this.maximum = maximum;
+            this.includeMinimum = includeMinimum;
+            this.includeMaximum = includeMaximum;
+            
         }
 
         /**
@@ -69,10 +85,21 @@ module Ompluscript.Model.Attribute {
          */
         public validate(): void {
             super.validate();
-            if (this.value !== undefined && this.minimum !== undefined && this.value < this.minimum) {
-                throw new RangeError(Unit.ERROR_BELOW_MINIMUM);
-            } else if (this.value !== undefined && this.maximum !== undefined && this.value > this.maximum) {
-                throw new RangeError(Unit.ERROR_OVER_MAXIMUM);
+            if (this.value !== undefined) {
+                if (this.minimum !== undefined ) {
+                    if (this.includeMinimum === false && this.value <= this.minimum) {
+                        throw new RangeError(Unit.ERROR_BELOW_MINIMUM);
+                    } else if (this.includeMinimum === true && this.value < this.minimum) {
+                        throw new RangeError(Unit.ERROR_BELOW_MINIMUM);
+                    }
+                }
+                if (this.maximum !== undefined ) {
+                    if (this.includeMaximum === false && this.value >= this.maximum) {
+                        throw new RangeError(Unit.ERROR_OVER_MAXIMUM);
+                    } else if (this.includeMaximum === true && this.value > this.maximum) {
+                        throw new RangeError(Unit.ERROR_OVER_MAXIMUM);
+                    }
+                }
             }
         }
 
@@ -84,7 +111,9 @@ module Ompluscript.Model.Attribute {
         public getStackTrace(): Object {
             let trace: Object = super.getStackTrace();
             trace["minimum"] = this.minimum;
+            trace["includeMinimum"] = this.includeMinimum;
             trace["maximum"] = this.maximum;
+            trace["includeMaximum"] = this.includeMaximum;
             return trace;
         }
 
