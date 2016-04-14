@@ -1,4 +1,5 @@
 /// <reference path="Unit.ts" />
+/// <reference path="../../Core/Utils/General.ts" />
 
 /**
  * Module that contains attributes' classes.
@@ -7,6 +8,8 @@
  */
 module Ompluscript.Model.Attribute {
     "use strict";
+    
+    import General = Ompluscript.Core.Utils.General;
 
     /**
      * Class that contains functionality for String attribute.
@@ -16,19 +19,19 @@ module Ompluscript.Model.Attribute {
     export class String extends Unit<string> {
 
         /**
-         * @param {string} ERROR_BELOW_MINIMUM_LENGTH Error code for invalid minimum length of the string.
+         * @param {number} ERROR_BELOW_MINIMUM_LENGTH Error code for invalid minimum length of the string.
          */
-        public static ERROR_BELOW_MINIMUM_LENGTH: string = "211";
+        public static ERROR_BELOW_MINIMUM_LENGTH: number = 211;
 
         /**
-         * @param {string} ERROR_OVER_MAXIMUM_LENGTH Error code for invalid maximum length of the string.
+         * @param {number} ERROR_OVER_MAXIMUM_LENGTH Error code for invalid maximum length of the string.
          */
-        public static ERROR_OVER_MAXIMUM_LENGTH: string = "212";
+        public static ERROR_OVER_MAXIMUM_LENGTH: number = 212;
 
         /**
-         * @param {string} ERROR_PATTERN_NOT_MATCH Error code when string doesn't match pattern.
+         * @param {number} ERROR_PATTERN_NOT_MATCH Error code when string doesn't match pattern.
          */
-        public static ERROR_PATTERN_NOT_MATCH: string = "221";
+        public static ERROR_PATTERN_NOT_MATCH: number = 221;
 
         /**
          * @param {number} minimumLength Minimum allowed length of the string
@@ -51,17 +54,18 @@ module Ompluscript.Model.Attribute {
          * Calls superclass constructor and sets minimum and maximum allowed string length and
          * allowed pattern for string.
          *
-         * @param {string} value
-         * @param {boolean} required
-         * @param {number} minimumLength
-         * @param {number} maximumLength
+         * @param {string} name Name of attribute
+         * @param {string} value Attribute's value
+         * @param {boolean} required Defines if value is required
+         * @param {number} minimumLength Minimum allowed length of string
+         * @param {number} maximumLength Maximum allowed length of string
          * @param {RegExp} pattern
          * @constructs
          */
-        constructor(value: string = undefined, required: boolean = false, 
+        constructor(name: string, value: string = undefined, required: boolean = false, 
                     minimumLength: number = undefined, maximumLength: number = undefined,
                     pattern: RegExp = undefined) {
-            super("string", value, required);
+            super("string", name, value, required);
             this.minimumLength = minimumLength;
             this.maximumLength = maximumLength;
             this.pattern = pattern;
@@ -103,11 +107,11 @@ module Ompluscript.Model.Attribute {
         public validate(): void {
             super.validate();
             if (this.value !== undefined && this.minimumLength !== undefined && this.value.length < this.minimumLength) {
-                throw new RangeError(String.ERROR_BELOW_MINIMUM_LENGTH);
+                General.throwControlledException(RangeError, String, this.name, String.ERROR_BELOW_MINIMUM_LENGTH);
             } else if (this.value !== undefined && this.maximumLength !== undefined && this.value.length > this.maximumLength) {
-                throw new RangeError(String.ERROR_OVER_MAXIMUM_LENGTH);
+                General.throwControlledException(RangeError, String, this.name, String.ERROR_OVER_MAXIMUM_LENGTH);
             } else if (this.value !== undefined && this.pattern !== undefined && this.pattern.test(this.value) === false) {
-                throw new RangeError(String.ERROR_PATTERN_NOT_MATCH);
+                General.throwControlledException(RangeError, String, this.name, String.ERROR_PATTERN_NOT_MATCH);
             }
         }
 

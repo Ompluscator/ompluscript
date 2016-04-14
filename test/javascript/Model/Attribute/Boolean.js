@@ -2,13 +2,28 @@ describe("Boolean class tests - not required", function() {
 
     var booleanObject;
 
+    var name = "param";
+
+    var type = "boolean";
+    
+    var undefined;
+
     beforeAll(function() {
-        booleanObject = new Ompluscript.Model.Attribute.Boolean();
+        booleanObject = new Ompluscript.Model.Attribute.Boolean(name);
     });
 
     it("get configuration", function() {
 
         expect(booleanObject.isRequired()).toBeFalsy();
+
+        expect(booleanObject.getName()).toBe(name);
+
+        expect(booleanObject.getStackTrace()).toEqual({
+            name: name,
+            type: type,
+            required: false,
+            value: undefined,
+        });
 
     });
 
@@ -52,17 +67,24 @@ describe("Boolean class tests - required", function() {
     var booleanObject;
 
     var value = true;
+    
+    var name = "param";
+    
+    var type = "boolean";
 
     beforeAll(function() {
-        booleanObject = new Ompluscript.Model.Attribute.Boolean(value, true);
+        booleanObject = new Ompluscript.Model.Attribute.Boolean(name, value, true);
     });
 
     it("get configuration", function() {
 
         expect(booleanObject.isRequired()).toBeTruthy();
 
+        expect(booleanObject.getName()).toBe(name);
+
         expect(booleanObject.getStackTrace()).toEqual({
-            type: "boolean",
+            name: name,
+            type: type,
             required: true,
             value: value,
         });

@@ -5,9 +5,11 @@ describe("Number class tests - without limits and not required", function() {
     var undefined;
 
     var type = "number";
+    
+    var name = "param";
 
     beforeAll(function() {
-        numberObject = new Ompluscript.Model.Attribute.Number();
+        numberObject = new Ompluscript.Model.Attribute.Number(name);
     });
 
     it("get configuration", function() {
@@ -15,9 +17,12 @@ describe("Number class tests - without limits and not required", function() {
 
         expect(numberObject.getMaximum()).toBeUndefined();
 
+        expect(numberObject.getName()).toBe(name);
+
         expect(numberObject.isRequired()).toBeFalsy();
 
         expect(numberObject.getStackTrace()).toEqual({
+            name: name,
             type: type,
             required: false,
             value: undefined,
@@ -73,9 +78,11 @@ describe("Number class tests - without limits and required", function() {
     var value = 2;
 
     var type = "number";
+    
+    var name = "param";
 
     beforeAll(function() {
-        numberObject = new Ompluscript.Model.Attribute.Number(value, true);
+        numberObject = new Ompluscript.Model.Attribute.Number(name, value, true);
     });
 
     it("get configuration", function() {
@@ -83,9 +90,12 @@ describe("Number class tests - without limits and required", function() {
 
         expect(numberObject.getMaximum()).toBeUndefined();
 
+        expect(numberObject.getName()).toBe(name);
+
         expect(numberObject.isRequired()).toBeTruthy();
 
         expect(numberObject.getStackTrace()).toEqual({
+            name: name,
             type: type,
             required: true,
             value: value,
@@ -126,6 +136,8 @@ describe("Number class tests - without included limits and required", function()
 
     var type = "number";
 
+    var name = "param";
+
     var minimum = value * 2;
 
     var maximum = value * 4;
@@ -133,7 +145,7 @@ describe("Number class tests - without included limits and required", function()
     var include = false;
 
     beforeAll(function() {
-        numberObject = new Ompluscript.Model.Attribute.Number(value, true, minimum, include, maximum, include);
+        numberObject = new Ompluscript.Model.Attribute.Number(name, value, true, minimum, include, maximum, include);
     });
 
     it("get configuration", function() {
@@ -141,9 +153,12 @@ describe("Number class tests - without included limits and required", function()
 
         expect(numberObject.getMaximum()).toBe(maximum);
 
+        expect(numberObject.getName()).toBe(name);
+
         expect(numberObject.isRequired()).toBeTruthy();
 
         expect(numberObject.getStackTrace()).toEqual({
+            name: name,
             type: type,
             required: true,
             value: value,
@@ -195,6 +210,8 @@ describe("Number class tests - with included limits and required", function() {
 
     var type = "number";
 
+    var name = "param";
+
     var minimum = value * 2;
 
     var maximum = value * 4;
@@ -202,7 +219,7 @@ describe("Number class tests - with included limits and required", function() {
     var include = true;
 
     beforeAll(function() {
-        numberObject = new Ompluscript.Model.Attribute.Number(value, true, minimum, include, maximum, include);
+        numberObject = new Ompluscript.Model.Attribute.Number(name, value, true, minimum, include, maximum, include);
     });
 
     it("get configuration", function() {
@@ -210,9 +227,12 @@ describe("Number class tests - with included limits and required", function() {
 
         expect(numberObject.getMaximum()).toBe(maximum);
 
+        expect(numberObject.getName()).toBe(name);
+
         expect(numberObject.isRequired()).toBeTruthy();
 
         expect(numberObject.getStackTrace()).toEqual({
+            name: name,
             type: type,
             required: true,
             value: value,

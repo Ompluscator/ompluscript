@@ -1,4 +1,5 @@
 /// <reference path="Unit.ts" />
+/// <reference path="../../Core/Utils/General.ts" />
 
 /**
  * Module that contains attributes' classes.
@@ -7,6 +8,8 @@
  */
 module Ompluscript.Model.Attribute {
     "use strict";
+
+    import General = Ompluscript.Core.Utils.General;
 
     /**
      * Class that contains functionality for Number attribute.
@@ -40,18 +43,19 @@ module Ompluscript.Model.Attribute {
          *
          * Calls superclass constructor and sets minimum and maximum allowed number value.
          *
-         * @param {string} value
-         * @param {boolean} required
-         * @param {number} minimum
-         * @param {boolean} includeMinimum
-         * @param {number} maximum
-         * @param {boolean} includeMaximum
+         * @param {string} name Name of attribute
+         * @param {number} value Attribute's value
+         * @param {boolean} required Defines if value is required
+         * @param {number} minimum Minimum allowed value of string
+         * @param {boolean} includeMinimum Defines if value can be equal to maximum
+         * @param {number} maximum Maximum allowed value of string
+         * @param {boolean} includeMaximum Defines if value can be equal to maximum
          * @constructs
          */
-        constructor(value: number = undefined, required: boolean = false,
+        constructor(name: string, value: number = undefined, required: boolean = false,
                     minimum: number = undefined, includeMinimum: boolean = false, 
                     maximum: number = undefined, includeMaximum: boolean = false) {
-            super("number", value, required);
+            super("number", name, value, required);
             this.minimum = minimum;
             this.maximum = maximum;
             this.includeMinimum = includeMinimum;
@@ -88,16 +92,16 @@ module Ompluscript.Model.Attribute {
             if (this.value !== undefined) {
                 if (this.minimum !== undefined ) {
                     if (this.includeMinimum === false && this.value <= this.minimum) {
-                        throw new RangeError(Unit.ERROR_BELOW_MINIMUM);
+                        General.throwControlledException(RangeError, Number, this.name, Unit.ERROR_BELOW_MINIMUM);
                     } else if (this.includeMinimum === true && this.value < this.minimum) {
-                        throw new RangeError(Unit.ERROR_BELOW_MINIMUM);
+                        General.throwControlledException(RangeError, Number, this.name, Unit.ERROR_BELOW_MINIMUM);
                     }
                 }
                 if (this.maximum !== undefined ) {
                     if (this.includeMaximum === false && this.value >= this.maximum) {
-                        throw new RangeError(Unit.ERROR_OVER_MAXIMUM);
+                        General.throwControlledException(RangeError, Number, this.name, Unit.ERROR_OVER_MAXIMUM);
                     } else if (this.includeMaximum === true && this.value > this.maximum) {
-                        throw new RangeError(Unit.ERROR_OVER_MAXIMUM);
+                        General.throwControlledException(RangeError, Number, this.name, Unit.ERROR_OVER_MAXIMUM);
                     }
                 }
             }

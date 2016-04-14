@@ -20,12 +20,13 @@ module Ompluscript.Model.Attribute {
          *
          * Calls superclass constructor.
          *
-         * @param {string} value
-         * @param {boolean} required
+         * @param {string} name Name of attribute
+         * @param {boolean} value Attribute's value
+         * @param {boolean} required Defines if value is required
          * @constructs
          */
-        constructor(value: boolean = undefined, required: boolean = false) {
-            super("boolean", value, required);
+        constructor(name: string, value: boolean = undefined, required: boolean = false) {
+            super("boolean", name, value, required);
         }
 
     }

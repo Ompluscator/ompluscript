@@ -1,6 +1,6 @@
 module.exports = function (grunt) {
     "use strict";
 
-    grunt.registerTask('deploy', ['typescript-process', 'uglify:base', 'notify:deploy']);
+    grunt.registerTask('deploy', ['test-process', 'uglify:base', 'notify:deploy']);
 
 };

@@ -6,8 +6,10 @@ describe("String class tests - without limits, without pattern and not required"
 
     var type = "string";
 
+    var name = "param";
+
     beforeAll(function() {
-        stringObject = new Ompluscript.Model.Attribute.String();
+        stringObject = new Ompluscript.Model.Attribute.String(name);
     });
 
     it("get configuration", function() {
@@ -17,9 +19,12 @@ describe("String class tests - without limits, without pattern and not required"
 
         expect(stringObject.getPattern()).toBeUndefined();
 
+        expect(stringObject.getName()).toBe(name);
+
         expect(stringObject.isRequired()).toBeFalsy();
 
         expect(stringObject.getStackTrace()).toEqual({
+            name: name,
             type: type,
             required: false,
             value: undefined,
@@ -71,12 +76,14 @@ describe("String class tests - without limits, without pattern and required", fu
 
     var value = "value";
 
+    var name = "param";
+
     var undefined;
     
     var type = "string";
 
     beforeAll(function() {
-        stringObject = new Ompluscript.Model.Attribute.String(value, true);
+        stringObject = new Ompluscript.Model.Attribute.String(name, value, true);
     });
 
     it("get configuration", function() {
@@ -86,9 +93,12 @@ describe("String class tests - without limits, without pattern and required", fu
 
         expect(stringObject.getPattern()).toBeUndefined();
 
+        expect(stringObject.getName()).toBe(name);
+
         expect(stringObject.isRequired()).toBeTruthy();
 
         expect(stringObject.getStackTrace()).toEqual({
+            name: name,
             type: type,
             required: true,
             value: value,
@@ -128,6 +138,8 @@ describe("String class tests - with limits, without pattern and required", funct
 
     var type = "string";
 
+    var name = "param";
+
     var minimum = value.length * 2;
 
     var maximum = value.length * 4;
@@ -135,7 +147,7 @@ describe("String class tests - with limits, without pattern and required", funct
     var undefined;
 
     beforeAll(function() {
-        stringObject = new Ompluscript.Model.Attribute.String(value, true, minimum, maximum);
+        stringObject = new Ompluscript.Model.Attribute.String(name, value, true, minimum, maximum);
     });
 
     it("get configuration", function() {
@@ -145,9 +157,12 @@ describe("String class tests - with limits, without pattern and required", funct
 
         expect(stringObject.getPattern()).toBeUndefined();
 
+        expect(stringObject.getName()).toBe(name);
+
         expect(stringObject.isRequired()).toBeTruthy();
 
         expect(stringObject.getStackTrace()).toEqual({
+            name: name,
             type: type,
             required: true,
             value: value,
@@ -230,6 +245,8 @@ describe("String class tests - with limits and not required", function() {
 
     var type = "string";
 
+    var name = "param";
+
     var minimum = value.length * 2;
 
     var maximum = value.length * 4;
@@ -237,7 +254,7 @@ describe("String class tests - with limits and not required", function() {
     var undefined;
 
     beforeAll(function() {
-        stringObject = new Ompluscript.Model.Attribute.String(value, false, minimum, maximum);
+        stringObject = new Ompluscript.Model.Attribute.String(name, value, false, minimum, maximum);
     });
 
     it("get configuration", function() {
@@ -247,9 +264,12 @@ describe("String class tests - with limits and not required", function() {
 
         expect(stringObject.getPattern()).toBeUndefined();
 
+        expect(stringObject.getName()).toBe(name);
+
         expect(stringObject.isRequired()).toBeFalsy();
 
         expect(stringObject.getStackTrace()).toEqual({
+            name: name,
             type: type,
             required: false,
             value: value,
@@ -312,8 +332,12 @@ describe("String class tests - without limits, with pattern and not required", f
 
     var pattern = new RegExp("value", "g");
 
+    var name = "param";
+
+    var type = "string";
+
     beforeAll(function() {
-        stringObject = new Ompluscript.Model.Attribute.String(undefined, false, undefined, undefined, pattern);
+        stringObject = new Ompluscript.Model.Attribute.String(name, undefined, false, undefined, undefined, pattern);
     });
 
     it("get configuration", function() {
@@ -323,7 +347,19 @@ describe("String class tests - without limits, with pattern and not required", f
 
         expect(stringObject.getPattern()).toBe(pattern);
 
+        expect(stringObject.getName()).toBe(name);
+
         expect(stringObject.isRequired()).toBeFalsy();
+
+        expect(stringObject.getStackTrace()).toEqual({
+            name: name,
+            type: type,
+            required: false,
+            value: undefined,
+            minimumLength: undefined,
+            maximumLength: undefined,
+            pattern: pattern
+        });
 
     });
 

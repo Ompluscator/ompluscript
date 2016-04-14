@@ -1,32 +1,131 @@
 /// <reference path="Unit.ts" />
+/// <reference path="../../Core/Utils/General.ts" />
 
+/**
+ * Module that contains Datetime classes.
+ *
+ * @module Ompluscript.Model.Attribute
+ */
 module Ompluscript.Model.Attribute {
     "use strict";
 
+    import General = Ompluscript.Core.Utils.General;
+
+    /**
+     * Class that contains functionality for Datetime attribute.
+     *
+     * @class Datetime
+     */
     export class Datetime extends Unit<string> {
 
-        private minimum: Date;
-        private maximum: Date;
+        /**
+         * @param {string} minimum Minimum allowed value of the date, stored as string
+         */
+        private minimum: string;
 
-        constructor(value: string = undefined, required: boolean = false,
+        /**
+         * @param {string} maximum Maximum allowed value of the date, stored as string
+         */
+        private maximum: string;
+
+        /**
+         * @param {Date} minimumObject Minimum allowed value of the date, stored as Date object
+         */
+        private minimumObject: Date;
+
+        /**
+         * @param {Date} maximumObject Maximum allowed value of the date, stored as Date object
+         */
+        private maximumObject: Date;
+
+        /**
+         * Class constructor.
+         *
+         * Calls superclass constructor and sets minimum and maximum allowed Date value.
+         *
+         * @param {string} name Name of attribute
+         * @param {number} value Attribute's value
+         * @param {boolean} required Defines if value is required
+         * @param {number} minimum Minimum allowed value of string
+         * @param {number} maximum Maximum allowed value of string
+         * @throws {TypeError} When minimum and maximum are not in valid date format
+         */
+        constructor(name: string, value: string = undefined, required: boolean = false,
                     minimum: string = undefined, maximum: string = undefined) {
-            super("string", value, required);
-            this.minimum = new Date(minimum);
-            this.maximum = new Date(maximum);
+            super("string", name, value, required);
+            this.minimum = minimum;
+            this.maximum = maximum;
+            try {
+                if (minimum !== undefined) {
+                    this.minimumObject = new Date(minimum);
+                } else {
+                    this.minimumObject = undefined;
+                }
+            } catch (ex) {
+                General.throwControlledException(TypeError, Datetime, minimum, Unit.ERROR_WRONG_TYPE);
+            }
+            try {
+                if (maximum !== undefined) {
+                    this.maximumObject = new Date(maximum);
+                } else {
+                    this.maximumObject = undefined;
+                }
+            } catch (ex) {
+                General.throwControlledException(TypeError, Datetime, maximum, Unit.ERROR_WRONG_TYPE);
+            }
         }
-        
+
+        /**
+         * Method that returns attributes value as a Date object
+         *
+         * @returns {Date} Value as a Date object
+         */
         public getDateObject(): Date {
             return new Date(this.value);
         }
 
-        public getMinimum(): Date {
+        /**
+         * Method that returns minimum allowed value of datetime, as string.
+         *
+         * @returns {string|undefined} Minimum allowed value of datetime, as string
+         */
+        public getMinimum(): string {
             return this.minimum;
         }
 
-        public getMaximum(): Date {
+        /**
+         * Method that returns minimum allowed value of datetime, as Date object.
+         *
+         * @returns {Date|undefined} Minimum allowed value of datetime, as Date object
+         */
+        public getMinimumDateObject(): Date {
+            return this.minimumObject;
+        }
+
+        /**
+         * Method that returns maximum allowed value of datetime, as string.
+         *
+         * @returns {string|undefined} Maximum allowed value of datetime, as string
+         */
+        public getMaximum(): string {
             return this.maximum;
         }
 
+        /**
+         * Method that returns maximum allowed value of datetime, as Date object.
+         *
+         * @returns {Date|undefined} Maximum allowed value of datetime, as Date object
+         */
+        public getMaximumDateObject(): Date {
+            return this.maximumObject;
+        }
+
+        /**
+         * Method that validates datetime value.
+         *
+         * @throws {TypeError} when it's not in right datetime format
+         * @throws {RangeError} when it's over its minimum or maximum value
+         */
         public validate(): void {
             try {
                 this.validate();
@@ -34,19 +133,28 @@ module Ompluscript.Model.Attribute {
                     this.getDateObject();
                 }
             } catch (ex) {
-                throw new TypeError(Unit.ERROR_WRONG_TYPE);
+                General.throwControlledException(TypeError, Datetime, this.value, Unit.ERROR_WRONG_TYPE);
             }
-            if (this.value !== undefined && this.minimum !== undefined && this.getDateObject().getTime() < this.minimum.getTime()) {
-                throw new RangeError(Unit.ERROR_BELOW_MINIMUM);
-            } else if (this.value !== undefined && this.maximum !== undefined && this.getDateObject().getTime() > this.maximum.getTime()) {
-                throw new RangeError(Unit.ERROR_OVER_MAXIMUM);
+            if (this.value !== undefined && this.minimum !== undefined
+                && this.getDateObject().getTime() < this.minimumObject.getTime()) {
+                General.throwControlledException(TypeError, Datetime, this.value, Unit.ERROR_BELOW_MINIMUM);
+            } else if (this.value !== undefined && this.maximum !== undefined
+                && this.getDateObject().getTime() > this.maximumObject.getTime()) {
+                General.throwControlledException(TypeError, Datetime, this.value, Unit.ERROR_OVER_MAXIMUM);
             }
         }
 
+        /**
+         * Method that returns all current attributes of object.
+         *
+         * @returns {Object} contains all attributes of the object
+         */
         public getStackTrace(): Object {
             let trace: Object = super.getStackTrace();
             trace["minimum"] = this.minimum;
+            trace["minimumObject"] = this.minimumObject;
             trace["maximum"] = this.maximum;
+            trace["maximumObject"] = this.maximumObject;
             return trace;
         }
 
