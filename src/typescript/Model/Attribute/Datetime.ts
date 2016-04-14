@@ -156,9 +156,9 @@ module Ompluscript.Model.Attribute {
          */
         public getStackTrace(): Object {
             let trace: Object = super.getStackTrace();
-            trace["minimum"] = this.minimum;
+            trace[Unit.PARAMETER_MINIMUM] = this.minimum;
             trace["minimumObject"] = this.minimumObject;
-            trace["maximum"] = this.maximum;
+            trace[Unit.PARAMETER_MAXIMUM] = this.maximum;
             trace["maximumObject"] = this.maximumObject;
             return trace;
         }

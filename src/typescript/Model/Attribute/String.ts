@@ -33,6 +33,12 @@ module Ompluscript.Model.Attribute {
          */
         public static ERROR_PATTERN_NOT_MATCH: number = 221;
 
+        public static PARAMETER_MINIMUM_LENGTH: string = "minimumLength";
+
+        public static PARAMETER_MAXIMUM_LENGTH: string = "maximumLength";
+
+        public static PARAMETER_PATTERN: string = "pattern";
+
         /**
          * @param {number} minimumLength Minimum allowed length of the string
          */
@@ -69,6 +75,21 @@ module Ompluscript.Model.Attribute {
             this.minimumLength = minimumLength;
             this.maximumLength = maximumLength;
             this.pattern = pattern;
+            if (this.minimumLength !== undefined && typeof this.minimumLength !== "number") {
+                General.throwConfigurationException(Number, {
+                    minimumLength: minimumLength,
+                });
+            }
+            if (this.maximumLength !== undefined && typeof this.maximumLength !== "number") {
+                General.throwConfigurationException(Number, {
+                    maximumLength: maximumLength,
+                });
+            }
+            if (this.pattern !== undefined && !(this.pattern instanceof RegExp)) {
+                General.throwConfigurationException(Number, {
+                    pattern: pattern,
+                });
+            }
         }
 
         /**
@@ -122,9 +143,9 @@ module Ompluscript.Model.Attribute {
          */
         public getStackTrace(): Object {
             let trace: Object = super.getStackTrace();
-            trace["minimumLength"] = this.minimumLength;
-            trace["maximumLength"] = this.maximumLength;
-            trace["pattern"] = this.pattern;
+            trace[String.PARAMETER_MINIMUM_LENGTH] = this.minimumLength;
+            trace[String.PARAMETER_MAXIMUM_LENGTH] = this.maximumLength;
+            trace[String.PARAMETER_PATTERN] = this.pattern;
             return trace;
         }
 

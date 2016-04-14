@@ -11,7 +11,7 @@ describe("MultipleChoice class tests - not required", function() {
     var undefined;
 
     beforeAll(function() {
-        multipleChoiceObject = new Ompluscript.Model.Attribute.MultipleChoice(name, values);
+        multipleChoiceObject = new Ompluscript.Model.Attribute.MultipleChoice(name, undefined, false, values);
     });
 
     it("get configuration", function() {
@@ -128,7 +128,7 @@ describe("MultipleChoice class tests - required", function() {
     var undefined;
 
     beforeAll(function() {
-        multipleChoiceObject = new Ompluscript.Model.Attribute.MultipleChoice(name, values, value, true);
+        multipleChoiceObject = new Ompluscript.Model.Attribute.MultipleChoice(name, value, true, values);
     });
 
     it("get configuration", function() {

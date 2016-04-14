@@ -11,7 +11,7 @@ describe("SingleChoice class tests - not required", function() {
     var undefined;
 
     beforeAll(function() {
-        singleChoiceObject = new Ompluscript.Model.Attribute.SingleChoice(name, values);
+        singleChoiceObject = new Ompluscript.Model.Attribute.SingleChoice(name, undefined, false, values);
     });
 
     it("get configuration", function() {
@@ -92,7 +92,7 @@ describe("SingleChoice class tests - required", function() {
     var undefined;
 
     beforeAll(function() {
-        singleChoiceObject = new Ompluscript.Model.Attribute.SingleChoice(name, values, value, true);
+        singleChoiceObject = new Ompluscript.Model.Attribute.SingleChoice(name, value, true, values);
     });
 
     it("get configuration", function() {

@@ -44,6 +44,32 @@ module Ompluscript.Model.Attribute {
          */
         public static ERROR_VALUE_NOT_ALLOWED: number = 203;
 
+        public static TYPE_BOOLEAN: string = "boolean";
+
+        public static TYPE_NUMBER: string = "number";
+
+        public static TYPE_STRING: string = "string";
+
+        public static TYPE_DATETIME: string = "datetime";
+
+        public static TYPE_SINGLE_CHOICE: string = "singleChoice";
+
+        public static TYPE_MULTIPLE_CHOICE: string = "multipleChoice";
+
+        public static PARAMETER_TYPE: string = "type";
+
+        public static PARAMETER_NAME: string = "name";
+
+        public static PARAMETER_REQUIRED: string = "required";
+
+        public static PARAMETER_VALUE: string = "value";
+
+        public static PARAMETER_VALUES: string = "values";
+
+        public static PARAMETER_MINIMUM: string = "minimum";
+
+        public static PARAMETER_MAXIMUM: string = "maximum";
+
         /**
          * @param {string} type Value's type
          */
@@ -78,7 +104,25 @@ module Ompluscript.Model.Attribute {
             this.type = type;
             this.name = name;
             this.value = value;
-            this.required = required;
+            this.required = false;
+            if (required === true) {
+                this.required = true;
+            }
+            if (typeof this.type !== "string") {
+                General.throwConfigurationException(Unit, {
+                    type: this.type,
+                });
+            }
+            if (typeof this.name !== "string") {
+                General.throwConfigurationException(Unit, {
+                    name: this.name,
+                });
+            }
+            if (required !== undefined && typeof required !== "boolean") {
+                General.throwConfigurationException(Unit, {
+                    required: required,
+                });
+            }
         }
 
         /**

@@ -18,6 +18,10 @@ module Ompluscript.Model.Attribute {
      */
     export class Number extends Unit<number> {
 
+        public static PARAMETER_INCLUDE_MINIMUM: string = "includeMinimum";
+
+        public static PARAMETER_INCLUDE_MAXIMUM: string = "includeMaximum";
+
         /**
          * @param {number} minimum Minimum allowed value of the number
          */
@@ -59,8 +63,24 @@ module Ompluscript.Model.Attribute {
             super("number", name, value, required);
             this.minimum = minimum;
             this.maximum = maximum;
-            this.includeMinimum = includeMinimum;
-            this.includeMaximum = includeMaximum;
+            this.includeMinimum = false;
+            if (includeMinimum === true) {
+                this.includeMinimum = true;
+            }
+            this.includeMaximum = false;
+            if (includeMaximum === true) {
+                this.includeMaximum = true;
+            }
+            if (this.minimum !== undefined && typeof this.minimum !== "number") {
+                General.throwConfigurationException(Number, {
+                    minimum: minimum,
+                });
+            }
+            if (this.maximum !== undefined && typeof this.maximum !== "number") {
+                General.throwConfigurationException(Number, {
+                    maximum: maximum,
+                });
+            }
             if (this.minimum !== undefined && this.maximum !== undefined) {
                 if (this.includeMinimum === true && this.includeMaximum === true 
                     && this.minimum > this.maximum) {
@@ -129,10 +149,10 @@ module Ompluscript.Model.Attribute {
          */
         public getStackTrace(): Object {
             let trace: Object = super.getStackTrace();
-            trace["minimum"] = this.minimum;
-            trace["includeMinimum"] = this.includeMinimum;
-            trace["maximum"] = this.maximum;
-            trace["includeMaximum"] = this.includeMaximum;
+            trace[Unit.PARAMETER_MINIMUM] = this.minimum;
+            trace[Number.PARAMETER_INCLUDE_MINIMUM] = this.includeMinimum;
+            trace[Unit.PARAMETER_MAXIMUM] = this.maximum;
+            trace[Number.PARAMETER_INCLUDE_MAXIMUM] = this.includeMaximum;
             return trace;
         }
 

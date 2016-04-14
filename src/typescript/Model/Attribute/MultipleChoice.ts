@@ -29,13 +29,18 @@
              * Calls superclass constructor and sets allowed choices.
              *
              * @param {string} name Name of attribute
-             * @param {number[]} values Allowed values
              * @param {number[]} value Attribute's value
              * @param {boolean} required Defines if value is required
+             * @param {number[]} values Allowed values
              */
-            constructor(name: string, values: number[] = [], value: number[] = undefined, required: boolean = false) {
+            constructor(name: string, value: number[] = undefined, required: boolean = false, values: number[] = []) {
                 super("number", name, value, required);
                 this.values = values;
+                if (this.values !== undefined && !Array.isArray(this.values)) {
+                    General.throwConfigurationException(Unit, {
+                        values: this.values,
+                    });
+                }
             }
 
             /**
@@ -84,7 +89,7 @@
              */
             public getStackTrace(): Object {
                 let trace: Object = super.getStackTrace();
-                trace["values"] = this.values;
+                trace[Unit.PARAMETER_VALUES] = this.values;
                 return trace;
             }
 
