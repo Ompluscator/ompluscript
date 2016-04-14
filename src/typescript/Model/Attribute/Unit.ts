@@ -40,6 +40,11 @@ module Ompluscript.Model.Attribute {
         public static ERROR_OVER_MAXIMUM: number = 202;
 
         /**
+         * @param {number} ERROR_VALUE_NOT_ALLOWED Error code when not allowed value.
+         */
+        public static ERROR_VALUE_NOT_ALLOWED: number = 203;
+
+        /**
          * @param {string} type Value's type
          */
         protected type: string;
@@ -125,10 +130,10 @@ module Ompluscript.Model.Attribute {
          * @throws {TypeError} when it's not string
          */
         public validate(): void {
-            if (this.required === true && typeof this.value !== this.type) {
-                General.throwControlledException(TypeError, Unit, this.name, Unit.ERROR_IS_REQUIRED);
-            } else if (typeof this.value !== this.type && this.value !== undefined) {
+            if (typeof this.value !== this.type && this.value !== undefined) {
                 General.throwControlledException(TypeError, Unit, this.name, Unit.ERROR_WRONG_TYPE);
+            } else if (this.required === true && typeof this.value !== this.type) {
+                General.throwControlledException(TypeError, Unit, this.name, Unit.ERROR_IS_REQUIRED);
             }
         }
 

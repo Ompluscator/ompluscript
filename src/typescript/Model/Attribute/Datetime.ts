@@ -2,7 +2,7 @@
 /// <reference path="../../Core/Utils/General.ts" />
 
 /**
- * Module that contains Datetime classes.
+ * Module that contains Attribute classes.
  *
  * @module Ompluscript.Model.Attribute
  */
@@ -44,7 +44,7 @@ module Ompluscript.Model.Attribute {
          * Calls superclass constructor and sets minimum and maximum allowed Date value.
          *
          * @param {string} name Name of attribute
-         * @param {number} value Attribute's value
+         * @param {string} value Attribute's value
          * @param {boolean} required Defines if value is required
          * @param {number} minimum Minimum allowed value of string
          * @param {number} maximum Maximum allowed value of string
@@ -138,14 +138,14 @@ module Ompluscript.Model.Attribute {
         public validate(): void {
             super.validate();
             if (this.value !== undefined && isNaN(this.getDateObject().getTime())) {
-                General.throwControlledException(TypeError, Datetime, this.value, Unit.ERROR_WRONG_TYPE);
+                General.throwControlledException(TypeError, Datetime, this.name, Unit.ERROR_WRONG_TYPE);
             }
             if (this.value !== undefined && this.minimum !== undefined
                 && this.getDateObject().getTime() < this.minimumObject.getTime()) {
-                General.throwControlledException(RangeError, Datetime, this.value, Unit.ERROR_BELOW_MINIMUM);
+                General.throwControlledException(RangeError, Datetime, this.name, Unit.ERROR_BELOW_MINIMUM);
             } else if (this.value !== undefined && this.maximum !== undefined
                 && this.getDateObject().getTime() > this.maximumObject.getTime()) {
-                General.throwControlledException(RangeError, Datetime, this.value, Unit.ERROR_OVER_MAXIMUM);
+                General.throwControlledException(RangeError, Datetime, this.name, Unit.ERROR_OVER_MAXIMUM);
             }
         }
 
