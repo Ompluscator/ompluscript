@@ -136,20 +136,16 @@ module Ompluscript.Model.Attribute {
          * @throws {RangeError} when it's over its minimum or maximum value
          */
         public validate(): void {
-            try {
-                this.validate();
-                if (this.value !== undefined) {
-                    this.getDateObject();
-                }
-            } catch (ex) {
+            super.validate();
+            if (this.value !== undefined && isNaN(this.getDateObject().getTime())) {
                 General.throwControlledException(TypeError, Datetime, this.value, Unit.ERROR_WRONG_TYPE);
             }
             if (this.value !== undefined && this.minimum !== undefined
                 && this.getDateObject().getTime() < this.minimumObject.getTime()) {
-                General.throwControlledException(TypeError, Datetime, this.value, Unit.ERROR_BELOW_MINIMUM);
+                General.throwControlledException(RangeError, Datetime, this.value, Unit.ERROR_BELOW_MINIMUM);
             } else if (this.value !== undefined && this.maximum !== undefined
                 && this.getDateObject().getTime() > this.maximumObject.getTime()) {
-                General.throwControlledException(TypeError, Datetime, this.value, Unit.ERROR_OVER_MAXIMUM);
+                General.throwControlledException(RangeError, Datetime, this.value, Unit.ERROR_OVER_MAXIMUM);
             }
         }
 
