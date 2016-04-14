@@ -29,11 +29,11 @@
              * Calls superclass constructor and sets allowed choices.
              *
              * @param {string} name Name of attribute
+             * @param {number[]} values Allowed values
              * @param {number[]} value Attribute's value
              * @param {boolean} required Defines if value is required
-             * @param {number[]} values Allowed values
              */
-            constructor(name: string, value: number[] = undefined, required: boolean = false, values: number[] = []) {
+            constructor(name: string, values: number[] = [], value: number[] = undefined, required: boolean = false) {
                 super("number", name, value, required);
                 this.values = values;
             }
@@ -65,12 +65,14 @@
             public validate(): void {
                 if (Array.isArray(this.value) === false && this.value !== undefined) {
                     General.throwControlledException(TypeError, Unit, this.name, Unit.ERROR_WRONG_TYPE);
-                } else if (this.required === true &&  Array.isArray(this.value) === false) {
+                } else if (this.required === true &&  (Array.isArray(this.value) === false || this.value.length === 0)) {
                     General.throwControlledException(TypeError, Unit, this.name, Unit.ERROR_IS_REQUIRED);
                 }
-                for (let i in this.value) {
-                    if (this.values.indexOf(this.value[i]) === -1) {
-                        General.throwControlledException(RangeError, SingleChoice, this.name, Unit.ERROR_VALUE_NOT_ALLOWED);
+                if (Array.isArray(this.value) === true) {
+                    for (let i in this.value) {
+                        if (this.values.indexOf(this.value[i]) === -1) {
+                            General.throwControlledException(RangeError, SingleChoice, this.name, Unit.ERROR_VALUE_NOT_ALLOWED);
+                        }
                     }
                 }
             }

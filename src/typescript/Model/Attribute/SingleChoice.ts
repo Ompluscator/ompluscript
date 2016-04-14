@@ -29,11 +29,11 @@
              * Calls superclass constructor and sets allowed choices.
              *
              * @param {string} name Name of attribute
+             * @param {number[]} values Allowed values
              * @param {number} value Attribute's value
              * @param {boolean} required Defines if value is required
-             * @param {number[]} values Allowed values
              */
-            constructor(name: string, value: number = undefined, required: boolean = false, values: number[] = []) {
+            constructor(name: string, values: number[] = [], value: number = undefined, required: boolean = false) {
                 super("number", name, value, required);
                 this.values = values;
             }
@@ -64,7 +64,7 @@
              */
             public validate(): void {
                 super.validate();
-                if (this.values.indexOf(this.value) === -1) {
+                if (this.value !== undefined && this.values.indexOf(this.value) === -1) {
                     General.throwControlledException(RangeError, SingleChoice, this.name, Unit.ERROR_VALUE_NOT_ALLOWED);
                 }
             }
