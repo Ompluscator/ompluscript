@@ -48,30 +48,39 @@ module Ompluscript.Model.Attribute {
          * @param {boolean} required Defines if value is required
          * @param {number} minimum Minimum allowed value of string
          * @param {number} maximum Maximum allowed value of string
-         * @throws {TypeError} When minimum and maximum are not in valid date format
+         * @throws {TypeError} When minimum and maximum are not in valid date format or in wrong order
          */
         constructor(name: string, value: string = undefined, required: boolean = false,
                     minimum: string = undefined, maximum: string = undefined) {
             super("string", name, value, required);
             this.minimum = minimum;
             this.maximum = maximum;
-            try {
-                if (minimum !== undefined) {
-                    this.minimumObject = new Date(minimum);
-                } else {
-                    this.minimumObject = undefined;
+            if (minimum !== undefined) {
+                this.minimumObject = new Date(minimum);
+                if (isNaN(this.minimumObject.getTime())) {
+                    General.throwConfigurationException(Datetime, {
+                        minimum: minimum,
+                    });
                 }
-            } catch (ex) {
-                General.throwControlledException(TypeError, Datetime, minimum, Unit.ERROR_WRONG_TYPE);
+            } else {
+                this.minimumObject = undefined;
             }
-            try {
-                if (maximum !== undefined) {
-                    this.maximumObject = new Date(maximum);
-                } else {
-                    this.maximumObject = undefined;
+            if (maximum !== undefined) {
+                this.maximumObject = new Date(maximum);
+                if (isNaN(this.maximumObject.getTime())) {
+                    General.throwConfigurationException(Datetime, {
+                        maximum: maximum,
+                    });
                 }
-            } catch (ex) {
-                General.throwControlledException(TypeError, Datetime, maximum, Unit.ERROR_WRONG_TYPE);
+            } else {
+                this.maximumObject = undefined;
+            }
+            if (this.minimumObject !== undefined && this.maximumObject !== undefined
+                && this.minimumObject >= this.maximumObject) {
+                General.throwConfigurationException(Datetime, {
+                    maximum: maximum,
+                    minimum: minimum,
+                });
             }
         }
 

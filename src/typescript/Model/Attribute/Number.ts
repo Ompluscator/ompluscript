@@ -50,6 +50,7 @@ module Ompluscript.Model.Attribute {
          * @param {boolean} includeMinimum Defines if value can be equal to maximum
          * @param {number} maximum Maximum allowed value of string
          * @param {boolean} includeMaximum Defines if value can be equal to maximum
+         * @throws {TypeError} When minimum and maximum are in wrong order
          * @constructs
          */
         constructor(name: string, value: number = undefined, required: boolean = false,
@@ -60,7 +61,21 @@ module Ompluscript.Model.Attribute {
             this.maximum = maximum;
             this.includeMinimum = includeMinimum;
             this.includeMaximum = includeMaximum;
-            
+            if (this.minimum !== undefined && this.maximum !== undefined) {
+                if (this.includeMinimum === true && this.includeMaximum === true 
+                    && this.minimum > this.maximum) {
+                    General.throwConfigurationException(Number, {
+                        maximum: maximum,
+                        minimum: minimum,
+                    });
+                } else if ((this.includeMinimum === false || this.includeMaximum === false)
+                    && this.minimum >= this.maximum) {
+                    General.throwConfigurationException(Number, {
+                        maximum: maximum,
+                        minimum: minimum,
+                    });
+                }
+            }
         }
 
         /**

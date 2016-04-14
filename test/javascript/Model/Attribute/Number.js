@@ -1,3 +1,44 @@
+describe("Number class tests - initialization", function() {
+
+    var undefined;
+
+    it("validate invalid minimum and maximum configuration", function() {
+        expect(function () {
+            new Ompluscript.Model.Attribute.Number("param", undefined, true, 1.01, true, 1, true);
+        }).toThrowError(SyntaxError);
+    });
+
+    it("validate valid minimum and maximum configuration", function() {
+        expect(function () {
+            new Ompluscript.Model.Attribute.Number("param", undefined, true, 1, true, 1, true);
+        }).not.toThrow();
+    });
+
+    it("validate invalid minimum and maximum configuration", function() {
+        expect(function () {
+            new Ompluscript.Model.Attribute.Number("param", undefined, true, 1, false, 1, true);
+        }).toThrowError(SyntaxError);
+    });
+
+    it("validate invalid minimum and maximum configuration", function() {
+        expect(function () {
+            new Ompluscript.Model.Attribute.Number("param", undefined, true, 1, true, 1, false);
+        }).toThrowError(SyntaxError);
+    });
+
+    it("validate invalid minimum and maximum configuration", function() {
+        expect(function () {
+            new Ompluscript.Model.Attribute.Number("param", undefined, true, 1, false, 1, false);
+        }).toThrowError(SyntaxError);
+    });
+
+    it("validate invalid minimum and maximum configuration", function() {
+        expect(function () {
+            new Ompluscript.Model.Attribute.Number("param", undefined, true, 1.01, false, 1, true);
+        }).toThrowError(SyntaxError);
+    });
+});
+
 describe("Number class tests - without limits and not required", function() {
 
     var numberObject;
