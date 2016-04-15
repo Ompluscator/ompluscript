@@ -19,7 +19,7 @@
         export class SingleChoice extends Unit<number> {
 
             /**
-             * @param {number[]} values Allowed values for choice
+             * @type {number[]} values Allowed values for choice
              */
             private values: number[];
 
@@ -32,12 +32,14 @@
              * @param {number} value Attribute's value
              * @param {boolean} required Defines if value is required
              * @param {number[]} values Allowed values
+             * @throws {SyntaxError} When values is not defined well
+             * @constructs
              */
             constructor(name: string, value: number = undefined, required: boolean = false, values: number[] = []) {
                 super("number", name, value, required);
                 this.values = values;
                 if (this.values !== undefined && !Array.isArray(this.values)) {
-                    General.throwConfigurationException(Unit, {
+                    General.throwConfigurationException(SingleChoice, {
                         values: this.values,
                     });
                 }

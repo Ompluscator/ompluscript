@@ -18,27 +18,33 @@ module Ompluscript.Model.Attribute {
      */
     export class Number extends Unit<number> {
 
+        /**
+         * @type {string} PARAMETER_INCLUDE_MINIMUM Include minimum parameter name.
+         */
         public static PARAMETER_INCLUDE_MINIMUM: string = "includeMinimum";
 
+        /**
+         * @type {string} PARAMETER_INCLUDE_MAXIMUM Include maximum parameter name.
+         */
         public static PARAMETER_INCLUDE_MAXIMUM: string = "includeMaximum";
 
         /**
-         * @param {number} minimum Minimum allowed value of the number
+         * @type {number} minimum Minimum allowed value of the number
          */
         private minimum: number;
 
         /**
-         * @param {boolean} includeMinimum Defines if value can be equal to minimum
+         * @type {boolean} includeMinimum Defines if value can be equal to minimum
          */
         private includeMinimum: boolean;
 
         /**
-         * @param {number} maximum Maximum allowed value of the number
+         * @type {number} maximum Maximum allowed value of the number
          */
         private maximum: number;
 
         /**
-         * @param {boolean} includeMaximum Defines if value can be equal to maximum
+         * @type {boolean} includeMaximum Defines if value can be equal to maximum
          */
         private includeMaximum: boolean;
 
@@ -54,7 +60,8 @@ module Ompluscript.Model.Attribute {
          * @param {boolean} includeMinimum Defines if value can be equal to maximum
          * @param {number} maximum Maximum allowed value of string
          * @param {boolean} includeMaximum Defines if value can be equal to maximum
-         * @throws {TypeError} When minimum and maximum are in wrong order
+         * @throws {SyntaxError} When minimum and maximum are in wrong order, or not numbers, or
+         *                       include minimum and maximum are wrong defined
          * @constructs
          */
         constructor(name: string, value: number = undefined, required: boolean = false,

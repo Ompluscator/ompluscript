@@ -2,28 +2,75 @@ describe("Datetime class tests - initialization", function() {
     
     var undefined;
 
-    it("validate invalid minimum configuration", function() {
-        expect(function () {
-            new Ompluscript.Model.Attribute.Datetime("param", undefined, true, "wrong");
-        }).toThrowError(SyntaxError);
-    });
+    var DatetimeClass = Ompluscript.Model.Attribute.Datetime;
 
-    it("validate valid minimum configuration", function() {
+    var General = Ompluscript.Core.Utils.General;
+
+    it("validate invalid minimum configuration", function() {
+        var minimum = "wrong";
+
+        var parameters = {
+            classType: DatetimeClass.name,
+            code: General.ERROR_WRONG_CONFIGURATION,
+            variables: {
+                minimum: minimum
+            }
+        };
         expect(function () {
-            new Ompluscript.Model.Attribute.Datetime("param", undefined, true, "1/11/1985");
-        }).not.toThrow();
+            new DatetimeClass("param", undefined, true, minimum);
+        }).toThrow(new SyntaxError(JSON.stringify(parameters)));
     });
 
     it("validate invalid maximum configuration", function() {
+        var maximum = "wrong";
+
+        var parameters = {
+            classType: DatetimeClass.name,
+            code: General.ERROR_WRONG_CONFIGURATION,
+            variables: {
+                maximum: maximum
+            }
+        };
+
         expect(function () {
-            new Ompluscript.Model.Attribute.Datetime("param", undefined, true, "1/11/1985", "wrong");
-        }).toThrowError(SyntaxError);
+            new DatetimeClass("param", undefined, true, "1/11/1985", maximum);
+        }).toThrow(new SyntaxError(JSON.stringify(parameters)));
     });
 
-    it("validate valid maximum configuration", function() {
+    it("validate valid minimum and maximum configuration", function() {
+        var maximum = "1/10/1985";
+        var minimum = "1/11/1985";
+
+        var parameters = {
+            classType: DatetimeClass.name,
+            code: General.ERROR_WRONG_CONFIGURATION,
+            variables: {
+                maximum: maximum,
+                minimum: minimum
+            }
+        };
+
         expect(function () {
-            new Ompluscript.Model.Attribute.Datetime("param", undefined, true, "1/11/1985", "1/10/1985");
-        }).toThrowError(SyntaxError);
+            new DatetimeClass("param", undefined, true, minimum, maximum);
+        }).toThrow(new SyntaxError(JSON.stringify(parameters)));
+    });
+
+    it("validate valid configuration", function() {
+        expect(function () {
+            new DatetimeClass("param");
+        }).not.toThrow();
+
+        expect(function () {
+            new DatetimeClass("param", undefined, true);
+        }).not.toThrow();
+
+        expect(function () {
+            new DatetimeClass("param", undefined, true, "1/11/1985");
+        }).not.toThrow();
+
+        expect(function () {
+            new DatetimeClass("param", undefined, true, "1/11/1985", "1/12/1985");
+        }).not.toThrow();
     });
 });
 

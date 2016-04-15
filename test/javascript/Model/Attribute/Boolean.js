@@ -1,3 +1,24 @@
+describe("Boolean class tests - initialization", function() {
+
+    var undefined;
+
+    var BooleanClass = Ompluscript.Model.Attribute.Boolean;
+
+    it("validate valid configuration", function() {
+        expect(function () {
+            new BooleanClass("param");
+        }).not.toThrow();
+
+        expect(function () {
+            new BooleanClass("param", true);
+        }).not.toThrow();
+
+        expect(function () {
+            new BooleanClass("param", true, true);
+        }).not.toThrow();
+    });
+});
+
 describe("Boolean class tests - not required", function() {
 
     var booleanObject;
@@ -7,6 +28,8 @@ describe("Boolean class tests - not required", function() {
     var type = "boolean";
     
     var undefined;
+
+    var UnitClass = Ompluscript.Model.Attribute.Unit;
 
     beforeAll(function() {
         booleanObject = new Ompluscript.Model.Attribute.Boolean(name);
@@ -52,13 +75,19 @@ describe("Boolean class tests - not required", function() {
     it("validate number value", function() {
         var value = 1;
 
+        var parameters = {
+            classType: UnitClass.name,
+            code: UnitClass.ERROR_WRONG_TYPE,
+            objectName: booleanObject.getName(),
+        };
+
         booleanObject.setValue(value);
 
         expect(booleanObject.getValue()).toBe(value);
 
         expect(function () {
             booleanObject.validate();
-        }).toThrowError(TypeError);
+        }).toThrow(new TypeError(JSON.stringify(parameters)));
     });
 });
 
@@ -71,6 +100,8 @@ describe("Boolean class tests - required", function() {
     var name = "param";
     
     var type = "boolean";
+
+    var UnitClass = Ompluscript.Model.Attribute.Unit;
 
     beforeAll(function() {
         booleanObject = new Ompluscript.Model.Attribute.Boolean(name, value, true);
@@ -92,13 +123,19 @@ describe("Boolean class tests - required", function() {
     });
 
     it("validate undefined value", function() {
+        var parameters = {
+            classType: UnitClass.name,
+            code: UnitClass.ERROR_IS_REQUIRED,
+            objectName: booleanObject.getName(),
+        };
+
         booleanObject.resetValue();
 
         expect(booleanObject.getValue()).toBeUndefined();
 
         expect(function () {
             booleanObject.validate();
-        }).toThrowError(TypeError);
+        }).toThrow(new TypeError(JSON.stringify(parameters)));
     });
 
     it("validate boolean value", function() {

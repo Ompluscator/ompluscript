@@ -19,38 +19,47 @@ module Ompluscript.Model.Attribute {
     export class String extends Unit<string> {
 
         /**
-         * @param {number} ERROR_BELOW_MINIMUM_LENGTH Error code for invalid minimum length of the string.
+         * @type {number} ERROR_BELOW_MINIMUM_LENGTH Error code for invalid minimum length of the string.
          */
         public static ERROR_BELOW_MINIMUM_LENGTH: number = 211;
 
         /**
-         * @param {number} ERROR_OVER_MAXIMUM_LENGTH Error code for invalid maximum length of the string.
+         * @type {number} ERROR_OVER_MAXIMUM_LENGTH Error code for invalid maximum length of the string.
          */
         public static ERROR_OVER_MAXIMUM_LENGTH: number = 212;
 
         /**
-         * @param {number} ERROR_PATTERN_NOT_MATCH Error code when string doesn't match pattern.
+         * @type {number} ERROR_PATTERN_NOT_MATCH Error code when string doesn't match pattern.
          */
         public static ERROR_PATTERN_NOT_MATCH: number = 221;
 
+        /**
+         * @type {string} PARAMETER_MINIMUM_LENGTH Minimum length parameter name.
+         */
         public static PARAMETER_MINIMUM_LENGTH: string = "minimumLength";
 
+        /**
+         * @type {string} PARAMETER_MAXIMUM_LENGTH Maximum length parameter name.
+         */
         public static PARAMETER_MAXIMUM_LENGTH: string = "maximumLength";
 
+        /**
+         * @type {string} PARAMETER_PATTERN Pattern parameter name.
+         */
         public static PARAMETER_PATTERN: string = "pattern";
 
         /**
-         * @param {number} minimumLength Minimum allowed length of the string
+         * @type {number} minimumLength Minimum allowed length of the string
          */
         private minimumLength: number;
 
         /**
-         * @param {number} maximumLength Maximum allowed length of the string
+         * @type {number} maximumLength Maximum allowed length of the string
          */
         private maximumLength: number;
 
         /**
-         * @param {RegExp} allowed pattern Pattern for string
+         * @type {RegExp} allowed pattern Pattern for string
          */
         private pattern: RegExp;
 
@@ -66,6 +75,8 @@ module Ompluscript.Model.Attribute {
          * @param {number} minimumLength Minimum allowed length of string
          * @param {number} maximumLength Maximum allowed length of string
          * @param {RegExp} pattern
+         * @throws {SyntaxError} When minimum and maximum length are in wrong order, or not numbers, 
+         *                       or pattern is not RegExp object
          * @constructs
          */
         constructor(name: string, value: string = undefined, required: boolean = false, 
@@ -76,17 +87,24 @@ module Ompluscript.Model.Attribute {
             this.maximumLength = maximumLength;
             this.pattern = pattern;
             if (this.minimumLength !== undefined && typeof this.minimumLength !== "number") {
-                General.throwConfigurationException(Number, {
+                General.throwConfigurationException(String, {
                     minimumLength: minimumLength,
                 });
             }
             if (this.maximumLength !== undefined && typeof this.maximumLength !== "number") {
-                General.throwConfigurationException(Number, {
+                General.throwConfigurationException(String, {
                     maximumLength: maximumLength,
                 });
             }
+            if (this.maximumLength !== undefined && this.minimumLength !== undefined 
+                && this.minimumLength > this.maximumLength) {
+                General.throwConfigurationException(String, {
+                    maximumLength: maximumLength,
+                    minimumLength: minimumLength,
+                });
+            }
             if (this.pattern !== undefined && !(this.pattern instanceof RegExp)) {
-                General.throwConfigurationException(Number, {
+                General.throwConfigurationException(String, {
                     pattern: pattern,
                 });
             }

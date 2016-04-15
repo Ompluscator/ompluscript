@@ -2,40 +2,86 @@ describe("Number class tests - initialization", function() {
 
     var undefined;
 
+    var NumberClass = Ompluscript.Model.Attribute.Number;
+
+    var General = Ompluscript.Core.Utils.General;
+
     it("validate invalid minimum and maximum configuration", function() {
+        var minimum = 1.01;
+        var maximum = 1;
+
+        var parameters = {
+            classType: NumberClass.name,
+            code: General.ERROR_WRONG_CONFIGURATION,
+            variables: {
+                maximum: maximum,
+                minimum: minimum
+            }
+        };
+
         expect(function () {
-            new Ompluscript.Model.Attribute.Number("param", undefined, true, 1.01, true, 1, true);
-        }).toThrowError(SyntaxError);
+            new NumberClass("param", undefined, true, minimum, true, maximum, true);
+        }).toThrow(new SyntaxError(JSON.stringify(parameters)));
+
+        expect(function () {
+            new NumberClass("param", undefined, true, minimum, false, maximum, true);
+        }).toThrow(new SyntaxError(JSON.stringify(parameters)));
     });
 
-    it("validate valid minimum and maximum configuration", function() {
+    it("validate invalid minimum and maximum configuration", function() {
+        var minimum = 1;
+        var maximum = 1;
+
+        var parameters = {
+            classType: NumberClass.name,
+            code: General.ERROR_WRONG_CONFIGURATION,
+            variables: {
+                maximum: maximum,
+                minimum: minimum
+            }
+        };
+
         expect(function () {
-            new Ompluscript.Model.Attribute.Number("param", undefined, true, 1, true, 1, true);
+            new NumberClass("param", undefined, true, minimum, false, maximum, true);
+        }).toThrow(new SyntaxError(JSON.stringify(parameters)));
+
+        expect(function () {
+            new NumberClass("param", undefined, true, minimum, true, maximum, false);
+        }).toThrow(new SyntaxError(JSON.stringify(parameters)));
+
+        expect(function () {
+            new NumberClass("param", undefined, true, minimum, false, maximum, false);
+        }).toThrow(new SyntaxError(JSON.stringify(parameters)));
+    });
+
+    it("validate valid configuration", function() {
+        expect(function () {
+            new NumberClass("param");
         }).not.toThrow();
-    });
 
-    it("validate invalid minimum and maximum configuration", function() {
         expect(function () {
-            new Ompluscript.Model.Attribute.Number("param", undefined, true, 1, false, 1, true);
-        }).toThrowError(SyntaxError);
-    });
+            new NumberClass("param", 1);
+        }).not.toThrow();
 
-    it("validate invalid minimum and maximum configuration", function() {
         expect(function () {
-            new Ompluscript.Model.Attribute.Number("param", undefined, true, 1, true, 1, false);
-        }).toThrowError(SyntaxError);
-    });
+            new NumberClass("param", undefined, true);
+        }).not.toThrow();
 
-    it("validate invalid minimum and maximum configuration", function() {
         expect(function () {
-            new Ompluscript.Model.Attribute.Number("param", undefined, true, 1, false, 1, false);
-        }).toThrowError(SyntaxError);
-    });
+            new NumberClass("param", undefined, true, 1);
+        }).not.toThrow();
 
-    it("validate invalid minimum and maximum configuration", function() {
         expect(function () {
-            new Ompluscript.Model.Attribute.Number("param", undefined, true, 1.01, false, 1, true);
-        }).toThrowError(SyntaxError);
+            new NumberClass("param", undefined, true, 1, true);
+        }).not.toThrow();
+
+        expect(function () {
+            new NumberClass("param", undefined, true, 1, true, 2);
+        }).not.toThrow();
+
+        expect(function () {
+            new NumberClass("param", undefined, true, 1, true, 2, true);
+        }).not.toThrow();
     });
 });
 
@@ -48,6 +94,8 @@ describe("Number class tests - without limits and not required", function() {
     var type = "number";
     
     var name = "param";
+
+    var UnitClass = Ompluscript.Model.Attribute.Unit;
 
     beforeAll(function() {
         numberObject = new Ompluscript.Model.Attribute.Number(name);
@@ -100,13 +148,19 @@ describe("Number class tests - without limits and not required", function() {
     it("validate string value", function() {
         var value = "1";
 
+        var parameters = {
+            classType: UnitClass.name,
+            code: UnitClass.ERROR_WRONG_TYPE,
+            objectName: numberObject.getName(),
+        };
+
         numberObject.setValue(value);
 
         expect(numberObject.getValue()).toBe(value);
 
         expect(function () {
             numberObject.validate();
-        }).toThrowError(TypeError);
+        }).toThrow(new TypeError(JSON.stringify(parameters)));
     });
 });
 
@@ -121,6 +175,8 @@ describe("Number class tests - without limits and required", function() {
     var type = "number";
     
     var name = "param";
+
+    var UnitClass = Ompluscript.Model.Attribute.Unit;
 
     beforeAll(function() {
         numberObject = new Ompluscript.Model.Attribute.Number(name, value, true);
@@ -149,13 +205,19 @@ describe("Number class tests - without limits and required", function() {
     });
 
     it("validate undefined value", function() {
+        var parameters = {
+            classType: UnitClass.name,
+            code: UnitClass.ERROR_IS_REQUIRED,
+            objectName: numberObject.getName(),
+        };
+
         numberObject.resetValue();
 
         expect(numberObject.getValue()).toBeUndefined();
 
         expect(function () {
             numberObject.validate();
-        }).toThrowError(TypeError);
+        }).toThrow(new TypeError(JSON.stringify(parameters)));
     });
 
     it("validate number value", function() {
@@ -185,6 +247,8 @@ describe("Number class tests - without included limits and required", function()
 
     var include = false;
 
+    var NumberClass = Ompluscript.Model.Attribute.Number;
+
     beforeAll(function() {
         numberObject = new Ompluscript.Model.Attribute.Number(name, value, true, minimum, include, maximum, include);
     });
@@ -211,13 +275,19 @@ describe("Number class tests - without included limits and required", function()
     });
 
     it("validate minimum value", function() {
+        var parameters = {
+            classType: NumberClass.name,
+            code: NumberClass.ERROR_BELOW_MINIMUM,
+            objectName: numberObject.getName(),
+        };
+
         numberObject.setValue(minimum);
 
         expect(numberObject.getValue()).toBe(minimum);
 
         expect(function () {
             numberObject.validate();
-        }).toThrowError(RangeError);
+        }).toThrow(new RangeError(JSON.stringify(parameters)));
     });
 
     it("validate regular value", function() {
@@ -232,6 +302,11 @@ describe("Number class tests - without included limits and required", function()
     });
 
     it("validate maximum length", function() {
+        var parameters = {
+            classType: NumberClass.name,
+            code: NumberClass.ERROR_OVER_MAXIMUM,
+            objectName: numberObject.getName(),
+        };
 
         numberObject.setValue(maximum);
 
@@ -239,7 +314,7 @@ describe("Number class tests - without included limits and required", function()
 
         expect(function () {
             numberObject.validate();
-        }).toThrowError(RangeError);
+        }).toThrow(new RangeError(JSON.stringify(parameters)));
     });
 });
 
@@ -259,6 +334,8 @@ describe("Number class tests - with included limits and required", function() {
 
     var include = true;
 
+    var NumberClass = Ompluscript.Model.Attribute.Number;
+
     beforeAll(function() {
         numberObject = new Ompluscript.Model.Attribute.Number(name, value, true, minimum, include, maximum, include);
     });
@@ -285,13 +362,19 @@ describe("Number class tests - with included limits and required", function() {
     });
 
     it("validate minimum value", function() {
+        var parameters = {
+            classType: NumberClass.name,
+            code: NumberClass.ERROR_BELOW_MINIMUM,
+            objectName: numberObject.getName(),
+        };
+
         numberObject.setValue(value);
 
         expect(numberObject.getValue()).toBe(value);
 
         expect(function () {
             numberObject.validate();
-        }).toThrowError(RangeError);
+        }).toThrow(new RangeError(JSON.stringify(parameters)));
     });
 
     it("validate regular value", function() {
@@ -321,12 +404,18 @@ describe("Number class tests - with included limits and required", function() {
     });
 
     it("validate maximum length", function() {
+        var parameters = {
+            classType: NumberClass.name,
+            code: NumberClass.ERROR_OVER_MAXIMUM,
+            objectName: numberObject.getName(),
+        };
+
         numberObject.setValue(value * 5);
 
         expect(numberObject.getValue()).toBe(value * 5);
 
         expect(function () {
             numberObject.validate();
-        }).toThrowError(RangeError);
+        }).toThrow(new RangeError(JSON.stringify(parameters)));
     });
 });

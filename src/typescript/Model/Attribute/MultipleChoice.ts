@@ -19,7 +19,7 @@
         export class MultipleChoice extends Unit<number[]> {
 
             /**
-             * @param {number[]} values Allowed values for choices
+             * @type {number[]} values Allowed values for choices
              */
             private values: number[];
 
@@ -32,12 +32,14 @@
              * @param {number[]} value Attribute's value
              * @param {boolean} required Defines if value is required
              * @param {number[]} values Allowed values
+             * @throws {SyntaxError} When values is not defined well
+             * @constructs
              */
             constructor(name: string, value: number[] = undefined, required: boolean = false, values: number[] = []) {
                 super("number", name, value, required);
                 this.values = values;
                 if (this.values !== undefined && !Array.isArray(this.values)) {
-                    General.throwConfigurationException(Unit, {
+                    General.throwConfigurationException(MultipleChoice, {
                         values: this.values,
                     });
                 }
@@ -76,7 +78,7 @@
                 if (Array.isArray(this.value) === true) {
                     for (let i in this.value) {
                         if (this.values.indexOf(this.value[i]) === -1) {
-                            General.throwControlledException(RangeError, SingleChoice, this.name, Unit.ERROR_VALUE_NOT_ALLOWED);
+                            General.throwControlledException(RangeError, MultipleChoice, this.name, Unit.ERROR_VALUE_NOT_ALLOWED);
                         }
                     }
                 }

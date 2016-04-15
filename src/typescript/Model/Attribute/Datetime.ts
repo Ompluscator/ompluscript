@@ -19,22 +19,22 @@ module Ompluscript.Model.Attribute {
     export class Datetime extends Unit<string> {
 
         /**
-         * @param {string} minimum Minimum allowed value of the date, stored as string
+         * @type {string} minimum Minimum allowed value of the date, stored as string
          */
         private minimum: string;
 
         /**
-         * @param {string} maximum Maximum allowed value of the date, stored as string
+         * @type {string} maximum Maximum allowed value of the date, stored as string
          */
         private maximum: string;
 
         /**
-         * @param {Date} minimumObject Minimum allowed value of the date, stored as Date object
+         * @type {Date} minimumObject Minimum allowed value of the date, stored as Date object
          */
         private minimumObject: Date;
 
         /**
-         * @param {Date} maximumObject Maximum allowed value of the date, stored as Date object
+         * @type {Date} maximumObject Maximum allowed value of the date, stored as Date object
          */
         private maximumObject: Date;
 

@@ -20,73 +20,112 @@ module Ompluscript.Model.Attribute {
     export class Unit<T> implements IBase {
 
         /**
-         * @param {number} ERROR_WRONG_TYPE Error code for setting a wrong type of value.
+         * @type {number} ERROR_WRONG_TYPE Error code for setting a wrong type of value.
          */
         public static ERROR_WRONG_TYPE: number = 101;
 
         /**
-         * @param {number} ERROR_IS_REQUIRED Error code for not entering required value.
+         * @type {number} ERROR_IS_REQUIRED Error code for not entering required value.
          */
         public static ERROR_IS_REQUIRED: number = 102;
 
         /**
-         * @param {number} ERROR_BELOW_MINIMUM Error code for invalid minimum value.
+         * @type {number} ERROR_BELOW_MINIMUM Error code for invalid minimum value.
          */
         public static ERROR_BELOW_MINIMUM: number = 201;
 
         /**
-         * @param {number} ERROR_OVER_MAXIMUM Error code for invalid maximum value.
+         * @type {number} ERROR_OVER_MAXIMUM Error code for invalid maximum value.
          */
         public static ERROR_OVER_MAXIMUM: number = 202;
 
         /**
-         * @param {number} ERROR_VALUE_NOT_ALLOWED Error code when not allowed value.
+         * @type {number} ERROR_VALUE_NOT_ALLOWED Error code when not allowed value.
          */
         public static ERROR_VALUE_NOT_ALLOWED: number = 203;
 
+        /**
+         * @type {string} TYPE_BOOLEAN Boolean type name.
+         */
         public static TYPE_BOOLEAN: string = "boolean";
 
+        /**
+         * @type {string} TYPE_NUMBER Number type name.
+         */
         public static TYPE_NUMBER: string = "number";
 
+        /**
+         * @type {string} TYPE_STRING String type name.
+         */
         public static TYPE_STRING: string = "string";
 
+        /**
+         * @type {string} TYPE_DATETIME Datetime type name.
+         */
         public static TYPE_DATETIME: string = "datetime";
 
+        /**
+         * @type {string} TYPE_SINGLE_CHOICE SingleChoice type name.
+         */
         public static TYPE_SINGLE_CHOICE: string = "singleChoice";
 
+        /**
+         * @type {string} TYPE_MULTIPLE_CHOICE MultipleChoice type name.
+         */
         public static TYPE_MULTIPLE_CHOICE: string = "multipleChoice";
 
+        /**
+         * @type {string} PARAMETER_TYPE Type parameter name.
+         */
         public static PARAMETER_TYPE: string = "type";
 
+        /**
+         * @type {string} PARAMETER_NAME Name parameter name.
+         */
         public static PARAMETER_NAME: string = "name";
 
+        /**
+         * @type {string} PARAMETER_REQUIRED Required parameter name.
+         */
         public static PARAMETER_REQUIRED: string = "required";
 
+        /**
+         * @type {string} PARAMETER_VALUE Value parameter name.
+         */
         public static PARAMETER_VALUE: string = "value";
 
+        /**
+         * @type {string} PARAMETER_VALUES Values parameter name.
+         */
         public static PARAMETER_VALUES: string = "values";
 
+        /**
+         * @type {string} PARAMETER_MINIMUM Minimum parameter name.
+         */
         public static PARAMETER_MINIMUM: string = "minimum";
 
+        /**
+         * @type {string} PARAMETER_MAXIMUM Maximum parameter name.
+         */
         public static PARAMETER_MAXIMUM: string = "maximum";
 
         /**
-         * @param {string} type Value's type
+         * @type {string} type Value's type
          */
         protected type: string;
 
         /**
-         * @param {string} name Value's name
+         * @type {string} name Value's name
          */
         protected name: string;
 
         /**
-         * @param {T} value Value that should be stored
+         * @type {any} value Value that should be stored
          */
         protected value: T;
 
         /**
-         * @param {boolean} required Defines if value is required
+         * @type {boolean} required Defines if value is required
          */
         protected required: boolean;
 
@@ -99,6 +138,8 @@ module Ompluscript.Model.Attribute {
          * @param {string} name Name of attribute
          * @param {T} value Value that should be stored
          * @param {boolean} required Defines if value is required
+         * @throws {SyntaxError} When type, name and required are not defined well
+         * @constructs
          */
         constructor(type: string, name: string, value: T = undefined, required: boolean = false) {
             this.type = type;

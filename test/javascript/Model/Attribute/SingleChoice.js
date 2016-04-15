@@ -1,3 +1,46 @@
+describe("SingleChoice class tests - initialization", function() {
+
+    var undefined;
+
+    var SingleChoice = Ompluscript.Model.Attribute.SingleChoice;
+
+    var General = Ompluscript.Core.Utils.General;
+
+    it("validate invalid minimum configuration", function() {
+        var values = "1";
+
+        var parameters = {
+            classType: SingleChoice.name,
+            code: General.ERROR_WRONG_CONFIGURATION,
+            variables: {
+                values: values
+            }
+        };
+
+        expect(function () {
+            new SingleChoice("param", undefined, false, values);
+        }).toThrow(new SyntaxError(JSON.stringify(parameters)));
+    });
+
+    it("validate valid configuration", function() {
+        expect(function () {
+            new SingleChoice("param");
+        }).not.toThrow();
+
+        expect(function () {
+            new SingleChoice("param", undefined);
+        }).not.toThrow();
+
+        expect(function () {
+            new SingleChoice("param", undefined, true);
+        }).not.toThrow();
+
+        expect(function () {
+            new SingleChoice("param", undefined, true, []);
+        }).not.toThrow();
+    });
+});
+
 describe("SingleChoice class tests - not required", function() {
 
     var singleChoiceObject;
@@ -9,6 +52,10 @@ describe("SingleChoice class tests - not required", function() {
     var values = [1, 2, 3];
     
     var undefined;
+
+    var SingleChoice = Ompluscript.Model.Attribute.SingleChoice;
+
+    var UnitClass = Ompluscript.Model.Attribute.Unit;
 
     beforeAll(function() {
         singleChoiceObject = new Ompluscript.Model.Attribute.SingleChoice(name, undefined, false, values);
@@ -67,13 +114,19 @@ describe("SingleChoice class tests - not required", function() {
     it("validate invalid value", function() {
         var value = 4;
 
+        var parameters = {
+            classType: SingleChoice.name,
+            code: SingleChoice.ERROR_VALUE_NOT_ALLOWED,
+            objectName: singleChoiceObject.getName(),
+        };
+
         singleChoiceObject.setValue(value);
 
         expect(singleChoiceObject.getValue()).toBe(value);
 
         expect(function () {
             singleChoiceObject.validate();
-        }).toThrowError(RangeError);
+        }).toThrow(new RangeError(JSON.stringify(parameters)));
     });
 });
 
@@ -90,6 +143,10 @@ describe("SingleChoice class tests - required", function() {
     var value = 1;
 
     var undefined;
+
+    var SingleChoice = Ompluscript.Model.Attribute.SingleChoice;
+
+    var UnitClass = Ompluscript.Model.Attribute.Unit;
 
     beforeAll(function() {
         singleChoiceObject = new Ompluscript.Model.Attribute.SingleChoice(name, value, true, values);
@@ -114,13 +171,19 @@ describe("SingleChoice class tests - required", function() {
     });
 
     it("validate undefined value", function() {
+        var parameters = {
+            classType: UnitClass.name,
+            code: UnitClass.ERROR_IS_REQUIRED,
+            objectName: singleChoiceObject.getName(),
+        };
+        
         singleChoiceObject.resetValue();
 
         expect(singleChoiceObject.getValue()).toBeUndefined();
 
         expect(function () {
             singleChoiceObject.validate();
-        }).toThrowError(TypeError);
+        }).toThrow(new TypeError(JSON.stringify(parameters)));
     });
 
     it("validate valid value", function() {
@@ -138,12 +201,18 @@ describe("SingleChoice class tests - required", function() {
     it("validate invalid value", function() {
         var value = 4;
 
+        var parameters = {
+            classType: SingleChoice.name,
+            code: SingleChoice.ERROR_VALUE_NOT_ALLOWED,
+            objectName: singleChoiceObject.getName(),
+        };
+
         singleChoiceObject.setValue(value);
 
         expect(singleChoiceObject.getValue()).toBe(value);
 
         expect(function () {
             singleChoiceObject.validate();
-        }).toThrowError(RangeError);
+        }).toThrow(new RangeError(JSON.stringify(parameters)));
     });
 });
