@@ -53,12 +53,21 @@ module Ompluscript.Model {
          * @constructs
          */
         constructor(name: string, attributes: Object[]) {
+            let errors: Object[] = [];
+            
             this.name = name;
             this.attributes = {};
             for (let i in attributes) {
                 if (attributes.hasOwnProperty(i)) {
-                    this.addAttribute(attributes[i]);
+                    try {
+                        this.addAttribute(attributes[i]);
+                    } catch (error) {
+                        errors.push(JSON.parse(error.message));
+                    }
                 }
+            }
+            if (errors.length > 0) {
+                General.throwConfigurationException(Model, errors);
             }
         }
 
@@ -93,7 +102,7 @@ module Ompluscript.Model {
             };
             for (let i in this.attributes) {
                 if (this.attributes.hasOwnProperty(i)) {
-                    trace["attributes"][i] = this.attributes[i];
+                    trace["attributes"][i] = this.attributes[i].getStackTrace();
                 }
             }
             return trace;
