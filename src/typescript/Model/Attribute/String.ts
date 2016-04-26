@@ -1,5 +1,4 @@
-/// <reference path="Unit.ts" />
-/// <reference path="../../Core/Utils/General.ts" />
+/// <reference path="Attribute.ts" />
 
 /**
  * Module that contains attributes' classes.
@@ -9,14 +8,12 @@
 module Ompluscript.Model.Attribute {
     "use strict";
     
-    import General = Ompluscript.Core.Utils.General;
-
     /**
      * Class that contains functionality for String attribute.
      *
      * @class String
      */
-    export class String extends Unit<string> {
+    export class String extends Attribute<string> {
 
         /**
          * @type {number} ERROR_BELOW_MINIMUM_LENGTH Error code for invalid minimum length of the string.
@@ -75,8 +72,6 @@ module Ompluscript.Model.Attribute {
          * @param {number} minimumLength Minimum allowed length of string
          * @param {number} maximumLength Maximum allowed length of string
          * @param {RegExp} pattern
-         * @throws {SyntaxError} When minimum and maximum length are in wrong order, or not numbers, 
-         *                       or pattern is not RegExp object
          * @constructs
          */
         constructor(name: string, value: string = undefined, required: boolean = false, 
@@ -86,28 +81,6 @@ module Ompluscript.Model.Attribute {
             this.minimumLength = minimumLength;
             this.maximumLength = maximumLength;
             this.pattern = pattern;
-            if (this.minimumLength !== undefined && typeof this.minimumLength !== "number") {
-                General.throwConfigurationException(String, {
-                    minimumLength: minimumLength,
-                });
-            }
-            if (this.maximumLength !== undefined && typeof this.maximumLength !== "number") {
-                General.throwConfigurationException(String, {
-                    maximumLength: maximumLength,
-                });
-            }
-            if (this.maximumLength !== undefined && this.minimumLength !== undefined 
-                && this.minimumLength > this.maximumLength) {
-                General.throwConfigurationException(String, {
-                    maximumLength: maximumLength,
-                    minimumLength: minimumLength,
-                });
-            }
-            if (this.pattern !== undefined && !(this.pattern instanceof RegExp)) {
-                General.throwConfigurationException(String, {
-                    pattern: pattern,
-                });
-            }
         }
 
         /**
@@ -140,18 +113,26 @@ module Ompluscript.Model.Attribute {
         /**
          * Method that validates string value.
          *
-         * @throws {TypeError} when it's not string
-         * @throws {RangeError} when it's over its minimum or maximum length
+         * @return {boolean} Validation result
          */
-        public validate(): void {
-            super.validate();
-            if (this.value !== undefined && this.minimumLength !== undefined && this.value.length < this.minimumLength) {
-                General.throwControlledException(RangeError, String, this.name, String.ERROR_BELOW_MINIMUM_LENGTH);
-            } else if (this.value !== undefined && this.maximumLength !== undefined && this.value.length > this.maximumLength) {
-                General.throwControlledException(RangeError, String, this.name, String.ERROR_OVER_MAXIMUM_LENGTH);
-            } else if (this.value !== undefined && this.pattern !== undefined && this.pattern.test(this.value) === false) {
-                General.throwControlledException(RangeError, String, this.name, String.ERROR_PATTERN_NOT_MATCH);
+        public validate(): boolean {
+            if (super.validate()) {
+                if (this.value !== undefined && this.minimumLength !== undefined && this.value["length"] < this.minimumLength) {
+                    this.error = String.ERROR_BELOW_MINIMUM_LENGTH;
+                    this.notifyObservers(Attribute.EVENT_INVALID);
+                    return false;
+                } else if (this.value !== undefined && this.maximumLength !== undefined && this.value["length"] > this.maximumLength) {
+                    this.error = String.ERROR_OVER_MAXIMUM_LENGTH;
+                    this.notifyObservers(Attribute.EVENT_INVALID);
+                    return false;
+                } else if (this.value !== undefined && this.pattern !== undefined && this.pattern.test(this.value) === false) {
+                    this.error = String.ERROR_PATTERN_NOT_MATCH;
+                    this.notifyObservers(Attribute.EVENT_INVALID);
+                    return false;
+                }
+                return true;
             }
+            return false;
         }
 
         /**

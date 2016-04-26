@@ -1,4 +1,4 @@
-/// <reference path="Unit.ts" />
+/// <reference path="Attribute.ts" />
 
 /**
  * Module that contains attributes' classes.
@@ -13,7 +13,7 @@ module Ompluscript.Model.Attribute {
      *
      * @class Boolean
      */
-    export class Boolean extends Unit<boolean> {
+    export class Boolean extends Attribute<boolean> {
 
         /**
          * Class constructor.

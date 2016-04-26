@@ -1,5 +1,4 @@
-/// <reference path="Unit.ts" />
-/// <reference path="../../Core/Utils/General.ts" />
+/// <reference path="Attribute.ts" />
 
 /**
  * Module that contains Attribute classes.
@@ -9,14 +8,12 @@
 module Ompluscript.Model.Attribute {
     "use strict";
 
-    import General = Ompluscript.Core.Utils.General;
-
     /**
      * Class that contains functionality for Datetime attribute.
      *
      * @class Datetime
      */
-    export class Datetime extends Unit<string> {
+    export class Datetime extends Attribute<string> {
 
         /**
          * @type {string} minimum Minimum allowed value of the date, stored as string
@@ -48,7 +45,6 @@ module Ompluscript.Model.Attribute {
          * @param {boolean} required Defines if value is required
          * @param {number} minimum Minimum allowed value of string
          * @param {number} maximum Maximum allowed value of string
-         * @throws {TypeError} When minimum and maximum are not in valid date format or in wrong order
          */
         constructor(name: string, value: string = undefined, required: boolean = false,
                     minimum: string = undefined, maximum: string = undefined) {
@@ -57,30 +53,9 @@ module Ompluscript.Model.Attribute {
             this.maximum = maximum;
             if (minimum !== undefined) {
                 this.minimumObject = new Date(minimum);
-                if (isNaN(this.minimumObject.getTime())) {
-                    General.throwConfigurationException(Datetime, {
-                        minimum: minimum,
-                    });
-                }
-            } else {
-                this.minimumObject = undefined;
             }
             if (maximum !== undefined) {
                 this.maximumObject = new Date(maximum);
-                if (isNaN(this.maximumObject.getTime())) {
-                    General.throwConfigurationException(Datetime, {
-                        maximum: maximum,
-                    });
-                }
-            } else {
-                this.maximumObject = undefined;
-            }
-            if (this.minimumObject !== undefined && this.maximumObject !== undefined
-                && this.minimumObject >= this.maximumObject) {
-                General.throwConfigurationException(Datetime, {
-                    maximum: maximum,
-                    minimum: minimum,
-                });
             }
         }
 
@@ -132,21 +107,29 @@ module Ompluscript.Model.Attribute {
         /**
          * Method that validates datetime value.
          *
-         * @throws {TypeError} when it's not in right datetime format
-         * @throws {RangeError} when it's over its minimum or maximum value
+         * @return {boolean} Validation result
          */
-        public validate(): void {
-            super.validate();
-            if (this.value !== undefined && isNaN(this.getDateObject().getTime())) {
-                General.throwControlledException(TypeError, Datetime, this.name, Unit.ERROR_WRONG_TYPE);
+        public validate(): boolean {
+            if (super.validate()) {
+                if (this.value !== undefined && isNaN(this.getDateObject().getTime())) {
+                    this.error = Attribute.ERROR_WRONG_TYPE;
+                    this.notifyObservers(Attribute.EVENT_INVALID);
+                    return false;
+                }
+                if (this.value !== undefined && this.minimum !== undefined
+                    && this.getDateObject().getTime() < this.minimumObject.getTime()) {
+                    this.error = Attribute.ERROR_BELOW_MINIMUM;
+                    this.notifyObservers(Attribute.EVENT_INVALID);
+                    return false;
+                } else if (this.value !== undefined && this.maximum !== undefined
+                    && this.getDateObject().getTime() > this.maximumObject.getTime()) {
+                    this.error = Attribute.ERROR_OVER_MAXIMUM;
+                    this.notifyObservers(Attribute.EVENT_INVALID);
+                    return false;
+                }
+                return true;
             }
-            if (this.value !== undefined && this.minimum !== undefined
-                && this.getDateObject().getTime() < this.minimumObject.getTime()) {
-                General.throwControlledException(RangeError, Datetime, this.name, Unit.ERROR_BELOW_MINIMUM);
-            } else if (this.value !== undefined && this.maximum !== undefined
-                && this.getDateObject().getTime() > this.maximumObject.getTime()) {
-                General.throwControlledException(RangeError, Datetime, this.name, Unit.ERROR_OVER_MAXIMUM);
-            }
+            return false;
         }
 
         /**
@@ -156,9 +139,9 @@ module Ompluscript.Model.Attribute {
          */
         public getStackTrace(): Object {
             let trace: Object = super.getStackTrace();
-            trace[Unit.PARAMETER_MINIMUM] = this.minimum;
+            trace[Attribute.PARAMETER_MINIMUM] = this.minimum;
             trace["minimumObject"] = this.minimumObject;
-            trace[Unit.PARAMETER_MAXIMUM] = this.maximum;
+            trace[Attribute.PARAMETER_MAXIMUM] = this.maximum;
             trace["maximumObject"] = this.maximumObject;
             return trace;
         }

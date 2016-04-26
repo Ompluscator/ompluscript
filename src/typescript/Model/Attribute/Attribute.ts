@@ -1,5 +1,5 @@
 /// <reference path="../../Core/Interfaces/IBase.ts" />
-/// <reference path="../../Core/Utils/General.ts" />
+/// <reference path="../../Core/AbstractClasses/Observable.ts" />
 
 /**
  * Module that contains attributes' classes.
@@ -10,14 +10,14 @@ module Ompluscript.Model.Attribute {
     "use strict";
 
     import IBase = Ompluscript.Core.Interfaces.IBase;
-    import General = Ompluscript.Core.Utils.General;
+    import Observable = Ompluscript.Core.Interfaces.Observable;
 
     /**
      * Class that contains functionality for single attribute.
      *
      * @class String
      */
-    export class Unit<T> implements IBase {
+    export abstract class Attribute<T> extends Observable implements IBase {
 
         /**
          * @type {number} ERROR_WRONG_TYPE Error code for setting a wrong type of value.
@@ -40,9 +40,14 @@ module Ompluscript.Model.Attribute {
         public static ERROR_OVER_MAXIMUM: number = 202;
 
         /**
-         * @type {number} ERROR_VALUE_NOT_ALLOWED Error code when not allowed value.
+         * @type {number} EVENT_UPDATE Event that occurs when value is updated.
          */
-        public static ERROR_VALUE_NOT_ALLOWED: number = 203;
+        public static EVENT_UPDATE: number = 1001;
+
+        /**
+         * @type {number} EVENT_INVALID Event that occurs when value is invalid.
+         */
+        public static EVENT_INVALID: number = 1002;
 
         /**
          * @type {string} TYPE_BOOLEAN Boolean type name.
@@ -95,11 +100,6 @@ module Ompluscript.Model.Attribute {
         public static PARAMETER_VALUE: string = "value";
 
         /**
-         * @type {string} PARAMETER_VALUES Values parameter name.
-         */
-        public static PARAMETER_VALUES: string = "values";
-
-        /**
          * @type {string} PARAMETER_MINIMUM Minimum parameter name.
          */
         public static PARAMETER_MINIMUM: string = "minimum";
@@ -125,6 +125,11 @@ module Ompluscript.Model.Attribute {
         protected value: T;
 
         /**
+         * @type {number} error Error code when value is invalid
+         */
+        protected error: number;
+
+        /**
          * @type {boolean} required Defines if value is required
          */
         protected required: boolean;
@@ -138,31 +143,16 @@ module Ompluscript.Model.Attribute {
          * @param {string} name Name of attribute
          * @param {T} value Value that should be stored
          * @param {boolean} required Defines if value is required
-         * @throws {SyntaxError} When type, name and required are not defined well
          * @constructs
          */
         constructor(type: string, name: string, value: T = undefined, required: boolean = false) {
+            super();
             this.type = type;
             this.name = name;
             this.value = value;
             this.required = false;
             if (required === true) {
                 this.required = true;
-            }
-            if (typeof this.type !== "string") {
-                General.throwConfigurationException(Unit, {
-                    type: this.type,
-                });
-            }
-            if (typeof this.name !== "string") {
-                General.throwConfigurationException(Unit, {
-                    name: this.name,
-                });
-            }
-            if (required !== undefined && typeof required !== "boolean") {
-                General.throwConfigurationException(Unit, {
-                    required: required,
-                });
             }
         }
 
@@ -173,6 +163,7 @@ module Ompluscript.Model.Attribute {
          */
         public setValue(value: T): void {
             this.value = value;
+            this.notifyObservers(Attribute.EVENT_UPDATE);
         }
 
         /**
@@ -189,6 +180,7 @@ module Ompluscript.Model.Attribute {
          */
         public resetValue(): void {
             this.value = undefined;
+            this.notifyObservers(Attribute.EVENT_UPDATE);
         }
 
         /**
@@ -210,16 +202,32 @@ module Ompluscript.Model.Attribute {
         }
 
         /**
+         * Method that returns error code
+         *
+         * @returns {number|undefined} Error code
+         */
+        public getError(): number {
+            return this.error;
+        }
+
+
+        /**
          * Method that validates attribute's value.
          *
-         * @throws {TypeError} when it's not string
+         * @return {boolean} Validation result
          */
-        public validate(): void {
+        public validate(): boolean {
+            this.error = undefined;
             if (typeof this.value !== this.type && this.value !== undefined) {
-                General.throwControlledException(TypeError, Unit, this.name, Unit.ERROR_WRONG_TYPE);
+                this.error = Attribute.ERROR_WRONG_TYPE;
+                this.notifyObservers(Attribute.EVENT_INVALID);
+                return false;
             } else if (this.required === true && typeof this.value !== this.type) {
-                General.throwControlledException(TypeError, Unit, this.name, Unit.ERROR_IS_REQUIRED);
+                this.error = Attribute.ERROR_IS_REQUIRED;
+                this.notifyObservers(Attribute.EVENT_INVALID);
+                return false;
             }
+            return true;
         }
 
         /**

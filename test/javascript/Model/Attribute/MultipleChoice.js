@@ -1,80 +1,35 @@
-describe("MultipleChoice class tests - initialization", function() {
-
-    var undefined;
-
-    var MultipleChoice = Ompluscript.Model.Attribute.MultipleChoice;
-
-    var General = Ompluscript.Core.Utils.General;
-
-    it("validate invalid minimum configuration", function() {
-        var values = "1";
-
-        var parameters = {
-            classType: MultipleChoice.name,
-            code: General.ERROR_WRONG_CONFIGURATION,
-            variables: {
-                values: values
-            }
-        };
-
-        expect(function () {
-            new MultipleChoice("param", undefined, false, values);
-        }).toThrow(new SyntaxError(JSON.stringify(parameters)));
-    });
-
-    it("validate valid configuration", function() {
-        expect(function () {
-            new MultipleChoice("param");
-        }).not.toThrow();
-
-        expect(function () {
-            new MultipleChoice("param", []);
-        }).not.toThrow();
-
-        expect(function () {
-            new MultipleChoice("param", [], true);
-        }).not.toThrow();
-
-        expect(function () {
-            new MultipleChoice("param", [], true, []);
-        }).not.toThrow();
-    });
-});
-
 describe("MultipleChoice class tests - not required", function() {
 
     var multipleChoiceObject;
-
     var name = "param";
-
     var type = "number";
-
-    var values = [1, 2, 3];
-    
+    var choices = [1, 2, 3];
     var undefined;
+    var required = false;
 
+    var Attribute = Ompluscript.Model.Attribute.Attribute;
+    var Choice = Ompluscript.Model.Attribute.Choice;
     var MultipleChoice = Ompluscript.Model.Attribute.MultipleChoice;
 
     beforeAll(function() {
-        multipleChoiceObject = new Ompluscript.Model.Attribute.MultipleChoice(name, undefined, false, values);
+        multipleChoiceObject = new MultipleChoice(name, undefined, required, choices);
+    });
+
+    beforeEach(function() {
+        spyOn(multipleChoiceObject, 'notifyObservers');
     });
 
     it("get configuration", function() {
-
         expect(multipleChoiceObject.isRequired()).toBeFalsy();
-
         expect(multipleChoiceObject.getName()).toBe(name);
-
-        expect(multipleChoiceObject.getChoices()).toEqual(values);
-
+        expect(multipleChoiceObject.getChoices()).toEqual(choices);
         expect(multipleChoiceObject.getStackTrace()).toEqual({
             name: name,
+            required: required,
             type: type,
-            required: false,
             value: undefined,
-            values: values,
+            choices: choices,
         });
-
     });
 
     it("validate setting up choices", function() {
@@ -82,19 +37,22 @@ describe("MultipleChoice class tests - not required", function() {
 
         expect(multipleChoiceObject.getChoices()).toEqual([]);
 
-        multipleChoiceObject.setChoices(values);
+        multipleChoiceObject.setChoices(choices);
 
-        expect(multipleChoiceObject.getChoices()).toEqual(values);
+        expect(multipleChoiceObject.getChoices()).toEqual(choices);
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Choice.EVENT_UPDATE_CHOICES]);
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(1)).toEqual([Choice.EVENT_UPDATE_CHOICES]);
+        expect(multipleChoiceObject.notifyObservers.calls.count()).toBe(2);
     });
 
     it("validate undefined value", function() {
         multipleChoiceObject.resetValue();
 
         expect(multipleChoiceObject.getValue()).toBeUndefined();
-
-        expect(function () {
-            multipleChoiceObject.validate();
-        }).not.toThrow();
+        expect(multipleChoiceObject.validate()).toBeTruthy();
+        expect(multipleChoiceObject.getError()).toBeUndefined();
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(multipleChoiceObject.notifyObservers.calls.count()).toBe(1);
     });
 
     it("validate valid empty value", function() {
@@ -103,10 +61,10 @@ describe("MultipleChoice class tests - not required", function() {
         multipleChoiceObject.setValue(value);
 
         expect(multipleChoiceObject.getValue()).toBe(value);
-
-        expect(function () {
-            multipleChoiceObject.validate();
-        }).not.toThrow();
+        expect(multipleChoiceObject.validate()).toBeTruthy();
+        expect(multipleChoiceObject.getError()).toBeUndefined();
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(multipleChoiceObject.notifyObservers.calls.count()).toBe(1);
     });
 
     it("validate valid single value", function() {
@@ -115,10 +73,10 @@ describe("MultipleChoice class tests - not required", function() {
         multipleChoiceObject.setValue(value);
 
         expect(multipleChoiceObject.getValue()).toBe(value);
-
-        expect(function () {
-            multipleChoiceObject.validate();
-        }).not.toThrow();
+        expect(multipleChoiceObject.validate()).toBeTruthy();
+        expect(multipleChoiceObject.getError()).toBeUndefined();
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(multipleChoiceObject.notifyObservers.calls.count()).toBe(1);
     });
 
     it("validate valid double value", function() {
@@ -127,121 +85,96 @@ describe("MultipleChoice class tests - not required", function() {
         multipleChoiceObject.setValue(value);
 
         expect(multipleChoiceObject.getValue()).toBe(value);
-
-        expect(function () {
-            multipleChoiceObject.validate();
-        }).not.toThrow();
+        expect(multipleChoiceObject.validate()).toBeTruthy();
+        expect(multipleChoiceObject.getError()).toBeUndefined();
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(multipleChoiceObject.notifyObservers.calls.count()).toBe(1);
     });
 
     it("validate invalid single value", function() {
         var value = [4];
 
-        var parameters = {
-            classType: MultipleChoice.name,
-            code: MultipleChoice.ERROR_VALUE_NOT_ALLOWED,
-            objectName: multipleChoiceObject.getName(),
-        };
-
         multipleChoiceObject.setValue(value);
 
         expect(multipleChoiceObject.getValue()).toBe(value);
-
-        expect(function () {
-            multipleChoiceObject.validate();
-        }).toThrow(new RangeError(JSON.stringify(parameters)));
+        expect(multipleChoiceObject.validate()).toBeFalsy();
+        expect(multipleChoiceObject.getError()).toBe(Choice.ERROR_VALUE_NOT_ALLOWED);
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(1)).toEqual([Attribute.EVENT_INVALID]);
+        expect(multipleChoiceObject.notifyObservers.calls.count()).toBe(2);
     });
 
     it("validate invalid double value", function() {
         var value = [4, 1];
 
-        var parameters = {
-            classType: MultipleChoice.name,
-            code: MultipleChoice.ERROR_VALUE_NOT_ALLOWED,
-            objectName: multipleChoiceObject.getName(),
-        };
-
         multipleChoiceObject.setValue(value);
 
         expect(multipleChoiceObject.getValue()).toBe(value);
-
-        expect(function () {
-            multipleChoiceObject.validate();
-        }).toThrow(new RangeError(JSON.stringify(parameters)));
+        expect(multipleChoiceObject.validate()).toBeFalsy();
+        expect(multipleChoiceObject.getError()).toBe(Choice.ERROR_VALUE_NOT_ALLOWED);
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(1)).toEqual([Attribute.EVENT_INVALID]);
+        expect(multipleChoiceObject.notifyObservers.calls.count()).toBe(2);
     });
 });
 
 describe("MultipleChoice class tests - required", function() {
 
     var multipleChoiceObject;
-
     var name = "param";
-
     var type = "number";
-
-    var values = [1, 2, 3];
-
-    var value = 1;
-
+    var choices = [1, 2, 3];
+    var value = [1];
     var undefined;
+    var required = true;
 
+    var Attribute = Ompluscript.Model.Attribute.Attribute;
+    var Choice = Ompluscript.Model.Attribute.Choice;
     var MultipleChoice = Ompluscript.Model.Attribute.MultipleChoice;
 
-    var UnitClass = Ompluscript.Model.Attribute.Unit;
-
     beforeAll(function() {
-        multipleChoiceObject = new Ompluscript.Model.Attribute.MultipleChoice(name, value, true, values);
+        multipleChoiceObject = new MultipleChoice(name, value, required, choices);
+    });
+
+    beforeEach(function() {
+        spyOn(multipleChoiceObject, 'notifyObservers');
     });
 
     it("get configuration", function() {
-
         expect(multipleChoiceObject.isRequired()).toBeTruthy();
-
         expect(multipleChoiceObject.getName()).toBe(name);
-
-        expect(multipleChoiceObject.getChoices()).toEqual(values);
-
+        expect(multipleChoiceObject.getChoices()).toEqual(choices);
         expect(multipleChoiceObject.getStackTrace()).toEqual({
             name: name,
             type: type,
-            required: true,
+            required: required,
             value: value,
-            values: values,
+            choices: choices,
         });
-
     });
 
     it("validate undefined value", function() {
-        var parameters = {
-            classType: UnitClass.name,
-            code: UnitClass.ERROR_IS_REQUIRED,
-            objectName: multipleChoiceObject.getName(),
-        };
-        
         multipleChoiceObject.resetValue();
 
         expect(multipleChoiceObject.getValue()).toBeUndefined();
-
-        expect(function () {
-            multipleChoiceObject.validate();
-        }).toThrow(new TypeError(JSON.stringify(parameters)));
+        expect(multipleChoiceObject.validate()).toBeFalsy();
+        expect(multipleChoiceObject.getError()).toBe(Attribute.ERROR_IS_REQUIRED);
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(1)).toEqual([Attribute.EVENT_INVALID]);
+        expect(multipleChoiceObject.notifyObservers.calls.count()).toBe(2);
     });
 
     it("validate invalid empty value", function() {
         var value = [];
 
-        var parameters = {
-            classType: UnitClass.name,
-            code: UnitClass.ERROR_IS_REQUIRED,
-            objectName: multipleChoiceObject.getName(),
-        };
-
         multipleChoiceObject.setValue(value);
 
         expect(multipleChoiceObject.getValue()).toBe(value);
-
-        expect(function () {
-            multipleChoiceObject.validate();
-        }).toThrow(new TypeError(JSON.stringify(parameters)));
+        expect(multipleChoiceObject.validate()).toBeFalsy();
+        expect(multipleChoiceObject.getError()).toBe(Attribute.ERROR_IS_REQUIRED);
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(1)).toEqual([Attribute.EVENT_INVALID]);
+        expect(multipleChoiceObject.notifyObservers.calls.count()).toBe(2);
     });
 
     it("validate valid single value", function() {
@@ -250,10 +183,10 @@ describe("MultipleChoice class tests - required", function() {
         multipleChoiceObject.setValue(value);
 
         expect(multipleChoiceObject.getValue()).toBe(value);
-
-        expect(function () {
-            multipleChoiceObject.validate();
-        }).not.toThrow();
+        expect(multipleChoiceObject.validate()).toBeTruthy();
+        expect(multipleChoiceObject.getError()).toBeUndefined();
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(multipleChoiceObject.notifyObservers.calls.count()).toBe(1);
     });
 
     it("validate valid double value", function() {
@@ -262,45 +195,35 @@ describe("MultipleChoice class tests - required", function() {
         multipleChoiceObject.setValue(value);
 
         expect(multipleChoiceObject.getValue()).toBe(value);
-
-        expect(function () {
-            multipleChoiceObject.validate();
-        }).not.toThrow();
+        expect(multipleChoiceObject.validate()).toBeTruthy();
+        expect(multipleChoiceObject.getError()).toBeUndefined();
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(multipleChoiceObject.notifyObservers.calls.count()).toBe(1);
     });
 
     it("validate invalid single value", function() {
         var value = [4];
 
-        var parameters = {
-            classType: MultipleChoice.name,
-            code: MultipleChoice.ERROR_VALUE_NOT_ALLOWED,
-            objectName: multipleChoiceObject.getName(),
-        };
-
         multipleChoiceObject.setValue(value);
 
         expect(multipleChoiceObject.getValue()).toBe(value);
-
-        expect(function () {
-            multipleChoiceObject.validate();
-        }).toThrow(new RangeError(JSON.stringify(parameters)));
+        expect(multipleChoiceObject.validate()).toBeFalsy();
+        expect(multipleChoiceObject.getError()).toBe(Choice.ERROR_VALUE_NOT_ALLOWED);
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(1)).toEqual([Attribute.EVENT_INVALID]);
+        expect(multipleChoiceObject.notifyObservers.calls.count()).toBe(2);
     });
 
     it("validate invalid double value", function() {
         var value = [4, 1];
 
-        var parameters = {
-            classType: MultipleChoice.name,
-            code: MultipleChoice.ERROR_VALUE_NOT_ALLOWED,
-            objectName: multipleChoiceObject.getName(),
-        };
-
         multipleChoiceObject.setValue(value);
 
         expect(multipleChoiceObject.getValue()).toBe(value);
-
-        expect(function () {
-            multipleChoiceObject.validate();
-        }).toThrow(new RangeError(JSON.stringify(parameters)));
+        expect(multipleChoiceObject.validate()).toBeFalsy();
+        expect(multipleChoiceObject.getError()).toBe(Choice.ERROR_VALUE_NOT_ALLOWED);
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(multipleChoiceObject.notifyObservers.calls.argsFor(1)).toEqual([Attribute.EVENT_INVALID]);
+        expect(multipleChoiceObject.notifyObservers.calls.count()).toBe(2);
     });
 });

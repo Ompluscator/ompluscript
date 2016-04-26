@@ -1,123 +1,47 @@
-describe("Datetime class tests - initialization", function() {
-    
-    var undefined;
-
-    var DatetimeClass = Ompluscript.Model.Attribute.Datetime;
-
-    var General = Ompluscript.Core.Utils.General;
-
-    it("validate invalid minimum configuration", function() {
-        var minimum = "wrong";
-
-        var parameters = {
-            classType: DatetimeClass.name,
-            code: General.ERROR_WRONG_CONFIGURATION,
-            variables: {
-                minimum: minimum
-            }
-        };
-        expect(function () {
-            new DatetimeClass("param", undefined, true, minimum);
-        }).toThrow(new SyntaxError(JSON.stringify(parameters)));
-    });
-
-    it("validate invalid maximum configuration", function() {
-        var maximum = "wrong";
-
-        var parameters = {
-            classType: DatetimeClass.name,
-            code: General.ERROR_WRONG_CONFIGURATION,
-            variables: {
-                maximum: maximum
-            }
-        };
-
-        expect(function () {
-            new DatetimeClass("param", undefined, true, "1/11/1985", maximum);
-        }).toThrow(new SyntaxError(JSON.stringify(parameters)));
-    });
-
-    it("validate valid minimum and maximum configuration", function() {
-        var maximum = "1/10/1985";
-        var minimum = "1/11/1985";
-
-        var parameters = {
-            classType: DatetimeClass.name,
-            code: General.ERROR_WRONG_CONFIGURATION,
-            variables: {
-                maximum: maximum,
-                minimum: minimum
-            }
-        };
-
-        expect(function () {
-            new DatetimeClass("param", undefined, true, minimum, maximum);
-        }).toThrow(new SyntaxError(JSON.stringify(parameters)));
-    });
-
-    it("validate valid configuration", function() {
-        expect(function () {
-            new DatetimeClass("param");
-        }).not.toThrow();
-
-        expect(function () {
-            new DatetimeClass("param", undefined, true);
-        }).not.toThrow();
-
-        expect(function () {
-            new DatetimeClass("param", undefined, true, "1/11/1985");
-        }).not.toThrow();
-
-        expect(function () {
-            new DatetimeClass("param", undefined, true, "1/11/1985", "1/12/1985");
-        }).not.toThrow();
-    });
-});
-
 describe("Datetime class tests - without limits and not required", function() {
 
     var datetimeObject;
-
     var undefined;
-
     var type = "string";
-
     var name = "param";
+    var required = false;
+
+    var Attribute = Ompluscript.Model.Attribute.Attribute;
+    var Datetime = Ompluscript.Model.Attribute.Datetime;
 
     beforeAll(function() {
-        datetimeObject = new Ompluscript.Model.Attribute.Datetime(name);
+        datetimeObject = new Datetime(name);
+    });
+
+    beforeEach(function() {
+        spyOn(datetimeObject, 'notifyObservers');
     });
 
     it("get configuration", function() {
         expect(datetimeObject.getMinimum()).toBeUndefined();
-
         expect(datetimeObject.getMaximum()).toBeUndefined();
-
         expect(datetimeObject.getName()).toBe(name);
-
         expect(datetimeObject.isRequired()).toBeFalsy();
-
         expect(datetimeObject.getStackTrace()).toEqual({
             name: name,
             type: type,
-            required: false,
+            required: required,
             value: undefined,
             minimum: undefined,
             maximum: undefined,
             minimumObject: undefined,
             maximumObject: undefined
         });
-
     });
 
     it("validate undefined value", function() {
         datetimeObject.resetValue();
 
         expect(datetimeObject.getValue()).toBeUndefined();
-
-        expect(function () {
-            datetimeObject.validate();
-        }).not.toThrow();
+        expect(datetimeObject.validate()).toBeTruthy();
+        expect(datetimeObject.getError()).toBeUndefined();
+        expect(datetimeObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(datetimeObject.notifyObservers.calls.count()).toBe(1);
     });
 
     it("validate datetime value", function() {
@@ -126,10 +50,10 @@ describe("Datetime class tests - without limits and not required", function() {
         datetimeObject.setValue(value);
 
         expect(datetimeObject.getValue()).toBe(value);
-
-        expect(function () {
-            datetimeObject.validate();
-        }).not.toThrow();
+        expect(datetimeObject.validate()).toBeTruthy();
+        expect(datetimeObject.getError()).toBeUndefined();
+        expect(datetimeObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(datetimeObject.notifyObservers.calls.count()).toBe(1);
     });
 
     it("validate wrong date format value", function() {
@@ -138,10 +62,11 @@ describe("Datetime class tests - without limits and not required", function() {
         datetimeObject.setValue(value);
 
         expect(datetimeObject.getValue()).toBe(value);
-
-        expect(function () {
-            datetimeObject.validate();
-        }).toThrowError(TypeError);
+        expect(datetimeObject.validate()).toBeFalsy();
+        expect(datetimeObject.getError()).toBe(Attribute.ERROR_WRONG_TYPE);
+        expect(datetimeObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(datetimeObject.notifyObservers.calls.argsFor(1)).toEqual([Attribute.EVENT_INVALID]);
+        expect(datetimeObject.notifyObservers.calls.count()).toBe(2);
     });
 
     it("validate number value", function() {
@@ -150,103 +75,103 @@ describe("Datetime class tests - without limits and not required", function() {
         datetimeObject.setValue(value);
 
         expect(datetimeObject.getValue()).toBe(value);
-
-        expect(function () {
-            datetimeObject.validate();
-        }).toThrowError(TypeError);
+        expect(datetimeObject.validate()).toBeFalsy();
+        expect(datetimeObject.getError()).toBe(Attribute.ERROR_WRONG_TYPE);
+        expect(datetimeObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(datetimeObject.notifyObservers.calls.argsFor(1)).toEqual([Attribute.EVENT_INVALID]);
+        expect(datetimeObject.notifyObservers.calls.count()).toBe(2);
     });
 });
 
 describe("Datetime class tests - without limits and required", function() {
 
     var datetimeObject;
-
     var undefined;
-
     var value = "1/11/1985";
-
     var type = "string";
-
     var name = "param";
+    var required = true;
+
+    var Attribute = Ompluscript.Model.Attribute.Attribute;
+    var Datetime = Ompluscript.Model.Attribute.Datetime;
 
     beforeAll(function() {
-        datetimeObject = new Ompluscript.Model.Attribute.Datetime(name, value, true);
+        datetimeObject = new Datetime(name, value, required);
+    });
+
+    beforeEach(function() {
+        spyOn(datetimeObject, 'notifyObservers');
     });
 
     it("get configuration", function() {
         expect(datetimeObject.getMinimum()).toBeUndefined();
-
         expect(datetimeObject.getMaximum()).toBeUndefined();
-
         expect(datetimeObject.getName()).toBe(name);
-
         expect(datetimeObject.isRequired()).toBeTruthy();
-
         expect(datetimeObject.getStackTrace()).toEqual({
             name: name,
             type: type,
-            required: true,
+            required: required,
             value: value,
             minimum: undefined,
             maximum: undefined,
             minimumObject: undefined,
             maximumObject: undefined
         });
-
     });
 
     it("validate undefined value", function() {
         datetimeObject.resetValue();
 
         expect(datetimeObject.getValue()).toBeUndefined();
-
-        expect(function () {
-            datetimeObject.validate();
-        }).toThrowError(TypeError);
+        expect(datetimeObject.validate()).toBeFalsy();
+        expect(datetimeObject.getError()).toBe(Attribute.ERROR_IS_REQUIRED);
+        expect(datetimeObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(datetimeObject.notifyObservers.calls.argsFor(1)).toEqual([Attribute.EVENT_INVALID]);
+        expect(datetimeObject.notifyObservers.calls.count()).toBe(2);
     });
 
     it("validate number value", function() {
         datetimeObject.setValue(value);
 
         expect(datetimeObject.getValue()).toBe(value);
-
-        expect(function () {
-            datetimeObject.validate();
-        }).not.toThrow();
+        expect(datetimeObject.validate()).toBeTruthy();
+        expect(datetimeObject.getError()).toBeUndefined();
+        expect(datetimeObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(datetimeObject.notifyObservers.calls.count()).toBe(1);
     });
 });
 
 describe("Datetime class tests - with limits and required", function() {
 
     var datetimeObject;
-
     var value = "1/11/1985";
-
     var type = "string";
-
     var name = "param";
-
+    var required = true;
     var minimum = "1/10/1985";
-
     var maximum = "1/12/1985";
 
+    var Attribute = Ompluscript.Model.Attribute.Attribute;
+    var Datetime = Ompluscript.Model.Attribute.Datetime;
+
     beforeAll(function() {
-        datetimeObject = new Ompluscript.Model.Attribute.Datetime(name, value, true, minimum, maximum);
+        datetimeObject = new Datetime(name, value, required, minimum, maximum);
+    });
+
+    beforeEach(function() {
+        spyOn(datetimeObject, 'notifyObservers');
     });
 
     it("get configuration", function() {
         expect(datetimeObject.getMinimum()).toBe(minimum);
-
         expect(datetimeObject.getMaximum()).toBe(maximum);
-
         expect(datetimeObject.getName()).toBe(name);
-
         expect(datetimeObject.isRequired()).toBeTruthy();
-
         expect(datetimeObject.getStackTrace()).toEqual({
             name: name,
             type: type,
-            required: true,
+            required: required,
             value: value,
             minimum: minimum,
             maximum: maximum,
@@ -259,10 +184,11 @@ describe("Datetime class tests - with limits and required", function() {
         datetimeObject.setValue("1/09/1985");
 
         expect(datetimeObject.getValue()).toBe("1/09/1985");
-
-        expect(function () {
-            datetimeObject.validate();
-        }).toThrowError(RangeError);
+        expect(datetimeObject.validate()).toBeFalsy();
+        expect(datetimeObject.getError()).toBe(Attribute.ERROR_BELOW_MINIMUM);
+        expect(datetimeObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(datetimeObject.notifyObservers.calls.argsFor(1)).toEqual([Attribute.EVENT_INVALID]);
+        expect(datetimeObject.notifyObservers.calls.count()).toBe(2);
     });
 
     it("validate regular value", function() {
@@ -270,26 +196,24 @@ describe("Datetime class tests - with limits and required", function() {
         datetimeObject.setValue(minimum);
 
         expect(datetimeObject.getValue()).toBe(minimum);
-
-        expect(function () {
-            datetimeObject.validate();
-        }).not.toThrow();
+        expect(datetimeObject.validate()).toBeTruthy();
+        expect(datetimeObject.getError()).toBeUndefined();
 
         datetimeObject.setValue(value);
 
         expect(datetimeObject.getValue()).toBe(value);
-
-        expect(function () {
-            datetimeObject.validate();
-        }).not.toThrow();
+        expect(datetimeObject.validate()).toBeTruthy();
+        expect(datetimeObject.getError()).toBeUndefined();
 
         datetimeObject.setValue(maximum);
 
         expect(datetimeObject.getValue()).toBe(maximum);
-
-        expect(function () {
-            datetimeObject.validate();
-        }).not.toThrow();
+        expect(datetimeObject.validate()).toBeTruthy();
+        expect(datetimeObject.getError()).toBeUndefined();
+        expect(datetimeObject.notifyObservers.calls.count()).toBe(3);
+        expect(datetimeObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(datetimeObject.notifyObservers.calls.argsFor(1)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(datetimeObject.notifyObservers.calls.argsFor(2)).toEqual([Attribute.EVENT_UPDATE]);
     });
 
     it("validate maximum length", function() {
@@ -297,9 +221,10 @@ describe("Datetime class tests - with limits and required", function() {
         datetimeObject.setValue("1/13/1985");
 
         expect(datetimeObject.getValue()).toBe("1/13/1985");
-
-        expect(function () {
-            datetimeObject.validate();
-        }).toThrowError(RangeError);
+        expect(datetimeObject.validate()).toBeFalsy();
+        expect(datetimeObject.getError()).toBe(Attribute.ERROR_OVER_MAXIMUM);
+        expect(datetimeObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(datetimeObject.notifyObservers.calls.argsFor(1)).toEqual([Attribute.EVENT_INVALID]);
+        expect(datetimeObject.notifyObservers.calls.count()).toBe(2);
     });
 });

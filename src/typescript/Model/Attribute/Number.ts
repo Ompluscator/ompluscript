@@ -1,5 +1,4 @@
-/// <reference path="Unit.ts" />
-/// <reference path="../../Core/Utils/General.ts" />
+/// <reference path="Attribute.ts" />
 
 /**
  * Module that contains attributes' classes.
@@ -9,14 +8,12 @@
 module Ompluscript.Model.Attribute {
     "use strict";
 
-    import General = Ompluscript.Core.Utils.General;
-
     /**
      * Class that contains functionality for Number attribute.
      *
      * @class Number
      */
-    export class Number extends Unit<number> {
+    export class Number extends Attribute<number> {
 
         /**
          * @type {string} PARAMETER_INCLUDE_MINIMUM Include minimum parameter name.
@@ -60,8 +57,6 @@ module Ompluscript.Model.Attribute {
          * @param {boolean} includeMinimum Defines if value can be equal to maximum
          * @param {number} maximum Maximum allowed value of string
          * @param {boolean} includeMaximum Defines if value can be equal to maximum
-         * @throws {SyntaxError} When minimum and maximum are in wrong order, or not numbers, or
-         *                       include minimum and maximum are wrong defined
          * @constructs
          */
         constructor(name: string, value: number = undefined, required: boolean = false,
@@ -77,31 +72,6 @@ module Ompluscript.Model.Attribute {
             this.includeMaximum = false;
             if (includeMaximum === true) {
                 this.includeMaximum = true;
-            }
-            if (this.minimum !== undefined && typeof this.minimum !== "number") {
-                General.throwConfigurationException(Number, {
-                    minimum: minimum,
-                });
-            }
-            if (this.maximum !== undefined && typeof this.maximum !== "number") {
-                General.throwConfigurationException(Number, {
-                    maximum: maximum,
-                });
-            }
-            if (this.minimum !== undefined && this.maximum !== undefined) {
-                if (this.includeMinimum === true && this.includeMaximum === true 
-                    && this.minimum > this.maximum) {
-                    General.throwConfigurationException(Number, {
-                        maximum: maximum,
-                        minimum: minimum,
-                    });
-                } else if ((this.includeMinimum === false || this.includeMaximum === false)
-                    && this.minimum >= this.maximum) {
-                    General.throwConfigurationException(Number, {
-                        maximum: maximum,
-                        minimum: minimum,
-                    });
-                }
             }
         }
 
@@ -126,27 +96,37 @@ module Ompluscript.Model.Attribute {
         /**
          * Method that validates number value.
          *
-         * @throws {TypeError} when it's not number
-         * @throws {RangeError} when it's over its minimum or maximum value
+         * @return {boolean} Validation result
          */
-        public validate(): void {
-            super.validate();
-            if (this.value !== undefined) {
-                if (this.minimum !== undefined ) {
-                    if (this.includeMinimum === false && this.value <= this.minimum) {
-                        General.throwControlledException(RangeError, Number, this.name, Unit.ERROR_BELOW_MINIMUM);
-                    } else if (this.includeMinimum === true && this.value < this.minimum) {
-                        General.throwControlledException(RangeError, Number, this.name, Unit.ERROR_BELOW_MINIMUM);
+        public validate(): boolean {
+            if (super.validate()) {
+                if (this.value !== undefined) {
+                    if (this.minimum !== undefined) {
+                        if (this.includeMinimum === false && this.value <= this.minimum) {
+                            this.error = Attribute.ERROR_BELOW_MINIMUM;
+                            this.notifyObservers(Attribute.EVENT_INVALID);
+                            return false;
+                        } else if (this.includeMinimum === true && this.value < this.minimum) {
+                            this.error = Attribute.ERROR_BELOW_MINIMUM;
+                            this.notifyObservers(Attribute.EVENT_INVALID);
+                            return false;
+                        }
+                    }
+                    if (this.maximum !== undefined) {
+                        if (this.includeMaximum === false && this.value >= this.maximum) {
+                            this.error = Attribute.ERROR_OVER_MAXIMUM;
+                            this.notifyObservers(Attribute.EVENT_INVALID);
+                            return false;
+                        } else if (this.includeMaximum === true && this.value > this.maximum) {
+                            this.error = Attribute.ERROR_OVER_MAXIMUM;
+                            this.notifyObservers(Attribute.EVENT_INVALID);
+                            return false;
+                        }
                     }
                 }
-                if (this.maximum !== undefined ) {
-                    if (this.includeMaximum === false && this.value >= this.maximum) {
-                        General.throwControlledException(RangeError, Number, this.name, Unit.ERROR_OVER_MAXIMUM);
-                    } else if (this.includeMaximum === true && this.value > this.maximum) {
-                        General.throwControlledException(RangeError, Number, this.name, Unit.ERROR_OVER_MAXIMUM);
-                    }
-                }
+                return true;
             }
+            return false;
         }
 
         /**
@@ -156,9 +136,9 @@ module Ompluscript.Model.Attribute {
          */
         public getStackTrace(): Object {
             let trace: Object = super.getStackTrace();
-            trace[Unit.PARAMETER_MINIMUM] = this.minimum;
+            trace[Attribute.PARAMETER_MINIMUM] = this.minimum;
             trace[Number.PARAMETER_INCLUDE_MINIMUM] = this.includeMinimum;
-            trace[Unit.PARAMETER_MAXIMUM] = this.maximum;
+            trace[Attribute.PARAMETER_MAXIMUM] = this.maximum;
             trace[Number.PARAMETER_INCLUDE_MAXIMUM] = this.includeMaximum;
             return trace;
         }
