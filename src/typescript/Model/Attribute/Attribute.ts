@@ -11,7 +11,6 @@
 module Ompluscript.Model.Attribute {
     "use strict";
 
-    import IBase = Ompluscript.Core.Interfaces.IBase;
     import Observable = Ompluscript.Core.Observer.Observable;
     import OnUpdateAttribute = Ompluscript.Model.Event.OnUpdateAttribute;
     import OnInvalidAttribute = Ompluscript.Model.Event.OnInvalidAttribute;
@@ -21,7 +20,7 @@ module Ompluscript.Model.Attribute {
      *
      * @class String
      */
-    export abstract class Attribute<T> extends Observable implements IBase {
+    export abstract class Attribute<T> extends Observable {
 
         /**
          * @type {number} ERROR_WRONG_TYPE Error code for setting a wrong type of value.

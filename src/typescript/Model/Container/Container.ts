@@ -71,6 +71,7 @@ module Ompluscript.Model.Container {
          */
         public abstract validate(): boolean;
 
+        public abstract dispose(): void;
 
     }
 }

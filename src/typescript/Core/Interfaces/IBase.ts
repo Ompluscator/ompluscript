@@ -26,6 +26,8 @@ module Ompluscript.Core.Interfaces {
          * @returns {Object} contains all values of the object
          */
         getStackTrace(): Object;
+        
+        dispose(): void;
 
     }
 }

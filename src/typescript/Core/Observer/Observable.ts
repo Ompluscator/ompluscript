@@ -1,10 +1,13 @@
+/// <reference path="../Interfaces/IBase.ts" />
 /// <reference path="IObserver.ts" />
 /// <reference path="Event.ts" />
 
 module Ompluscript.Core.Observer {
     "use strict";
 
-    export abstract class Observable {
+    import IBase = Ompluscript.Core.Interfaces.IBase;
+    
+    export abstract class Observable implements IBase {
 
         /**
          * @type {Object} observers Contains all observers by event.
@@ -15,14 +18,14 @@ module Ompluscript.Core.Observer {
             this.observers = {};
         }
 
-        public addObserver(observer: IObserver, type: string): void {
+        public addObserverByType(observer: IObserver, type: string): void {
             if (this.observers.hasOwnProperty(type)) {
                 this.observers[type] = [];
             }
             this.observers[type].push(observer);
         }
 
-        public deleteObserver(observer: IObserver, type: string): void {
+        public deleteObserverByType(observer: IObserver, type: string): void {
             if (this.observers.hasOwnProperty(type)) {
                 for (let i in this.observers[type]) {
                     if (this.observers[type].hasOwnProperty(i) && this.observers[type][i] === observer) {
@@ -31,12 +34,24 @@ module Ompluscript.Core.Observer {
                 }
             }
         }
+        
+        public clearObservers(): void {
+            this.observers = {};
+        }
 
-        public clearObserver(type: string): void {
+        public clearObserversByType(type: string): void {
             if (this.observers.hasOwnProperty(type)) {
                 this.observers[type] = [];
             }
         }
+        
+        public dispose(): void {
+            this.clearObservers();
+        }
+
+        public abstract getName(): string;
+
+        public abstract getStackTrace(): Object;
 
         protected notifyObservers(event: Event): void {
             if (this.observers[event.getType()] !== undefined) {

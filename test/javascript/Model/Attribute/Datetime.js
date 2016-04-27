@@ -23,6 +23,8 @@ describe("Datetime class tests - without limits and not required", function() {
     it("get configuration", function() {
         expect(datetimeObject.getMinimum()).toBeUndefined();
         expect(datetimeObject.getMaximum()).toBeUndefined();
+        expect(datetimeObject.getMinimumDateObject()).toBeUndefined();
+        expect(datetimeObject.getMaximumDateObject()).toBeUndefined();
         expect(datetimeObject.getName()).toBe(name);
         expect(datetimeObject.isRequired()).toBeFalsy();
         expect(datetimeObject.getStackTrace()).toEqual({
@@ -119,6 +121,8 @@ describe("Datetime class tests - without limits and required", function() {
     it("get configuration", function() {
         expect(datetimeObject.getMinimum()).toBeUndefined();
         expect(datetimeObject.getMaximum()).toBeUndefined();
+        expect(datetimeObject.getMinimumDateObject()).toBeUndefined();
+        expect(datetimeObject.getMaximumDateObject()).toBeUndefined();
         expect(datetimeObject.getName()).toBe(name);
         expect(datetimeObject.isRequired()).toBeTruthy();
         expect(datetimeObject.getStackTrace()).toEqual({
@@ -187,6 +191,8 @@ describe("Datetime class tests - with limits and required", function() {
     it("get configuration", function() {
         expect(datetimeObject.getMinimum()).toBe(minimum);
         expect(datetimeObject.getMaximum()).toBe(maximum);
+        expect(datetimeObject.getMinimumDateObject()).toEqual(new Date(minimum));
+        expect(datetimeObject.getMaximumDateObject()).toEqual(new Date(maximum));
         expect(datetimeObject.getName()).toBe(name);
         expect(datetimeObject.isRequired()).toBeTruthy();
         expect(datetimeObject.getStackTrace()).toEqual({

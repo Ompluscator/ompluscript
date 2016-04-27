@@ -6,14 +6,17 @@ describe("Model class tests - add string", function() {
     var paramName = "param";
     var value = "value";
     var minimumLength = 2;
-    var maximumLength = 4;
-    var pattern = new RegExp("value", "g");
+    var maximumLength = 6;
+    var pattern = /value/;
     var required = true;
+    var undefined;
+    var definition;
 
     var Model = Ompluscript.Model.Container.Model;
+    var String = Ompluscript.Model.Attribute.String;
 
     beforeAll(function() {
-        var definition = [
+        definition = [
             {
                 name: paramName,
                 required: required,
@@ -30,7 +33,13 @@ describe("Model class tests - add string", function() {
 
     it("get configuration", function() {
         expect(modelObject.getName()).toBe(name);
+        expect(modelObject.hasAttribute(paramName)).toBeTruthy();
+        expect(modelObject.getAttribute(paramName) instanceof String).toBeTruthy();
+        expect(modelObject.hasAttribute("not")).toBeFalsy();
+        expect(modelObject.getAttribute("not")).toBeUndefined();
         expect(modelObject.getStackTrace()).toEqual({
+            definition: definition,
+            name: name,
             attributes: {
                 param: {
                     name: paramName,
@@ -42,8 +51,17 @@ describe("Model class tests - add string", function() {
                     pattern: pattern,
                 }
             },
-            name: name,
         });
+    });
+
+    it("validation", function() {
+        modelObject.getAttribute(paramName).setValue(value);
+
+        expect(modelObject.validate()).toBeTruthy();
+
+        modelObject.getAttribute(paramName).setValue(undefined);
+
+        expect(modelObject.validate()).toBeFalsy();
     });
 });
 
@@ -58,11 +76,14 @@ describe("Model class tests - add number", function() {
     var maximum = 4;
     var included = true;
     var required = true;
+    var undefined;
+    var definition;
 
     var Model = Ompluscript.Model.Container.Model;
+    var Number = Ompluscript.Model.Attribute.Number;
 
     beforeAll(function() {
-        var definition = [
+        definition = [
             {
                 name: paramName,
                 required: required,
@@ -79,7 +100,13 @@ describe("Model class tests - add number", function() {
 
     it("get configuration", function() {
         expect(modelObject.getName()).toBe(name);
+        expect(modelObject.hasAttribute(paramName)).toBeTruthy();
+        expect(modelObject.getAttribute(paramName) instanceof Number).toBeTruthy();
+        expect(modelObject.hasAttribute("not")).toBeFalsy();
+        expect(modelObject.getAttribute("not")).toBeUndefined();
         expect(modelObject.getStackTrace()).toEqual({
+            definition: definition,
+            name: name,
             attributes: {
                 param: {
                     name: paramName,
@@ -92,8 +119,17 @@ describe("Model class tests - add number", function() {
                     includeMaximum: included
                 }
             },
-            name: name,
         });
+    });
+
+    it("validation", function() {
+        modelObject.getAttribute(paramName).setValue(value);
+
+        expect(modelObject.validate()).toBeTruthy();
+
+        modelObject.getAttribute(paramName).setValue(undefined);
+
+        expect(modelObject.validate()).toBeFalsy();
     });
 });
 
@@ -107,11 +143,14 @@ describe("Model class tests - add datetime", function() {
     var minimum = "1/10/1985";
     var maximum = "1/12/1985";
     var required = true;
+    var undefined;
+    var definition;
 
     var Model = Ompluscript.Model.Container.Model;
+    var Datetime = Ompluscript.Model.Attribute.Datetime;
 
     beforeAll(function() {
-        var definition = [
+        definition = [
             {
                 name: paramName,
                 required: required,
@@ -127,7 +166,13 @@ describe("Model class tests - add datetime", function() {
 
     it("get configuration", function() {
         expect(modelObject.getName()).toBe(name);
+        expect(modelObject.hasAttribute(paramName)).toBeTruthy();
+        expect(modelObject.getAttribute(paramName) instanceof Datetime).toBeTruthy();
+        expect(modelObject.hasAttribute("not")).toBeFalsy();
+        expect(modelObject.getAttribute("not")).toBeUndefined();
         expect(modelObject.getStackTrace()).toEqual({
+            definition: definition,
+            name: name,
             attributes: {
                 param: {
                     name: paramName,
@@ -140,8 +185,17 @@ describe("Model class tests - add datetime", function() {
                     maximumObject: new Date(maximum)
                 }
             },
-            name: name,
         });
+    });
+
+    it("validation", function() {
+        modelObject.getAttribute(paramName).setValue(value);
+
+        expect(modelObject.validate()).toBeTruthy();
+
+        modelObject.getAttribute(paramName).setValue(undefined);
+
+        expect(modelObject.validate()).toBeFalsy();
     });
 });
 
@@ -153,11 +207,14 @@ describe("Model class tests - add boolean", function() {
     var paramName = "param";
     var value = true;
     var required = true;
+    var undefined;
+    var definition;
 
     var Model = Ompluscript.Model.Container.Model;
+    var Boolean = Ompluscript.Model.Attribute.Boolean;
 
     beforeAll(function() {
-        var definition = [
+        definition = [
             {
                 name: paramName,
                 required: required,
@@ -171,7 +228,13 @@ describe("Model class tests - add boolean", function() {
 
     it("get configuration", function() {
         expect(modelObject.getName()).toBe(name);
+        expect(modelObject.hasAttribute(paramName)).toBeTruthy();
+        expect(modelObject.getAttribute(paramName) instanceof Boolean).toBeTruthy();
+        expect(modelObject.hasAttribute("not")).toBeFalsy();
+        expect(modelObject.getAttribute("not")).toBeUndefined();
         expect(modelObject.getStackTrace()).toEqual({
+            definition: definition,
+            name: name,
             attributes: {
                 param: {
                     name: paramName,
@@ -180,8 +243,17 @@ describe("Model class tests - add boolean", function() {
                     value: value,
                 }
             },
-            name: name,
         });
+    });
+
+    it("validation", function() {
+        modelObject.getAttribute(paramName).setValue(value);
+
+        expect(modelObject.validate()).toBeTruthy();
+
+        modelObject.getAttribute(paramName).setValue(undefined);
+
+        expect(modelObject.validate()).toBeFalsy();
     });
 });
 
@@ -194,11 +266,14 @@ describe("Model class tests - add singleChoice", function() {
     var value = 3;
     var choices = [2, 3];
     var required = true;
+    var undefined;
+    var definition;
 
     var Model = Ompluscript.Model.Container.Model;
+    var SingleChoice = Ompluscript.Model.Attribute.SingleChoice;
 
     beforeAll(function() {
-        var definition = [
+        definition = [
             {
                 name: paramName,
                 required: required,
@@ -213,8 +288,13 @@ describe("Model class tests - add singleChoice", function() {
 
     it("get configuration", function() {
         expect(modelObject.getName()).toBe(name);
-
+        expect(modelObject.hasAttribute(paramName)).toBeTruthy();
+        expect(modelObject.getAttribute(paramName) instanceof SingleChoice).toBeTruthy();
+        expect(modelObject.hasAttribute("not")).toBeFalsy();
+        expect(modelObject.getAttribute("not")).toBeUndefined();
         expect(modelObject.getStackTrace()).toEqual({
+            definition: definition,
+            name: name,
             attributes: {
                 param: {
                     name: paramName,
@@ -224,8 +304,17 @@ describe("Model class tests - add singleChoice", function() {
                     choices: choices,
                 }
             },
-            name: name,
         });
+    });
+
+    it("validation", function() {
+        modelObject.getAttribute(paramName).setValue(value);
+
+        expect(modelObject.validate()).toBeTruthy();
+
+        modelObject.getAttribute(paramName).setValue(undefined);
+
+        expect(modelObject.validate()).toBeFalsy();
     });
 });
 
@@ -238,11 +327,14 @@ describe("Model class tests - add multipleChoice", function() {
     var value = [3];
     var choices = [2, 3];
     var required = true;
+    var undefined;
+    var definition;
 
     var Model = Ompluscript.Model.Container.Model;
+    var MultipleChoice = Ompluscript.Model.Attribute.MultipleChoice;
 
     beforeAll(function() {
-        var definition = [
+        definition = [
             {
                 name: paramName,
                 required: required,
@@ -257,7 +349,13 @@ describe("Model class tests - add multipleChoice", function() {
 
     it("get configuration", function() {
         expect(modelObject.getName()).toBe(name);
+        expect(modelObject.hasAttribute(paramName)).toBeTruthy();
+        expect(modelObject.getAttribute(paramName) instanceof MultipleChoice).toBeTruthy();
+        expect(modelObject.hasAttribute("not")).toBeFalsy();
+        expect(modelObject.getAttribute("not")).toBeUndefined();
         expect(modelObject.getStackTrace()).toEqual({
+            definition: definition,
+            name: name,
             attributes: {
                 param: {
                     name: paramName,
@@ -267,7 +365,16 @@ describe("Model class tests - add multipleChoice", function() {
                     choices: choices,
                 }
             },
-            name: name,
         });
+    });
+
+    it("validation", function() {
+        modelObject.getAttribute(paramName).setValue(value);
+
+        expect(modelObject.validate()).toBeTruthy();
+
+        modelObject.getAttribute(paramName).setValue(undefined);
+
+        expect(modelObject.validate()).toBeFalsy();
     });
 });

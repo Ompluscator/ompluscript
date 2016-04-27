@@ -56,6 +56,10 @@ module Ompluscript.Model.Container {
             }
         }
 
+        public hasAttribute(name: string): boolean {
+            return this.attributes.hasOwnProperty(name);
+        }
+
         /**
          * Method that returns attribute by its name.
          *
@@ -64,6 +68,14 @@ module Ompluscript.Model.Container {
          */
         public getAttribute(name: string): Attribute<any> {
             return this.attributes[name];
+        }
+
+        public setValue(values: Object): void {
+            for (let i in values) {
+                if (values.hasOwnProperty(i) && this.hasAttribute(i)) {
+                    this.getAttribute(i).setValue(values[i]);
+                }
+            }
         }
 
         /**
@@ -87,16 +99,22 @@ module Ompluscript.Model.Container {
          * @returns {Object} contains all variables of the object
          */
         public getStackTrace(): Object {
-            let trace: Object = {
-                attributes: {},
-                name: this.name,
-            };
+            let trace: Object = super.getStackTrace();
+            trace["attributes"] = {};
             for (let i in this.attributes) {
                 if (this.attributes.hasOwnProperty(i)) {
                     trace["attributes"][i] = this.attributes[i].getStackTrace();
                 }
             }
             return trace;
+        }
+        
+        public dispose(): void {
+            for (let i in this.attributes) {
+                if (this.attributes.hasOwnProperty(i)) {
+                    this.attributes[i].dispose();
+                }
+            }
         }
 
         /**

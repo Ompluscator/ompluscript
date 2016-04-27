@@ -57,20 +57,33 @@ module Ompluscript.Model.Container {
         }
 
         public addRow(values: Object): void {
-            for (let i: number = 0; i < this.definition["length"]; i++) {
-                this.definition[i]["value"] = values[this.definition[i]["name"]];
-            }
             let model: Model = new Model(this.name, this.definition);
+            model.setValue(values);
             this.rows.push(model);
-            for (let i: number = 0; i < this.definition["length"]; i++) {
-                if (this.definition[i] !== undefined) {
-                    delete this.definition[i]["value"];
-                }
-            }
+        }
+
+        public clearRows(): void {
+            this.rows = [];
         }
 
         public removeRowByIndex(index: number): void {
             this.rows.splice(index, 1);
+        }
+
+        /**
+         * Method that returns all current variables of object.
+         *
+         * @returns {Object} contains all variables of the object
+         */
+        public getStackTrace(): Object {
+            let trace: Object = super.getStackTrace();
+            trace["rows"] = [];
+            for (let i in this.rows) {
+                if (this.rows[i] !== undefined) {
+                    trace["rows"].push(this.rows[i].getStackTrace());
+                }
+            }
+            return trace;
         }
 
         /**
@@ -86,6 +99,14 @@ module Ompluscript.Model.Container {
                 }
             }
             return result;
+        }
+
+        public dispose(): void {
+            for (let i in this.rows) {
+                if (this.rows[i] !== undefined) {
+                    this.rows[i].dispose();
+                }
+            }
         }
 
     }
