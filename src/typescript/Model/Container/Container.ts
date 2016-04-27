@@ -1,4 +1,4 @@
-/// <reference path="../../Core/Interfaces/IBase.ts" />
+/// <reference path="../../Core/Observer/Observable.ts" />
 
 /**
  * Module that contains model' classes.
@@ -8,14 +8,14 @@
 module Ompluscript.Model.Container {
     "use strict";
 
-    import IBase = Ompluscript.Core.Interfaces.IBase;
+    import Observable = Ompluscript.Core.Observer.Observable;
 
     /**
      * Class that contains functionality for Container.
      *
      * @class Container
      */
-    export abstract class Container implements IBase {
+    export abstract class Container extends Observable {
 
         /**
          * @type {string} CONTAINER_MODEL Model type.
@@ -38,6 +38,7 @@ module Ompluscript.Model.Container {
         protected definition: Object[];
 
         constructor(name: string, definition: Object[] = []) {
+            super();
             this.name = name;
             this.definition = definition;
         }
