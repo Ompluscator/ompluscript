@@ -96,7 +96,7 @@ module Ompluscript.Model.Attribute {
         /**
          * Method that validates number value.
          *
-         * @return {boolean} Validation result
+         * @returns {boolean} Validation result
          */
         public validate(): boolean {
             if (super.validate()) {

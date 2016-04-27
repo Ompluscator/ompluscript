@@ -1,4 +1,3 @@
-/// <reference path="../../Core/Interfaces/IBase.ts" />
 /// <reference path="../../Core/Observer/Observable.ts" />
 /// <reference path="../Event/OnUpdateAttribute.ts" />
 /// <reference path="../Event/OnInvalidAttribute.ts" />
@@ -134,7 +133,7 @@ module Ompluscript.Model.Attribute {
          *
          * @param {string} type Value's type
          * @param {string} name Name of attribute
-         * @param {T} value Value that should be stored
+         * @param {any} value Value that should be stored
          * @param {boolean} required Defines if value is required
          * @constructs
          */
@@ -210,7 +209,7 @@ module Ompluscript.Model.Attribute {
         /**
          * Method that validates attribute's value.
          *
-         * @return {boolean} Validation result
+         * @returns {boolean} Validation result
          */
         public validate(): boolean {
             this.error = undefined;
@@ -239,11 +238,23 @@ module Ompluscript.Model.Attribute {
             return trace;
         }
 
+        /**
+         * Method that fires event when attribute is updated
+         * 
+         * @param {any} oldValue Old value of attribute
+         * @param {any} newValue New value of attribute
+         */
         protected fireOnUpdateAttributeEvent(oldValue: T, newValue: T): void {
             let event: OnUpdateAttribute = new OnUpdateAttribute(this, oldValue, newValue);
             this.notifyObservers(event);
         }
 
+        /**
+         * Method that fires event when attribute is invalid
+         * 
+         * @param {any} value New value of attribute
+         * @param {number} validationCode Error validation code
+         */
         protected fireOnInvalidAttributeEvent(value: T, validationCode: number): void {
             let event: OnInvalidAttribute = new OnInvalidAttribute(this, value, validationCode);
             this.notifyObservers(event);

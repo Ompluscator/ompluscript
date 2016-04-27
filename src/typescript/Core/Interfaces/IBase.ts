@@ -26,8 +26,10 @@ module Ompluscript.Core.Interfaces {
          * @returns {Object} contains all values of the object
          */
         getStackTrace(): Object;
-        
-        dispose(): void;
 
+        /**
+         * Method that should be called before removing reference from object.
+         */
+        dispose(): void;
     }
 }

@@ -79,6 +79,12 @@ module Ompluscript.Model.Attribute {
             return trace;
         }
 
+        /**
+         * Method that fires event when choices are updated
+         * 
+         * @param {number[]} oldChoices Old choices of attribute
+         * @param {number[]} newChoices New choices of attribute
+         */
         protected fireOnUpdateChoicesEvent(oldChoices: number[], newChoices: number[]): void {
             let event: OnUpdateChoices = new OnUpdateChoices(this, oldChoices, newChoices);
             this.notifyObservers(event);

@@ -1,7 +1,7 @@
 /// <reference path="../../Core/Observer/Observable.ts" />
 
 /**
- * Module that contains model' classes.
+ * Module that contains container classes.
  *
  * @module Ompluscript.Model.Container
  */
@@ -37,6 +37,15 @@ module Ompluscript.Model.Container {
          */
         protected definition: Object[];
 
+        /**
+         * Class constructor
+         * 
+         * Sets name of container and definition for attributes.
+         * 
+         * @param {string} name
+         * @param {Object[]} definition
+         * @constructs
+         */
         constructor(name: string, definition: Object[] = []) {
             super();
             this.name = name;
@@ -46,7 +55,7 @@ module Ompluscript.Model.Container {
         /**
          * Method that returns name of model.
          *
-         * @returns {string}
+         * @returns {string} Name of model
          */
         public getName(): string {
             return this.name;
@@ -72,6 +81,9 @@ module Ompluscript.Model.Container {
          */
         public abstract validate(): boolean;
 
+        /**
+         * Method that should be called before removing reference from object.
+         */
         public abstract dispose(): void;
 
     }

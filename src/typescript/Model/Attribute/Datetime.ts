@@ -45,6 +45,7 @@ module Ompluscript.Model.Attribute {
          * @param {boolean} required Defines if value is required
          * @param {number} minimum Minimum allowed value of string
          * @param {number} maximum Maximum allowed value of string
+         * @constructs
          */
         constructor(name: string, value: string = undefined, required: boolean = false,
                     minimum: string = undefined, maximum: string = undefined) {
@@ -107,7 +108,7 @@ module Ompluscript.Model.Attribute {
         /**
          * Method that validates datetime value.
          *
-         * @return {boolean} Validation result
+         * @returns {boolean} Validation result
          */
         public validate(): boolean {
             if (super.validate()) {

@@ -8,9 +8,9 @@
 /// <reference path="Container.ts" />
 
 /**
- * Module that contains model' classes.
+ * Module that contains container classes.
  *
- * @module Ompluscript.Model
+ * @module Ompluscript.Model.Container
  */
 module Ompluscript.Model.Container {
     "use strict";
@@ -56,6 +56,12 @@ module Ompluscript.Model.Container {
             }
         }
 
+        /**
+         * Method that returns if attribute exists
+         * 
+         * @param {string} name
+         * @return {boolean} If attribute exists
+         */
         public hasAttribute(name: string): boolean {
             return this.attributes.hasOwnProperty(name);
         }
@@ -64,12 +70,17 @@ module Ompluscript.Model.Container {
          * Method that returns attribute by its name.
          *
          * @param {string} name Name of attribute
-         * @returns {Attribute}
+         * @returns {Attribute} Attribute by name
          */
         public getAttribute(name: string): Attribute<any> {
             return this.attributes[name];
         }
 
+        /**
+         * Method that sets values to desired attributes
+         * 
+         * @param {Object} values Container of attributes
+         */
         public setValue(values: Object): void {
             for (let i in values) {
                 if (values.hasOwnProperty(i) && this.hasAttribute(i)) {
@@ -108,7 +119,10 @@ module Ompluscript.Model.Container {
             }
             return trace;
         }
-        
+
+        /**
+         * Method that should be called before removing reference from object.
+         */
         public dispose(): void {
             for (let i in this.attributes) {
                 if (this.attributes.hasOwnProperty(i)) {
@@ -150,7 +164,7 @@ module Ompluscript.Model.Container {
         /**
          * Method that adds Boolean attribute to model.
          *
-         * @param {Object} definition
+         * @param {Object} definition Boolean definition
          */
         private addBoolean(definition: Object): void {
             let name: string = definition[Attribute.PARAMETER_NAME];
@@ -162,7 +176,7 @@ module Ompluscript.Model.Container {
         /**
          * Method that adds Number attribute to model.
          *
-         * @param definition
+         * @param {Object} definition Number definition
          */
         private addNumber(definition: Object): void {
             let name: string = definition[Attribute.PARAMETER_NAME];
@@ -178,7 +192,7 @@ module Ompluscript.Model.Container {
         /**
          * Method that adds String attribute to model.
          *
-         * @param definition
+         * @param {Object} definition String definition
          */
         private addString(definition: Object): void {
             let name: string = definition[Attribute.PARAMETER_NAME];
@@ -193,7 +207,7 @@ module Ompluscript.Model.Container {
         /**
          * Method that adds Datetime attribute to model.
          *
-         * @param definition
+         * @param {Object} definition Datetime definition
          */
         private addDatetime(definition: Object): void {
             let name: string = definition[Attribute.PARAMETER_NAME];
@@ -207,7 +221,7 @@ module Ompluscript.Model.Container {
         /**
          * Method that adds SingleChoice attribute to model.
          *
-         * @param definition
+         * @param {Object} definition SingleChoice definition
          */
         private addSingleChoice(definition: Object): void {
             let name: string = definition[Attribute.PARAMETER_NAME];
@@ -220,7 +234,7 @@ module Ompluscript.Model.Container {
         /**
          * Method that adds Multiple attribute to model.
          *
-         * @param definition
+         * @param {Object} definition MultipleChoice definition
          */
         private addMultipleChoice(definition: Object): void {
             let name: string = definition[Attribute.PARAMETER_NAME];
