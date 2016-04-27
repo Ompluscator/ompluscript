@@ -1,6 +1,7 @@
-/// <reference path="../Interfaces/IObserver.ts" />
+/// <reference path="IObserver.ts" />
+/// <reference path="Event.ts" />
 
-module Ompluscript.Core.Interfaces {
+module Ompluscript.Core.Observer {
     "use strict";
 
     export abstract class Observable {
@@ -14,15 +15,15 @@ module Ompluscript.Core.Interfaces {
             this.observers = {};
         }
 
-        public addObserver(observer: IObserver, type: number): void {
-            if (this.observers[type] !== undefined) {
+        public addObserver(observer: IObserver, type: string): void {
+            if (this.observers.hasOwnProperty(type)) {
                 this.observers[type] = [];
             }
             this.observers[type].push(observer);
         }
 
-        public deleteObserver(observer: IObserver, type: number): void {
-            if (this.observers[type] !== undefined) {
+        public deleteObserver(observer: IObserver, type: string): void {
+            if (this.observers.hasOwnProperty(type)) {
                 for (let i in this.observers[type]) {
                     if (this.observers[type].hasOwnProperty(i) && this.observers[type][i] === observer) {
                         this.observers[type].splice(i, 1);
@@ -31,17 +32,17 @@ module Ompluscript.Core.Interfaces {
             }
         }
 
-        public clearObserver(type: number): void {
-            if (this.observers[type] !== undefined) {
+        public clearObserver(type: string): void {
+            if (this.observers.hasOwnProperty(type)) {
                 this.observers[type] = [];
             }
         }
 
-        public notifyObservers(type: number): void {
-            if (this.observers[type] !== undefined) {
-                for (let i in this.observers[type]) {
-                    if (this.observers[type].hasOwnProperty(i)) {
-                        this.observers[type][i].update(this, type);
+        protected notifyObservers(event: Event): void {
+            if (this.observers[event.getType()] !== undefined) {
+                for (let i in this.observers[event.getType()]) {
+                    if (this.observers[event.getType()].hasOwnProperty(i)) {
+                        this.observers[event.getType()][i].update(this, event);
                     }
                 }
             }

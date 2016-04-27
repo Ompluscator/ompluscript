@@ -119,15 +119,12 @@ module Ompluscript.Model.Attribute {
             if (super.validate()) {
                 if (this.value !== undefined && this.minimumLength !== undefined && this.value["length"] < this.minimumLength) {
                     this.error = String.ERROR_BELOW_MINIMUM_LENGTH;
-                    this.notifyObservers(Attribute.EVENT_INVALID);
                     return false;
                 } else if (this.value !== undefined && this.maximumLength !== undefined && this.value["length"] > this.maximumLength) {
                     this.error = String.ERROR_OVER_MAXIMUM_LENGTH;
-                    this.notifyObservers(Attribute.EVENT_INVALID);
                     return false;
                 } else if (this.value !== undefined && this.pattern !== undefined && this.pattern.test(this.value) === false) {
                     this.error = String.ERROR_PATTERN_NOT_MATCH;
-                    this.notifyObservers(Attribute.EVENT_INVALID);
                     return false;
                 }
                 return true;

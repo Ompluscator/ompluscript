@@ -113,18 +113,15 @@ module Ompluscript.Model.Attribute {
             if (super.validate()) {
                 if (this.value !== undefined && isNaN(this.getDateObject().getTime())) {
                     this.error = Attribute.ERROR_WRONG_TYPE;
-                    this.notifyObservers(Attribute.EVENT_INVALID);
                     return false;
                 }
                 if (this.value !== undefined && this.minimum !== undefined
                     && this.getDateObject().getTime() < this.minimumObject.getTime()) {
                     this.error = Attribute.ERROR_BELOW_MINIMUM;
-                    this.notifyObservers(Attribute.EVENT_INVALID);
                     return false;
                 } else if (this.value !== undefined && this.maximum !== undefined
                     && this.getDateObject().getTime() > this.maximumObject.getTime()) {
                     this.error = Attribute.ERROR_OVER_MAXIMUM;
-                    this.notifyObservers(Attribute.EVENT_INVALID);
                     return false;
                 }
                 return true;

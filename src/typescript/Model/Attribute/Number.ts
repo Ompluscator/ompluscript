@@ -104,22 +104,18 @@ module Ompluscript.Model.Attribute {
                     if (this.minimum !== undefined) {
                         if (this.includeMinimum === false && this.value <= this.minimum) {
                             this.error = Attribute.ERROR_BELOW_MINIMUM;
-                            this.notifyObservers(Attribute.EVENT_INVALID);
                             return false;
                         } else if (this.includeMinimum === true && this.value < this.minimum) {
                             this.error = Attribute.ERROR_BELOW_MINIMUM;
-                            this.notifyObservers(Attribute.EVENT_INVALID);
                             return false;
                         }
                     }
                     if (this.maximum !== undefined) {
                         if (this.includeMaximum === false && this.value >= this.maximum) {
                             this.error = Attribute.ERROR_OVER_MAXIMUM;
-                            this.notifyObservers(Attribute.EVENT_INVALID);
                             return false;
                         } else if (this.includeMaximum === true && this.value > this.maximum) {
                             this.error = Attribute.ERROR_OVER_MAXIMUM;
-                            this.notifyObservers(Attribute.EVENT_INVALID);
                             return false;
                         }
                     }

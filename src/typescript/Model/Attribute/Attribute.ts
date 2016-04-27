@@ -1,5 +1,7 @@
 /// <reference path="../../Core/Interfaces/IBase.ts" />
-/// <reference path="../../Core/AbstractClasses/Observable.ts" />
+/// <reference path="../../Core/Observer/Observable.ts" />
+/// <reference path="../Event/OnUpdateAttribute.ts" />
+/// <reference path="../Event/OnInvalidAttribute.ts" />
 
 /**
  * Module that contains attributes' classes.
@@ -10,7 +12,9 @@ module Ompluscript.Model.Attribute {
     "use strict";
 
     import IBase = Ompluscript.Core.Interfaces.IBase;
-    import Observable = Ompluscript.Core.Interfaces.Observable;
+    import Observable = Ompluscript.Core.Observer.Observable;
+    import OnUpdateAttribute = Ompluscript.Model.Event.OnUpdateAttribute;
+    import OnInvalidAttribute = Ompluscript.Model.Event.OnInvalidAttribute;
 
     /**
      * Class that contains functionality for single attribute.
@@ -38,16 +42,6 @@ module Ompluscript.Model.Attribute {
          * @type {number} ERROR_OVER_MAXIMUM Error code for invalid maximum value.
          */
         public static ERROR_OVER_MAXIMUM: number = 202;
-
-        /**
-         * @type {number} EVENT_UPDATE Event that occurs when value is updated.
-         */
-        public static EVENT_UPDATE: number = 1001;
-
-        /**
-         * @type {number} EVENT_INVALID Event that occurs when value is invalid.
-         */
-        public static EVENT_INVALID: number = 1002;
 
         /**
          * @type {string} TYPE_BOOLEAN Boolean type name.
@@ -159,28 +153,31 @@ module Ompluscript.Model.Attribute {
         /**
          * Method that sets value of attribute
          *
-         * @param {T} value Attribute's value
+         * @param {any} value Attribute's value
          */
         public setValue(value: T): void {
+            let oldValue: T = this.value;
             this.value = value;
-            this.notifyObservers(Attribute.EVENT_UPDATE);
+            this.fireOnUpdateAttributeEvent(oldValue, this.value);
+            if (!this.validate()) {
+                this.fireOnInvalidAttributeEvent(this.value, this.error);
+            }
         }
 
         /**
          * Method that returns value of attribute
          * 
-         * @returns {T} Attribute's value
+         * @returns {any} Attribute's value
          */
         public getValue(): T {
             return this.value;
         }
 
         /**
-         * Method that clears value from attrbiute
+         * Method that clears value from attribute
          */
         public resetValue(): void {
-            this.value = undefined;
-            this.notifyObservers(Attribute.EVENT_UPDATE);
+            this.setValue(undefined);
         }
 
         /**
@@ -220,11 +217,9 @@ module Ompluscript.Model.Attribute {
             this.error = undefined;
             if (typeof this.value !== this.type && this.value !== undefined) {
                 this.error = Attribute.ERROR_WRONG_TYPE;
-                this.notifyObservers(Attribute.EVENT_INVALID);
                 return false;
             } else if (this.required === true && typeof this.value !== this.type) {
                 this.error = Attribute.ERROR_IS_REQUIRED;
-                this.notifyObservers(Attribute.EVENT_INVALID);
                 return false;
             }
             return true;
@@ -243,6 +238,16 @@ module Ompluscript.Model.Attribute {
                 value: this.value,
             };
             return trace;
+        }
+
+        protected fireOnUpdateAttributeEvent(oldValue: T, newValue: T): void {
+            let event: OnUpdateAttribute = new OnUpdateAttribute(this, oldValue, newValue);
+            this.notifyObservers(event);
+        }
+
+        protected fireOnInvalidAttributeEvent(value: T, validationCode: number): void {
+            let event: OnInvalidAttribute = new OnInvalidAttribute(this, value, validationCode);
+            this.notifyObservers(event);
         }
 
     }

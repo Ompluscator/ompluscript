@@ -1,4 +1,6 @@
 /// <reference path="Choice.ts" />
+/// <reference path="../Event/OnUpdateAttribute.ts" />
+/// <reference path="../Event/OnInvalidAttribute.ts" />
 
 /**
  * Module that contains Attribute classes.
@@ -31,6 +33,23 @@ module Ompluscript.Model.Attribute {
         }
 
         /**
+         * Method that sets value of attribute
+         *
+         * @param {number[]} value Attribute's value
+         */
+        public setValue(value: number[]): void {
+            let oldValue: number[] = this.value;
+            if (Array.isArray(this.value) === true) {
+                oldValue = this.value.slice(0);
+            }
+            this.value = value;
+            this.fireOnUpdateAttributeEvent(oldValue, this.value);
+            if (!this.validate()) {
+                this.fireOnInvalidAttributeEvent(this.value, this.error);
+            }
+        }
+
+        /**
          * Method that validates number value.
          *
          * @return {boolean} Validation result
@@ -39,18 +58,15 @@ module Ompluscript.Model.Attribute {
             this.error = undefined;
             if (Array.isArray(this.value) === false && this.value !== undefined) {
                 this.error = Attribute.ERROR_WRONG_TYPE;
-                this.notifyObservers(Attribute.EVENT_INVALID);
                 return false;
             } else if (this.required === true &&  (Array.isArray(this.value) === false || this.value.length === 0)) {
                 this.error = Attribute.ERROR_IS_REQUIRED;
-                this.notifyObservers(Attribute.EVENT_INVALID);
                 return false;
             }
             if (Array.isArray(this.value) === true) {
                 for (let i in this.value) {
                     if (this.choices.indexOf(this.value[i]) === -1) {
                         this.error = Choice.ERROR_VALUE_NOT_ALLOWED;
-                        this.notifyObservers(Attribute.EVENT_INVALID);
                         return false;
                     }
                 }

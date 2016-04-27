@@ -39,7 +39,6 @@ module Ompluscript.Model.Attribute {
             if (super.validate()) {
                 if (this.value !== undefined && this.choices.indexOf(this.value) === -1) {
                     this.error = Choice.ERROR_VALUE_NOT_ALLOWED;
-                    this.notifyObservers(Attribute.EVENT_INVALID);
                     return false;
                 }
                 return true;

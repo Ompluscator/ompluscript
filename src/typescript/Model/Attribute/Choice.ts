@@ -1,4 +1,5 @@
 /// <reference path="Attribute.ts" />
+/// <reference path="../Event/OnUpdateChoices.ts" />
 
 /**
  * Module that contains Attribute classes.
@@ -7,6 +8,7 @@
  */
 module Ompluscript.Model.Attribute {
     "use strict";
+    import OnUpdateChoices = Ompluscript.Model.Event.OnUpdateChoices;
 
     /**
      * Class that contains functionality for Choice attribute.
@@ -24,11 +26,6 @@ module Ompluscript.Model.Attribute {
          * @type {number} ERROR_VALUE_NOT_ALLOWED Error code when not allowed value.
          */
         public static ERROR_VALUE_NOT_ALLOWED: number = 203;
-
-        /**
-         * @type {number} EVENT_UPDATE_CHOICES Event that occurs when choices are updated.
-         */
-        public static EVENT_UPDATE_CHOICES: number = 1011;
 
         /**
          * @type {number[]} values Allowed values for choice
@@ -66,8 +63,9 @@ module Ompluscript.Model.Attribute {
          * @param {number[]} values Allowed values
          */
         public setChoices(values: number[]): void {
+            let oldChoices: number[] = this.choices.slice(0);
             this.choices = values;
-            this.notifyObservers(Choice.EVENT_UPDATE_CHOICES);
+            this.fireOnUpdateChoicesEvent(oldChoices, this.choices);
         }
 
         /**
@@ -79,6 +77,11 @@ module Ompluscript.Model.Attribute {
             let trace: Object = super.getStackTrace();
             trace[Choice.PARAMETER_CHOICES] = this.choices;
             return trace;
+        }
+
+        protected fireOnUpdateChoicesEvent(oldChoices: number[], newChoices: number[]): void {
+            let event: OnUpdateChoices = new OnUpdateChoices(this, oldChoices, newChoices);
+            this.notifyObservers(event);
         }
 
     }

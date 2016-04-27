@@ -7,15 +7,19 @@ describe("SingleChoice class tests - not required", function() {
     var undefined;
     var required = false;
 
-    var Attribute = Ompluscript.Model.Attribute.Attribute;
     var Choice = Ompluscript.Model.Attribute.Choice;
     var SingleChoice = Ompluscript.Model.Attribute.SingleChoice;
+    var OnUpdateAttribute = Ompluscript.Model.Event.OnUpdateAttribute;
+    var OnInvalidAttribute = Ompluscript.Model.Event.OnInvalidAttribute;
+    var OnUpdateChoices = Ompluscript.Model.Event.OnUpdateChoices;
 
     beforeAll(function() {
         singleChoiceObject = new SingleChoice(name, undefined, required, choices);
     });
 
     beforeEach(function() {
+        singleChoiceObject.setValue(undefined);
+        singleChoiceObject.setChoices(choices);
         spyOn(singleChoiceObject, 'notifyObservers');
     });
 
@@ -33,50 +37,52 @@ describe("SingleChoice class tests - not required", function() {
     });
 
     it("validate setting up choices", function() {
+        var onUpdateChoices = new OnUpdateChoices(singleChoiceObject, choices, []);
+        
         singleChoiceObject.setChoices([]);
 
         expect(singleChoiceObject.getChoices()).toEqual([]);
-
-        singleChoiceObject.setChoices(choices);
-
-        expect(singleChoiceObject.getChoices()).toEqual(choices);
-        expect(singleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Choice.EVENT_UPDATE_CHOICES]);
-        expect(singleChoiceObject.notifyObservers.calls.argsFor(1)).toEqual([Choice.EVENT_UPDATE_CHOICES]);
-        expect(singleChoiceObject.notifyObservers.calls.count()).toBe(2);
+        expect(singleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([onUpdateChoices]);
+        expect(singleChoiceObject.notifyObservers.calls.count()).toBe(1);
     });
 
     it("validate undefined value", function() {
+        var onUpdateAttribute = new OnUpdateAttribute(singleChoiceObject, undefined, undefined);
+        
         singleChoiceObject.resetValue();
 
         expect(singleChoiceObject.getValue()).toBeUndefined();
         expect(singleChoiceObject.validate()).toBeTruthy();
         expect(singleChoiceObject.getError()).toBeUndefined();
-        expect(singleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(singleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([onUpdateAttribute]);
         expect(singleChoiceObject.notifyObservers.calls.count()).toBe(1);
     });
 
     it("validate valid value", function() {
         var value = 1;
+        var onUpdateAttribute = new OnUpdateAttribute(singleChoiceObject, undefined, value);
 
         singleChoiceObject.setValue(value);
 
         expect(singleChoiceObject.getValue()).toBe(value);
         expect(singleChoiceObject.validate()).toBeTruthy();
         expect(singleChoiceObject.getError()).toBeUndefined();
-        expect(singleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(singleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([onUpdateAttribute]);
         expect(singleChoiceObject.notifyObservers.calls.count()).toBe(1);
     });
 
     it("validate invalid value", function() {
         var value = 4;
+        var onUpdateAttribute = new OnUpdateAttribute(singleChoiceObject, undefined, value);
+        var onInvalidAttribute = new OnInvalidAttribute(singleChoiceObject, value, Choice.ERROR_VALUE_NOT_ALLOWED);
 
         singleChoiceObject.setValue(value);
 
         expect(singleChoiceObject.getValue()).toBe(value);
         expect(singleChoiceObject.validate()).toBeFalsy();
         expect(singleChoiceObject.getError()).toBe(Choice.ERROR_VALUE_NOT_ALLOWED);
-        expect(singleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
-        expect(singleChoiceObject.notifyObservers.calls.argsFor(1)).toEqual([Attribute.EVENT_INVALID]);
+        expect(singleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([onUpdateAttribute]);
+        expect(singleChoiceObject.notifyObservers.calls.argsFor(1)).toEqual([onInvalidAttribute]);
         expect(singleChoiceObject.notifyObservers.calls.count()).toBe(2);
     });
 });
@@ -94,12 +100,17 @@ describe("SingleChoice class tests - required", function() {
     var Attribute = Ompluscript.Model.Attribute.Attribute;
     var Choice = Ompluscript.Model.Attribute.Choice;
     var SingleChoice = Ompluscript.Model.Attribute.SingleChoice;
+    var OnUpdateAttribute = Ompluscript.Model.Event.OnUpdateAttribute;
+    var OnInvalidAttribute = Ompluscript.Model.Event.OnInvalidAttribute;
+    var OnUpdateChoices = Ompluscript.Model.Event.OnUpdateChoices;
 
     beforeAll(function() {
         singleChoiceObject = new SingleChoice(name, value, required, choices);
     });
 
     beforeEach(function() {
+        singleChoiceObject.setValue(value);
+        singleChoiceObject.setChoices(choices);
         spyOn(singleChoiceObject, 'notifyObservers');
     });
 
@@ -117,38 +128,44 @@ describe("SingleChoice class tests - required", function() {
     });
 
     it("validate undefined value", function() {
+        var onUpdateAttribute = new OnUpdateAttribute(singleChoiceObject, value, undefined);
+        var onInvalidAttribute = new OnInvalidAttribute(singleChoiceObject, undefined, Attribute.ERROR_IS_REQUIRED);
+
         singleChoiceObject.resetValue();
 
         expect(singleChoiceObject.getValue()).toBeUndefined();
         expect(singleChoiceObject.validate()).toBeFalsy();
         expect(singleChoiceObject.getError()).toBe(Attribute.ERROR_IS_REQUIRED);
-        expect(singleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
-        expect(singleChoiceObject.notifyObservers.calls.argsFor(1)).toEqual([Attribute.EVENT_INVALID]);
+        expect(singleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([onUpdateAttribute]);
+        expect(singleChoiceObject.notifyObservers.calls.argsFor(1)).toEqual([onInvalidAttribute]);
         expect(singleChoiceObject.notifyObservers.calls.count()).toBe(2);
     });
 
     it("validate valid value", function() {
-        var value = 1;
+        var newValue = 1;
+        var onUpdateAttribute = new OnUpdateAttribute(singleChoiceObject, value, newValue);
 
-        singleChoiceObject.setValue(value);
+        singleChoiceObject.setValue(newValue);
 
-        expect(singleChoiceObject.getValue()).toBe(value);
+        expect(singleChoiceObject.getValue()).toBe(newValue);
         expect(singleChoiceObject.validate()).toBeTruthy();
         expect(singleChoiceObject.getError()).toBeUndefined();
-        expect(singleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
+        expect(singleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([onUpdateAttribute]);
         expect(singleChoiceObject.notifyObservers.calls.count()).toBe(1);
     });
 
     it("validate invalid value", function() {
-        var value = 4;
+        var newValue = 4;
+        var onUpdateAttribute = new OnUpdateAttribute(singleChoiceObject, value, newValue);
+        var onInvalidAttribute = new OnInvalidAttribute(singleChoiceObject, newValue, Choice.ERROR_VALUE_NOT_ALLOWED);
 
-        singleChoiceObject.setValue(value);
+        singleChoiceObject.setValue(newValue);
 
-        expect(singleChoiceObject.getValue()).toBe(value);
+        expect(singleChoiceObject.getValue()).toBe(newValue);
         expect(singleChoiceObject.validate()).toBeFalsy();
         expect(singleChoiceObject.getError()).toBe(Choice.ERROR_VALUE_NOT_ALLOWED);
-        expect(singleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([Attribute.EVENT_UPDATE]);
-        expect(singleChoiceObject.notifyObservers.calls.argsFor(1)).toEqual([Attribute.EVENT_INVALID]);
+        expect(singleChoiceObject.notifyObservers.calls.argsFor(0)).toEqual([onUpdateAttribute]);
+        expect(singleChoiceObject.notifyObservers.calls.argsFor(1)).toEqual([onInvalidAttribute]);
         expect(singleChoiceObject.notifyObservers.calls.count()).toBe(2);
     });
 });
