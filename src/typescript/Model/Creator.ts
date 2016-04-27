@@ -27,45 +27,121 @@ module Ompluscript.Model {
      *
      * @class Creator
      */
-    class Creator {
+    export class Creator {
 
+        /**
+         * @type {string} HAS_WRONG_VALUE Message for wrong value of definition.
+         */
         public static HAS_WRONG_VALUE: string = " has wrong value.";
 
+        /**
+         * @type {string} MUST_BE_STRING Message for definition that should be string.
+         */
         public static MUST_BE_STRING: string = " must be a string.";
 
+        /**
+         * @type {string} MUST_BE_BOOLEAN_OR_UNDEFINED Message for definition that should be boolean or undefined.
+         */
         public static MUST_BE_BOOLEAN_OR_UNDEFINED: string = " must be a boolean or undefined.";
 
+        /**
+         * @type {string} MUST_BE_NUMBER_OR_UNDEFINED Message for definition that should be number or undefined.
+         */
         public static MUST_BE_NUMBER_OR_UNDEFINED: string = " must be a number or undefined.";
 
+        /**
+         * @type {string} MUST_BE_REGEX_OR_UNDEFINED Message for definition that should be regex object or undefined.
+         */
         public static MUST_BE_REGEX_OR_UNDEFINED: string = " must be a regex object or undefined.";
 
+        /**
+         * @type {string} MUST_BE_DATETIME_OR_UNDEFINED Message for definition that should be date format or undefined.
+         */
         public static MUST_BE_DATETIME_OR_UNDEFINED: string = " must be in datetime format or undefined.";
 
+        /**
+         * @type {string} MUST_BE_ARRAY_OR_UNDEFINED Message for definition that should be array object or undefined.
+         */
         public static MUST_BE_ARRAY_OR_UNDEFINED: string = " must be an array object or undefined.";
 
-        public static MUST_BE_GREATER: string = " must be greater than .";
+        /**
+         * @type {string} MUST_BE_GREATER Message for definition that should greater than other.
+         */
+        public static MUST_BE_GREATER: string = " must be greater than ";
 
+        /**
+         * @type {Creator} instance Instance for singleton pattern
+         */
         private static instance: Creator = new Creator();
-        
-        private definition: Object[];
 
+        /**
+         * @type {Object} definition Contains a map for all definitions
+         */
+        private definition: Object;
+
+        /**
+         * @type {Object[]} errors Contains errors for all definitions
+         */
         private errors: Object[];
 
+        /**
+         * Method for singleton pattern
+         *
+         * @return {Creator} Instance for singleton pattern
+         */
         public static getInstance(): Creator {
             return Creator.instance;
         }
-        
+
+        /**
+         * Class constructor
+         *
+         * Initializes definition map and errors list
+         */
         constructor() {
+            this.definition = {};
+            this.errors = [];
+        }
+
+        /**
+         * Method that defines if there are errors in defintions
+         *
+         * @return {boolean} Defines if there are errors in defintions
+         */
+        public hasErrors(): boolean {
+            return this.errors.length > 0;
+        }
+
+        /**
+         * Method that returns all errors in definitions
+         *
+         * @return {Object[]} All errors in definitions
+         */
+        public getErrors(): Object[] {
+            return this.errors;
+        }
+
+        /**
+         * Method that resets map of definition and error list
+         */
+        public reset(): void {
             this.definition = [];
             this.errors = [];
         }
 
-        public define(name: string, type: number, definition: Object[] = []): void {
+        /**
+         * Method that defines different types of containers
+         *
+         * @param {string} name Name of container
+         * @param {string} type Type of container
+         * @param {Object[]} definition Definition for container
+         */
+        public define(name: string, type: string, definition: Object[] = []): void {
             let errors: string[] = [];
             for (let i in definition) {
                 if (definition.hasOwnProperty(i)) {
                     try {
-                        this.checkConfiguration(definition[i]);
+                        errors.push.apply(errors, this.checkConfiguration(definition[i]));
                     } catch (error) {
                         errors.push(JSON.parse(error.message));
                     }
@@ -73,7 +149,7 @@ module Ompluscript.Model {
             }
             if (errors.length) {
                 this.errors.push({
-                    attributes: definition,
+                    definition: definition,
                     errors: errors,
                     name: name,
                     type: type,
@@ -87,7 +163,12 @@ module Ompluscript.Model {
             }
         }
 
-        public create(name: string, values: Object = {}): Container {
+        /**
+         * Method that creates defined containers
+         *
+         * @param {string} name Name of container
+         */
+        public create(name: string): Container {
             if (this.definition.hasOwnProperty(name)) {
                 if (this.definition[name].hasOwnProperty("type")) {
                     if (this.definition[name]["type"] === Container.CONTAINER_MODEL) {
@@ -152,9 +233,6 @@ module Ompluscript.Model {
          */
         private checkAttributeConfiguration(name: string, required: boolean): string[] {
             let errors: string[] = [];
-            if (required !== true) {
-                required = false;
-            }
             if (typeof name !== "string") {
                 errors.push(Attribute.PARAMETER_NAME + Creator.MUST_BE_STRING);
             }
@@ -183,10 +261,16 @@ module Ompluscript.Model {
             if (maximum !== undefined && typeof maximum !== "number") {
                 errors.push(Attribute.PARAMETER_MAXIMUM + Creator.MUST_BE_NUMBER_OR_UNDEFINED);
             }
-            if (minimum !== undefined && maximum !== undefined) {
+            if (includeMinimum !== undefined && typeof includeMinimum !== "boolean") {
+                errors.push(NumberAttribute.PARAMETER_INCLUDE_MINIMUM + Creator.MUST_BE_BOOLEAN_OR_UNDEFINED);
+            }
+            if (includeMaximum !== undefined && typeof includeMaximum !== "boolean") {
+                errors.push(NumberAttribute.PARAMETER_INCLUDE_MAXIMUM + Creator.MUST_BE_BOOLEAN_OR_UNDEFINED);
+            }
+            if (typeof minimum === "number" && typeof maximum === "number") {
                 if (includeMinimum === true && includeMaximum === true && minimum > maximum) {
                     errors.push(Attribute.PARAMETER_MAXIMUM + Creator.MUST_BE_GREATER + Attribute.PARAMETER_MINIMUM);
-                } else if ((includeMinimum === false || includeMaximum === false) && minimum >= maximum) {
+                } else if ((includeMinimum !== true || includeMaximum !== true) && minimum >= maximum) {
                     errors.push(Attribute.PARAMETER_MAXIMUM + Creator.MUST_BE_GREATER + Attribute.PARAMETER_MINIMUM);
                 }
             }
@@ -211,7 +295,7 @@ module Ompluscript.Model {
             if (maximumLength !== undefined && typeof maximumLength !== "number") {
                 errors.push(StringAttribute.PARAMETER_MAXIMUM_LENGTH + Creator.MUST_BE_NUMBER_OR_UNDEFINED);
             }
-            if (maximumLength !== undefined && minimumLength !== undefined && minimumLength > maximumLength) {
+            if (typeof maximumLength === "number" && typeof minimumLength === "number" && minimumLength > maximumLength) {
                 errors.push(StringAttribute.PARAMETER_MAXIMUM_LENGTH +
                     Creator.MUST_BE_GREATER + StringAttribute.PARAMETER_MINIMUM_LENGTH);
             }
@@ -233,12 +317,14 @@ module Ompluscript.Model {
             let errors: string[] = this.checkAttributeConfiguration(name, required);
             let minimumObject: Date = undefined;
             let maximumObject: Date = undefined;
-            if (minimum !== undefined && isNaN(new Date(minimum).getTime())) {
+            if ((minimum !== undefined && typeof minimum !== "string") || (
+                typeof minimum === "string" && isNaN(new Date(minimum).getTime()))) {
                 errors.push(Attribute.PARAMETER_MINIMUM + Creator.MUST_BE_DATETIME_OR_UNDEFINED);
             } else {
                 minimumObject = new Date(minimum);
             }
-            if (maximum !== undefined && isNaN(new Date(maximum).getTime())) {
+            if ((maximum !== undefined && typeof maximum !== "string") || (
+                typeof maximum === "string" && isNaN(new Date(maximum).getTime()))) {
                 errors.push(Attribute.PARAMETER_MAXIMUM + Creator.MUST_BE_DATETIME_OR_UNDEFINED);
             } else {
                 maximumObject = new Date(maximum);
@@ -259,19 +345,31 @@ module Ompluscript.Model {
         private checkChoiceConfiguration(name: string, required: boolean, choices: number[]): string[] {
             let errors: string[] = this.checkAttributeConfiguration(name, required);
             if (choices !== undefined && !Array.isArray(choices)) {
-                errors.push(Attribute.PARAMETER_MAXIMUM + Creator.MUST_BE_GREATER + Attribute.PARAMETER_MINIMUM);
+                errors.push(Choice.PARAMETER_CHOICES + Creator.MUST_BE_ARRAY_OR_UNDEFINED);
             }
             return errors;
         }
 
     }
 
-    export function define(name: string, type: number, definition: Object[] = []): void {
+    /**
+     * Method that defines different types of containers
+     *
+     * @param {string} name Name of container
+     * @param {string} type Type of container
+     * @param {Object[]} definition Definition for container
+     */
+    export function define(name: string, type: string, definition: Object[] = []): void {
         Creator.getInstance().define(name, type, definition);
     }
 
-    export function create(name: string, values: Object = []): Container {
-        return Creator.getInstance().create(name, values);
+    /**
+     * Method that creates defined containers
+     *
+     * @param {string} name Name of container
+     */
+    export function create(name: string): Container {
+        return Creator.getInstance().create(name);
     }
 }
 

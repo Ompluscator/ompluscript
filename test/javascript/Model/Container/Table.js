@@ -23,7 +23,7 @@ describe("Table class tests", function() {
     var maximum = [6, undefined, 6, "1/13/1985"];
     var additional = [/value/, undefined, true, undefined];
     var required = true;
-    var definiton;
+    var definition;
     var dummy = {
         test: function (index, model) {}
     };
