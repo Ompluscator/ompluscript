@@ -1208,15 +1208,293 @@ var __extends = (this && this.__extends) || function (d, b) {
 (function (Ompluscript) {
     var View;
     (function (View) {
+        var Component;
+        (function (Component_1) {
+            "use strict";
+            var Observable = Ompluscript.Core.Observer.Observable;
+            var Component = (function (_super) {
+                __extends(Component, _super);
+                function Component(name) {
+                    _super.call(this);
+                    this.name = name;
+                    this.htmlElement = undefined;
+                    this.initializeHtmlElement();
+                }
+                Component.prototype.hasClass = function (name) {
+                    var classes = this.extractClasses();
+                    return classes.indexOf(name) > -1;
+                };
+                Component.prototype.addClass = function (name) {
+                    if (!this.hasClass(name)) {
+                        var classes = this.extractClasses();
+                        classes.push(name);
+                        var value = classes.join(" ").trim();
+                        this.setAttribute(Component.ATTRIBUTE_CLASS, value);
+                    }
+                };
+                Component.prototype.removeClass = function (name) {
+                    if (this.hasClass(name)) {
+                        var classes = this.extractClasses();
+                        var index = classes.indexOf(name);
+                        classes.splice(index, 1);
+                        var value = classes.join(" ").trim();
+                        this.setAttribute(Component.ATTRIBUTE_CLASS, value);
+                    }
+                };
+                Component.prototype.toggleClass = function (name) {
+                    if (this.hasClass(name)) {
+                        this.removeClass(name);
+                    }
+                    else {
+                        this.addClass(name);
+                    }
+                };
+                Component.prototype.setId = function (id) {
+                    this.setAttribute(Component.ATTRIBUTE_ID, id);
+                };
+                Component.prototype.getId = function () {
+                    return this.getAttribute(Component.ATTRIBUTE_ID);
+                };
+                Component.prototype.setAttribute = function (name, value) {
+                    this.htmlElement.setAttribute(name, value);
+                };
+                Component.prototype.getAttribute = function (name) {
+                    return this.htmlElement.getAttribute(name);
+                };
+                Component.prototype.getName = function () {
+                    return this.name;
+                };
+                Component.prototype.getStackTrace = function () {
+                    var trace = {
+                        html: this.htmlElement.outerHTML.replace(this.htmlElement.innerHTML, ""),
+                    };
+                    return trace;
+                };
+                Component.prototype.dispose = function () {
+                    if (this.htmlElement instanceof HTMLElement) {
+                        var parent_1 = this.htmlElement.parentElement;
+                        if (parent_1 instanceof HTMLElement) {
+                            parent_1.removeChild(this.htmlElement);
+                        }
+                    }
+                };
+                Component.prototype.extractClasses = function () {
+                    var classes = this.getAttribute(Component.ATTRIBUTE_CLASS).split(" ");
+                    if (classes === [""]) {
+                        classes = [];
+                    }
+                    return classes;
+                };
+                Component.ATTRIBUTE_ID = "id";
+                Component.ATTRIBUTE_CLASS = "class";
+                return Component;
+            }(Observable));
+            Component_1.Component = Component;
+        })(Component = View.Component || (View.Component = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Component;
+        (function (Component) {
+            "use strict";
+            var Layout = (function (_super) {
+                __extends(Layout, _super);
+                function Layout(name) {
+                    _super.call(this, name);
+                }
+                Layout.prototype.addChild = function (component) {
+                    this.children.push(component);
+                };
+                Layout.prototype.removeChild = function (component) {
+                    var index = this.children.indexOf(component);
+                    if (index > -1) {
+                        this.children.splice(index, 1);
+                    }
+                };
+                Layout.prototype.clearChildren = function () {
+                    this.children = [];
+                };
+                Layout.prototype.render = function () {
+                    this.clear();
+                    for (var i = 0; i < this.children.length; i++) {
+                        if (this.children[i] !== undefined) {
+                            this.appendChild(this.children[i]);
+                        }
+                    }
+                    return this.htmlElement;
+                };
+                return Layout;
+            }(Component.Component));
+            Component.Layout = Layout;
+        })(Component = View.Component || (View.Component = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Component;
+        (function (Component) {
+            "use strict";
+            var Container = (function (_super) {
+                __extends(Container, _super);
+                function Container(name, layout) {
+                    _super.call(this, name);
+                    this.layout = layout;
+                }
+                Container.prototype.addChild = function (component) {
+                    _super.prototype.addChild.call(this, component);
+                    this.layout.addChild(component);
+                };
+                Container.prototype.removeChild = function (component) {
+                    _super.prototype.removeChild.call(this, component);
+                    this.layout.removeChild(component);
+                };
+                Container.prototype.clearChildren = function () {
+                    _super.prototype.clearChildren.call(this);
+                    this.layout.clearChildren();
+                };
+                Container.prototype.render = function () {
+                    this.clear();
+                    this.appendChild(this.layout);
+                    return this.htmlElement;
+                };
+                Container.prototype.clear = function () {
+                    while (this.htmlElement.firstChild) {
+                        this.htmlElement.removeChild(this.htmlElement.firstChild);
+                    }
+                };
+                Container.prototype.appendChild = function (component) {
+                    this.htmlElement.appendChild(component.render());
+                };
+                return Container;
+            }(Component.Layout));
+            Component.Container = Container;
+        })(Component = View.Component || (View.Component = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Component;
+        (function (Component) {
+            "use strict";
+            var Field = (function (_super) {
+                __extends(Field, _super);
+                function Field(name) {
+                    _super.call(this, name);
+                }
+                Field.prototype.render = function () {
+                    return this.htmlElement;
+                };
+                return Field;
+            }(Component.Component));
+            Component.Field = Field;
+        })(Component = View.Component || (View.Component = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Event;
+        (function (Event_3) {
+            "use strict";
+            var Event = Ompluscript.Core.Observer.Event;
+            var OnUpdateInput = (function (_super) {
+                __extends(OnUpdateInput, _super);
+                function OnUpdateInput(sender, value) {
+                    _super.call(this, sender, OnUpdateInput.ON_UPDATE_INPUT);
+                    this.value = value;
+                }
+                OnUpdateInput.prototype.getValue = function () {
+                    return this.value;
+                };
+                OnUpdateInput.ON_UPDATE_INPUT = "onUpdateInput";
+                return OnUpdateInput;
+            }(Event));
+            Event_3.OnUpdateInput = OnUpdateInput;
+        })(Event = View.Event || (View.Event = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
         var Field;
         (function (Field_1) {
             "use strict";
-            var Field = (function () {
-                function Field() {
+            var Field = Ompluscript.View.Component.Field;
+            var AttributeEvent = Ompluscript.Model.Event.AttributeEvent;
+            var OnUpdateAttribute = Ompluscript.Model.Event.OnUpdateAttribute;
+            var OnUpdateInput = Ompluscript.View.Event.OnUpdateInput;
+            var Input = (function (_super) {
+                __extends(Input, _super);
+                function Input(name, type, attribute) {
+                    if (attribute === void 0) { attribute = undefined; }
+                    _super.call(this, name);
+                    this.type = type;
+                    this.attribute = attribute;
+                    if (attribute !== undefined) {
+                        this.attribute.addObserverByType(this, AttributeEvent.ON_UPDATE_ATTRIBUTE);
+                    }
+                    this.addObserverByType(this, OnUpdateInput.ON_UPDATE_INPUT);
                 }
-                return Field;
-            }());
-            Field_1.Field = Field;
+                Input.prototype.update = function (event) {
+                    if (event instanceof OnUpdateAttribute) {
+                        var onUpdateAttribute = event;
+                        this.updateValue(onUpdateAttribute.getNewValue());
+                    }
+                    else if (event instanceof OnUpdateInput) {
+                        var onUpdateInput = event;
+                        this.attribute.setValue(onUpdateInput.getValue());
+                    }
+                };
+                Input.prototype.setValue = function (value) {
+                    this.updateValue(value);
+                    this.attribute.setValue(value);
+                };
+                Input.prototype.initializeHtmlElement = function () {
+                    var that = this;
+                    that.htmlElement = document.createElement(Input.FIELD_INPUT);
+                    that.setAttribute(Input.ATTRIBUTE_TYPE, that.type);
+                    var listener = function () {
+                        that.fireOnUpdateInputEvent(that.getAttribute(Input.ATTRIBUTE_VALUE));
+                    };
+                    that.htmlElement.addEventListener(Input.EVENT_KEY_PRESS, listener, false);
+                };
+                Input.prototype.updateValue = function (value) {
+                    this.setAttribute(Input.ATTRIBUTE_VALUE, value);
+                };
+                Input.prototype.fireOnUpdateInputEvent = function (value) {
+                    var event = new OnUpdateInput(this, value);
+                    this.notifyObservers(event);
+                };
+                Input.FIELD_INPUT = "input";
+                Input.ATTRIBUTE_TYPE = "type";
+                Input.ATTRIBUTE_VALUE = "value";
+                Input.EVENT_KEY_PRESS = "keypress";
+                Input.INPUT_TEXT = "text";
+                return Input;
+            }(Field));
+            Field_1.Input = Input;
+        })(Field = View.Field || (View.Field = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Field;
+        (function (Field) {
+            "use strict";
+            var TextInput = (function (_super) {
+                __extends(TextInput, _super);
+                function TextInput(name, stringAttribute) {
+                    if (stringAttribute === void 0) { stringAttribute = undefined; }
+                    _super.call(this, name, Field.Input.INPUT_TEXT, stringAttribute);
+                }
+                return TextInput;
+            }(Field.Input));
+            Field.TextInput = TextInput;
         })(Field = View.Field || (View.Field = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
