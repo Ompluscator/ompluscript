@@ -39,5 +39,4 @@ tasks.xml
 # node & grunt & build #
 ####################
 node_modules
-dist
 .tscache

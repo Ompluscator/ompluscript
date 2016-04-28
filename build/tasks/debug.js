@@ -1,6 +1,6 @@
 module.exports = function (grunt) {
     "use strict";
     
-    grunt.registerTask('debug', ['typescript-process', 'notify:debug']);
+    grunt.registerTask('debug', ['concurrent:base', 'notify:debug']);
 
 };
