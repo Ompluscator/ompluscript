@@ -92,7 +92,7 @@ module Ompluscript.Model.Container {
         public addRow(values: Object): void {
             let model: Model = new Model(this.name, this.definition);
             this.rows.push(model);
-            this.fireOnAddRowToTableEvent(this.rows.length, model);
+            this.fireOnAddRowToTableEvent(this.rows.length - 1, model);
             model.setValue(values);
         }
 

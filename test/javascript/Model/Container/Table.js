@@ -1,4 +1,4 @@
-describe("Table class tests", function() {
+describe("Table class tests - creation", function() {
 
     var undefined;
     var tableObject;
@@ -306,5 +306,55 @@ describe("Table class tests", function() {
         tableObject.each(dummy.test);
         expect(dummy.test.calls.argsFor(0)).toEqual([0, tableObject.getRowByIndex(0)]);
         expect(dummy.test.calls.count()).toBe(1);
+    });
+});
+
+describe("Table class tests - events", function() {
+
+    var tableObject;
+    var definition = [
+        {
+            name: "param",
+            required: true,
+            type: "string",
+        }
+    ];
+
+    var Table = Ompluscript.Model.Container.Table;
+    var OnAddRowToTable = Ompluscript.Model.Event.OnAddRowToTable;
+    var OnClearTable = Ompluscript.Model.Event.OnClearTable;
+    var OnRemoveRowFromTable = Ompluscript.Model.Event.OnRemoveRowFromTable;
+
+    beforeAll(function() {
+        tableObject = new Table(name, definition);
+    });
+
+    beforeEach(function() {
+        tableObject.clearRows();
+        spyOn(tableObject, 'notifyObservers');
+    });
+
+    it("events", function() {
+        tableObject.addRow({"param": "first"});
+        tableObject.addRow({"param": "second"});
+
+        var firstOnAddRowToTable = new OnAddRowToTable(tableObject, 0, tableObject.getRowByIndex(0));
+        var secondOnAddRowToTable = new OnAddRowToTable(tableObject, 1, tableObject.getRowByIndex(1));
+
+        expect(tableObject.notifyObservers.calls.argsFor(0)).toEqual([firstOnAddRowToTable]);
+        expect(tableObject.notifyObservers.calls.argsFor(1)).toEqual([secondOnAddRowToTable]);
+
+        tableObject.removeRowByIndex(0);
+
+        var onRemoveRowFromTable = new OnRemoveRowFromTable(tableObject, 0);
+
+        expect(tableObject.notifyObservers.calls.argsFor(2)).toEqual([onRemoveRowFromTable]);
+
+        tableObject.clearRows();
+
+        var onClearTable = new OnClearTable(tableObject);
+
+        expect(tableObject.notifyObservers.calls.argsFor(3)).toEqual([onClearTable]);
+        expect(tableObject.notifyObservers.calls.count()).toBe(4);
     });
 });
