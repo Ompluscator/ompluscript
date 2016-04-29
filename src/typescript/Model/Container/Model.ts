@@ -170,7 +170,8 @@ module Ompluscript.Model.Container {
             let name: string = definition[Attribute.PARAMETER_NAME];
             let value: boolean = definition[Attribute.PARAMETER_VALUE];
             let required: boolean = definition[Attribute.PARAMETER_REQUIRED];
-            this.attributes[name] = new BooleanAttribute(name, value, required);
+            let mustBeTrue: boolean = definition[BooleanAttribute.PARAMETER_MUST_BE_TRUE];
+            this.attributes[name] = new BooleanAttribute(name, value, required, mustBeTrue);
         }
 
         /**

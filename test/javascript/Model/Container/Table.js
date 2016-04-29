@@ -21,7 +21,7 @@ describe("Table class tests - creation", function() {
     ];
     var minimum = [2, undefined, 2, "1/10/1985"];
     var maximum = [6, undefined, 6, "1/13/1985"];
-    var additional = [/value/, undefined, true, undefined];
+    var additional = [/value/, false, true, undefined];
     var required = true;
     var definition;
     var dummy = {
@@ -45,6 +45,7 @@ describe("Table class tests - creation", function() {
                 name: paramName[1],
                 required: required,
                 type: type[1],
+                mustBeTrue: additional[1],
             },
             {
                 name: paramName[2],
@@ -112,6 +113,7 @@ describe("Table class tests - creation", function() {
                             required: required,
                             type: type[1],
                             value: values[0]["param2"],
+                            mustBeTrue: additional[1],
                         },
                         param3: {
                             name: paramName[2],
@@ -174,6 +176,7 @@ describe("Table class tests - creation", function() {
                             required: required,
                             type: type[1],
                             value: values[0]["param2"],
+                            mustBeTrue: additional[1],
                         },
                         param3: {
                             name: paramName[2],
@@ -215,6 +218,7 @@ describe("Table class tests - creation", function() {
                             required: required,
                             type: type[1],
                             value: values[1]["param2"],
+                            mustBeTrue: additional[1],
                         },
                         param3: {
                             name: paramName[2],
@@ -277,6 +281,7 @@ describe("Table class tests - creation", function() {
                             required: required,
                             type: type[1],
                             value: values[1]["param2"],
+                            mustBeTrue: additional[1],
                         },
                         param3: {
                             name: paramName[2],

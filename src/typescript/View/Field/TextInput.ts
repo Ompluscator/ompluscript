@@ -15,10 +15,28 @@ module Ompluscript.View.Field {
      *
      * @class TextInput
      */
-    export abstract class TextInput extends Input {
+    export class TextInput extends Input {
 
-        constructor(name: string, stringAttribute: String = undefined) {
-            super(name, Input.INPUT_TEXT, stringAttribute);
+        public static EVENT_KEY_PRESS: string = "keypress";
+
+        constructor(name: string, stringAttribute: String = undefined, type: string = Input.INPUT_TEXT) {
+            super(name, stringAttribute, type);
+        }
+
+        public getValue(): string {
+            return this.getAttribute(Input.ATTRIBUTE_VALUE);
+        }
+
+        protected addOnUpdateInputEvent(): void {
+            let that: TextInput = this;
+            let listener: () => void = function(): void {
+                that.fireOnUpdateInputEvent(that.getValue());
+            };
+            that.htmlElement.addEventListener(TextInput.EVENT_KEY_PRESS, listener, false);
+        }
+
+        protected updateValue(value: any): void {
+            this.setAttribute(Input.ATTRIBUTE_VALUE, value);
         }
     }
 

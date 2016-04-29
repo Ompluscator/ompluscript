@@ -72,11 +72,11 @@ module Ompluscript.View.Component {
             return this.getAttribute(Component.ATTRIBUTE_ID);
         }
 
-        public setAttribute(name: string, value: any): void {
+        public setAttribute(name: string, value: string): void {
             this.htmlElement.setAttribute(name, value);
         }
 
-        public getAttribute(name: string): any {
+        public getAttribute(name: string): string {
             return this.htmlElement.getAttribute(name);
         }
 
@@ -97,6 +97,7 @@ module Ompluscript.View.Component {
         public getStackTrace(): Object {
             let trace: Object = {
                 html: this.htmlElement.outerHTML.replace(this.htmlElement.innerHTML, ""),
+                name: this.name,
             };
             return trace;
         }
@@ -116,7 +117,13 @@ module Ompluscript.View.Component {
         public abstract render(): HTMLElement;
 
         protected extractClasses(): string[] {
-            let classes: string[] = this.getAttribute(Component.ATTRIBUTE_CLASS).split(" ");
+            let classes: string[];
+            let classValue: string = this.getAttribute(Component.ATTRIBUTE_CLASS);
+            if (typeof classValue === "string") {
+                classes = this.getAttribute(Component.ATTRIBUTE_CLASS).split(" ");
+            } else {
+                classes = [];
+            }
             if (classes === [""]) {
                 classes = [];
             }

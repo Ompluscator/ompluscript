@@ -56,7 +56,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     this.events = {};
                 }
                 Observable.prototype.addObserverByType = function (observer, type) {
-                    if (this.events.hasOwnProperty(type)) {
+                    if (!this.events.hasOwnProperty(type)) {
                         this.events[type] = [];
                     }
                     this.events[type].push(observer);
@@ -272,11 +272,36 @@ var __extends = (this && this.__extends) || function (d, b) {
             "use strict";
             var Boolean = (function (_super) {
                 __extends(Boolean, _super);
-                function Boolean(name, value, required) {
+                function Boolean(name, value, required, mustBeTrue) {
                     if (value === void 0) { value = undefined; }
                     if (required === void 0) { required = false; }
+                    if (mustBeTrue === void 0) { mustBeTrue = false; }
                     _super.call(this, "boolean", name, value, required);
+                    this.mustBeTrue = false;
+                    if (mustBeTrue === true) {
+                        this.mustBeTrue = true;
+                    }
                 }
+                Boolean.prototype.isMustBeTrue = function () {
+                    return this.mustBeTrue;
+                };
+                Boolean.prototype.validate = function () {
+                    if (_super.prototype.validate.call(this)) {
+                        if (this.value !== true && this.mustBeTrue === true) {
+                            this.error = Boolean.ERROR_MUST_BE_TRUE;
+                            return false;
+                        }
+                        return true;
+                    }
+                    return false;
+                };
+                Boolean.prototype.getStackTrace = function () {
+                    var trace = _super.prototype.getStackTrace.call(this);
+                    trace[Boolean.PARAMETER_MUST_BE_TRUE] = this.mustBeTrue;
+                    return trace;
+                };
+                Boolean.PARAMETER_MUST_BE_TRUE = "mustBeTrue";
+                Boolean.ERROR_MUST_BE_TRUE = 204;
                 return Boolean;
             }(Attribute.Attribute));
             Attribute.Boolean = Boolean;
@@ -770,7 +795,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                     var name = definition[Attribute.PARAMETER_NAME];
                     var value = definition[Attribute.PARAMETER_VALUE];
                     var required = definition[Attribute.PARAMETER_REQUIRED];
-                    this.attributes[name] = new BooleanAttribute(name, value, required);
+                    var mustBeTrue = definition[BooleanAttribute.PARAMETER_MUST_BE_TRUE];
+                    this.attributes[name] = new BooleanAttribute(name, value, required, mustBeTrue);
                 };
                 Model.prototype.addNumber = function (definition) {
                     var name = definition[Attribute.PARAMETER_NAME];
@@ -1005,6 +1031,7 @@ var __extends = (this && this.__extends) || function (d, b) {
         var Model = Ompluscript.Model.Container.Model;
         var Table = Ompluscript.Model.Container.Table;
         var Choice = Ompluscript.Model.Attribute.Choice;
+        var Boolean = Ompluscript.Model.Attribute.Boolean;
         var Creator = (function () {
             function Creator() {
                 this.definition = {};
@@ -1070,6 +1097,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 var type = attribute[Attribute.PARAMETER_TYPE];
                 var name = attribute[Attribute.PARAMETER_NAME];
                 var required = attribute[Attribute.PARAMETER_REQUIRED];
+                var mustBeTrue = attribute[Boolean.PARAMETER_MUST_BE_TRUE];
                 var minimum = attribute[Attribute.PARAMETER_MINIMUM];
                 var includeMinimum = attribute[NumberAttribute.PARAMETER_INCLUDE_MINIMUM];
                 var maximum = attribute[Attribute.PARAMETER_MAXIMUM];
@@ -1082,7 +1110,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 var choices = attribute[Choice.PARAMETER_CHOICES];
                 switch (type) {
                     case Attribute.TYPE_BOOLEAN:
-                        errors = this.checkAttributeConfiguration(name, required);
+                        errors = this.checkBooleanConfiguration(name, required, mustBeTrue);
                         break;
                     case Attribute.TYPE_NUMBER:
                         errors = this.checkNumberConfiguration(name, required, minimum, includeMinimum, maximum, includeMaximum);
@@ -1110,6 +1138,13 @@ var __extends = (this && this.__extends) || function (d, b) {
                 }
                 if (required !== undefined && typeof required !== "boolean") {
                     errors.push(Attribute.PARAMETER_REQUIRED + Creator.MUST_BE_BOOLEAN_OR_UNDEFINED);
+                }
+                return errors;
+            };
+            Creator.prototype.checkBooleanConfiguration = function (name, required, mustBeTrue) {
+                var errors = this.checkAttributeConfiguration(name, required);
+                if (mustBeTrue !== undefined && typeof mustBeTrue !== "boolean") {
+                    errors.push(Boolean.PARAMETER_MUST_BE_TRUE + Creator.MUST_BE_BOOLEAN_OR_UNDEFINED);
                 }
                 return errors;
             };
@@ -1267,6 +1302,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Component.prototype.getStackTrace = function () {
                     var trace = {
                         html: this.htmlElement.outerHTML.replace(this.htmlElement.innerHTML, ""),
+                        name: this.name,
                     };
                     return trace;
                 };
@@ -1279,7 +1315,14 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                 };
                 Component.prototype.extractClasses = function () {
-                    var classes = this.getAttribute(Component.ATTRIBUTE_CLASS).split(" ");
+                    var classes;
+                    var classValue = this.getAttribute(Component.ATTRIBUTE_CLASS);
+                    if (typeof classValue === "string") {
+                        classes = this.getAttribute(Component.ATTRIBUTE_CLASS).split(" ");
+                    }
+                    else {
+                        classes = [];
+                    }
                     if (classes === [""]) {
                         classes = [];
                     }
@@ -1429,14 +1472,15 @@ var __extends = (this && this.__extends) || function (d, b) {
             var OnUpdateInput = Ompluscript.View.Event.OnUpdateInput;
             var Input = (function (_super) {
                 __extends(Input, _super);
-                function Input(name, type, attribute) {
+                function Input(name, attribute, type) {
                     if (attribute === void 0) { attribute = undefined; }
+                    if (type === void 0) { type = Input.INPUT_TEXT; }
                     _super.call(this, name);
-                    this.type = type;
-                    this.attribute = attribute;
-                    if (attribute !== undefined) {
-                        this.attribute.addObserverByType(this, AttributeEvent.ON_UPDATE_ATTRIBUTE);
-                    }
+                    this.setAttribute(Input.ATTRIBUTE_TYPE, type);
+                    this.setAttribute(Input.ATTRIBUTE_NAME, this.name);
+                    this.addClass(Input.FIELD_INPUT);
+                    this.attribute = undefined;
+                    this.setBinding(attribute);
                     this.addObserverByType(this, OnUpdateInput.ON_UPDATE_INPUT);
                 }
                 Input.prototype.update = function (event) {
@@ -1444,36 +1488,59 @@ var __extends = (this && this.__extends) || function (d, b) {
                         var onUpdateAttribute = event;
                         this.updateValue(onUpdateAttribute.getNewValue());
                     }
-                    else if (event instanceof OnUpdateInput) {
+                    else if (event instanceof OnUpdateInput && this.isBound()) {
                         var onUpdateInput = event;
                         this.attribute.setValue(onUpdateInput.getValue());
                     }
                 };
+                Input.prototype.setBinding = function (attribute) {
+                    this.removeBinding();
+                    this.attribute = attribute;
+                    if (this.isBound()) {
+                        this.attribute.addObserverByType(this, AttributeEvent.ON_UPDATE_ATTRIBUTE);
+                    }
+                };
+                Input.prototype.isBound = function () {
+                    return this.attribute !== undefined;
+                };
+                Input.prototype.removeBinding = function () {
+                    if (this.isBound()) {
+                        this.attribute.deleteObserverByType(this, AttributeEvent.ON_UPDATE_ATTRIBUTE);
+                        this.attribute = undefined;
+                    }
+                };
                 Input.prototype.setValue = function (value) {
                     this.updateValue(value);
-                    this.attribute.setValue(value);
+                    if (this.isBound()) {
+                        this.attribute.setValue(value);
+                    }
                 };
                 Input.prototype.initializeHtmlElement = function () {
-                    var that = this;
-                    that.htmlElement = document.createElement(Input.FIELD_INPUT);
-                    that.setAttribute(Input.ATTRIBUTE_TYPE, that.type);
-                    var listener = function () {
-                        that.fireOnUpdateInputEvent(that.getAttribute(Input.ATTRIBUTE_VALUE));
-                    };
-                    that.htmlElement.addEventListener(Input.EVENT_KEY_PRESS, listener, false);
-                };
-                Input.prototype.updateValue = function (value) {
-                    this.setAttribute(Input.ATTRIBUTE_VALUE, value);
+                    this.htmlElement = document.createElement(Input.FIELD_INPUT);
+                    this.addOnUpdateInputEvent();
                 };
                 Input.prototype.fireOnUpdateInputEvent = function (value) {
                     var event = new OnUpdateInput(this, value);
                     this.notifyObservers(event);
                 };
+                Input.prototype.getStackTrace = function () {
+                    var trace = _super.prototype.getStackTrace.call(this);
+                    if (this.isBound()) {
+                        trace["attribute"] = this.attribute.getStackTrace();
+                    }
+                    else {
+                        trace["attribute"] = undefined;
+                    }
+                    return trace;
+                };
                 Input.FIELD_INPUT = "input";
                 Input.ATTRIBUTE_TYPE = "type";
                 Input.ATTRIBUTE_VALUE = "value";
-                Input.EVENT_KEY_PRESS = "keypress";
+                Input.ATTRIBUTE_NAME = "name";
                 Input.INPUT_TEXT = "text";
+                Input.INPUT_PASSWORD = "password";
+                Input.INPUT_EMAIL = "email";
+                Input.INPUT_CHECK_BOX = "checkbox";
                 return Input;
             }(Field));
             Field_1.Input = Input;
@@ -1486,15 +1553,99 @@ var __extends = (this && this.__extends) || function (d, b) {
         var Field;
         (function (Field) {
             "use strict";
+            var CheckBoxInput = (function (_super) {
+                __extends(CheckBoxInput, _super);
+                function CheckBoxInput(name, booleanAttribute, type) {
+                    if (booleanAttribute === void 0) { booleanAttribute = undefined; }
+                    if (type === void 0) { type = Field.Input.INPUT_CHECK_BOX; }
+                    _super.call(this, name, booleanAttribute, type);
+                }
+                CheckBoxInput.prototype.getValue = function () {
+                    return this.htmlElement["checked"];
+                };
+                CheckBoxInput.prototype.addOnUpdateInputEvent = function () {
+                    var that = this;
+                    var listener = function () {
+                        that.fireOnUpdateInputEvent(that.getValue());
+                    };
+                    that.htmlElement.addEventListener(CheckBoxInput.EVENT_CHANGE, listener, false);
+                };
+                CheckBoxInput.prototype.updateValue = function (value) {
+                    this.htmlElement["checked"] = value;
+                };
+                CheckBoxInput.EVENT_CHANGE = "change";
+                return CheckBoxInput;
+            }(Field.Input));
+            Field.CheckBoxInput = CheckBoxInput;
+        })(Field = View.Field || (View.Field = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Field;
+        (function (Field) {
+            "use strict";
             var TextInput = (function (_super) {
                 __extends(TextInput, _super);
-                function TextInput(name, stringAttribute) {
+                function TextInput(name, stringAttribute, type) {
                     if (stringAttribute === void 0) { stringAttribute = undefined; }
-                    _super.call(this, name, Field.Input.INPUT_TEXT, stringAttribute);
+                    if (type === void 0) { type = Field.Input.INPUT_TEXT; }
+                    _super.call(this, name, stringAttribute, type);
                 }
+                TextInput.prototype.getValue = function () {
+                    return this.getAttribute(Field.Input.ATTRIBUTE_VALUE);
+                };
+                TextInput.prototype.addOnUpdateInputEvent = function () {
+                    var that = this;
+                    var listener = function () {
+                        that.fireOnUpdateInputEvent(that.getValue());
+                    };
+                    that.htmlElement.addEventListener(TextInput.EVENT_KEY_PRESS, listener, false);
+                };
+                TextInput.prototype.updateValue = function (value) {
+                    this.setAttribute(Field.Input.ATTRIBUTE_VALUE, value);
+                };
+                TextInput.EVENT_KEY_PRESS = "keypress";
                 return TextInput;
             }(Field.Input));
             Field.TextInput = TextInput;
+        })(Field = View.Field || (View.Field = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Field;
+        (function (Field) {
+            "use strict";
+            var EmailInput = (function (_super) {
+                __extends(EmailInput, _super);
+                function EmailInput(name, stringAttribute) {
+                    if (stringAttribute === void 0) { stringAttribute = undefined; }
+                    _super.call(this, name, stringAttribute, Field.Input.INPUT_EMAIL);
+                }
+                return EmailInput;
+            }(Field.TextInput));
+            Field.EmailInput = EmailInput;
+        })(Field = View.Field || (View.Field = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Field;
+        (function (Field) {
+            "use strict";
+            var PasswordInput = (function (_super) {
+                __extends(PasswordInput, _super);
+                function PasswordInput(name, stringAttribute) {
+                    if (stringAttribute === void 0) { stringAttribute = undefined; }
+                    _super.call(this, name, stringAttribute, Field.Input.INPUT_PASSWORD);
+                }
+                return PasswordInput;
+            }(Field.TextInput));
+            Field.PasswordInput = PasswordInput;
         })(Field = View.Field || (View.Field = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));

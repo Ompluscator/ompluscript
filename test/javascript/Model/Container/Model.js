@@ -209,6 +209,7 @@ describe("Model class tests - add boolean", function() {
     var required = true;
     var undefined;
     var definition;
+    var mustBeTrue = true;
 
     var Model = Ompluscript.Model.Container.Model;
     var Boolean = Ompluscript.Model.Attribute.Boolean;
@@ -220,6 +221,7 @@ describe("Model class tests - add boolean", function() {
                 required: required,
                 type: type,
                 value: value,
+                mustBeTrue: mustBeTrue,
             }
         ];
 
@@ -241,6 +243,7 @@ describe("Model class tests - add boolean", function() {
                     required: required,
                     type: type,
                     value: value,
+                    mustBeTrue: mustBeTrue,
                 }
             },
         });

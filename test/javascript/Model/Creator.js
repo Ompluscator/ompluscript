@@ -17,6 +17,7 @@ describe("Creator class tests - valid creator", function() {
             name: "param2",
             required: true,
             type: "boolean",
+            mustBeTrue: true,
         },
         {
             name: "param3",
@@ -242,6 +243,7 @@ describe("Creator class tests - invalid boolean", function() {
 
     var Creator = Ompluscript.Model.Creator;
     var Attribute = Ompluscript.Model.Attribute.Attribute;
+    var Boolean = Ompluscript.Model.Attribute.Boolean;
 
     beforeAll(function() {
         Creator.getInstance().reset();
@@ -258,6 +260,12 @@ describe("Creator class tests - invalid boolean", function() {
                 name: "param",
                 required: 1
             },
+            {
+                type: "boolean",
+                name: "param",
+                required: true,
+                mustBeTrue: 1
+            },
         ];
         Creator.getInstance().define("containerModel", "model", definition);
 
@@ -269,6 +277,7 @@ describe("Creator class tests - invalid boolean", function() {
                     Attribute.PARAMETER_TYPE + Creator.HAS_WRONG_VALUE,
                     Attribute.PARAMETER_NAME + Creator.MUST_BE_STRING,
                     Attribute.PARAMETER_REQUIRED + Creator.MUST_BE_BOOLEAN_OR_UNDEFINED,
+                    Boolean.PARAMETER_MUST_BE_TRUE + Creator.MUST_BE_BOOLEAN_OR_UNDEFINED,
                 ],
                 name: "containerModel",
                 type: "model"

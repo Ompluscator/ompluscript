@@ -21,6 +21,7 @@ module Ompluscript.Model {
     import Model = Ompluscript.Model.Container.Model;
     import Table = Ompluscript.Model.Container.Table;
     import Choice = Ompluscript.Model.Attribute.Choice;
+    import Boolean = Ompluscript.Model.Attribute.Boolean;
 
     /**
      * Class that contains functionality for container creator.
@@ -191,6 +192,7 @@ module Ompluscript.Model {
             let type: string = attribute[Attribute.PARAMETER_TYPE];
             let name: string = attribute[Attribute.PARAMETER_NAME];
             let required: boolean = attribute[Attribute.PARAMETER_REQUIRED];
+            let mustBeTrue: number = attribute[Boolean.PARAMETER_MUST_BE_TRUE];
             let minimum: number = attribute[Attribute.PARAMETER_MINIMUM];
             let includeMinimum: boolean = attribute[NumberAttribute.PARAMETER_INCLUDE_MINIMUM];
             let maximum: number = attribute[Attribute.PARAMETER_MAXIMUM];
@@ -203,7 +205,7 @@ module Ompluscript.Model {
             let choices: number[] = attribute[Choice.PARAMETER_CHOICES];
             switch (type) {
                 case Attribute.TYPE_BOOLEAN:
-                    errors = this.checkAttributeConfiguration(name, required);
+                    errors = this.checkBooleanConfiguration(name, required, mustBeTrue);
                     break;
                 case Attribute.TYPE_NUMBER:
                     errors = this.checkNumberConfiguration(name, required, minimum, includeMinimum, maximum, includeMaximum);
@@ -238,6 +240,21 @@ module Ompluscript.Model {
             }
             if (required !== undefined && typeof required !== "boolean") {
                 errors.push(Attribute.PARAMETER_REQUIRED + Creator.MUST_BE_BOOLEAN_OR_UNDEFINED);
+            }
+            return errors;
+        }
+
+        /**
+         * Method that validates Number configuration.
+         *
+         * @param {string} name Name parameter
+         * @param {boolean} required Required parameter
+         * @param {mustBeTrue} mustBeTrue Must be true parameter
+         */
+        private checkBooleanConfiguration(name: string, required: boolean, mustBeTrue: number): string[] {
+            let errors: string[] = this.checkAttributeConfiguration(name, required);
+            if (mustBeTrue !== undefined && typeof mustBeTrue !== "boolean") {
+                errors.push(Boolean.PARAMETER_MUST_BE_TRUE + Creator.MUST_BE_BOOLEAN_OR_UNDEFINED);
             }
             return errors;
         }

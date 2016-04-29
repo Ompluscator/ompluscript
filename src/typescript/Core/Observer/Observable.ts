@@ -42,7 +42,7 @@ module Ompluscript.Core.Observer {
          * @param {type} type Type of event
          */
         public addObserverByType(observer: IObserver, type: string): void {
-            if (this.events.hasOwnProperty(type)) {
+            if (!this.events.hasOwnProperty(type)) {
                 this.events[type] = [];
             }
             this.events[type].push(observer);
