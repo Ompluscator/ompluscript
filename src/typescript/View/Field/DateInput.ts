@@ -8,39 +8,42 @@
  */
 module Ompluscript.View.Field {
     "use strict";
-    import String = Ompluscript.Model.Attribute.String;
+    import Datetime = Ompluscript.Model.Attribute.Datetime;
 
     /**
-     * Class that defines text input
+     * Class that defines number input
      *
-     * @class TextInput
+     * @class DateInput
      */
-    export class TextInput extends Input {
+    export class DateInput extends Input {
 
         public static EVENT_KEY_PRESS: string = "keypress";
 
-        constructor(name: string, stringAttribute: String = undefined, type: string = Input.INPUT_TEXT) {
-            super(name, stringAttribute, type);
+        constructor(name: string, datetimeAttribute: Datetime = undefined, type: string = Input.INPUT_TEXT) {
+            super(name, datetimeAttribute, type);
         }
 
-        public getValue(): string {
+        public getValue(): any {
             let value: string = this.getAttribute(Input.ATTRIBUTE_VALUE);
             if (typeof value === "string") {
-                return value;
+                if (isNaN(parseInt(value, 10))) {
+                    return value;
+                }
+                return parseInt(value, 10);
             }
             return undefined;
         }
 
         protected addOnUpdateInputEvent(): void {
-            let that: TextInput = this;
+            let that: DateInput = this;
             let listener: () => void = function(): void {
                 that.fireOnUpdateInputEvent(that.getValue());
             };
             that.htmlElement.addEventListener(TextInput.EVENT_KEY_PRESS, listener, false);
         }
 
-        protected updateValue(value: any): void {
-            this.setAttribute(Input.ATTRIBUTE_VALUE, value);
+        protected updateValue(value: number): void {
+            this.setAttribute(Input.ATTRIBUTE_VALUE, value.toString());
         }
     }
 

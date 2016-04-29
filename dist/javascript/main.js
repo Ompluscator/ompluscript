@@ -1594,7 +1594,11 @@ var __extends = (this && this.__extends) || function (d, b) {
                     _super.call(this, name, stringAttribute, type);
                 }
                 TextInput.prototype.getValue = function () {
-                    return this.getAttribute(Field.Input.ATTRIBUTE_VALUE);
+                    var value = this.getAttribute(Field.Input.ATTRIBUTE_VALUE);
+                    if (typeof value === "string") {
+                        return value;
+                    }
+                    return undefined;
                 };
                 TextInput.prototype.addOnUpdateInputEvent = function () {
                     var that = this;
@@ -1628,6 +1632,46 @@ var __extends = (this && this.__extends) || function (d, b) {
                 return EmailInput;
             }(Field.TextInput));
             Field.EmailInput = EmailInput;
+        })(Field = View.Field || (View.Field = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Field;
+        (function (Field) {
+            "use strict";
+            var NumberInput = (function (_super) {
+                __extends(NumberInput, _super);
+                function NumberInput(name, numberAttribute, type) {
+                    if (numberAttribute === void 0) { numberAttribute = undefined; }
+                    if (type === void 0) { type = Field.Input.INPUT_TEXT; }
+                    _super.call(this, name, numberAttribute, type);
+                }
+                NumberInput.prototype.getValue = function () {
+                    var value = this.getAttribute(Field.Input.ATTRIBUTE_VALUE);
+                    if (typeof value === "string") {
+                        if (isNaN(parseInt(value, 10))) {
+                            return value;
+                        }
+                        return parseInt(value, 10);
+                    }
+                    return undefined;
+                };
+                NumberInput.prototype.addOnUpdateInputEvent = function () {
+                    var that = this;
+                    var listener = function () {
+                        that.fireOnUpdateInputEvent(that.getValue());
+                    };
+                    that.htmlElement.addEventListener(Field.TextInput.EVENT_KEY_PRESS, listener, false);
+                };
+                NumberInput.prototype.updateValue = function (value) {
+                    this.setAttribute(Field.Input.ATTRIBUTE_VALUE, value.toString());
+                };
+                NumberInput.EVENT_KEY_PRESS = "keypress";
+                return NumberInput;
+            }(Field.Input));
+            Field.NumberInput = NumberInput;
         })(Field = View.Field || (View.Field = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
