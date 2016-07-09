@@ -15,8 +15,8 @@ module Ompluscript.View.Component {
      */
     export abstract class Field extends Component {
 
-        constructor(name: string) {
-            super(name);
+        constructor(name: string, styles: Object = {}) {
+            super(name, styles);
         }
 
         public render(): HTMLElement {

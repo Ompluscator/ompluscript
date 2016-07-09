@@ -1,0 +1,42 @@
+/// <reference path="../Component/Layout.ts" />
+
+/**
+ * Module that contains layout components
+ *
+ * @module Ompluscript.View.Layout
+ */
+module Ompluscript.View.Layout {
+    "use strict";
+
+    import Layout = Ompluscript.View.Component.Layout;
+
+    /**
+     * Class that defines null layout
+     *
+     * @class Container
+     */
+    export class RelativeLayout extends Layout {
+
+        private static RELATIVE_LAYOUT_CLASS: string = "relative-layout";
+
+        constructor() {
+            super(RelativeLayout.RELATIVE_LAYOUT_CLASS);
+        }
+
+        protected appendChild(component: Ompluscript.View.Component.Component): void {
+            this.htmlElement.appendChild(component.render());
+        }
+
+        protected clear(): void {
+            while (this.htmlElement.firstChild) {
+                this.htmlElement.removeChild(this.htmlElement.firstChild);
+            }
+        }
+
+        protected initializeHtmlElement(): void {
+            super.initializeHtmlElement();
+            this.addClass(RelativeLayout.RELATIVE_LAYOUT_CLASS);
+        }
+    }
+
+}

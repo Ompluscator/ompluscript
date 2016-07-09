@@ -4,11 +4,16 @@ module Ompluscript.View.Component {
     "use strict";
     
     export abstract class Layout extends Component {
+
+        public static DIV_ELEMENT: string = "div";
+
+        public static LAYOUT_CLASS: string = "layout";
         
         protected children: Component[];
 
-        constructor(name: string) {
-            super(name);
+        constructor(name: string, styles: Object = {}) {
+            super(name, styles);
+            this.children = [];
         }
 
         public addChild(component: Component): void {
@@ -20,6 +25,10 @@ module Ompluscript.View.Component {
             if (index > -1) {
                 this.children.splice(index, 1);
             }
+        }
+
+        public getChildrenCount(): number {
+            return this.children.length;
         }
         
         public clearChildren(): void {
@@ -34,6 +43,11 @@ module Ompluscript.View.Component {
                 }
             }
             return this.htmlElement;
+        }
+
+        protected initializeHtmlElement(): void {
+            this.htmlElement = document.createElement(Layout.DIV_ELEMENT);
+            this.addClass(Layout.LAYOUT_CLASS);
         }
 
         protected abstract appendChild(component: Component): void;

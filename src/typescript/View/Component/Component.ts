@@ -21,15 +21,26 @@ module Ompluscript.View.Component {
 
         public static ATTRIBUTE_CLASS: string = "class";
 
+        public static STYLE_WIDTH: string = "width";
+
+        public static STYLE_HEIGHT: string = "height";
+
         protected htmlElement: HTMLElement;
 
         protected name: string;
 
-        constructor(name: string) {
+        constructor(name: string, styles: Object = undefined) {
             super();
             this.name = name;
             this.htmlElement = undefined;
             this.initializeHtmlElement();
+            if (styles !== undefined) {
+                for (let key in styles) {
+                    if (styles.hasOwnProperty(key)) {
+                        this.setStyle(key, styles[key]);
+                    }
+                }
+            }
         }
 
         public hasClass(name: string): boolean {
@@ -78,6 +89,18 @@ module Ompluscript.View.Component {
 
         public getAttribute(name: string): string {
             return this.htmlElement.getAttribute(name);
+        }
+
+        public removeAttribute(name: string): void {
+            this.htmlElement.removeAttribute(name);
+        }
+        
+        public getStyle(name: string): string {
+            return this.htmlElement.style.getPropertyValue(name);
+        }
+        
+        public setStyle(name: string, value: string): void {
+            this.htmlElement.style.setProperty(name, value);
         }
 
         /**

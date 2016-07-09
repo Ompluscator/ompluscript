@@ -1249,11 +1249,19 @@ var __extends = (this && this.__extends) || function (d, b) {
             var Observable = Ompluscript.Core.Observer.Observable;
             var Component = (function (_super) {
                 __extends(Component, _super);
-                function Component(name) {
+                function Component(name, styles) {
+                    if (styles === void 0) { styles = undefined; }
                     _super.call(this);
                     this.name = name;
                     this.htmlElement = undefined;
                     this.initializeHtmlElement();
+                    if (styles !== undefined) {
+                        for (var key in styles) {
+                            if (styles.hasOwnProperty(key)) {
+                                this.setStyle(key, styles[key]);
+                            }
+                        }
+                    }
                 }
                 Component.prototype.hasClass = function (name) {
                     var classes = this.extractClasses();
@@ -1296,6 +1304,15 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Component.prototype.getAttribute = function (name) {
                     return this.htmlElement.getAttribute(name);
                 };
+                Component.prototype.removeAttribute = function (name) {
+                    this.htmlElement.removeAttribute(name);
+                };
+                Component.prototype.getStyle = function (name) {
+                    return this.htmlElement.style.getPropertyValue(name);
+                };
+                Component.prototype.setStyle = function (name, value) {
+                    this.htmlElement.style.setProperty(name, value);
+                };
                 Component.prototype.getName = function () {
                     return this.name;
                 };
@@ -1330,6 +1347,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 Component.ATTRIBUTE_ID = "id";
                 Component.ATTRIBUTE_CLASS = "class";
+                Component.STYLE_WIDTH = "width";
+                Component.STYLE_HEIGHT = "height";
                 return Component;
             }(Observable));
             Component_1.Component = Component;
@@ -1344,8 +1363,10 @@ var __extends = (this && this.__extends) || function (d, b) {
             "use strict";
             var Layout = (function (_super) {
                 __extends(Layout, _super);
-                function Layout(name) {
-                    _super.call(this, name);
+                function Layout(name, styles) {
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, styles);
+                    this.children = [];
                 }
                 Layout.prototype.addChild = function (component) {
                     this.children.push(component);
@@ -1355,6 +1376,9 @@ var __extends = (this && this.__extends) || function (d, b) {
                     if (index > -1) {
                         this.children.splice(index, 1);
                     }
+                };
+                Layout.prototype.getChildrenCount = function () {
+                    return this.children.length;
                 };
                 Layout.prototype.clearChildren = function () {
                     this.children = [];
@@ -1368,6 +1392,12 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                     return this.htmlElement;
                 };
+                Layout.prototype.initializeHtmlElement = function () {
+                    this.htmlElement = document.createElement(Layout.DIV_ELEMENT);
+                    this.addClass(Layout.LAYOUT_CLASS);
+                };
+                Layout.DIV_ELEMENT = "div";
+                Layout.LAYOUT_CLASS = "layout";
                 return Layout;
             }(Component.Component));
             Component.Layout = Layout;
@@ -1378,12 +1408,13 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Component;
-        (function (Component) {
+        (function (Component_2) {
             "use strict";
             var Container = (function (_super) {
                 __extends(Container, _super);
-                function Container(name, layout) {
-                    _super.call(this, name);
+                function Container(name, layout, styles) {
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, styles);
                     this.layout = layout;
                 }
                 Container.prototype.addChild = function (component) {
@@ -1400,6 +1431,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 Container.prototype.render = function () {
                     this.clear();
+                    this.layout.render();
                     this.appendChild(this.layout);
                     return this.htmlElement;
                 };
@@ -1411,9 +1443,12 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Container.prototype.appendChild = function (component) {
                     this.htmlElement.appendChild(component.render());
                 };
+                Container.prototype.initializeHtmlElement = function () {
+                    this.htmlElement = document.createElement(Component_2.Layout.DIV_ELEMENT);
+                };
                 return Container;
-            }(Component.Layout));
-            Component.Container = Container;
+            }(Component_2.Layout));
+            Component_2.Container = Container;
         })(Component = View.Component || (View.Component = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -1425,8 +1460,9 @@ var __extends = (this && this.__extends) || function (d, b) {
             "use strict";
             var Field = (function (_super) {
                 __extends(Field, _super);
-                function Field(name) {
-                    _super.call(this, name);
+                function Field(name, styles) {
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, styles);
                 }
                 Field.prototype.render = function () {
                     return this.htmlElement;
@@ -1434,6 +1470,95 @@ var __extends = (this && this.__extends) || function (d, b) {
                 return Field;
             }(Component.Component));
             Component.Field = Field;
+        })(Component = View.Component || (View.Component = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Layout;
+        (function (Layout_1) {
+            "use strict";
+            var Layout = Ompluscript.View.Component.Layout;
+            var NullLayout = (function (_super) {
+                __extends(NullLayout, _super);
+                function NullLayout() {
+                    _super.call(this, NullLayout.NULL_LAYOUT_CLASS);
+                }
+                NullLayout.prototype.appendChild = function (component) {
+                    this.htmlElement.appendChild(component.render());
+                };
+                NullLayout.prototype.clear = function () {
+                    while (this.htmlElement.firstChild) {
+                        this.htmlElement.removeChild(this.htmlElement.firstChild);
+                    }
+                };
+                NullLayout.prototype.initializeHtmlElement = function () {
+                    _super.prototype.initializeHtmlElement.call(this);
+                    this.addClass(NullLayout.NULL_LAYOUT_CLASS);
+                };
+                NullLayout.NULL_LAYOUT_CLASS = "null-layout";
+                return NullLayout;
+            }(Layout));
+            Layout_1.NullLayout = NullLayout;
+        })(Layout = View.Layout || (View.Layout = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Component;
+        (function (Component) {
+            "use strict";
+            var NullLayout = Ompluscript.View.Layout.NullLayout;
+            var Page = (function (_super) {
+                __extends(Page, _super);
+                function Page(name, layout, styles) {
+                    if (layout === void 0) { layout = new NullLayout(); }
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, layout, styles);
+                }
+                return Page;
+            }(Component.Container));
+            Component.Page = Page;
+        })(Component = View.Component || (View.Component = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Component;
+        (function (Component) {
+            "use strict";
+            var Viewport = (function (_super) {
+                __extends(Viewport, _super);
+                function Viewport(name, pages) {
+                    _super.call(this, name, undefined);
+                    this.pages = pages;
+                    this.activePageIndex = 0;
+                }
+                Viewport.prototype.render = function () {
+                    this.clear();
+                    this.pages[this.activePageIndex].render();
+                    this.appendChild(this.pages[this.activePageIndex]);
+                    return this.htmlElement;
+                };
+                Viewport.prototype.clear = function () {
+                    while (this.htmlElement.firstChild) {
+                        this.htmlElement.removeChild(this.htmlElement.firstChild);
+                    }
+                };
+                Viewport.prototype.appendChild = function (component) {
+                    this.htmlElement.appendChild(component.render());
+                };
+                Viewport.prototype.initializeHtmlElement = function () {
+                    this.htmlElement = document.body;
+                    this.addClass(Viewport.VIEWPORT_CLASS);
+                };
+                Viewport.VIEWPORT_CLASS = "viewport";
+                return Viewport;
+            }(Component.Component));
+            Component.Viewport = Viewport;
         })(Component = View.Component || (View.Component = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -1472,10 +1597,11 @@ var __extends = (this && this.__extends) || function (d, b) {
             var OnUpdateInput = Ompluscript.View.Event.OnUpdateInput;
             var Input = (function (_super) {
                 __extends(Input, _super);
-                function Input(name, attribute, type) {
+                function Input(name, attribute, type, styles) {
                     if (attribute === void 0) { attribute = undefined; }
                     if (type === void 0) { type = Input.INPUT_TEXT; }
-                    _super.call(this, name);
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, styles);
                     this.setAttribute(Input.ATTRIBUTE_TYPE, type);
                     this.setAttribute(Input.ATTRIBUTE_NAME, this.name);
                     this.addClass(Input.FIELD_INPUT);
@@ -1555,10 +1681,11 @@ var __extends = (this && this.__extends) || function (d, b) {
             "use strict";
             var CheckBoxInput = (function (_super) {
                 __extends(CheckBoxInput, _super);
-                function CheckBoxInput(name, booleanAttribute, type) {
+                function CheckBoxInput(name, booleanAttribute, type, styles) {
                     if (booleanAttribute === void 0) { booleanAttribute = undefined; }
                     if (type === void 0) { type = Field.Input.INPUT_CHECK_BOX; }
-                    _super.call(this, name, booleanAttribute, type);
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, booleanAttribute, type, styles);
                 }
                 CheckBoxInput.prototype.getValue = function () {
                     return this.htmlElement["checked"];
@@ -1586,12 +1713,54 @@ var __extends = (this && this.__extends) || function (d, b) {
         var Field;
         (function (Field) {
             "use strict";
+            var DateInput = (function (_super) {
+                __extends(DateInput, _super);
+                function DateInput(name, datetimeAttribute, type, styles) {
+                    if (datetimeAttribute === void 0) { datetimeAttribute = undefined; }
+                    if (type === void 0) { type = Field.Input.INPUT_TEXT; }
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, datetimeAttribute, type, styles);
+                }
+                DateInput.prototype.getValue = function () {
+                    var value = this.getAttribute(Field.Input.ATTRIBUTE_VALUE);
+                    if (typeof value === "string") {
+                        if (isNaN(parseInt(value, 10))) {
+                            return value;
+                        }
+                        return parseInt(value, 10);
+                    }
+                    return undefined;
+                };
+                DateInput.prototype.addOnUpdateInputEvent = function () {
+                    var that = this;
+                    var listener = function () {
+                        that.fireOnUpdateInputEvent(that.getValue());
+                    };
+                    that.htmlElement.addEventListener(Field.TextInput.EVENT_KEY_PRESS, listener, false);
+                };
+                DateInput.prototype.updateValue = function (value) {
+                    this.setAttribute(Field.Input.ATTRIBUTE_VALUE, value.toString());
+                };
+                DateInput.EVENT_KEY_PRESS = "keypress";
+                return DateInput;
+            }(Field.Input));
+            Field.DateInput = DateInput;
+        })(Field = View.Field || (View.Field = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Field;
+        (function (Field) {
+            "use strict";
             var TextInput = (function (_super) {
                 __extends(TextInput, _super);
-                function TextInput(name, stringAttribute, type) {
+                function TextInput(name, stringAttribute, type, styles) {
                     if (stringAttribute === void 0) { stringAttribute = undefined; }
                     if (type === void 0) { type = Field.Input.INPUT_TEXT; }
-                    _super.call(this, name, stringAttribute, type);
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, stringAttribute, type, styles);
                 }
                 TextInput.prototype.getValue = function () {
                     var value = this.getAttribute(Field.Input.ATTRIBUTE_VALUE);
@@ -1625,9 +1794,10 @@ var __extends = (this && this.__extends) || function (d, b) {
             "use strict";
             var EmailInput = (function (_super) {
                 __extends(EmailInput, _super);
-                function EmailInput(name, stringAttribute) {
+                function EmailInput(name, stringAttribute, styles) {
                     if (stringAttribute === void 0) { stringAttribute = undefined; }
-                    _super.call(this, name, stringAttribute, Field.Input.INPUT_EMAIL);
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, stringAttribute, Field.Input.INPUT_EMAIL, styles);
                 }
                 return EmailInput;
             }(Field.TextInput));
@@ -1643,10 +1813,11 @@ var __extends = (this && this.__extends) || function (d, b) {
             "use strict";
             var NumberInput = (function (_super) {
                 __extends(NumberInput, _super);
-                function NumberInput(name, numberAttribute, type) {
+                function NumberInput(name, numberAttribute, type, styles) {
                     if (numberAttribute === void 0) { numberAttribute = undefined; }
                     if (type === void 0) { type = Field.Input.INPUT_TEXT; }
-                    _super.call(this, name, numberAttribute, type);
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, numberAttribute, type, styles);
                 }
                 NumberInput.prototype.getValue = function () {
                     var value = this.getAttribute(Field.Input.ATTRIBUTE_VALUE);
@@ -1683,13 +1854,138 @@ var __extends = (this && this.__extends) || function (d, b) {
             "use strict";
             var PasswordInput = (function (_super) {
                 __extends(PasswordInput, _super);
-                function PasswordInput(name, stringAttribute) {
+                function PasswordInput(name, stringAttribute, styles) {
                     if (stringAttribute === void 0) { stringAttribute = undefined; }
-                    _super.call(this, name, stringAttribute, Field.Input.INPUT_PASSWORD);
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, stringAttribute, Field.Input.INPUT_PASSWORD, styles);
                 }
                 return PasswordInput;
             }(Field.TextInput));
             Field.PasswordInput = PasswordInput;
         })(Field = View.Field || (View.Field = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Layout;
+        (function (Layout_2) {
+            "use strict";
+            var Layout = Ompluscript.View.Component.Layout;
+            var LinearLayout = (function (_super) {
+                __extends(LinearLayout, _super);
+                function LinearLayout(direction, reverse, align) {
+                    if (direction === void 0) { direction = LinearLayout.DIRECTION_HORIZONTAL; }
+                    if (reverse === void 0) { reverse = false; }
+                    if (align === void 0) { align = LinearLayout.ALIGN_START; }
+                    _super.call(this, LinearLayout.LINEAR_LAYOUT_CLASS);
+                    this.setUpLayout(direction, reverse, align);
+                }
+                LinearLayout.prototype.appendChild = function (component) {
+                    this.htmlElement.appendChild(component.render());
+                };
+                LinearLayout.prototype.clear = function () {
+                    while (this.htmlElement.firstChild) {
+                        this.htmlElement.removeChild(this.htmlElement.firstChild);
+                    }
+                };
+                LinearLayout.prototype.initializeHtmlElement = function () {
+                    _super.prototype.initializeHtmlElement.call(this);
+                    this.addClass(LinearLayout.LINEAR_LAYOUT_CLASS);
+                };
+                LinearLayout.prototype.setUpLayout = function (direction, reverse, align) {
+                    this.addClass(LinearLayout.CLASS_PREFIX + direction);
+                    this.addClass(LinearLayout.CLASS_PREFIX + align);
+                    if (reverse === true) {
+                        this.addClass(LinearLayout.CLASS_PREFIX + LinearLayout.CLASS_REVERSE);
+                    }
+                };
+                LinearLayout.DIRECTION_HORIZONTAL = "horizontal";
+                LinearLayout.DIRECTION_VERTICAL = "vertical";
+                LinearLayout.ALIGN_START = "start";
+                LinearLayout.ALIGN_END = "end";
+                LinearLayout.ALIGN_CENTER = "center";
+                LinearLayout.LINEAR_LAYOUT_CLASS = "linear-layout";
+                LinearLayout.CLASS_PREFIX = "flex-";
+                LinearLayout.CLASS_REVERSE = "flex-";
+                return LinearLayout;
+            }(Layout));
+            Layout_2.LinearLayout = LinearLayout;
+        })(Layout = View.Layout || (View.Layout = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Layout;
+        (function (Layout_3) {
+            "use strict";
+            var Layout = Ompluscript.View.Component.Layout;
+            var RelativeLayout = (function (_super) {
+                __extends(RelativeLayout, _super);
+                function RelativeLayout() {
+                    _super.call(this, RelativeLayout.RELATIVE_LAYOUT_CLASS);
+                }
+                RelativeLayout.prototype.appendChild = function (component) {
+                    this.htmlElement.appendChild(component.render());
+                };
+                RelativeLayout.prototype.clear = function () {
+                    while (this.htmlElement.firstChild) {
+                        this.htmlElement.removeChild(this.htmlElement.firstChild);
+                    }
+                };
+                RelativeLayout.prototype.initializeHtmlElement = function () {
+                    _super.prototype.initializeHtmlElement.call(this);
+                    this.addClass(RelativeLayout.RELATIVE_LAYOUT_CLASS);
+                };
+                RelativeLayout.RELATIVE_LAYOUT_CLASS = "relative-layout";
+                return RelativeLayout;
+            }(Layout));
+            Layout_3.RelativeLayout = RelativeLayout;
+        })(Layout = View.Layout || (View.Layout = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Layout;
+        (function (Layout) {
+            "use strict";
+            var Component = Ompluscript.View.Component.Component;
+            var TableLayout = (function (_super) {
+                __extends(TableLayout, _super);
+                function TableLayout(rows, cells) {
+                    if (rows === void 0) { rows = 1; }
+                    if (cells === void 0) { cells = 1; }
+                    _super.call(this, Layout.LinearLayout.DIRECTION_VERTICAL, false, Layout.LinearLayout.ALIGN_CENTER);
+                    this.rows = rows;
+                    this.cells = cells;
+                    for (var i = 0; i < this.rows; i++) {
+                        var layout = new Layout.LinearLayout();
+                        for (var j = 0; j < this.cells; j++) {
+                            var container = new Layout.NullLayout();
+                            container.setStyle(Component.STYLE_WIDTH, "calc(100% / " + this.cells + ")");
+                            container.setStyle(Component.STYLE_HEIGHT, "1px");
+                            layout.addChild(container);
+                        }
+                        this.addChild(layout);
+                    }
+                }
+                TableLayout.prototype.appendChild = function (component) {
+                    this.htmlElement.appendChild(component.render());
+                };
+                TableLayout.prototype.clear = function () {
+                    while (this.htmlElement.firstChild) {
+                        this.htmlElement.removeChild(this.htmlElement.firstChild);
+                    }
+                };
+                TableLayout.prototype.initializeHtmlElement = function () {
+                    _super.prototype.initializeHtmlElement.call(this);
+                    this.addClass(Layout.LinearLayout.LINEAR_LAYOUT_CLASS);
+                };
+                return TableLayout;
+            }(Layout.LinearLayout));
+            Layout.TableLayout = TableLayout;
+        })(Layout = View.Layout || (View.Layout = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));

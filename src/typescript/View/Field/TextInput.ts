@@ -19,8 +19,8 @@ module Ompluscript.View.Field {
 
         public static EVENT_KEY_PRESS: string = "keypress";
 
-        constructor(name: string, stringAttribute: String = undefined, type: string = Input.INPUT_TEXT) {
-            super(name, stringAttribute, type);
+        constructor(name: string, stringAttribute: String = undefined, type: string = Input.INPUT_TEXT, styles: Object = {}) {
+            super(name, stringAttribute, type, styles);
         }
 
         public getValue(): string {

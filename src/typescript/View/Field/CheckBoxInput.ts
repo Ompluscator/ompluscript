@@ -19,8 +19,8 @@ module Ompluscript.View.Field {
 
         public static EVENT_CHANGE: string = "change";
 
-        constructor(name: string, booleanAttribute: Boolean = undefined, type: string = Input.INPUT_CHECK_BOX) {
-            super(name, booleanAttribute, type);
+        constructor(name: string, booleanAttribute: Boolean = undefined, type: string = Input.INPUT_CHECK_BOX, styles: Object = {}) {
+            super(name, booleanAttribute, type, styles);
         }
 
         public getValue(): boolean {

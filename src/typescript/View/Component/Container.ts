@@ -9,6 +9,8 @@
 module Ompluscript.View.Component {
     "use strict";
 
+    import Component = Ompluscript.View.Component.Component;
+
     /**
      * Class that defines basic container
      *
@@ -18,8 +20,8 @@ module Ompluscript.View.Component {
         
         protected layout: Layout;
         
-        constructor(name: string, layout: Layout) {
-            super(name);
+        constructor(name: string, layout: Layout, styles: Object = {}) {
+            super(name, styles);
             this.layout = layout;
         }
 
@@ -40,6 +42,7 @@ module Ompluscript.View.Component {
 
         public render(): HTMLElement {
             this.clear();
+            this.layout.render();
             this.appendChild(this.layout);
             return this.htmlElement;
         }
@@ -52,6 +55,10 @@ module Ompluscript.View.Component {
         
         protected appendChild(component: Component): void {
             this.htmlElement.appendChild(component.render());
+        }
+
+        protected initializeHtmlElement(): void {
+            this.htmlElement = document.createElement(Layout.DIV_ELEMENT);
         }
     }
 

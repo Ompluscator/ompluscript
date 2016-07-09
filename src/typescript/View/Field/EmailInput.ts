@@ -17,8 +17,8 @@ module Ompluscript.View.Field {
      */
     export abstract class EmailInput extends TextInput {
 
-        constructor(name: string, stringAttribute: String = undefined) {
-            super(name, stringAttribute, Input.INPUT_EMAIL);
+        constructor(name: string, stringAttribute: String = undefined, styles: Object = {}) {
+            super(name, stringAttribute, Input.INPUT_EMAIL, styles);
         }
     }
 

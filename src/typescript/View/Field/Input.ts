@@ -47,8 +47,8 @@ module Ompluscript.View.Field {
 
         protected attribute: Attribute<any>;
 
-        constructor(name: string, attribute: Attribute<any> = undefined, type: string = Input.INPUT_TEXT) {
-            super(name);
+        constructor(name: string, attribute: Attribute<any> = undefined, type: string = Input.INPUT_TEXT, styles: Object = {}) {
+            super(name, styles);
             this.setAttribute(Input.ATTRIBUTE_TYPE, type);
             this.setAttribute(Input.ATTRIBUTE_NAME, this.name);
             this.addClass(Input.FIELD_INPUT);
