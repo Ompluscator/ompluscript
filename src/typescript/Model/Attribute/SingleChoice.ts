@@ -16,6 +16,11 @@ module Ompluscript.Model.Attribute {
     export class SingleChoice extends Choice<number> {
 
         /**
+         * @type {string} TYPE_SINGLE_CHOICE SingleChoice type name.
+         */
+        public static TYPE_SINGLE_CHOICE: string = SingleChoice["name"];
+
+        /**
          * Class constructor.
          *
          * Calls superclass constructor and sets allowed choices.

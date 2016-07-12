@@ -3,7 +3,7 @@ describe("Table class tests - creation", function() {
     var undefined;
     var tableObject;
     var name = "table";
-    var type = ["string", "boolean", "number", "datetime"];
+    var type = ["String", "Boolean", "Number", "Datetime"];
     var paramName = ["param1", "param2", "param3", "param4"];
     var values = [
         {
@@ -102,7 +102,7 @@ describe("Table class tests - creation", function() {
                         param1: {
                             name: paramName[0],
                             required: required,
-                            type: type[0],
+                            type: "string",
                             value: values[0]["param1"],
                             minimumLength: minimum[0],
                             maximumLength: maximum[0],
@@ -111,14 +111,14 @@ describe("Table class tests - creation", function() {
                         param2: {
                             name: paramName[1],
                             required: required,
-                            type: type[1],
+                            type: "boolean",
                             value: values[0]["param2"],
                             mustBeTrue: additional[1],
                         },
                         param3: {
                             name: paramName[2],
                             required: required,
-                            type: type[2],
+                            type: "number",
                             value: values[0]["param3"],
                             minimum: minimum[2],
                             includeMinimum: additional[2],
@@ -128,7 +128,7 @@ describe("Table class tests - creation", function() {
                         param4: {
                             name: paramName[3],
                             required: required,
-                            type: type[0],
+                            type: "string",
                             value: values[0]["param4"],
                             minimum: minimum[3],
                             minimumObject: new Date(minimum[3]),
@@ -165,7 +165,7 @@ describe("Table class tests - creation", function() {
                         param1: {
                             name: paramName[0],
                             required: required,
-                            type: type[0],
+                            type: "string",
                             value: values[0]["param1"],
                             minimumLength: minimum[0],
                             maximumLength: maximum[0],
@@ -174,14 +174,14 @@ describe("Table class tests - creation", function() {
                         param2: {
                             name: paramName[1],
                             required: required,
-                            type: type[1],
+                            type: "boolean",
                             value: values[0]["param2"],
                             mustBeTrue: additional[1],
                         },
                         param3: {
                             name: paramName[2],
                             required: required,
-                            type: type[2],
+                            type: "number",
                             value: values[0]["param3"],
                             minimum: minimum[2],
                             includeMinimum: additional[2],
@@ -191,7 +191,7 @@ describe("Table class tests - creation", function() {
                         param4: {
                             name: paramName[3],
                             required: required,
-                            type: type[0],
+                            type: "string",
                             value: values[0]["param4"],
                             minimum: minimum[3],
                             minimumObject: new Date(minimum[3]),
@@ -207,7 +207,7 @@ describe("Table class tests - creation", function() {
                         param1: {
                             name: paramName[0],
                             required: required,
-                            type: type[0],
+                            type: "string",
                             value: values[1]["param1"],
                             minimumLength: minimum[0],
                             maximumLength: maximum[0],
@@ -216,14 +216,14 @@ describe("Table class tests - creation", function() {
                         param2: {
                             name: paramName[1],
                             required: required,
-                            type: type[1],
+                            type: "boolean",
                             value: values[1]["param2"],
                             mustBeTrue: additional[1],
                         },
                         param3: {
                             name: paramName[2],
                             required: required,
-                            type: type[2],
+                            type: "number",
                             value: values[1]["param3"],
                             minimum: minimum[2],
                             includeMinimum: additional[2],
@@ -233,7 +233,7 @@ describe("Table class tests - creation", function() {
                         param4: {
                             name: paramName[3],
                             required: required,
-                            type: type[0],
+                            type: "string",
                             value: values[1]["param4"],
                             minimum: minimum[3],
                             minimumObject: new Date(minimum[3]),
@@ -270,7 +270,7 @@ describe("Table class tests - creation", function() {
                         param1: {
                             name: paramName[0],
                             required: required,
-                            type: type[0],
+                            type: "string",
                             value: values[1]["param1"],
                             minimumLength: minimum[0],
                             maximumLength: maximum[0],
@@ -279,14 +279,14 @@ describe("Table class tests - creation", function() {
                         param2: {
                             name: paramName[1],
                             required: required,
-                            type: type[1],
+                            type: "boolean",
                             value: values[1]["param2"],
                             mustBeTrue: additional[1],
                         },
                         param3: {
                             name: paramName[2],
                             required: required,
-                            type: type[2],
+                            type: "number",
                             value: values[1]["param3"],
                             minimum: minimum[2],
                             includeMinimum: additional[2],
@@ -296,7 +296,7 @@ describe("Table class tests - creation", function() {
                         param4: {
                             name: paramName[3],
                             required: required,
-                            type: type[0],
+                            type: "string",
                             value: values[1]["param4"],
                             minimum: minimum[3],
                             minimumObject: new Date(minimum[3]),
@@ -321,7 +321,7 @@ describe("Table class tests - events", function() {
         {
             name: "param",
             required: true,
-            type: "string",
+            type: "String",
         }
     ];
 

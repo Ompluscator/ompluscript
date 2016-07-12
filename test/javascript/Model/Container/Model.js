@@ -2,7 +2,7 @@ describe("Model class tests - add string", function() {
 
     var modelObject;
     var name = "model";
-    var type = "string";
+    var type = "String";
     var paramName = "param";
     var value = "value";
     var minimumLength = 2;
@@ -44,7 +44,7 @@ describe("Model class tests - add string", function() {
                 param: {
                     name: paramName,
                     required: required,
-                    type: type,
+                    type: "string",
                     value: value,
                     minimumLength: minimumLength,
                     maximumLength: maximumLength,
@@ -69,7 +69,6 @@ describe("Model class tests - add number", function() {
 
     var modelObject;
     var name = "model";
-    var type = "number";
     var paramName = "param";
     var value = 3;
     var minimum = 2;
@@ -81,6 +80,7 @@ describe("Model class tests - add number", function() {
 
     var Model = Ompluscript.Model.Container.Model;
     var Number = Ompluscript.Model.Attribute.Number;
+    var type = Number.name;
 
     beforeAll(function() {
         definition = [
@@ -111,7 +111,7 @@ describe("Model class tests - add number", function() {
                 param: {
                     name: paramName,
                     required: required,
-                    type: type,
+                    type: "number",
                     value: value,
                     minimum: minimum,
                     maximum: maximum,
@@ -137,7 +137,6 @@ describe("Model class tests - add datetime", function() {
 
     var modelObject;
     var name = "model";
-    var type = "datetime";
     var paramName = "param";
     var value = "1/11/1985";
     var minimum = "1/10/1985";
@@ -148,6 +147,7 @@ describe("Model class tests - add datetime", function() {
 
     var Model = Ompluscript.Model.Container.Model;
     var Datetime = Ompluscript.Model.Attribute.Datetime;
+    var type = Datetime.name;
 
     beforeAll(function() {
         definition = [
@@ -203,7 +203,6 @@ describe("Model class tests - add boolean", function() {
 
     var modelObject;
     var name = "model";
-    var type = "boolean";
     var paramName = "param";
     var value = true;
     var required = true;
@@ -213,6 +212,7 @@ describe("Model class tests - add boolean", function() {
 
     var Model = Ompluscript.Model.Container.Model;
     var Boolean = Ompluscript.Model.Attribute.Boolean;
+    var type = Boolean.name;
 
     beforeAll(function() {
         definition = [
@@ -241,7 +241,7 @@ describe("Model class tests - add boolean", function() {
                 param: {
                     name: paramName,
                     required: required,
-                    type: type,
+                    type: "boolean",
                     value: value,
                     mustBeTrue: mustBeTrue,
                 }
@@ -264,7 +264,6 @@ describe("Model class tests - add singleChoice", function() {
 
     var modelObject;
     var name = "model";
-    var type = "singleChoice";
     var paramName = "param";
     var value = 3;
     var choices = [2, 3];
@@ -274,6 +273,7 @@ describe("Model class tests - add singleChoice", function() {
 
     var Model = Ompluscript.Model.Container.Model;
     var SingleChoice = Ompluscript.Model.Attribute.SingleChoice;
+    var type = SingleChoice.name;
 
     beforeAll(function() {
         definition = [
@@ -325,7 +325,6 @@ describe("Model class tests - add multipleChoice", function() {
 
     var modelObject;
     var name = "model";
-    var type = "multipleChoice";
     var paramName = "param";
     var value = [3];
     var choices = [2, 3];
@@ -335,6 +334,7 @@ describe("Model class tests - add multipleChoice", function() {
 
     var Model = Ompluscript.Model.Container.Model;
     var MultipleChoice = Ompluscript.Model.Attribute.MultipleChoice;
+    var type = MultipleChoice.name;
 
     beforeAll(function() {
         definition = [

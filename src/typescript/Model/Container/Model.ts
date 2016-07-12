@@ -1,11 +1,12 @@
-/// <reference path="../Attribute/Attribute.ts" />
-/// <reference path="../Attribute/Boolean.ts" />
-/// <reference path="../Attribute/Datetime.ts" />
-/// <reference path="../Attribute/MultipleChoice.ts" />
-/// <reference path="../Attribute/Number.ts" />
-/// <reference path="../Attribute/SingleChoice.ts" />
-/// <reference path="../Attribute/String.ts" />
 /// <reference path="Container.ts" />
+/// <reference path="../Attribute/Attribute.ts" />
+/// <reference path="../../Core/Configuration/Configuration.ts" />
+/// <reference path="../Configuration/BooleanConfiguration.ts" />
+/// <reference path="../Configuration/DatetimeConfiguration.ts" />
+/// <reference path="../Configuration/MultipleChoiceConfiguration.ts" />
+/// <reference path="../Configuration/NumberConfiguration.ts" />
+/// <reference path="../Configuration/SingleChoiceConfiguration.ts" />
+/// <reference path="../Configuration/StringConfiguration.ts" />
 
 /**
  * Module that contains container classes.
@@ -16,14 +17,14 @@ module Ompluscript.Model.Container {
     "use strict";
 
     import Container = Ompluscript.Model.Container.Container;
+    import Configuration = Ompluscript.Core.Configuration.Configuration;
+    import BooleanConfiguration = Ompluscript.Model.Configuration.BooleanConfiguration;
+    import DatetimeConfiguration = Ompluscript.Model.Configuration.DatetimeConfiguration;
+    import MultipleChoiceConfiguration = Ompluscript.Model.Configuration.MultipleChoiceConfiguration;
+    import NumberConfiguration = Ompluscript.Model.Configuration.NumberConfiguration;
+    import SingleChoiceConfiguration = Ompluscript.Model.Configuration.SingleChoiceConfiguration;
+    import StringConfiguration = Ompluscript.Model.Configuration.StringConfiguration;
     import Attribute = Ompluscript.Model.Attribute.Attribute;
-    import BooleanAttribute = Ompluscript.Model.Attribute.Boolean;
-    import NumberAttribute = Ompluscript.Model.Attribute.Number;
-    import StringAttribute = Ompluscript.Model.Attribute.String;
-    import Datetime = Ompluscript.Model.Attribute.Datetime;
-    import SingleChoice = Ompluscript.Model.Attribute.SingleChoice;
-    import MultipleChoice = Ompluscript.Model.Attribute.MultipleChoice;
-    import Choice = Ompluscript.Model.Attribute.Choice;
 
     /**
      * Class that contains functionality for Model.
@@ -33,9 +34,16 @@ module Ompluscript.Model.Container {
     export class Model extends Container {
 
         /**
+         * @type {string} TYPE_MODEL Model type.
+         */
+        public static TYPE_MODEL: string = Model["name"];
+
+        /**
          * @type {Object} attributes Contains map for all attributes.
          */
         protected attributes: Object;
+
+        protected configurations: Configuration[];
 
         /**
          * Class constructor.
@@ -48,6 +56,14 @@ module Ompluscript.Model.Container {
          */
         constructor(name: string, definition: Object[]) {
             super(name, definition);
+            this.configurations = [
+                Configuration.getInstance(BooleanConfiguration),
+                Configuration.getInstance(DatetimeConfiguration),
+                Configuration.getInstance(MultipleChoiceConfiguration),
+                Configuration.getInstance(NumberConfiguration),
+                Configuration.getInstance(SingleChoiceConfiguration),
+                Configuration.getInstance(StringConfiguration),
+            ];
             this.attributes = {};
             for (let i in this.definition) {
                 if (this.definition.hasOwnProperty(i)) {
@@ -137,114 +153,13 @@ module Ompluscript.Model.Container {
          * @param {Object} definition
          */
         private addAttribute(definition: Object): void {
-            switch (definition[Attribute.PARAMETER_TYPE]) {
-                case Attribute.TYPE_BOOLEAN:
-                    this.addBoolean(definition);
-                    break;
-                case Attribute.TYPE_NUMBER:
-                    this.addNumber(definition);
-                    break;
-                case Attribute.TYPE_STRING:
-                    this.addString(definition);
-                    break;
-                case Attribute.TYPE_DATETIME:
-                    this.addDatetime(definition);
-                    break;
-                case Attribute.TYPE_SINGLE_CHOICE:
-                    this.addSingleChoice(definition);
-                    break;
-                case Attribute.TYPE_MULTIPLE_CHOICE:
-                    this.addMultipleChoice(definition);
-                    break;
-                default:
-                    break;
+            let name: string = definition[Configuration.PARAMETER_NAME];
+            for (let i: number = 0; i < this.configurations.length; i++) {
+                if (this.configurations[i].isRelatedTo(definition)) {
+                    this.attributes[name] = this.configurations[i].create(definition);
+                }
             }
         }
-
-        /**
-         * Method that adds Boolean attribute to model.
-         *
-         * @param {Object} definition Boolean definition
-         */
-        private addBoolean(definition: Object): void {
-            let name: string = definition[Attribute.PARAMETER_NAME];
-            let value: boolean = definition[Attribute.PARAMETER_VALUE];
-            let required: boolean = definition[Attribute.PARAMETER_REQUIRED];
-            let mustBeTrue: boolean = definition[BooleanAttribute.PARAMETER_MUST_BE_TRUE];
-            this.attributes[name] = new BooleanAttribute(name, value, required, mustBeTrue);
-        }
-
-        /**
-         * Method that adds Number attribute to model.
-         *
-         * @param {Object} definition Number definition
-         */
-        private addNumber(definition: Object): void {
-            let name: string = definition[Attribute.PARAMETER_NAME];
-            let value: number = definition[Attribute.PARAMETER_VALUE];
-            let required: boolean = definition[Attribute.PARAMETER_REQUIRED];
-            let minimum: number = definition[Attribute.PARAMETER_MINIMUM];
-            let includeMinimum: boolean = definition[NumberAttribute.PARAMETER_INCLUDE_MINIMUM];
-            let maximum: number = definition[Attribute.PARAMETER_MAXIMUM];
-            let includeMaximum: boolean = definition[NumberAttribute.PARAMETER_INCLUDE_MAXIMUM];
-            this.attributes[name] = new NumberAttribute(name, value, required, minimum, includeMinimum, maximum, includeMaximum);
-        }
-
-        /**
-         * Method that adds String attribute to model.
-         *
-         * @param {Object} definition String definition
-         */
-        private addString(definition: Object): void {
-            let name: string = definition[Attribute.PARAMETER_NAME];
-            let value: string = definition[Attribute.PARAMETER_VALUE];
-            let required: boolean = definition[Attribute.PARAMETER_REQUIRED];
-            let minimumLength: number = definition[StringAttribute.PARAMETER_MINIMUM_LENGTH];
-            let maximumLength: number = definition[StringAttribute.PARAMETER_MAXIMUM_LENGTH];
-            let pattern: RegExp = definition[StringAttribute.PARAMETER_PATTERN];
-            this.attributes[name] = new StringAttribute(name, value, required, minimumLength, maximumLength, pattern);
-        }
-
-        /**
-         * Method that adds Datetime attribute to model.
-         *
-         * @param {Object} definition Datetime definition
-         */
-        private addDatetime(definition: Object): void {
-            let name: string = definition[Attribute.PARAMETER_NAME];
-            let value: string = definition[Attribute.PARAMETER_VALUE];
-            let required: boolean = definition[Attribute.PARAMETER_REQUIRED];
-            let minimum: string = definition[Attribute.PARAMETER_MINIMUM];
-            let maximum: string = definition[Attribute.PARAMETER_MAXIMUM];
-            this.attributes[name] = new Datetime(name, value, required, minimum, maximum);
-        }
-
-        /**
-         * Method that adds SingleChoice attribute to model.
-         *
-         * @param {Object} definition SingleChoice definition
-         */
-        private addSingleChoice(definition: Object): void {
-            let name: string = definition[Attribute.PARAMETER_NAME];
-            let value: number = definition[Attribute.PARAMETER_VALUE];
-            let required: boolean = definition[Attribute.PARAMETER_REQUIRED];
-            let choices: number[] = definition[Choice.PARAMETER_CHOICES];
-            this.attributes[name] = new SingleChoice(name, value, required, choices);
-        }
-
-        /**
-         * Method that adds Multiple attribute to model.
-         *
-         * @param {Object} definition MultipleChoice definition
-         */
-        private addMultipleChoice(definition: Object): void {
-            let name: string = definition[Attribute.PARAMETER_NAME];
-            let value: number[] = definition[Attribute.PARAMETER_VALUE];
-            let required: boolean = definition[Attribute.PARAMETER_REQUIRED];
-            let choices: number[] = definition[Choice.PARAMETER_CHOICES];
-            this.attributes[name] = new MultipleChoice(name, value, required, choices);
-        }
-
     }
 }
 

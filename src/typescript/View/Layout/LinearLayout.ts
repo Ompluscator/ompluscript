@@ -17,6 +17,12 @@ module Ompluscript.View.Layout {
      * @class Container
      */
     export class LinearLayout extends Layout {
+        
+        public static PARAMETER_DIRECTION: string = "direction";
+
+        public static PARAMETER_REVERSE: string = "reverse";
+
+        public static PARAMETER_ALIGN: string = "align";
 
         public static DIRECTION_HORIZONTAL: string = "horizontal";
 
@@ -37,6 +43,15 @@ module Ompluscript.View.Layout {
         constructor(direction: string = LinearLayout.DIRECTION_HORIZONTAL, reverse: boolean = false,
                     align: string = LinearLayout.ALIGN_START) {
             super(LinearLayout.LINEAR_LAYOUT_CLASS);
+            if (direction === undefined) {
+                direction = LinearLayout.DIRECTION_HORIZONTAL;
+            }
+            if (reverse !== true) {
+                reverse = false;
+            }
+            if (align === undefined) {
+                align = LinearLayout.ALIGN_START;
+            }
             this.setUpLayout(direction, reverse, align);
         }
 

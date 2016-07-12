@@ -1,5 +1,9 @@
 /// <reference path="Component.ts" />
 /// <reference path="Layout.ts" />
+/// <reference path="../Layout/NullLayout.ts" />
+/// <reference path="../Layout/LinearLayout.ts" />
+/// <reference path="../Layout/RelativeLayout.ts" />
+/// <reference path="../Layout/TableLayout.ts" />
 
 /**
  * Module that contains base components
@@ -10,6 +14,10 @@ module Ompluscript.View.Component {
     "use strict";
 
     import Component = Ompluscript.View.Component.Component;
+    import NullLayout = Ompluscript.View.Layout.NullLayout;
+    import LinearLayout = Ompluscript.View.Layout.LinearLayout;
+    import RelativeLayout = Ompluscript.View.Layout.RelativeLayout;
+    import TableLayout = Ompluscript.View.Layout.TableLayout;
 
     /**
      * Class that defines basic container
@@ -18,11 +26,15 @@ module Ompluscript.View.Component {
      */
     export abstract class Container extends Layout {
         
+        public static PARAMETER_LAYOUT: string = "layout";
+        
+        public static CONTAINER_PAGE: string = "page";
+        
         protected layout: Layout;
         
-        constructor(name: string, layout: Layout, styles: Object = {}) {
-            super(name, styles);
-            this.layout = layout;
+        constructor(name: string, definition: Object = {}) {
+            super(name, definition[Component.PARAMETER_STYLES]);
+            this.layout = this.createLayout(definition[Container.PARAMETER_LAYOUT]);
         }
 
         public addChild(component: Component): void {
@@ -59,6 +71,30 @@ module Ompluscript.View.Component {
 
         protected initializeHtmlElement(): void {
             this.htmlElement = document.createElement(Layout.DIV_ELEMENT);
+        }
+        
+        private createLayout(definition: Object = undefined): Layout {
+            if (definition === undefined) {
+                return new NullLayout();
+            } else {
+                switch (definition[Layout.PARAMETER_TYPE]) {
+                    case Layout.TYPE_NULL_LAYOUT:
+                        return new NullLayout();
+                    case Layout.TYPE_LINEAR_LAYOUT:
+                        let direction: string = definition[LinearLayout.PARAMETER_DIRECTION];
+                        let reverse: boolean = definition[LinearLayout.PARAMETER_REVERSE];
+                        let align: string = definition[LinearLayout.PARAMETER_ALIGN];
+                        return new LinearLayout(direction, reverse, align);
+                    case Layout.TYPE_RELATIVE_LAYOUT:
+                        return new RelativeLayout();
+                    case Layout.TYPE_TABLE_LAYOUT:
+                        let rows: number = definition[TableLayout.PARAMETER_ROWS];
+                        let cells: number = definition[TableLayout.PARAMETER_CELLS];
+                        return new TableLayout(rows, cells);
+                    default:
+                        return undefined;
+                }
+            }
         }
     }
 

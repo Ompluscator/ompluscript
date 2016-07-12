@@ -18,14 +18,9 @@ module Ompluscript.Model.Container {
     export abstract class Container extends Observable {
 
         /**
-         * @type {string} CONTAINER_MODEL Model type.
+         * @type {string} PARAMETER_DEFINITION Name parameter name.
          */
-        public static CONTAINER_MODEL: string = "model";
-
-        /**
-         * @type {string} CONTAINER_TABLE Table type.
-         */
-        public static CONTAINER_TABLE: string = "table";
+        public static PARAMETER_DEFINITION: string = "definition";
 
         /**
          * @type {string} name Defines name of model.

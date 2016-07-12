@@ -18,6 +18,10 @@ module Ompluscript.View.Layout {
      */
     export class TableLayout extends LinearLayout {
 
+        public static PARAMETER_ROWS: string = "rows";
+
+        public static PARAMETER_CELLS: string = "cells";
+
         private rows: number;
 
         private cells: number;
@@ -26,6 +30,12 @@ module Ompluscript.View.Layout {
             super(LinearLayout.DIRECTION_VERTICAL, false, LinearLayout.ALIGN_CENTER);
             this.rows = rows;
             this.cells = cells;
+            if (this.rows === undefined) {
+                this.rows = 1;
+            }
+            if (this.cells === undefined) {
+                this.cells = 1;
+            }
             for (let i: number = 0; i < this.rows; i++) {
                 let layout: LinearLayout = new LinearLayout();
                 for (let j: number = 0; j < this.cells; j++) {

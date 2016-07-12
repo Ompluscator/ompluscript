@@ -17,6 +17,10 @@ module Ompluscript.View.Component {
      */
     export abstract class Component extends Observable {
 
+        public static PARAMETER_TYPE: string = "type";
+        
+        public static PARAMETER_STYLES: string = "styles";
+
         public static ATTRIBUTE_ID: string = "id";
 
         public static ATTRIBUTE_CLASS: string = "class";

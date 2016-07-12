@@ -46,6 +46,11 @@ module Ompluscript.Model.Attribute {
         public static PARAMETER_PATTERN: string = "pattern";
 
         /**
+         * @type {string} TYPE_STRING String type name.
+         */
+        public static TYPE_STRING: string = String["name"];
+
+        /**
          * @type {number} minimumLength Minimum allowed length of the string
          */
         private minimumLength: number;

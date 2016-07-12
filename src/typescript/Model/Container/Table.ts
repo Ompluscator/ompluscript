@@ -26,6 +26,11 @@ module Ompluscript.Model.Container {
     export class Table extends Container {
 
         /**
+         * @type {string} TYPE_TABLE Table type.
+         */
+        public static TYPE_TABLE: string = Table["name"];
+
+        /**
          * @type {Model[]} rows Contains a list of models
          */
         protected rows: Model[];

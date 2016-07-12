@@ -18,6 +18,11 @@ module Ompluscript.Model.Attribute {
     export class MultipleChoice extends Choice<number[]> {
 
         /**
+         * @type {string} TYPE_MULTIPLE_CHOICE MultipleChoice type name.
+         */
+        public static TYPE_MULTIPLE_CHOICE: string = MultipleChoice["name"];
+
+        /**
          * Class constructor.
          *
          * Calls superclass constructor and sets allowed choices.

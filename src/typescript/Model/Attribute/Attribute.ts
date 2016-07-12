@@ -42,46 +42,6 @@ module Ompluscript.Model.Attribute {
         public static ERROR_OVER_MAXIMUM: number = 202;
 
         /**
-         * @type {string} TYPE_BOOLEAN Boolean type name.
-         */
-        public static TYPE_BOOLEAN: string = "boolean";
-
-        /**
-         * @type {string} TYPE_NUMBER Number type name.
-         */
-        public static TYPE_NUMBER: string = "number";
-
-        /**
-         * @type {string} TYPE_STRING String type name.
-         */
-        public static TYPE_STRING: string = "string";
-
-        /**
-         * @type {string} TYPE_DATETIME Datetime type name.
-         */
-        public static TYPE_DATETIME: string = "datetime";
-
-        /**
-         * @type {string} TYPE_SINGLE_CHOICE SingleChoice type name.
-         */
-        public static TYPE_SINGLE_CHOICE: string = "singleChoice";
-
-        /**
-         * @type {string} TYPE_MULTIPLE_CHOICE MultipleChoice type name.
-         */
-        public static TYPE_MULTIPLE_CHOICE: string = "multipleChoice";
-
-        /**
-         * @type {string} PARAMETER_TYPE Type parameter name.
-         */
-        public static PARAMETER_TYPE: string = "type";
-
-        /**
-         * @type {string} PARAMETER_NAME Name parameter name.
-         */
-        public static PARAMETER_NAME: string = "name";
-
-        /**
          * @type {string} PARAMETER_REQUIRED Required parameter name.
          */
         public static PARAMETER_REQUIRED: string = "required";

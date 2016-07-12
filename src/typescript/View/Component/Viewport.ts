@@ -1,21 +1,43 @@
 /// <reference path="../Component/Component.ts" />
-/// <reference path="Page.ts" />
+/// <reference path="../Container/Page.ts" />
 
 module Ompluscript.View.Component {
     "use strict";
+    
+    import Component = Ompluscript.View.Component.Component;
+    import Page = Ompluscript.View.Container.Page;
 
     export class Viewport extends Component {
 
-        public static VIEWPORT_CLASS: string = "viewport";
+        private static VIEWPORT_CLASS: string = "viewport";
+        
+        private static VIEWPORT: string = "viewport";
 
         protected pages: Page[];
 
         protected activePageIndex: number;
 
-        constructor(name: string, pages: Page[]) {
-            super(name, undefined);
+        constructor(pages: Page[]) {
+            super(Viewport.VIEWPORT, undefined);
             this.pages = pages;
             this.activePageIndex = 0;
+        }
+
+        public getPageByIndex(index: number): Page {
+            return this.pages[index];
+        }
+
+        public findPageIndexByName(name: string): number {
+            for (let i: number = 0; i < this.pages.length; i++) {
+                if (this.pages[i].getName() === name) {
+                    return i;
+                }
+            }
+            return undefined;
+        }
+        
+        public setActivePageIndex(index: number): void {
+            this.activePageIndex = index;
         }
 
         public render(): HTMLElement {

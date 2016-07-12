@@ -1,0 +1,3 @@
+Ompluscript.createApplication({
+    components: ["component"]
+});

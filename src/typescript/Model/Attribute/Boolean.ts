@@ -21,6 +21,11 @@ module Ompluscript.Model.Attribute {
         public static PARAMETER_MUST_BE_TRUE: string = "mustBeTrue";
 
         /**
+         * @type {string} TYPE_BOOLEAN Boolean type name.
+         */
+        public static TYPE_BOOLEAN: string = Boolean["name"];
+
+        /**
          * @type {number} ERROR_MUST_BE_TRUE Error code for value that is not true.
          */
         public static ERROR_MUST_BE_TRUE: number = 204;

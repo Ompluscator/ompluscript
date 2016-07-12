@@ -45,7 +45,9 @@ module Ompluscript.Core.Observer {
             if (!this.events.hasOwnProperty(type)) {
                 this.events[type] = [];
             }
-            this.events[type].push(observer);
+            if (this.events[type].indexOf(observer) === -1) {
+                this.events[type].push(observer);
+            }
         }
 
         /**

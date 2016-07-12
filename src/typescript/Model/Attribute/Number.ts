@@ -26,6 +26,11 @@ module Ompluscript.Model.Attribute {
         public static PARAMETER_INCLUDE_MAXIMUM: string = "includeMaximum";
 
         /**
+         * @type {string} TYPE_NUMBER Number type name.
+         */
+        public static TYPE_NUMBER: string = Number["name"];
+
+        /**
          * @type {number} minimum Minimum allowed value of the number
          */
         private minimum: number;

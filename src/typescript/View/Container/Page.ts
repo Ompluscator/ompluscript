@@ -6,10 +6,11 @@
  *
  * @module Ompluscript.View.Component
  */
-module Ompluscript.View.Component {
+module Ompluscript.View.Container {
     "use strict";
     
-    import NullLayout = Ompluscript.View.Layout.NullLayout;
+    import Container = Ompluscript.View.Component.Container;
+    import Layout = Ompluscript.View.Component.Layout;
 
     /**
      * Class that defines basic container
@@ -20,8 +21,8 @@ module Ompluscript.View.Component {
 
         protected layout: Layout;
 
-        constructor(name: string, layout: Layout = new NullLayout(), styles: Object = {}) {
-            super(name, layout, styles);
+        constructor(name: string, definition: Object = {}) {
+            super(name, definition);
         }
         
     }

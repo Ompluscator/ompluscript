@@ -16,6 +16,11 @@ module Ompluscript.Model.Attribute {
     export class Datetime extends Attribute<string> {
 
         /**
+         * @type {string} TYPE_DATETIME Datetime type name.
+         */
+        public static TYPE_DATETIME: string = Datetime["name"];
+
+        /**
          * @type {string} minimum Minimum allowed value of the date, stored as string
          */
         private minimum: string;
