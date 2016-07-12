@@ -15,10 +15,14 @@ module Ompluscript.View.Field {
      *
      * @class TextInput
      */
-    export abstract class PasswordInput extends TextInput {
+    export class PasswordInput extends TextInput {
+
+        public static TYPE_PASSWORD_INPUT: string = PasswordInput["name"];
+
+        public static INPUT_PASSWORD: string = "password";
 
         constructor(name: string, stringAttribute: String = undefined, styles: Object = {}) {
-            super(name, stringAttribute, Input.INPUT_PASSWORD, styles);
+            super(name, stringAttribute, styles, PasswordInput.INPUT_PASSWORD);
         }
     }
 

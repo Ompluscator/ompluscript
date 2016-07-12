@@ -5,23 +5,13 @@ module Ompluscript.View.Component {
     
     export abstract class Layout extends Component {
 
-        public static PARAMETER_TYPE: string = "type";
-
-        public static TYPE_NULL_LAYOUT: string = "null";
-
-        public static TYPE_RELATIVE_LAYOUT: string = "relative";
-
-        public static TYPE_LINEAR_LAYOUT: string = "linear";
-
-        public static TYPE_TABLE_LAYOUT: string = "table";
-
         public static DIV_ELEMENT: string = "div";
 
         public static LAYOUT_CLASS: string = "layout";
         
         protected children: Component[];
 
-        constructor(name: string, styles: Object = {}) {
+        constructor(name: string, styles: Object = undefined) {
             super(name, styles);
             this.children = [];
         }

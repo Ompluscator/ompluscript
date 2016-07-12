@@ -17,6 +17,8 @@ module Ompluscript.View.Layout {
      */
     export class RelativeLayout extends Layout {
 
+        public static TYPE_RELATIVE_LAYOUT: string = RelativeLayout["name"];
+
         private static RELATIVE_LAYOUT_CLASS: string = "relative-layout";
 
         constructor() {

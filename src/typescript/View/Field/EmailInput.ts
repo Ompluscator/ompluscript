@@ -15,10 +15,14 @@ module Ompluscript.View.Field {
      *
      * @class TextInput
      */
-    export abstract class EmailInput extends TextInput {
+    export class EmailInput extends TextInput {
+
+        public static TYPE_EMAIL_INPUT: string = EmailInput["name"];
+
+        public static INPUT_EMAIL: string = "email";
 
         constructor(name: string, stringAttribute: String = undefined, styles: Object = {}) {
-            super(name, stringAttribute, Input.INPUT_EMAIL, styles);
+            super(name, stringAttribute, styles, EmailInput.INPUT_EMAIL);
         }
     }
 

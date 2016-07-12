@@ -23,6 +23,16 @@ module Ompluscript.Core.Configuration {
         public static MUST_BE_STRING: string = " must be a string.";
 
         /**
+         * @type {string} MUST_BE_STRING_OR_UNDEFINED Message for definition that should be string or undefined.
+         */
+        public static MUST_BE_STRING_OR_UNDEFINED: string = " must be a string or undefined.";
+
+        /**
+         * @type {string} MUST_BE_STRING_OR_OBJECT_OR_UNDEFINED Message for definition that should be string or object or undefined.
+         */
+        public static MUST_BE_STRING_OR_OBJECT_OR_UNDEFINED: string = " must be a string or object or undefined.";
+
+        /**
          * @type {string} MUST_BE_BOOLEAN_OR_UNDEFINED Message for definition that should be boolean or undefined.
          */
         public static MUST_BE_BOOLEAN_OR_UNDEFINED: string = " must be a boolean or undefined.";
@@ -48,9 +58,19 @@ module Ompluscript.Core.Configuration {
         public static MUST_BE_ARRAY_OR_UNDEFINED: string = " must be an array object or undefined.";
 
         /**
+         * @type {string} MUST_BE_OBJECT_OR_UNDEFINED Message for definition that should be object or undefined.
+         */
+        public static MUST_BE_OBJECT_OR_UNDEFINED: string = " must be an object or undefined.";
+
+        /**
          * @type {string} MUST_BE_GREATER Message for definition that should greater than other.
          */
         public static MUST_BE_GREATER: string = " must be greater than ";
+
+        /**
+         * @type {string} MODEL_MUST_BE_DEFINED Message for model definition that should defined.
+         */
+        public static MODEL_MUST_BE_DEFINED: string = " model must be defined ";
 
         /**
          * @type {string} PARAMETER_TYPE Type parameter name.
@@ -104,6 +124,20 @@ module Ompluscript.Core.Configuration {
             return undefined;
         }
 
+        protected shouldBeString(definition: Object, key: string, prefix: string = ""): string {
+            if (definition[key] !== undefined && typeof definition[key] !== "string") {
+                return this.getName(definition, key, prefix) + Configuration.MUST_BE_STRING_OR_UNDEFINED;
+            }
+            return undefined;
+        }
+
+        protected shouldBeStringOrObject(definition: Object, key: string, prefix: string = ""): string {
+            if (definition[key] !== undefined && typeof definition[key] !== "string" && typeof definition[key] !== "object") {
+                return this.getName(definition, key, prefix) + Configuration.MUST_BE_STRING_OR_OBJECT_OR_UNDEFINED;
+            }
+            return undefined;
+        }
+
         protected shouldBeBoolean(definition: Object, key: string, prefix: string = ""): string {
             if (definition[key] !== undefined && typeof definition[key] !== "boolean") {
                 return this.getName(definition, key, prefix) + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED;
@@ -126,7 +160,6 @@ module Ompluscript.Core.Configuration {
         }
 
         protected shouldBeDatetime(definition: Object, key: string, prefix: string = ""): string {
-            console.log(definition[key]);
             if (definition[key] !== undefined && (typeof definition[key] !== "string" || isNaN(new Date(definition[key]).getTime()))) {
                 return this.getName(definition, key, prefix) + Configuration.MUST_BE_DATETIME_OR_UNDEFINED;
             }
@@ -136,6 +169,13 @@ module Ompluscript.Core.Configuration {
         protected shouldBeArray(definition: Object, key: string, prefix: string = ""): string {
             if (definition[key] !== undefined && !Array.isArray(definition[key])) {
                 return this.getName(definition, key, prefix) + Configuration.MUST_BE_ARRAY_OR_UNDEFINED;
+            }
+            return undefined;
+        }
+
+        protected shouldBeObject(definition: Object, key: string, prefix: string = ""): string {
+            if (definition[key] !== undefined && typeof definition[key] !== "object") {
+                return this.getName(definition, key, prefix) + Configuration.MUST_BE_OBJECT_OR_UNDEFINED;
             }
             return undefined;
         }

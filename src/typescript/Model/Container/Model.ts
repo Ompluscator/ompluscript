@@ -65,10 +65,8 @@ module Ompluscript.Model.Container {
                 Configuration.getInstance(StringConfiguration),
             ];
             this.attributes = {};
-            for (let i in this.definition) {
-                if (this.definition.hasOwnProperty(i)) {
-                    this.addAttribute(this.definition[i]);
-                }
+            for (let i: number = 0; i < this.definition.length; i++) {
+                this.addAttribute(this.definition[i]);
             }
         }
 
@@ -154,11 +152,13 @@ module Ompluscript.Model.Container {
          */
         private addAttribute(definition: Object): void {
             let name: string = definition[Configuration.PARAMETER_NAME];
+            definition[Configuration.PARAMETER_NAME] = this.name + "." + name;
             for (let i: number = 0; i < this.configurations.length; i++) {
                 if (this.configurations[i].isRelatedTo(definition)) {
                     this.attributes[name] = this.configurations[i].create(definition);
                 }
             }
+            definition[Configuration.PARAMETER_NAME] = name;
         }
     }
 }

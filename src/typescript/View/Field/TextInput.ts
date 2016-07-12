@@ -17,10 +17,14 @@ module Ompluscript.View.Field {
      */
     export class TextInput extends Input {
 
+        public static TYPE_TEXT_INPUT: string = TextInput["name"];
+
+        public static INPUT_TEXT: string = "text";
+
         public static EVENT_KEY_PRESS: string = "keypress";
 
-        constructor(name: string, stringAttribute: String = undefined, type: string = Input.INPUT_TEXT, styles: Object = {}) {
-            super(name, stringAttribute, type, styles);
+        constructor(name: string, stringAttribute: String = undefined, styles: Object = {}, type: string = TextInput.INPUT_TEXT) {
+            super(name, stringAttribute, styles, type);
         }
 
         public getValue(): string {

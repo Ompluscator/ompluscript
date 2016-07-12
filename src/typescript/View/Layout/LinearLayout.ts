@@ -17,6 +17,8 @@ module Ompluscript.View.Layout {
      * @class Container
      */
     export class LinearLayout extends Layout {
+
+        public static TYPE_LINEAR_LAYOUT: string = LinearLayout["name"];
         
         public static PARAMETER_DIRECTION: string = "direction";
 

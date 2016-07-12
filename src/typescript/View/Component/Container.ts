@@ -1,9 +1,10 @@
 /// <reference path="Component.ts" />
 /// <reference path="Layout.ts" />
 /// <reference path="../Layout/NullLayout.ts" />
-/// <reference path="../Layout/LinearLayout.ts" />
-/// <reference path="../Layout/RelativeLayout.ts" />
-/// <reference path="../Layout/TableLayout.ts" />
+/// <reference path="../Configuration/NullLayoutConfiguration.ts" />
+/// <reference path="../Configuration/RelativeLayoutConfiguration.ts" />
+/// <reference path="../Configuration/LinearLayoutConfiguration.ts" />
+/// <reference path="../Configuration/TableLayoutConfiguration.ts" />
 
 /**
  * Module that contains base components
@@ -15,9 +16,11 @@ module Ompluscript.View.Component {
 
     import Component = Ompluscript.View.Component.Component;
     import NullLayout = Ompluscript.View.Layout.NullLayout;
-    import LinearLayout = Ompluscript.View.Layout.LinearLayout;
-    import RelativeLayout = Ompluscript.View.Layout.RelativeLayout;
-    import TableLayout = Ompluscript.View.Layout.TableLayout;
+    import Configuration = Ompluscript.Core.Configuration.Configuration;
+    import NullLayoutConfiguration = Ompluscript.View.Configuration.NullLayoutConfiguration;
+    import RelativeLayoutConfiguration = Ompluscript.View.Configuration.RelativeLayoutConfiguration;
+    import LinearLayoutConfiguration = Ompluscript.View.Configuration.LinearLayoutConfiguration;
+    import TableLayoutConfiguration = Ompluscript.View.Configuration.TableLayoutConfiguration;
 
     /**
      * Class that defines basic container
@@ -32,9 +35,9 @@ module Ompluscript.View.Component {
         
         protected layout: Layout;
         
-        constructor(name: string, definition: Object = {}) {
-            super(name, definition[Component.PARAMETER_STYLES]);
-            this.layout = this.createLayout(definition[Container.PARAMETER_LAYOUT]);
+        constructor(name: string, layoutDefinition: Object = undefined, styles: Object = undefined) {
+            super(name, styles);
+            this.createLayout(layoutDefinition);
         }
 
         public addChild(component: Component): void {
@@ -73,26 +76,20 @@ module Ompluscript.View.Component {
             this.htmlElement = document.createElement(Layout.DIV_ELEMENT);
         }
         
-        private createLayout(definition: Object = undefined): Layout {
-            if (definition === undefined) {
-                return new NullLayout();
+        private createLayout(layoutDefinition: Object = undefined): void {
+            if (layoutDefinition === undefined) {
+                this.layout = new NullLayout();
             } else {
-                switch (definition[Layout.PARAMETER_TYPE]) {
-                    case Layout.TYPE_NULL_LAYOUT:
-                        return new NullLayout();
-                    case Layout.TYPE_LINEAR_LAYOUT:
-                        let direction: string = definition[LinearLayout.PARAMETER_DIRECTION];
-                        let reverse: boolean = definition[LinearLayout.PARAMETER_REVERSE];
-                        let align: string = definition[LinearLayout.PARAMETER_ALIGN];
-                        return new LinearLayout(direction, reverse, align);
-                    case Layout.TYPE_RELATIVE_LAYOUT:
-                        return new RelativeLayout();
-                    case Layout.TYPE_TABLE_LAYOUT:
-                        let rows: number = definition[TableLayout.PARAMETER_ROWS];
-                        let cells: number = definition[TableLayout.PARAMETER_CELLS];
-                        return new TableLayout(rows, cells);
-                    default:
-                        return undefined;
+                let configurations: Configuration[] = [
+                    Configuration.getInstance(NullLayoutConfiguration),
+                    Configuration.getInstance(RelativeLayoutConfiguration),
+                    Configuration.getInstance(LinearLayoutConfiguration),
+                    Configuration.getInstance(TableLayoutConfiguration),
+                ];
+                for (let i: number = 0; i < configurations.length; i++) {
+                    if (configurations[i].isRelatedTo(layoutDefinition)) {
+                        this.layout = <Layout>configurations[i].create(layoutDefinition);
+                    }
                 }
             }
         }

@@ -17,10 +17,14 @@ module Ompluscript.View.Field {
      */
     export class CheckBoxInput extends Input {
 
+        public static TYPE_CHECK_BOX_INPUT: string = CheckBoxInput["name"];
+
+        public static INPUT_CHECK_BOX: string = "checkbox";
+
         public static EVENT_CHANGE: string = "change";
 
-        constructor(name: string, booleanAttribute: Boolean = undefined, type: string = Input.INPUT_CHECK_BOX, styles: Object = {}) {
-            super(name, booleanAttribute, type, styles);
+        constructor(name: string, booleanAttribute: Boolean = undefined, styles: Object = {}) {
+            super(name, booleanAttribute, styles, CheckBoxInput.INPUT_CHECK_BOX);
         }
 
         public getValue(): boolean {

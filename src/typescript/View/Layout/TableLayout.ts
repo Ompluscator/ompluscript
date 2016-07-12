@@ -18,6 +18,8 @@ module Ompluscript.View.Layout {
      */
     export class TableLayout extends LinearLayout {
 
+        public static TYPE_TABLE_LAYOUT: string = TableLayout["name"];
+
         public static PARAMETER_ROWS: string = "rows";
 
         public static PARAMETER_CELLS: string = "cells";

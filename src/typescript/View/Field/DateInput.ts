@@ -1,4 +1,5 @@
 /// <reference path="Input.ts" />
+/// <reference path="TextInput.ts" />
 /// <reference path="../../Model/Attribute/String.ts" />
 
 /**
@@ -19,8 +20,8 @@ module Ompluscript.View.Field {
 
         public static EVENT_KEY_PRESS: string = "keypress";
 
-        constructor(name: string, datetimeAttribute: Datetime = undefined, type: string = Input.INPUT_TEXT, styles: Object = {}) {
-            super(name, datetimeAttribute, type, styles);
+        constructor(name: string, datetimeAttribute: Datetime = undefined, styles: Object = {}) {
+            super(name, datetimeAttribute, styles, TextInput.INPUT_TEXT);
         }
 
         public getValue(): any {

@@ -270,7 +270,7 @@ var __extends = (this && this.__extends) || function (d, b) {
             var Layout = (function (_super) {
                 __extends(Layout, _super);
                 function Layout(name, styles) {
-                    if (styles === void 0) { styles = {}; }
+                    if (styles === void 0) { styles = undefined; }
                     _super.call(this, name, styles);
                     this.children = [];
                 }
@@ -302,11 +302,6 @@ var __extends = (this && this.__extends) || function (d, b) {
                     this.htmlElement = document.createElement(Layout.DIV_ELEMENT);
                     this.addClass(Layout.LAYOUT_CLASS);
                 };
-                Layout.PARAMETER_TYPE = "type";
-                Layout.TYPE_NULL_LAYOUT = "null";
-                Layout.TYPE_RELATIVE_LAYOUT = "relative";
-                Layout.TYPE_LINEAR_LAYOUT = "linear";
-                Layout.TYPE_TABLE_LAYOUT = "table";
                 Layout.DIV_ELEMENT = "div";
                 Layout.LAYOUT_CLASS = "layout";
                 return Layout;
@@ -339,6 +334,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     _super.prototype.initializeHtmlElement.call(this);
                     this.addClass(NullLayout.NULL_LAYOUT_CLASS);
                 };
+                NullLayout.TYPE_NULL_LAYOUT = NullLayout["name"];
                 NullLayout.NULL_LAYOUT_CLASS = "null-layout";
                 return NullLayout;
             }(Layout));
@@ -347,10 +343,253 @@ var __extends = (this && this.__extends) || function (d, b) {
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
 (function (Ompluscript) {
+    var Core;
+    (function (Core) {
+        var Configuration;
+        (function (Configuration_1) {
+            "use strict";
+            var Configuration = (function () {
+                function Configuration() {
+                }
+                Configuration.getInstance = function (configuration) {
+                    if (!Configuration.instances.hasOwnProperty(configuration["name"])) {
+                        Configuration.instances[configuration["name"]] = new configuration;
+                    }
+                    return Configuration.instances[configuration["name"]];
+                };
+                Configuration.prototype.filterErrors = function (errors) {
+                    var filter = [];
+                    for (var i = 0; i < errors.length; i++) {
+                        if (errors[i] !== undefined) {
+                            filter.push(errors[i]);
+                        }
+                    }
+                    if (filter.length > 0) {
+                        return filter;
+                    }
+                    return [];
+                };
+                Configuration.prototype.mustBeValue = function (definition, key, values, prefix) {
+                    if (prefix === void 0) { prefix = ""; }
+                    if (values.indexOf(definition[key]) === -1) {
+                        return this.getName(definition, key, prefix) + Configuration.HAS_WRONG_VALUE;
+                    }
+                    return undefined;
+                };
+                Configuration.prototype.mustBeString = function (definition, key, prefix) {
+                    if (prefix === void 0) { prefix = ""; }
+                    if (typeof definition[key] !== "string") {
+                        return this.getName(definition, key, prefix) + Configuration.MUST_BE_STRING;
+                    }
+                    return undefined;
+                };
+                Configuration.prototype.shouldBeString = function (definition, key, prefix) {
+                    if (prefix === void 0) { prefix = ""; }
+                    if (definition[key] !== undefined && typeof definition[key] !== "string") {
+                        return this.getName(definition, key, prefix) + Configuration.MUST_BE_STRING_OR_UNDEFINED;
+                    }
+                    return undefined;
+                };
+                Configuration.prototype.shouldBeStringOrObject = function (definition, key, prefix) {
+                    if (prefix === void 0) { prefix = ""; }
+                    if (definition[key] !== undefined && typeof definition[key] !== "string" && typeof definition[key] !== "object") {
+                        return this.getName(definition, key, prefix) + Configuration.MUST_BE_STRING_OR_OBJECT_OR_UNDEFINED;
+                    }
+                    return undefined;
+                };
+                Configuration.prototype.shouldBeBoolean = function (definition, key, prefix) {
+                    if (prefix === void 0) { prefix = ""; }
+                    if (definition[key] !== undefined && typeof definition[key] !== "boolean") {
+                        return this.getName(definition, key, prefix) + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED;
+                    }
+                    return undefined;
+                };
+                Configuration.prototype.shouldBeNumber = function (definition, key, prefix) {
+                    if (prefix === void 0) { prefix = ""; }
+                    if (definition[key] !== undefined && typeof definition[key] !== "number") {
+                        return this.getName(definition, key, prefix) + Configuration.MUST_BE_NUMBER_OR_UNDEFINED;
+                    }
+                    return undefined;
+                };
+                Configuration.prototype.shouldBeRegex = function (definition, key, prefix) {
+                    if (prefix === void 0) { prefix = ""; }
+                    if (definition[key] !== undefined && !(definition[key] instanceof RegExp)) {
+                        return this.getName(definition, key, prefix) + Configuration.MUST_BE_REGEX_OR_UNDEFINED;
+                    }
+                    return undefined;
+                };
+                Configuration.prototype.shouldBeDatetime = function (definition, key, prefix) {
+                    if (prefix === void 0) { prefix = ""; }
+                    if (definition[key] !== undefined && (typeof definition[key] !== "string" || isNaN(new Date(definition[key]).getTime()))) {
+                        return this.getName(definition, key, prefix) + Configuration.MUST_BE_DATETIME_OR_UNDEFINED;
+                    }
+                    return undefined;
+                };
+                Configuration.prototype.shouldBeArray = function (definition, key, prefix) {
+                    if (prefix === void 0) { prefix = ""; }
+                    if (definition[key] !== undefined && !Array.isArray(definition[key])) {
+                        return this.getName(definition, key, prefix) + Configuration.MUST_BE_ARRAY_OR_UNDEFINED;
+                    }
+                    return undefined;
+                };
+                Configuration.prototype.shouldBeObject = function (definition, key, prefix) {
+                    if (prefix === void 0) { prefix = ""; }
+                    if (definition[key] !== undefined && typeof definition[key] !== "object") {
+                        return this.getName(definition, key, prefix) + Configuration.MUST_BE_OBJECT_OR_UNDEFINED;
+                    }
+                    return undefined;
+                };
+                Configuration.prototype.mustBeGreater = function (definition, first, second, firstValue, secondValue, include, prefix) {
+                    if (prefix === void 0) { prefix = ""; }
+                    if (firstValue !== undefined && secondValue !== undefined) {
+                        if (include === true && firstValue > secondValue) {
+                            return this.getName(definition, second, prefix) + Configuration.MUST_BE_GREATER
+                                + this.getName(definition, first, prefix);
+                        }
+                        else if (include !== true && firstValue >= secondValue) {
+                            return this.getName(definition, second, prefix) + Configuration.MUST_BE_GREATER
+                                + this.getName(definition, first, prefix);
+                        }
+                    }
+                    return undefined;
+                };
+                Configuration.prototype.getName = function (definition, key, prefix) {
+                    return prefix + definition[Configuration.PARAMETER_NAME] + "." + key;
+                };
+                Configuration.IS_WRONG_CONFIGURATION = " is wrong configuration.";
+                Configuration.HAS_WRONG_VALUE = " has wrong value.";
+                Configuration.MUST_BE_STRING = " must be a string.";
+                Configuration.MUST_BE_STRING_OR_UNDEFINED = " must be a string or undefined.";
+                Configuration.MUST_BE_STRING_OR_OBJECT_OR_UNDEFINED = " must be a string or object or undefined.";
+                Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED = " must be a boolean or undefined.";
+                Configuration.MUST_BE_NUMBER_OR_UNDEFINED = " must be a number or undefined.";
+                Configuration.MUST_BE_REGEX_OR_UNDEFINED = " must be a regex object or undefined.";
+                Configuration.MUST_BE_DATETIME_OR_UNDEFINED = " must be in datetime format or undefined.";
+                Configuration.MUST_BE_ARRAY_OR_UNDEFINED = " must be an array object or undefined.";
+                Configuration.MUST_BE_OBJECT_OR_UNDEFINED = " must be an object or undefined.";
+                Configuration.MUST_BE_GREATER = " must be greater than ";
+                Configuration.MODEL_MUST_BE_DEFINED = " model must be defined ";
+                Configuration.PARAMETER_TYPE = "type";
+                Configuration.PARAMETER_NAME = "name";
+                Configuration.instances = {};
+                return Configuration;
+            }());
+            Configuration_1.Configuration = Configuration;
+        })(Configuration = Core.Configuration || (Core.Configuration = {}));
+    })(Core = Ompluscript.Core || (Ompluscript.Core = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Configuration;
+        (function (Configuration_2) {
+            "use strict";
+            var Configuration = Ompluscript.Core.Configuration.Configuration;
+            var Component = Ompluscript.View.Component.Component;
+            var ComponentConfiguration = (function (_super) {
+                __extends(ComponentConfiguration, _super);
+                function ComponentConfiguration() {
+                    _super.apply(this, arguments);
+                }
+                ComponentConfiguration.prototype.getErrors = function (definition, prefix) {
+                    var errors = [];
+                    errors.push(this.mustBeString(definition, Configuration.PARAMETER_NAME, prefix));
+                    errors.push(this.shouldBeBoolean(definition, Component.PARAMETER_STYLES, prefix));
+                    return this.filterErrors(errors);
+                };
+                return ComponentConfiguration;
+            }(Configuration));
+            Configuration_2.ComponentConfiguration = ComponentConfiguration;
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Configuration;
+        (function (Configuration_3) {
+            "use strict";
+            var Configuration = Ompluscript.Core.Configuration.Configuration;
+            var NullLayout = Ompluscript.View.Layout.NullLayout;
+            var NullLayoutConfiguration = (function (_super) {
+                __extends(NullLayoutConfiguration, _super);
+                function NullLayoutConfiguration() {
+                    _super.apply(this, arguments);
+                }
+                NullLayoutConfiguration.prototype.isRelatedTo = function (definition) {
+                    return definition[Configuration.PARAMETER_TYPE] === NullLayout.TYPE_NULL_LAYOUT;
+                };
+                NullLayoutConfiguration.prototype.create = function (definition) {
+                    return new NullLayout();
+                };
+                return NullLayoutConfiguration;
+            }(Configuration_3.ComponentConfiguration));
+            Configuration_3.NullLayoutConfiguration = NullLayoutConfiguration;
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
     var View;
     (function (View) {
         var Layout;
         (function (Layout_2) {
+            "use strict";
+            var Layout = Ompluscript.View.Component.Layout;
+            var RelativeLayout = (function (_super) {
+                __extends(RelativeLayout, _super);
+                function RelativeLayout() {
+                    _super.call(this, RelativeLayout.RELATIVE_LAYOUT_CLASS);
+                }
+                RelativeLayout.prototype.appendChild = function (component) {
+                    this.htmlElement.appendChild(component.render());
+                };
+                RelativeLayout.prototype.clear = function () {
+                    while (this.htmlElement.firstChild) {
+                        this.htmlElement.removeChild(this.htmlElement.firstChild);
+                    }
+                };
+                RelativeLayout.prototype.initializeHtmlElement = function () {
+                    _super.prototype.initializeHtmlElement.call(this);
+                    this.addClass(RelativeLayout.RELATIVE_LAYOUT_CLASS);
+                };
+                RelativeLayout.TYPE_RELATIVE_LAYOUT = RelativeLayout["name"];
+                RelativeLayout.RELATIVE_LAYOUT_CLASS = "relative-layout";
+                return RelativeLayout;
+            }(Layout));
+            Layout_2.RelativeLayout = RelativeLayout;
+        })(Layout = View.Layout || (View.Layout = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Configuration;
+        (function (Configuration_4) {
+            "use strict";
+            var Configuration = Ompluscript.Core.Configuration.Configuration;
+            var RelativeLayout = Ompluscript.View.Layout.RelativeLayout;
+            var RelativeLayoutConfiguration = (function (_super) {
+                __extends(RelativeLayoutConfiguration, _super);
+                function RelativeLayoutConfiguration() {
+                    _super.apply(this, arguments);
+                }
+                RelativeLayoutConfiguration.prototype.isRelatedTo = function (definition) {
+                    return definition[Configuration.PARAMETER_TYPE] === RelativeLayout.TYPE_RELATIVE_LAYOUT;
+                };
+                RelativeLayoutConfiguration.prototype.create = function (definition) {
+                    return new RelativeLayout();
+                };
+                return RelativeLayoutConfiguration;
+            }(Configuration_4.ComponentConfiguration));
+            Configuration_4.RelativeLayoutConfiguration = RelativeLayoutConfiguration;
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Layout;
+        (function (Layout_3) {
             "use strict";
             var Layout = Ompluscript.View.Component.Layout;
             var LinearLayout = (function (_super) {
@@ -390,6 +629,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                         this.addClass(LinearLayout.CLASS_PREFIX + LinearLayout.CLASS_REVERSE);
                     }
                 };
+                LinearLayout.TYPE_LINEAR_LAYOUT = LinearLayout["name"];
                 LinearLayout.PARAMETER_DIRECTION = "direction";
                 LinearLayout.PARAMETER_REVERSE = "reverse";
                 LinearLayout.PARAMETER_ALIGN = "align";
@@ -403,39 +643,57 @@ var __extends = (this && this.__extends) || function (d, b) {
                 LinearLayout.CLASS_REVERSE = "flex-";
                 return LinearLayout;
             }(Layout));
-            Layout_2.LinearLayout = LinearLayout;
+            Layout_3.LinearLayout = LinearLayout;
         })(Layout = View.Layout || (View.Layout = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
 (function (Ompluscript) {
     var View;
     (function (View) {
-        var Layout;
-        (function (Layout_3) {
+        var Configuration;
+        (function (Configuration_5) {
             "use strict";
-            var Layout = Ompluscript.View.Component.Layout;
-            var RelativeLayout = (function (_super) {
-                __extends(RelativeLayout, _super);
-                function RelativeLayout() {
-                    _super.call(this, RelativeLayout.RELATIVE_LAYOUT_CLASS);
+            var Configuration = Ompluscript.Core.Configuration.Configuration;
+            var LinearLayout = Ompluscript.View.Layout.LinearLayout;
+            var LinearLayoutConfiguration = (function (_super) {
+                __extends(LinearLayoutConfiguration, _super);
+                function LinearLayoutConfiguration() {
+                    _super.apply(this, arguments);
                 }
-                RelativeLayout.prototype.appendChild = function (component) {
-                    this.htmlElement.appendChild(component.render());
+                LinearLayoutConfiguration.prototype.isRelatedTo = function (definition) {
+                    return definition[Configuration.PARAMETER_TYPE] === LinearLayout.TYPE_LINEAR_LAYOUT;
                 };
-                RelativeLayout.prototype.clear = function () {
-                    while (this.htmlElement.firstChild) {
-                        this.htmlElement.removeChild(this.htmlElement.firstChild);
+                LinearLayoutConfiguration.prototype.getErrors = function (definition, prefix) {
+                    var errors = _super.prototype.getErrors.call(this, definition, prefix);
+                    var error = this.shouldBeString(definition, LinearLayout.PARAMETER_DIRECTION, prefix);
+                    if (error === undefined) {
+                        var values = [LinearLayout.DIRECTION_VERTICAL, LinearLayout.DIRECTION_HORIZONTAL];
+                        errors.push(this.mustBeValue(definition, LinearLayout.PARAMETER_DIRECTION, values, prefix));
                     }
+                    else {
+                        errors.push(error);
+                    }
+                    error = this.shouldBeString(definition, LinearLayout.PARAMETER_ALIGN, prefix);
+                    if (error === undefined) {
+                        var values = [LinearLayout.ALIGN_START, LinearLayout.ALIGN_CENTER, LinearLayout.ALIGN_END];
+                        errors.push(this.mustBeValue(definition, LinearLayout.PARAMETER_ALIGN, values, prefix));
+                    }
+                    else {
+                        errors.push(error);
+                    }
+                    errors.push(this.shouldBeBoolean(definition, LinearLayout.PARAMETER_REVERSE, prefix));
+                    return this.filterErrors(errors);
                 };
-                RelativeLayout.prototype.initializeHtmlElement = function () {
-                    _super.prototype.initializeHtmlElement.call(this);
-                    this.addClass(RelativeLayout.RELATIVE_LAYOUT_CLASS);
+                LinearLayoutConfiguration.prototype.create = function (definition) {
+                    var direction = definition[LinearLayout.PARAMETER_DIRECTION];
+                    var reverse = definition[LinearLayout.PARAMETER_REVERSE];
+                    var align = definition[LinearLayout.PARAMETER_ALIGN];
+                    return new LinearLayout(direction, reverse, align);
                 };
-                RelativeLayout.RELATIVE_LAYOUT_CLASS = "relative-layout";
-                return RelativeLayout;
-            }(Layout));
-            Layout_3.RelativeLayout = RelativeLayout;
-        })(Layout = View.Layout || (View.Layout = {}));
+                return LinearLayoutConfiguration;
+            }(Configuration_5.ComponentConfiguration));
+            Configuration_5.LinearLayoutConfiguration = LinearLayoutConfiguration;
+        })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
 (function (Ompluscript) {
@@ -482,6 +740,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     _super.prototype.initializeHtmlElement.call(this);
                     this.addClass(Layout.LinearLayout.LINEAR_LAYOUT_CLASS);
                 };
+                TableLayout.TYPE_TABLE_LAYOUT = TableLayout["name"];
                 TableLayout.PARAMETER_ROWS = "rows";
                 TableLayout.PARAMETER_CELLS = "cells";
                 return TableLayout;
@@ -493,20 +752,55 @@ var __extends = (this && this.__extends) || function (d, b) {
 (function (Ompluscript) {
     var View;
     (function (View) {
+        var Configuration;
+        (function (Configuration_6) {
+            "use strict";
+            var Configuration = Ompluscript.Core.Configuration.Configuration;
+            var TableLayout = Ompluscript.View.Layout.TableLayout;
+            var TableLayoutConfiguration = (function (_super) {
+                __extends(TableLayoutConfiguration, _super);
+                function TableLayoutConfiguration() {
+                    _super.apply(this, arguments);
+                }
+                TableLayoutConfiguration.prototype.isRelatedTo = function (definition) {
+                    return definition[Configuration.PARAMETER_TYPE] === TableLayout.TYPE_LINEAR_LAYOUT;
+                };
+                TableLayoutConfiguration.prototype.getErrors = function (definition, prefix) {
+                    var errors = _super.prototype.getErrors.call(this, definition, prefix);
+                    errors.push(this.shouldBeNumber(definition, TableLayout.PARAMETER_ROWS, prefix));
+                    errors.push(this.shouldBeNumber(definition, TableLayout.PARAMETER_CELLS, prefix));
+                    return this.filterErrors(errors);
+                };
+                TableLayoutConfiguration.prototype.create = function (definition) {
+                    var rows = definition[TableLayout.PARAMETER_ROWS];
+                    var cells = definition[TableLayout.PARAMETER_CELLS];
+                    return new TableLayout(rows, cells);
+                };
+                return TableLayoutConfiguration;
+            }(Configuration_6.ComponentConfiguration));
+            Configuration_6.TableLayoutConfiguration = TableLayoutConfiguration;
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
         var Component;
         (function (Component_2) {
             "use strict";
-            var Component = Ompluscript.View.Component.Component;
             var NullLayout = Ompluscript.View.Layout.NullLayout;
-            var LinearLayout = Ompluscript.View.Layout.LinearLayout;
-            var RelativeLayout = Ompluscript.View.Layout.RelativeLayout;
-            var TableLayout = Ompluscript.View.Layout.TableLayout;
+            var Configuration = Ompluscript.Core.Configuration.Configuration;
+            var NullLayoutConfiguration = Ompluscript.View.Configuration.NullLayoutConfiguration;
+            var RelativeLayoutConfiguration = Ompluscript.View.Configuration.RelativeLayoutConfiguration;
+            var LinearLayoutConfiguration = Ompluscript.View.Configuration.LinearLayoutConfiguration;
+            var TableLayoutConfiguration = Ompluscript.View.Configuration.TableLayoutConfiguration;
             var Container = (function (_super) {
                 __extends(Container, _super);
-                function Container(name, definition) {
-                    if (definition === void 0) { definition = {}; }
-                    _super.call(this, name, definition[Component.PARAMETER_STYLES]);
-                    this.layout = this.createLayout(definition[Container.PARAMETER_LAYOUT]);
+                function Container(name, layoutDefinition, styles) {
+                    if (layoutDefinition === void 0) { layoutDefinition = undefined; }
+                    if (styles === void 0) { styles = undefined; }
+                    _super.call(this, name, styles);
+                    this.createLayout(layoutDefinition);
                 }
                 Container.prototype.addChild = function (component) {
                     _super.prototype.addChild.call(this, component);
@@ -537,28 +831,22 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Container.prototype.initializeHtmlElement = function () {
                     this.htmlElement = document.createElement(Component_2.Layout.DIV_ELEMENT);
                 };
-                Container.prototype.createLayout = function (definition) {
-                    if (definition === void 0) { definition = undefined; }
-                    if (definition === undefined) {
-                        return new NullLayout();
+                Container.prototype.createLayout = function (layoutDefinition) {
+                    if (layoutDefinition === void 0) { layoutDefinition = undefined; }
+                    if (layoutDefinition === undefined) {
+                        this.layout = new NullLayout();
                     }
                     else {
-                        switch (definition[Component_2.Layout.PARAMETER_TYPE]) {
-                            case Component_2.Layout.TYPE_NULL_LAYOUT:
-                                return new NullLayout();
-                            case Component_2.Layout.TYPE_LINEAR_LAYOUT:
-                                var direction = definition[LinearLayout.PARAMETER_DIRECTION];
-                                var reverse = definition[LinearLayout.PARAMETER_REVERSE];
-                                var align = definition[LinearLayout.PARAMETER_ALIGN];
-                                return new LinearLayout(direction, reverse, align);
-                            case Component_2.Layout.TYPE_RELATIVE_LAYOUT:
-                                return new RelativeLayout();
-                            case Component_2.Layout.TYPE_TABLE_LAYOUT:
-                                var rows = definition[TableLayout.PARAMETER_ROWS];
-                                var cells = definition[TableLayout.PARAMETER_CELLS];
-                                return new TableLayout(rows, cells);
-                            default:
-                                return undefined;
+                        var configurations = [
+                            Configuration.getInstance(NullLayoutConfiguration),
+                            Configuration.getInstance(RelativeLayoutConfiguration),
+                            Configuration.getInstance(LinearLayoutConfiguration),
+                            Configuration.getInstance(TableLayoutConfiguration),
+                        ];
+                        for (var i = 0; i < configurations.length; i++) {
+                            if (configurations[i].isRelatedTo(layoutDefinition)) {
+                                this.layout = configurations[i].create(layoutDefinition);
+                            }
                         }
                     }
                 };
@@ -930,118 +1218,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Core;
     (function (Core) {
         var Configuration;
-        (function (Configuration_1) {
-            "use strict";
-            var Configuration = (function () {
-                function Configuration() {
-                }
-                Configuration.getInstance = function (configuration) {
-                    if (!Configuration.instances.hasOwnProperty(configuration["name"])) {
-                        Configuration.instances[configuration["name"]] = new configuration;
-                    }
-                    return Configuration.instances[configuration["name"]];
-                };
-                Configuration.prototype.filterErrors = function (errors) {
-                    var filter = [];
-                    for (var i = 0; i < errors.length; i++) {
-                        if (errors[i] !== undefined) {
-                            filter.push(errors[i]);
-                        }
-                    }
-                    if (filter.length > 0) {
-                        return filter;
-                    }
-                    return [];
-                };
-                Configuration.prototype.mustBeValue = function (definition, key, values, prefix) {
-                    if (prefix === void 0) { prefix = ""; }
-                    if (values.indexOf(definition[key]) === -1) {
-                        return this.getName(definition, key, prefix) + Configuration.HAS_WRONG_VALUE;
-                    }
-                    return undefined;
-                };
-                Configuration.prototype.mustBeString = function (definition, key, prefix) {
-                    if (prefix === void 0) { prefix = ""; }
-                    if (typeof definition[key] !== "string") {
-                        return this.getName(definition, key, prefix) + Configuration.MUST_BE_STRING;
-                    }
-                    return undefined;
-                };
-                Configuration.prototype.shouldBeBoolean = function (definition, key, prefix) {
-                    if (prefix === void 0) { prefix = ""; }
-                    if (definition[key] !== undefined && typeof definition[key] !== "boolean") {
-                        return this.getName(definition, key, prefix) + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED;
-                    }
-                    return undefined;
-                };
-                Configuration.prototype.shouldBeNumber = function (definition, key, prefix) {
-                    if (prefix === void 0) { prefix = ""; }
-                    if (definition[key] !== undefined && typeof definition[key] !== "number") {
-                        return this.getName(definition, key, prefix) + Configuration.MUST_BE_NUMBER_OR_UNDEFINED;
-                    }
-                    return undefined;
-                };
-                Configuration.prototype.shouldBeRegex = function (definition, key, prefix) {
-                    if (prefix === void 0) { prefix = ""; }
-                    if (definition[key] !== undefined && !(definition[key] instanceof RegExp)) {
-                        return this.getName(definition, key, prefix) + Configuration.MUST_BE_REGEX_OR_UNDEFINED;
-                    }
-                    return undefined;
-                };
-                Configuration.prototype.shouldBeDatetime = function (definition, key, prefix) {
-                    if (prefix === void 0) { prefix = ""; }
-                    console.log(definition[key]);
-                    if (definition[key] !== undefined && (typeof definition[key] !== "string" || isNaN(new Date(definition[key]).getTime()))) {
-                        return this.getName(definition, key, prefix) + Configuration.MUST_BE_DATETIME_OR_UNDEFINED;
-                    }
-                    return undefined;
-                };
-                Configuration.prototype.shouldBeArray = function (definition, key, prefix) {
-                    if (prefix === void 0) { prefix = ""; }
-                    if (definition[key] !== undefined && !Array.isArray(definition[key])) {
-                        return this.getName(definition, key, prefix) + Configuration.MUST_BE_ARRAY_OR_UNDEFINED;
-                    }
-                    return undefined;
-                };
-                Configuration.prototype.mustBeGreater = function (definition, first, second, firstValue, secondValue, include, prefix) {
-                    if (prefix === void 0) { prefix = ""; }
-                    if (firstValue !== undefined && secondValue !== undefined) {
-                        if (include === true && firstValue > secondValue) {
-                            return this.getName(definition, second, prefix) + Configuration.MUST_BE_GREATER
-                                + this.getName(definition, first, prefix);
-                        }
-                        else if (include !== true && firstValue >= secondValue) {
-                            return this.getName(definition, second, prefix) + Configuration.MUST_BE_GREATER
-                                + this.getName(definition, first, prefix);
-                        }
-                    }
-                    return undefined;
-                };
-                Configuration.prototype.getName = function (definition, key, prefix) {
-                    return prefix + definition[Configuration.PARAMETER_NAME] + "." + key;
-                };
-                Configuration.IS_WRONG_CONFIGURATION = " is wrong configuration.";
-                Configuration.HAS_WRONG_VALUE = " has wrong value.";
-                Configuration.MUST_BE_STRING = " must be a string.";
-                Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED = " must be a boolean or undefined.";
-                Configuration.MUST_BE_NUMBER_OR_UNDEFINED = " must be a number or undefined.";
-                Configuration.MUST_BE_REGEX_OR_UNDEFINED = " must be a regex object or undefined.";
-                Configuration.MUST_BE_DATETIME_OR_UNDEFINED = " must be in datetime format or undefined.";
-                Configuration.MUST_BE_ARRAY_OR_UNDEFINED = " must be an array object or undefined.";
-                Configuration.MUST_BE_GREATER = " must be greater than ";
-                Configuration.PARAMETER_TYPE = "type";
-                Configuration.PARAMETER_NAME = "name";
-                Configuration.instances = {};
-                return Configuration;
-            }());
-            Configuration_1.Configuration = Configuration;
-        })(Configuration = Core.Configuration || (Core.Configuration = {}));
-    })(Core = Ompluscript.Core || (Ompluscript.Core = {}));
-})(Ompluscript || (Ompluscript = {}));
-(function (Ompluscript) {
-    var Core;
-    (function (Core) {
-        var Configuration;
         (function (Configuration) {
             "use strict";
             var ConfigurationClass = Ompluscript.Core.Configuration.Configuration;
@@ -1105,7 +1281,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Core;
     (function (Core) {
         var Configuration;
-        (function (Configuration_2) {
+        (function (Configuration_7) {
             "use strict";
             var Configuration = Ompluscript.Core.Configuration.Configuration;
             var ErrorConfiguration = (function (_super) {
@@ -1124,7 +1300,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 return ErrorConfiguration;
             }(Configuration));
-            Configuration_2.ErrorConfiguration = ErrorConfiguration;
+            Configuration_7.ErrorConfiguration = ErrorConfiguration;
         })(Configuration = Core.Configuration || (Core.Configuration = {}));
     })(Core = Ompluscript.Core || (Ompluscript.Core = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -1132,7 +1308,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Core;
     (function (Core) {
         var Configuration;
-        (function (Configuration_3) {
+        (function (Configuration_8) {
             "use strict";
             var Configuration = Ompluscript.Core.Configuration.Configuration;
             var GroupConfiguration = (function (_super) {
@@ -1158,7 +1334,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 return GroupConfiguration;
             }(Configuration));
-            Configuration_3.GroupConfiguration = GroupConfiguration;
+            Configuration_8.GroupConfiguration = GroupConfiguration;
         })(Configuration = Core.Configuration || (Core.Configuration = {}));
     })(Core = Ompluscript.Core || (Ompluscript.Core = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -1737,7 +1913,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_4) {
+        (function (Configuration_9) {
             "use strict";
             var Configuration = Ompluscript.Core.Configuration.Configuration;
             var Attribute = Ompluscript.Model.Attribute.Attribute;
@@ -1754,7 +1930,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 return AttributeConfiguration;
             }(Configuration));
-            Configuration_4.AttributeConfiguration = AttributeConfiguration;
+            Configuration_9.AttributeConfiguration = AttributeConfiguration;
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -1762,7 +1938,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_5) {
+        (function (Configuration_10) {
             "use strict";
             var BooleanAttribute = Ompluscript.Model.Attribute.Boolean;
             var Attribute = Ompluscript.Model.Attribute.Attribute;
@@ -1788,8 +1964,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return new BooleanAttribute(name, value, required, mustBeTrue);
                 };
                 return BooleanConfiguration;
-            }(Configuration_5.AttributeConfiguration));
-            Configuration_5.BooleanConfiguration = BooleanConfiguration;
+            }(Configuration_10.AttributeConfiguration));
+            Configuration_10.BooleanConfiguration = BooleanConfiguration;
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -1820,7 +1996,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_6) {
+        (function (Configuration_11) {
             "use strict";
             var Datetime = Ompluscript.Model.Attribute.Datetime;
             var Attribute = Ompluscript.Model.Attribute.Attribute;
@@ -1856,8 +2032,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return new Datetime(name, value, required, minimum, maximum);
                 };
                 return DatetimeConfiguration;
-            }(Configuration_6.AttributeConfiguration));
-            Configuration_6.DatetimeConfiguration = DatetimeConfiguration;
+            }(Configuration_11.AttributeConfiguration));
+            Configuration_11.DatetimeConfiguration = DatetimeConfiguration;
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -1865,7 +2041,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_7) {
+        (function (Configuration_12) {
             "use strict";
             var Attribute = Ompluscript.Model.Attribute.Attribute;
             var Choice = Ompluscript.Model.Attribute.Choice;
@@ -1887,8 +2063,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return new MultipleChoice(name, value, required, choices);
                 };
                 return MultipleChoiceConfiguration;
-            }(Configuration_7.ChoiceConfiguration));
-            Configuration_7.MultipleChoiceConfiguration = MultipleChoiceConfiguration;
+            }(Configuration_12.ChoiceConfiguration));
+            Configuration_12.MultipleChoiceConfiguration = MultipleChoiceConfiguration;
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -1896,7 +2072,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_8) {
+        (function (Configuration_13) {
             "use strict";
             var NumberAttribute = Ompluscript.Model.Attribute.Number;
             var Attribute = Ompluscript.Model.Attribute.Attribute;
@@ -1938,8 +2114,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return new NumberAttribute(name, value, required, minimum, includeMinimum, maximum, includeMaximum);
                 };
                 return NumberConfiguration;
-            }(Configuration_8.AttributeConfiguration));
-            Configuration_8.NumberConfiguration = NumberConfiguration;
+            }(Configuration_13.AttributeConfiguration));
+            Configuration_13.NumberConfiguration = NumberConfiguration;
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -1947,7 +2123,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_9) {
+        (function (Configuration_14) {
             "use strict";
             var Attribute = Ompluscript.Model.Attribute.Attribute;
             var Choice = Ompluscript.Model.Attribute.Choice;
@@ -1969,8 +2145,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return new SingleChoice(name, value, required, choices);
                 };
                 return SingleChoiceConfiguration;
-            }(Configuration_9.ChoiceConfiguration));
-            Configuration_9.SingleChoiceConfiguration = SingleChoiceConfiguration;
+            }(Configuration_14.ChoiceConfiguration));
+            Configuration_14.SingleChoiceConfiguration = SingleChoiceConfiguration;
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -1978,7 +2154,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_10) {
+        (function (Configuration_15) {
             "use strict";
             var StringAttribute = Ompluscript.Model.Attribute.String;
             var Attribute = Ompluscript.Model.Attribute.Attribute;
@@ -2018,8 +2194,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return new StringAttribute(name, value, required, minimumLength, maximumLength, pattern);
                 };
                 return StringConfiguration;
-            }(Configuration_10.AttributeConfiguration));
-            Configuration_10.StringConfiguration = StringConfiguration;
+            }(Configuration_15.AttributeConfiguration));
+            Configuration_15.StringConfiguration = StringConfiguration;
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2027,7 +2203,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_11) {
+        (function (Configuration_16) {
             "use strict";
             var Container = Ompluscript.Model.Container.Container;
             var Configuration = Ompluscript.Core.Configuration.Configuration;
@@ -2037,12 +2213,12 @@ var __extends = (this && this.__extends) || function (d, b) {
                 __extends(ContainerConfiguration, _super);
                 function ContainerConfiguration() {
                     var configurations = [
-                        Configuration.getInstance(Configuration_11.BooleanConfiguration),
-                        Configuration.getInstance(Configuration_11.DatetimeConfiguration),
-                        Configuration.getInstance(Configuration_11.MultipleChoiceConfiguration),
-                        Configuration.getInstance(Configuration_11.NumberConfiguration),
-                        Configuration.getInstance(Configuration_11.SingleChoiceConfiguration),
-                        Configuration.getInstance(Configuration_11.StringConfiguration),
+                        Configuration.getInstance(Configuration_16.BooleanConfiguration),
+                        Configuration.getInstance(Configuration_16.DatetimeConfiguration),
+                        Configuration.getInstance(Configuration_16.MultipleChoiceConfiguration),
+                        Configuration.getInstance(Configuration_16.NumberConfiguration),
+                        Configuration.getInstance(Configuration_16.SingleChoiceConfiguration),
+                        Configuration.getInstance(Configuration_16.StringConfiguration),
                         Configuration.getInstance(ErrorConfiguration),
                     ];
                     _super.call(this, configurations, Container.PARAMETER_DEFINITION);
@@ -2060,7 +2236,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 return ContainerConfiguration;
             }(GroupConfiguration));
-            Configuration_11.ContainerConfiguration = ContainerConfiguration;
+            Configuration_16.ContainerConfiguration = ContainerConfiguration;
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2091,10 +2267,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                         Configuration.getInstance(StringConfiguration),
                     ];
                     this.attributes = {};
-                    for (var i in this.definition) {
-                        if (this.definition.hasOwnProperty(i)) {
-                            this.addAttribute(this.definition[i]);
-                        }
+                    for (var i = 0; i < this.definition.length; i++) {
+                        this.addAttribute(this.definition[i]);
                     }
                 }
                 Model.prototype.hasAttribute = function (name) {
@@ -2138,11 +2312,13 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 Model.prototype.addAttribute = function (definition) {
                     var name = definition[Configuration.PARAMETER_NAME];
+                    definition[Configuration.PARAMETER_NAME] = this.name + "." + name;
                     for (var i = 0; i < this.configurations.length; i++) {
                         if (this.configurations[i].isRelatedTo(definition)) {
                             this.attributes[name] = this.configurations[i].create(definition);
                         }
                     }
+                    definition[Configuration.PARAMETER_NAME] = name;
                 };
                 Model.TYPE_MODEL = Model["name"];
                 return Model;
@@ -2155,7 +2331,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model_2) {
         var Configuration;
-        (function (Configuration_12) {
+        (function (Configuration_17) {
             "use strict";
             var Model = Ompluscript.Model.Container.Model;
             var Container = Ompluscript.Model.Container.Container;
@@ -2174,8 +2350,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return new Model(name, attributes);
                 };
                 return ModelConfiguration;
-            }(Configuration_12.ContainerConfiguration));
-            Configuration_12.ModelConfiguration = ModelConfiguration;
+            }(Configuration_17.ContainerConfiguration));
+            Configuration_17.ModelConfiguration = ModelConfiguration;
         })(Configuration = Model_2.Configuration || (Model_2.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2295,7 +2471,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return this.rows[index];
                 };
                 Table.prototype.addRow = function (values) {
-                    var model = new Model(this.name, this.definition);
+                    var model = new Model(this.getName() + "." + this.rows.length, this.definition);
                     this.rows.push(model);
                     this.fireOnAddRowToTableEvent(this.rows.length - 1, model);
                     model.setValue(values);
@@ -2359,7 +2535,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_13) {
+        (function (Configuration_18) {
             "use strict";
             var Table = Ompluscript.Model.Container.Table;
             var Container = Ompluscript.Model.Container.Container;
@@ -2378,8 +2554,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return new Table(name, attributes);
                 };
                 return TableConfiguration;
-            }(Configuration_13.ContainerConfiguration));
-            Configuration_13.TableConfiguration = TableConfiguration;
+            }(Configuration_18.ContainerConfiguration));
+            Configuration_18.TableConfiguration = TableConfiguration;
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2467,164 +2643,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 (function (Ompluscript) {
     var View;
     (function (View) {
-        "use strict";
-        var Page = Ompluscript.View.Container.Page;
-        var Component = Ompluscript.View.Component.Component;
-        var Container = Ompluscript.View.Component.Container;
-        var Layout = Ompluscript.View.Component.Layout;
-        var LinearLayout = Ompluscript.View.Layout.LinearLayout;
-        var TableLayout = Ompluscript.View.Layout.TableLayout;
-        var Creator = (function () {
-            function Creator() {
-                this.definition = {};
-                this.errors = [];
-            }
-            Creator.getInstance = function () {
-                return Creator.instance;
-            };
-            Creator.prototype.hasErrors = function () {
-                return this.errors.length > 0;
-            };
-            Creator.prototype.getErrors = function () {
-                return this.errors;
-            };
-            Creator.prototype.define = function (name, type, definition) {
-                if (definition === void 0) { definition = []; }
-                definition[Component.PARAMETER_TYPE] = type;
-                var errors = this.checkConfiguration(definition);
-                if (errors.length) {
-                    this.errors.push({
-                        definition: definition,
-                        errors: errors,
-                        name: name,
-                        type: type,
-                    });
-                }
-                else {
-                    this.definition[name] = {
-                        definition: definition,
-                        name: name,
-                        type: type,
-                    };
-                }
-            };
-            Creator.prototype.create = function (name) {
-                if (this.definition.hasOwnProperty(name)) {
-                    if (this.definition[name].hasOwnProperty("type")) {
-                        if (this.definition[name]["type"] === Container.CONTAINER_PAGE) {
-                            return new Page(name, this.definition[name]["definition"]);
-                        }
-                    }
-                }
-                return undefined;
-            };
-            Creator.prototype.checkConfiguration = function (definition) {
-                var errors = [];
-                var type = definition[Component.PARAMETER_TYPE];
-                switch (type) {
-                    case Container.CONTAINER_PAGE:
-                        errors = this.checkContainerConfiguration(definition);
-                        break;
-                    default:
-                        errors.push(Component.PARAMETER_TYPE + Creator.HAS_WRONG_VALUE);
-                        break;
-                }
-                return errors;
-            };
-            Creator.prototype.checkComponentConfiguration = function (definition) {
-                var errors = [];
-                var styles = definition[Component.PARAMETER_STYLES];
-                if (styles !== undefined && typeof styles !== "object") {
-                    errors.push(Component.PARAMETER_STYLES + Creator.MUST_BE_OBJECT_OR_UNDEFINED);
-                }
-                return errors;
-            };
-            Creator.prototype.checkLinearLayout = function (definition) {
-                var errors = [];
-                var direction = definition[LinearLayout.PARAMETER_DIRECTION];
-                if (direction !== undefined && typeof direction !== "string") {
-                    errors.push(Container.PARAMETER_LAYOUT + " " + LinearLayout.PARAMETER_DIRECTION + Creator.MUST_BE_STRING_OR_UNDEFINED);
-                }
-                if (typeof direction === "string" &&
-                    [LinearLayout.DIRECTION_VERTICAL, LinearLayout.DIRECTION_HORIZONTAL].indexOf(direction) === -1) {
-                    errors.push(Container.PARAMETER_LAYOUT + " " + LinearLayout.PARAMETER_DIRECTION + Creator.HAS_WRONG_VALUE);
-                }
-                var reverse = definition[LinearLayout.PARAMETER_REVERSE];
-                if (reverse !== undefined && typeof reverse !== "boolean") {
-                    errors.push(Container.PARAMETER_LAYOUT + " " + LinearLayout.PARAMETER_REVERSE + Creator.MUST_BE_BOOLEAN_OR_UNDEFINED);
-                }
-                var align = definition[LinearLayout.PARAMETER_ALIGN];
-                if (align !== undefined && typeof align !== "string") {
-                    errors.push(Container.PARAMETER_LAYOUT + " " + LinearLayout.PARAMETER_ALIGN + Creator.MUST_BE_STRING_OR_UNDEFINED);
-                }
-                if (typeof align === "string" &&
-                    [LinearLayout.ALIGN_START, LinearLayout.ALIGN_CENTER, LinearLayout.ALIGN_END].indexOf(align) === -1) {
-                    errors.push(Container.PARAMETER_LAYOUT + " " + LinearLayout.PARAMETER_ALIGN + Creator.HAS_WRONG_VALUE);
-                }
-                return errors;
-            };
-            Creator.prototype.checkTableLayout = function (definition) {
-                var errors = [];
-                var rows = definition[TableLayout.PARAMETER_ROWS];
-                if (rows !== undefined && typeof rows !== "number") {
-                    errors.push(Container.PARAMETER_LAYOUT + " " + TableLayout.PARAMETER_ROWS + Creator.MUST_BE_NUMBER_OR_UNDEFINED);
-                }
-                var cells = definition[TableLayout.PARAMETER_CELLS];
-                if (cells !== undefined && typeof cells !== "number") {
-                    errors.push(Container.PARAMETER_LAYOUT + " " + TableLayout.PARAMETER_CELLS + Creator.MUST_BE_NUMBER_OR_UNDEFINED);
-                }
-                return errors;
-            };
-            Creator.prototype.checkContainerConfiguration = function (definition) {
-                var errors = this.checkComponentConfiguration(definition);
-                var layout = definition[Container.PARAMETER_LAYOUT];
-                if (layout !== undefined && typeof layout !== "object") {
-                    errors.push(Container.PARAMETER_LAYOUT + Creator.MUST_BE_OBJECT_OR_UNDEFINED);
-                }
-                var type = layout[Layout.PARAMETER_TYPE];
-                if (typeof type !== "string") {
-                    errors.push(Container.PARAMETER_LAYOUT + " " + Layout.PARAMETER_TYPE + Creator.MUST_BE_STRING);
-                }
-                if ([Layout.TYPE_NULL_LAYOUT, Layout.TYPE_RELATIVE_LAYOUT, Layout.TYPE_LINEAR_LAYOUT, Layout.TYPE_TABLE_LAYOUT]
-                    .indexOf(type) === -1) {
-                    errors.push(Container.PARAMETER_LAYOUT + " " + Layout.PARAMETER_TYPE + Creator.HAS_WRONG_VALUE);
-                }
-                switch (type) {
-                    case Layout.TYPE_LINEAR_LAYOUT:
-                        errors.push.apply(errors, this.checkLinearLayout(layout));
-                        break;
-                    case Layout.TYPE_TABLE_LAYOUT:
-                        errors.push.apply(errors, this.checkTableLayout(layout));
-                        break;
-                    default:
-                        break;
-                }
-                return errors;
-            };
-            Creator.HAS_WRONG_VALUE = " has wrong value.";
-            Creator.MUST_BE_STRING = " must be a string.";
-            Creator.MUST_BE_STRING_OR_UNDEFINED = " must be a string or undefined.";
-            Creator.MUST_BE_BOOLEAN_OR_UNDEFINED = " must be a boolean or undefined.";
-            Creator.MUST_BE_NUMBER_OR_UNDEFINED = " must be a number or undefined.";
-            Creator.MUST_BE_OBJECT_OR_UNDEFINED = " must be an object or undefined.";
-            Creator.instance = new Creator();
-            return Creator;
-        }());
-        View.Creator = Creator;
-        function define(name, type, definition) {
-            if (definition === void 0) { definition = []; }
-            Creator.getInstance().define(name, type, definition);
-        }
-        View.define = define;
-        function create(name) {
-            return Creator.getInstance().create(name);
-        }
-        View.create = create;
-    })(View = Ompluscript.View || (Ompluscript.View = {}));
-})(Ompluscript || (Ompluscript = {}));
-(function (Ompluscript) {
-    var View;
-    (function (View) {
         var Event;
         (function (Event_4) {
             "use strict";
@@ -2657,10 +2675,10 @@ var __extends = (this && this.__extends) || function (d, b) {
             var OnUpdateInput = Ompluscript.View.Event.OnUpdateInput;
             var Input = (function (_super) {
                 __extends(Input, _super);
-                function Input(name, attribute, type, styles) {
+                function Input(name, attribute, styles, type) {
                     if (attribute === void 0) { attribute = undefined; }
-                    if (type === void 0) { type = Input.INPUT_TEXT; }
                     if (styles === void 0) { styles = {}; }
+                    if (type === void 0) { type = undefined; }
                     _super.call(this, name, styles);
                     this.setAttribute(Input.ATTRIBUTE_TYPE, type);
                     this.setAttribute(Input.ATTRIBUTE_NAME, this.name);
@@ -2719,18 +2737,68 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                     return trace;
                 };
+                Input.PARAMETER_ATTRIBUTE = "attribute";
                 Input.FIELD_INPUT = "input";
                 Input.ATTRIBUTE_TYPE = "type";
                 Input.ATTRIBUTE_VALUE = "value";
                 Input.ATTRIBUTE_NAME = "name";
-                Input.INPUT_TEXT = "text";
-                Input.INPUT_PASSWORD = "password";
-                Input.INPUT_EMAIL = "email";
-                Input.INPUT_CHECK_BOX = "checkbox";
                 return Input;
             }(Field));
             Field_1.Input = Input;
         })(Field = View.Field || (View.Field = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Configuration;
+        (function (Configuration_19) {
+            "use strict";
+            var Configuration = Ompluscript.Core.Configuration.Configuration;
+            var Input = Ompluscript.View.Field.Input;
+            var create = Ompluscript.Model.create;
+            var InputConfiguration = (function (_super) {
+                __extends(InputConfiguration, _super);
+                function InputConfiguration(configuration, type) {
+                    _super.call(this);
+                    this.configuration = configuration;
+                    this.type = type;
+                }
+                InputConfiguration.prototype.getErrors = function (definition, prefix) {
+                    var errors = _super.prototype.getErrors.call(this, definition, prefix);
+                    var error = this.shouldBeStringOrObject(definition, Input.PARAMETER_ATTRIBUTE, prefix);
+                    if (error === undefined) {
+                        if (typeof definition[Input.PARAMETER_ATTRIBUTE] === "object") {
+                            definition[Input.PARAMETER_ATTRIBUTE][Configuration.PARAMETER_NAME] = Input.PARAMETER_ATTRIBUTE;
+                            definition[Input.PARAMETER_ATTRIBUTE][Configuration.PARAMETER_TYPE] = this.type;
+                            errors.push.apply(errors, this.configuration.getErrors(definition, definition[Configuration.PARAMETER_NAME]));
+                        }
+                        else if (typeof definition[Input.PARAMETER_ATTRIBUTE] === "string") {
+                            if (create(definition[Input.PARAMETER_ATTRIBUTE]) === undefined) {
+                                errors.push(definition[Input.PARAMETER_ATTRIBUTE] + Configuration.MODEL_MUST_BE_DEFINED);
+                            }
+                        }
+                    }
+                    else {
+                        errors.push(error);
+                    }
+                    return this.filterErrors(errors);
+                };
+                InputConfiguration.prototype.createAttribute = function (definition) {
+                    if (typeof definition[Input.PARAMETER_ATTRIBUTE] === "object") {
+                        definition[Input.PARAMETER_ATTRIBUTE][Configuration.PARAMETER_NAME] = Input.PARAMETER_ATTRIBUTE;
+                        definition[Input.PARAMETER_ATTRIBUTE][Configuration.PARAMETER_TYPE] = this.type;
+                        return this.configuration.create(definition);
+                    }
+                    else if (typeof definition[Input.PARAMETER_ATTRIBUTE] === "string") {
+                        return create(definition[Input.PARAMETER_ATTRIBUTE]);
+                    }
+                    return undefined;
+                };
+                return InputConfiguration;
+            }(Configuration_19.ComponentConfiguration));
+            Configuration_19.InputConfiguration = InputConfiguration;
+        })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
 (function (Ompluscript) {
@@ -2741,11 +2809,10 @@ var __extends = (this && this.__extends) || function (d, b) {
             "use strict";
             var CheckBoxInput = (function (_super) {
                 __extends(CheckBoxInput, _super);
-                function CheckBoxInput(name, booleanAttribute, type, styles) {
+                function CheckBoxInput(name, booleanAttribute, styles) {
                     if (booleanAttribute === void 0) { booleanAttribute = undefined; }
-                    if (type === void 0) { type = Field.Input.INPUT_CHECK_BOX; }
                     if (styles === void 0) { styles = {}; }
-                    _super.call(this, name, booleanAttribute, type, styles);
+                    _super.call(this, name, booleanAttribute, styles, CheckBoxInput.INPUT_CHECK_BOX);
                 }
                 CheckBoxInput.prototype.getValue = function () {
                     return this.htmlElement["checked"];
@@ -2760,6 +2827,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                 CheckBoxInput.prototype.updateValue = function (value) {
                     this.htmlElement["checked"] = value;
                 };
+                CheckBoxInput.TYPE_CHECK_BOX_INPUT = CheckBoxInput["name"];
+                CheckBoxInput.INPUT_CHECK_BOX = "checkbox";
                 CheckBoxInput.EVENT_CHANGE = "change";
                 return CheckBoxInput;
             }(Field.Input));
@@ -2770,16 +2839,299 @@ var __extends = (this && this.__extends) || function (d, b) {
 (function (Ompluscript) {
     var View;
     (function (View) {
+        var Configuration;
+        (function (Configuration_20) {
+            "use strict";
+            var Configuration = Ompluscript.Core.Configuration.Configuration;
+            var Input = Ompluscript.View.Field.Input;
+            var Component = Ompluscript.View.Component.Component;
+            var CheckBoxInput = Ompluscript.View.Field.CheckBoxInput;
+            var BooleanConfiguration = Ompluscript.Model.Configuration.BooleanConfiguration;
+            var Boolean = Ompluscript.Model.Attribute.Boolean;
+            var CheckBoxInputConfiguration = (function (_super) {
+                __extends(CheckBoxInputConfiguration, _super);
+                function CheckBoxInputConfiguration() {
+                    _super.call(this, Configuration.getInstance(BooleanConfiguration), Boolean.TYPE_BOOLEAN);
+                }
+                CheckBoxInputConfiguration.prototype.isRelatedTo = function (definition) {
+                    return definition[Configuration.PARAMETER_TYPE] === CheckBoxInput.TYPE_CHECK_BOX_INPUT;
+                };
+                CheckBoxInputConfiguration.prototype.create = function (definition) {
+                    var name = definition[Configuration.PARAMETER_NAME];
+                    var attribute = this.createAttribute(definition[Input.PARAMETER_ATTRIBUTE]);
+                    var styles = definition[Component.PARAMETER_STYLES];
+                    return new CheckBoxInput(name, attribute, styles);
+                };
+                return CheckBoxInputConfiguration;
+            }(Configuration_20.InputConfiguration));
+            Configuration_20.CheckBoxInputConfiguration = CheckBoxInputConfiguration;
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Field;
+        (function (Field) {
+            "use strict";
+            var TextInput = (function (_super) {
+                __extends(TextInput, _super);
+                function TextInput(name, stringAttribute, styles, type) {
+                    if (stringAttribute === void 0) { stringAttribute = undefined; }
+                    if (styles === void 0) { styles = {}; }
+                    if (type === void 0) { type = TextInput.INPUT_TEXT; }
+                    _super.call(this, name, stringAttribute, styles, type);
+                }
+                TextInput.prototype.getValue = function () {
+                    var value = this.getAttribute(Field.Input.ATTRIBUTE_VALUE);
+                    if (typeof value === "string") {
+                        return value;
+                    }
+                    return undefined;
+                };
+                TextInput.prototype.addOnUpdateInputEvent = function () {
+                    var that = this;
+                    var listener = function () {
+                        that.fireOnUpdateInputEvent(that.getValue());
+                    };
+                    that.htmlElement.addEventListener(TextInput.EVENT_KEY_PRESS, listener, false);
+                };
+                TextInput.prototype.updateValue = function (value) {
+                    this.setAttribute(Field.Input.ATTRIBUTE_VALUE, value);
+                };
+                TextInput.TYPE_TEXT_INPUT = TextInput["name"];
+                TextInput.INPUT_TEXT = "text";
+                TextInput.EVENT_KEY_PRESS = "keypress";
+                return TextInput;
+            }(Field.Input));
+            Field.TextInput = TextInput;
+        })(Field = View.Field || (View.Field = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Field;
+        (function (Field) {
+            "use strict";
+            var EmailInput = (function (_super) {
+                __extends(EmailInput, _super);
+                function EmailInput(name, stringAttribute, styles) {
+                    if (stringAttribute === void 0) { stringAttribute = undefined; }
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, stringAttribute, styles, EmailInput.INPUT_EMAIL);
+                }
+                EmailInput.TYPE_EMAIL_INPUT = EmailInput["name"];
+                EmailInput.INPUT_EMAIL = "email";
+                return EmailInput;
+            }(Field.TextInput));
+            Field.EmailInput = EmailInput;
+        })(Field = View.Field || (View.Field = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Configuration;
+        (function (Configuration_21) {
+            "use strict";
+            var Configuration = Ompluscript.Core.Configuration.Configuration;
+            var Input = Ompluscript.View.Field.Input;
+            var Component = Ompluscript.View.Component.Component;
+            var StringConfiguration = Ompluscript.Model.Configuration.StringConfiguration;
+            var String = Ompluscript.Model.Attribute.String;
+            var EmailInput = Ompluscript.View.Field.EmailInput;
+            var EmailInputConfiguration = (function (_super) {
+                __extends(EmailInputConfiguration, _super);
+                function EmailInputConfiguration() {
+                    _super.call(this, Configuration.getInstance(StringConfiguration), String.TYPE_STRING);
+                }
+                EmailInputConfiguration.prototype.isRelatedTo = function (definition) {
+                    return definition[Configuration.PARAMETER_TYPE] === EmailInput.TYPE_EMAIL_INPUT;
+                };
+                EmailInputConfiguration.prototype.create = function (definition) {
+                    var name = definition[Configuration.PARAMETER_NAME];
+                    var attribute = this.createAttribute(definition[Input.PARAMETER_ATTRIBUTE]);
+                    var styles = definition[Component.PARAMETER_STYLES];
+                    return new EmailInput(name, attribute, styles);
+                };
+                return EmailInputConfiguration;
+            }(Configuration_21.InputConfiguration));
+            Configuration_21.EmailInputConfiguration = EmailInputConfiguration;
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Field;
+        (function (Field) {
+            "use strict";
+            var NumberInput = (function (_super) {
+                __extends(NumberInput, _super);
+                function NumberInput(name, numberAttribute, styles) {
+                    if (numberAttribute === void 0) { numberAttribute = undefined; }
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, numberAttribute, styles, NumberInput.INPUT_NUMBER);
+                }
+                NumberInput.prototype.getValue = function () {
+                    var value = this.getAttribute(Field.Input.ATTRIBUTE_VALUE);
+                    if (typeof value === "string") {
+                        if (isNaN(parseInt(value, 10))) {
+                            return value;
+                        }
+                        return parseInt(value, 10);
+                    }
+                    return undefined;
+                };
+                NumberInput.prototype.addOnUpdateInputEvent = function () {
+                    var that = this;
+                    var listener = function () {
+                        that.fireOnUpdateInputEvent(that.getValue());
+                    };
+                    that.htmlElement.addEventListener(Field.TextInput.EVENT_KEY_PRESS, listener, false);
+                };
+                NumberInput.prototype.updateValue = function (value) {
+                    this.setAttribute(Field.Input.ATTRIBUTE_VALUE, value.toString());
+                };
+                NumberInput.TYPE_NUMBER_INPUT = NumberInput["name"];
+                NumberInput.INPUT_NUMBER = "number";
+                NumberInput.EVENT_KEY_PRESS = "keypress";
+                return NumberInput;
+            }(Field.Input));
+            Field.NumberInput = NumberInput;
+        })(Field = View.Field || (View.Field = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Configuration;
+        (function (Configuration_22) {
+            "use strict";
+            var Configuration = Ompluscript.Core.Configuration.Configuration;
+            var Input = Ompluscript.View.Field.Input;
+            var Component = Ompluscript.View.Component.Component;
+            var NumberConfiguration = Ompluscript.Model.Configuration.NumberConfiguration;
+            var Number = Ompluscript.Model.Attribute.Number;
+            var NumberInput = Ompluscript.View.Field.NumberInput;
+            var NumberInputConfiguration = (function (_super) {
+                __extends(NumberInputConfiguration, _super);
+                function NumberInputConfiguration() {
+                    _super.call(this, Configuration.getInstance(NumberConfiguration), Number.TYPE_NUMBER);
+                }
+                NumberInputConfiguration.prototype.isRelatedTo = function (definition) {
+                    return definition[Configuration.PARAMETER_TYPE] === NumberInput.TYPE_NUMBER_INPUT;
+                };
+                NumberInputConfiguration.prototype.create = function (definition) {
+                    var name = definition[Configuration.PARAMETER_NAME];
+                    var attribute = this.createAttribute(definition[Input.PARAMETER_ATTRIBUTE]);
+                    var styles = definition[Component.PARAMETER_STYLES];
+                    return new NumberInput(name, attribute, styles);
+                };
+                return NumberInputConfiguration;
+            }(Configuration_22.InputConfiguration));
+            Configuration_22.NumberInputConfiguration = NumberInputConfiguration;
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Field;
+        (function (Field) {
+            "use strict";
+            var PasswordInput = (function (_super) {
+                __extends(PasswordInput, _super);
+                function PasswordInput(name, stringAttribute, styles) {
+                    if (stringAttribute === void 0) { stringAttribute = undefined; }
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, stringAttribute, styles, PasswordInput.INPUT_PASSWORD);
+                }
+                PasswordInput.TYPE_PASSWORD_INPUT = PasswordInput["name"];
+                PasswordInput.INPUT_PASSWORD = "password";
+                return PasswordInput;
+            }(Field.TextInput));
+            Field.PasswordInput = PasswordInput;
+        })(Field = View.Field || (View.Field = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Configuration;
+        (function (Configuration_23) {
+            "use strict";
+            var Configuration = Ompluscript.Core.Configuration.Configuration;
+            var Input = Ompluscript.View.Field.Input;
+            var Component = Ompluscript.View.Component.Component;
+            var StringConfiguration = Ompluscript.Model.Configuration.StringConfiguration;
+            var String = Ompluscript.Model.Attribute.String;
+            var PasswordInput = Ompluscript.View.Field.PasswordInput;
+            var PasswordInputConfiguration = (function (_super) {
+                __extends(PasswordInputConfiguration, _super);
+                function PasswordInputConfiguration() {
+                    _super.call(this, Configuration.getInstance(StringConfiguration), String.TYPE_STRING);
+                }
+                PasswordInputConfiguration.prototype.isRelatedTo = function (definition) {
+                    return definition[Configuration.PARAMETER_TYPE] === PasswordInput.TYPE_PASSWORD_INPUT;
+                };
+                PasswordInputConfiguration.prototype.create = function (definition) {
+                    var name = definition[Configuration.PARAMETER_NAME];
+                    var attribute = this.createAttribute(definition[Input.PARAMETER_ATTRIBUTE]);
+                    var styles = definition[Component.PARAMETER_STYLES];
+                    return new PasswordInput(name, attribute, styles);
+                };
+                return PasswordInputConfiguration;
+            }(Configuration_23.InputConfiguration));
+            Configuration_23.PasswordInputConfiguration = PasswordInputConfiguration;
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Configuration;
+        (function (Configuration_24) {
+            "use strict";
+            var Configuration = Ompluscript.Core.Configuration.Configuration;
+            var TextInput = Ompluscript.View.Field.TextInput;
+            var Input = Ompluscript.View.Field.Input;
+            var Component = Ompluscript.View.Component.Component;
+            var StringConfiguration = Ompluscript.Model.Configuration.StringConfiguration;
+            var String = Ompluscript.Model.Attribute.String;
+            var TextInputConfiguration = (function (_super) {
+                __extends(TextInputConfiguration, _super);
+                function TextInputConfiguration() {
+                    _super.call(this, Configuration.getInstance(StringConfiguration), String.TYPE_STRING);
+                }
+                TextInputConfiguration.prototype.isRelatedTo = function (definition) {
+                    return definition[Configuration.PARAMETER_TYPE] === TextInput.TYPE_TEXT_INPUT;
+                };
+                TextInputConfiguration.prototype.create = function (definition) {
+                    var name = definition[Configuration.PARAMETER_NAME];
+                    var attribute = this.createAttribute(definition[Input.PARAMETER_ATTRIBUTE]);
+                    var styles = definition[Component.PARAMETER_STYLES];
+                    return new TextInput(name, attribute, styles);
+                };
+                return TextInputConfiguration;
+            }(Configuration_24.InputConfiguration));
+            Configuration_24.TextInputConfiguration = TextInputConfiguration;
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
         var Field;
         (function (Field) {
             "use strict";
             var DateInput = (function (_super) {
                 __extends(DateInput, _super);
-                function DateInput(name, datetimeAttribute, type, styles) {
+                function DateInput(name, datetimeAttribute, styles) {
                     if (datetimeAttribute === void 0) { datetimeAttribute = undefined; }
-                    if (type === void 0) { type = Field.Input.INPUT_TEXT; }
                     if (styles === void 0) { styles = {}; }
-                    _super.call(this, name, datetimeAttribute, type, styles);
+                    _super.call(this, name, datetimeAttribute, styles, Field.TextInput.INPUT_TEXT);
                 }
                 DateInput.prototype.getValue = function () {
                     var value = this.getAttribute(Field.Input.ATTRIBUTE_VALUE);
@@ -2805,123 +3157,6 @@ var __extends = (this && this.__extends) || function (d, b) {
                 return DateInput;
             }(Field.Input));
             Field.DateInput = DateInput;
-        })(Field = View.Field || (View.Field = {}));
-    })(View = Ompluscript.View || (Ompluscript.View = {}));
-})(Ompluscript || (Ompluscript = {}));
-(function (Ompluscript) {
-    var View;
-    (function (View) {
-        var Field;
-        (function (Field) {
-            "use strict";
-            var TextInput = (function (_super) {
-                __extends(TextInput, _super);
-                function TextInput(name, stringAttribute, type, styles) {
-                    if (stringAttribute === void 0) { stringAttribute = undefined; }
-                    if (type === void 0) { type = Field.Input.INPUT_TEXT; }
-                    if (styles === void 0) { styles = {}; }
-                    _super.call(this, name, stringAttribute, type, styles);
-                }
-                TextInput.prototype.getValue = function () {
-                    var value = this.getAttribute(Field.Input.ATTRIBUTE_VALUE);
-                    if (typeof value === "string") {
-                        return value;
-                    }
-                    return undefined;
-                };
-                TextInput.prototype.addOnUpdateInputEvent = function () {
-                    var that = this;
-                    var listener = function () {
-                        that.fireOnUpdateInputEvent(that.getValue());
-                    };
-                    that.htmlElement.addEventListener(TextInput.EVENT_KEY_PRESS, listener, false);
-                };
-                TextInput.prototype.updateValue = function (value) {
-                    this.setAttribute(Field.Input.ATTRIBUTE_VALUE, value);
-                };
-                TextInput.EVENT_KEY_PRESS = "keypress";
-                return TextInput;
-            }(Field.Input));
-            Field.TextInput = TextInput;
-        })(Field = View.Field || (View.Field = {}));
-    })(View = Ompluscript.View || (Ompluscript.View = {}));
-})(Ompluscript || (Ompluscript = {}));
-(function (Ompluscript) {
-    var View;
-    (function (View) {
-        var Field;
-        (function (Field) {
-            "use strict";
-            var EmailInput = (function (_super) {
-                __extends(EmailInput, _super);
-                function EmailInput(name, stringAttribute, styles) {
-                    if (stringAttribute === void 0) { stringAttribute = undefined; }
-                    if (styles === void 0) { styles = {}; }
-                    _super.call(this, name, stringAttribute, Field.Input.INPUT_EMAIL, styles);
-                }
-                return EmailInput;
-            }(Field.TextInput));
-            Field.EmailInput = EmailInput;
-        })(Field = View.Field || (View.Field = {}));
-    })(View = Ompluscript.View || (Ompluscript.View = {}));
-})(Ompluscript || (Ompluscript = {}));
-(function (Ompluscript) {
-    var View;
-    (function (View) {
-        var Field;
-        (function (Field) {
-            "use strict";
-            var NumberInput = (function (_super) {
-                __extends(NumberInput, _super);
-                function NumberInput(name, numberAttribute, type, styles) {
-                    if (numberAttribute === void 0) { numberAttribute = undefined; }
-                    if (type === void 0) { type = Field.Input.INPUT_TEXT; }
-                    if (styles === void 0) { styles = {}; }
-                    _super.call(this, name, numberAttribute, type, styles);
-                }
-                NumberInput.prototype.getValue = function () {
-                    var value = this.getAttribute(Field.Input.ATTRIBUTE_VALUE);
-                    if (typeof value === "string") {
-                        if (isNaN(parseInt(value, 10))) {
-                            return value;
-                        }
-                        return parseInt(value, 10);
-                    }
-                    return undefined;
-                };
-                NumberInput.prototype.addOnUpdateInputEvent = function () {
-                    var that = this;
-                    var listener = function () {
-                        that.fireOnUpdateInputEvent(that.getValue());
-                    };
-                    that.htmlElement.addEventListener(Field.TextInput.EVENT_KEY_PRESS, listener, false);
-                };
-                NumberInput.prototype.updateValue = function (value) {
-                    this.setAttribute(Field.Input.ATTRIBUTE_VALUE, value.toString());
-                };
-                NumberInput.EVENT_KEY_PRESS = "keypress";
-                return NumberInput;
-            }(Field.Input));
-            Field.NumberInput = NumberInput;
-        })(Field = View.Field || (View.Field = {}));
-    })(View = Ompluscript.View || (Ompluscript.View = {}));
-})(Ompluscript || (Ompluscript = {}));
-(function (Ompluscript) {
-    var View;
-    (function (View) {
-        var Field;
-        (function (Field) {
-            "use strict";
-            var PasswordInput = (function (_super) {
-                __extends(PasswordInput, _super);
-                function PasswordInput(name, stringAttribute, styles) {
-                    if (stringAttribute === void 0) { stringAttribute = undefined; }
-                    if (styles === void 0) { styles = {}; }
-                    _super.call(this, name, stringAttribute, Field.Input.INPUT_PASSWORD, styles);
-                }
-                return PasswordInput;
-            }(Field.TextInput));
-            Field.PasswordInput = PasswordInput;
         })(Field = View.Field || (View.Field = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));

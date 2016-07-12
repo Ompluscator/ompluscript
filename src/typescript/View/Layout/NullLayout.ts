@@ -17,6 +17,8 @@ module Ompluscript.View.Layout {
      */
     export class NullLayout extends Layout {
 
+        public static TYPE_NULL_LAYOUT: string = NullLayout["name"];
+
         private static NULL_LAYOUT_CLASS: string = "null-layout";
 
         constructor() {

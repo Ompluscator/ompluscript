@@ -95,7 +95,7 @@ module Ompluscript.Model.Container {
          * @param {Object} values Container for values
          */
         public addRow(values: Object): void {
-            let model: Model = new Model(this.name, this.definition);
+            let model: Model = new Model(this.getName() + "." + this.rows.length, this.definition);
             this.rows.push(model);
             this.fireOnAddRowToTableEvent(this.rows.length - 1, model);
             model.setValue(values);

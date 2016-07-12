@@ -29,6 +29,8 @@ module Ompluscript.View.Field {
      */
     export abstract class Input extends Field implements IObserver {
 
+        public static PARAMETER_ATTRIBUTE: string = "attribute";
+
         public static FIELD_INPUT: string = "input";
 
         public static ATTRIBUTE_TYPE: string = "type";
@@ -37,17 +39,9 @@ module Ompluscript.View.Field {
 
         public static ATTRIBUTE_NAME: string = "name";
 
-        public static INPUT_TEXT: string = "text";
-
-        public static INPUT_PASSWORD: string = "password";
-
-        public static INPUT_EMAIL: string = "email";
-
-        public static INPUT_CHECK_BOX: string = "checkbox";
-
         protected attribute: Attribute<any>;
 
-        constructor(name: string, attribute: Attribute<any> = undefined, type: string = Input.INPUT_TEXT, styles: Object = {}) {
+        constructor(name: string, attribute: Attribute<any> = undefined, styles: Object = {}, type: string = undefined) {
             super(name, styles);
             this.setAttribute(Input.ATTRIBUTE_TYPE, type);
             this.setAttribute(Input.ATTRIBUTE_NAME, this.name);
