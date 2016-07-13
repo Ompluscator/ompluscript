@@ -1,7 +1,7 @@
 /// <reference path="../../Core/Interfaces/IBase.ts" />
 /// <reference path="../../Core/Configuration/Configuration.ts" />
 /// <reference path="ProxyConfiguration.ts" />
-/// <reference path="../Proxy/LocaleStorageProxy.ts" />
+/// <reference path="../Proxy/SessionStorageProxy.ts" />
 /// <reference path="../Container/Container.ts" />
 
 module Ompluscript.Model.Configuration {

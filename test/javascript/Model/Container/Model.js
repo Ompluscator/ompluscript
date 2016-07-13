@@ -37,9 +37,16 @@ describe("Model class tests - add string", function() {
         expect(modelObject.getAttribute(paramName) instanceof String).toBeTruthy();
         expect(modelObject.hasAttribute("not")).toBeFalsy();
         expect(modelObject.getAttribute("not")).toBeUndefined();
+        expect(modelObject.hasProxy("ajax")).toBeFalsy();
+        expect(modelObject.getProxy("ajax")).toBeUndefined();
+        expect(modelObject.hasProxy("localStorage")).toBeFalsy();
+        expect(modelObject.getProxy("localStorage")).toBeUndefined();
+        expect(modelObject.hasProxy("sessionStorage")).toBeFalsy();
+        expect(modelObject.getProxy("sessionStorage")).toBeUndefined();
         expect(modelObject.getStackTrace()).toEqual({
             definition: definition,
             name: name,
+            proxies: [],
             attributes: {
                 param: {
                     name: paramName,
@@ -52,16 +59,34 @@ describe("Model class tests - add string", function() {
                 }
             },
         });
+        expect(modelObject.getValues()).toEqual({
+            param: value
+        });
     });
 
     it("validation", function() {
         modelObject.getAttribute(paramName).setValue(value);
 
+        expect(modelObject.getValues()).toEqual({
+            param: value
+        });
         expect(modelObject.validate()).toBeTruthy();
 
         modelObject.getAttribute(paramName).setValue(undefined);
 
+        expect(modelObject.getValues()).toEqual({
+            param: undefined
+        });
         expect(modelObject.validate()).toBeFalsy();
+
+        modelObject.setValues({
+            param: value
+        });
+
+        expect(modelObject.getValues()).toEqual({
+            param: value
+        });
+        expect(modelObject.validate()).toBeTruthy();
     });
 });
 
@@ -104,9 +129,16 @@ describe("Model class tests - add number", function() {
         expect(modelObject.getAttribute(paramName) instanceof Number).toBeTruthy();
         expect(modelObject.hasAttribute("not")).toBeFalsy();
         expect(modelObject.getAttribute("not")).toBeUndefined();
+        expect(modelObject.hasProxy("ajax")).toBeFalsy();
+        expect(modelObject.getProxy("ajax")).toBeUndefined();
+        expect(modelObject.hasProxy("localStorage")).toBeFalsy();
+        expect(modelObject.getProxy("localStorage")).toBeUndefined();
+        expect(modelObject.hasProxy("sessionStorage")).toBeFalsy();
+        expect(modelObject.getProxy("sessionStorage")).toBeUndefined();
         expect(modelObject.getStackTrace()).toEqual({
             definition: definition,
             name: name,
+            proxies: [],
             attributes: {
                 param: {
                     name: paramName,
@@ -120,16 +152,34 @@ describe("Model class tests - add number", function() {
                 }
             },
         });
+        expect(modelObject.getValues()).toEqual({
+            param: value
+        });
     });
 
     it("validation", function() {
         modelObject.getAttribute(paramName).setValue(value);
 
+        expect(modelObject.getValues()).toEqual({
+            param: value
+        });
         expect(modelObject.validate()).toBeTruthy();
 
         modelObject.getAttribute(paramName).setValue(undefined);
 
+        expect(modelObject.getValues()).toEqual({
+            param: undefined
+        });
         expect(modelObject.validate()).toBeFalsy();
+
+        modelObject.setValues({
+            param: value
+        });
+
+        expect(modelObject.getValues()).toEqual({
+            param: value
+        });
+        expect(modelObject.validate()).toBeTruthy();
     });
 });
 
@@ -170,9 +220,16 @@ describe("Model class tests - add datetime", function() {
         expect(modelObject.getAttribute(paramName) instanceof Datetime).toBeTruthy();
         expect(modelObject.hasAttribute("not")).toBeFalsy();
         expect(modelObject.getAttribute("not")).toBeUndefined();
+        expect(modelObject.hasProxy("ajax")).toBeFalsy();
+        expect(modelObject.getProxy("ajax")).toBeUndefined();
+        expect(modelObject.hasProxy("localStorage")).toBeFalsy();
+        expect(modelObject.getProxy("localStorage")).toBeUndefined();
+        expect(modelObject.hasProxy("sessionStorage")).toBeFalsy();
+        expect(modelObject.getProxy("sessionStorage")).toBeUndefined();
         expect(modelObject.getStackTrace()).toEqual({
             definition: definition,
             name: name,
+            proxies: [],
             attributes: {
                 param: {
                     name: paramName,
@@ -186,16 +243,34 @@ describe("Model class tests - add datetime", function() {
                 }
             },
         });
+        expect(modelObject.getValues()).toEqual({
+            param: value
+        });
     });
 
     it("validation", function() {
         modelObject.getAttribute(paramName).setValue(value);
 
+        expect(modelObject.getValues()).toEqual({
+            param: value
+        });
         expect(modelObject.validate()).toBeTruthy();
 
         modelObject.getAttribute(paramName).setValue(undefined);
 
+        expect(modelObject.getValues()).toEqual({
+            param: undefined
+        });
         expect(modelObject.validate()).toBeFalsy();
+
+        modelObject.setValues({
+            param: value
+        });
+
+        expect(modelObject.getValues()).toEqual({
+            param: value
+        });
+        expect(modelObject.validate()).toBeTruthy();
     });
 });
 
@@ -234,9 +309,16 @@ describe("Model class tests - add boolean", function() {
         expect(modelObject.getAttribute(paramName) instanceof Boolean).toBeTruthy();
         expect(modelObject.hasAttribute("not")).toBeFalsy();
         expect(modelObject.getAttribute("not")).toBeUndefined();
+        expect(modelObject.hasProxy("ajax")).toBeFalsy();
+        expect(modelObject.getProxy("ajax")).toBeUndefined();
+        expect(modelObject.hasProxy("localStorage")).toBeFalsy();
+        expect(modelObject.getProxy("localStorage")).toBeUndefined();
+        expect(modelObject.hasProxy("sessionStorage")).toBeFalsy();
+        expect(modelObject.getProxy("sessionStorage")).toBeUndefined();
         expect(modelObject.getStackTrace()).toEqual({
             definition: definition,
             name: name,
+            proxies: [],
             attributes: {
                 param: {
                     name: paramName,
@@ -247,16 +329,34 @@ describe("Model class tests - add boolean", function() {
                 }
             },
         });
+        expect(modelObject.getValues()).toEqual({
+            param: value
+        });
     });
 
     it("validation", function() {
         modelObject.getAttribute(paramName).setValue(value);
 
+        expect(modelObject.getValues()).toEqual({
+            param: value
+        });
         expect(modelObject.validate()).toBeTruthy();
 
         modelObject.getAttribute(paramName).setValue(undefined);
 
+        expect(modelObject.getValues()).toEqual({
+            param: undefined
+        });
         expect(modelObject.validate()).toBeFalsy();
+
+        modelObject.setValues({
+            param: value
+        });
+
+        expect(modelObject.getValues()).toEqual({
+            param: value
+        });
+        expect(modelObject.validate()).toBeTruthy();
     });
 });
 
@@ -295,9 +395,16 @@ describe("Model class tests - add singleChoice", function() {
         expect(modelObject.getAttribute(paramName) instanceof SingleChoice).toBeTruthy();
         expect(modelObject.hasAttribute("not")).toBeFalsy();
         expect(modelObject.getAttribute("not")).toBeUndefined();
+        expect(modelObject.hasProxy("ajax")).toBeFalsy();
+        expect(modelObject.getProxy("ajax")).toBeUndefined();
+        expect(modelObject.hasProxy("localStorage")).toBeFalsy();
+        expect(modelObject.getProxy("localStorage")).toBeUndefined();
+        expect(modelObject.hasProxy("sessionStorage")).toBeFalsy();
+        expect(modelObject.getProxy("sessionStorage")).toBeUndefined();
         expect(modelObject.getStackTrace()).toEqual({
             definition: definition,
             name: name,
+            proxies: [],
             attributes: {
                 param: {
                     name: paramName,
@@ -308,16 +415,34 @@ describe("Model class tests - add singleChoice", function() {
                 }
             },
         });
+        expect(modelObject.getValues()).toEqual({
+            param: value
+        });
     });
 
     it("validation", function() {
         modelObject.getAttribute(paramName).setValue(value);
 
+        expect(modelObject.getValues()).toEqual({
+            param: value
+        });
         expect(modelObject.validate()).toBeTruthy();
 
         modelObject.getAttribute(paramName).setValue(undefined);
 
+        expect(modelObject.getValues()).toEqual({
+            param: undefined
+        });
         expect(modelObject.validate()).toBeFalsy();
+
+        modelObject.setValues({
+            param: value
+        });
+
+        expect(modelObject.getValues()).toEqual({
+            param: value
+        });
+        expect(modelObject.validate()).toBeTruthy();
     });
 });
 
@@ -356,9 +481,16 @@ describe("Model class tests - add multipleChoice", function() {
         expect(modelObject.getAttribute(paramName) instanceof MultipleChoice).toBeTruthy();
         expect(modelObject.hasAttribute("not")).toBeFalsy();
         expect(modelObject.getAttribute("not")).toBeUndefined();
+        expect(modelObject.hasProxy("ajax")).toBeFalsy();
+        expect(modelObject.getProxy("ajax")).toBeUndefined();
+        expect(modelObject.hasProxy("localStorage")).toBeFalsy();
+        expect(modelObject.getProxy("localStorage")).toBeUndefined();
+        expect(modelObject.hasProxy("sessionStorage")).toBeFalsy();
+        expect(modelObject.getProxy("sessionStorage")).toBeUndefined();
         expect(modelObject.getStackTrace()).toEqual({
             definition: definition,
             name: name,
+            proxies: [],
             attributes: {
                 param: {
                     name: paramName,
@@ -369,15 +501,85 @@ describe("Model class tests - add multipleChoice", function() {
                 }
             },
         });
+        expect(modelObject.getValues()).toEqual({
+            param: value
+        });
     });
 
     it("validation", function() {
         modelObject.getAttribute(paramName).setValue(value);
 
+        expect(modelObject.getValues()).toEqual({
+            param: value
+        });
         expect(modelObject.validate()).toBeTruthy();
 
         modelObject.getAttribute(paramName).setValue(undefined);
 
+        expect(modelObject.getValues()).toEqual({
+            param: undefined
+        });
         expect(modelObject.validate()).toBeFalsy();
+
+        modelObject.setValues({
+            param: value
+        });
+
+        expect(modelObject.getValues()).toEqual({
+            param: value
+        });
+        expect(modelObject.validate()).toBeTruthy();
+    });
+});
+
+describe("Model class tests - proxies", function() {
+
+    var modelObject;
+    var name = "model";
+    var value = "value";
+    var proxies;
+
+    var Model = Ompluscript.Model.Container.Model;
+    var AjaxProxy = Ompluscript.Model.Proxy.AjaxProxy;
+    var LocaleStorageProxy = Ompluscript.Model.Proxy.LocaleStorageProxy;
+    var SessionStorageProxy = Ompluscript.Model.Proxy.SessionStorageProxy;
+
+    beforeAll(function() {
+        proxies = [
+            {
+                type: "ajax",
+                saveLink: "save",
+                updateLink: "update",
+                deleteLink: "delete",
+                selectLink: "select"
+            },
+            {
+                type: "localStorage",
+            },
+            {
+                type: "sessionStorage",
+            },
+        ];
+
+        modelObject = new Model(name, [], proxies);
+    });
+
+    it("get configuration", function() {
+        expect(modelObject.getName()).toBe(name);
+        expect(modelObject.hasAttribute("not")).toBeFalsy();
+        expect(modelObject.getAttribute("not")).toBeUndefined();
+        expect(modelObject.hasProxy("ajax")).toBeTruthy();
+        expect(modelObject.getProxy("ajax") instanceof AjaxProxy).toBeTruthy();
+        expect(modelObject.hasProxy("localStorage")).toBeTruthy();
+        expect(modelObject.getProxy("localStorage") instanceof LocaleStorageProxy).toBeTruthy();
+        expect(modelObject.hasProxy("sessionStorage")).toBeTruthy();
+        expect(modelObject.getProxy("sessionStorage") instanceof SessionStorageProxy).toBeTruthy();
+        expect(modelObject.getStackTrace()).toEqual({
+            definition: [],
+            name: name,
+            proxies: proxies,
+            attributes: {},
+        });
+        expect(modelObject.getValues()).toEqual({});
     });
 });

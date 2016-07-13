@@ -61,15 +61,16 @@ module Ompluscript.Model.Container {
          * 
          * Sets name of container and definition for attributes.
          * 
-         * @param {string} name
-         * @param {Object[]} definition
-         * @param {Object[]} proxies
+         * @param {string} name Name of model
+         * @param {Object[]} definition Definition for all attributes
+         * @param {Object[]} proxies Definitions for all proxies
          * @constructs
          */
         constructor(name: string, definition: Object[] = [], proxies: Object[] = undefined) {
             super();
             this.name = name;
             this.definition = definition;
+            this.proxies = {};
             this.createProxies(proxies);
         }
 
@@ -83,13 +84,23 @@ module Ompluscript.Model.Container {
         }
 
         /**
+         * Method that returns if there is desired proxy
+         *
+         * @param {string} type
+         * @returns {Proxy}
+         */
+        public hasProxy(type: string): boolean {
+            return this.proxies.hasOwnProperty(type);
+        }
+
+        /**
          * Method that returns desired proxy
          * 
          * @param {string} type
          * @returns {Proxy}
          */
         public getProxy(type: string): Proxy {
-            if (this.proxies.hasOwnProperty(type)) {
+            if (this.hasProxy(type)) {
                 return this.proxies[type];
             }
             return undefined;
@@ -104,7 +115,13 @@ module Ompluscript.Model.Container {
             let trace: Object = {
                 definition: this.definition,
                 name: this.name,
+                proxies: [],
             };
+            for (let key in this.proxies) {
+                if (this.proxies.hasOwnProperty(key)) {
+                    trace["proxies"].push(this.proxies[key].getStackTrace());
+                }
+            }
             return trace;
         }
 
@@ -173,7 +190,8 @@ module Ompluscript.Model.Container {
                 for (let i: number = 0; i < proxies.length; i++) {
                     for (let j: number = 0; j < configurations.length; j++) {
                         if (configurations[j].isRelatedTo(proxies[i])) {
-                            this.proxies[proxies[i][Configuration.PARAMETER_TYPE]] = <Proxy>configurations[i].create(proxies[i], this);
+                            this.proxies[proxies[i][Configuration.PARAMETER_TYPE]] = <Proxy>configurations[j].create(proxies[i], this);
+                            break;
                         }
                     }
                 }

@@ -1957,7 +1957,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 Proxy.prototype.getStackTrace = function () {
                     var trace = {
-                        name: this.name,
+                        type: this.name,
                     };
                     return trace;
                 };
@@ -2020,6 +2020,14 @@ var __extends = (this && this.__extends) || function (d, b) {
                         link = "/select" + this.container.getName();
                     }
                     this.perform(AjaxProxy.METHOD_GET, link, query, OnDoneProxyEvent.TYPE_SELECTED);
+                };
+                AjaxProxy.prototype.getStackTrace = function () {
+                    var trace = _super.prototype.getStackTrace.call(this);
+                    trace[AjaxProxy.PARAMETER_SAVE_LINK] = this.saveLink;
+                    trace[AjaxProxy.PARAMETER_UPDATE_LINK] = this.updateLink;
+                    trace[AjaxProxy.PARAMETER_DELETE_LINK] = this.deleteLink;
+                    trace[AjaxProxy.PARAMETER_SELECT_LINK] = this.selectLink;
+                    return trace;
                 };
                 AjaxProxy.prototype.perform = function (method, url, parameters, type) {
                     var that = this;
@@ -2142,7 +2150,6 @@ var __extends = (this && this.__extends) || function (d, b) {
             var StorageProxy = (function (_super) {
                 __extends(StorageProxy, _super);
                 function StorageProxy(name, container, storage) {
-                    if (storage === void 0) { storage = undefined; }
                     _super.call(this, name, container);
                     this.storage = storage;
                 }
@@ -2218,6 +2225,24 @@ var __extends = (this && this.__extends) || function (d, b) {
 (function (Ompluscript) {
     var Model;
     (function (Model) {
+        var Proxy;
+        (function (Proxy) {
+            "use strict";
+            var SessionStorageProxy = (function (_super) {
+                __extends(SessionStorageProxy, _super);
+                function SessionStorageProxy(container) {
+                    _super.call(this, SessionStorageProxy.TYPE_SESSION_STORAGE_PROXY, container, window.sessionStorage);
+                }
+                SessionStorageProxy.TYPE_SESSION_STORAGE_PROXY = "sessionStorage";
+                return SessionStorageProxy;
+            }(Proxy.StorageProxy));
+            Proxy.SessionStorageProxy = SessionStorageProxy;
+        })(Proxy = Model.Proxy || (Model.Proxy = {}));
+    })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var Model;
+    (function (Model) {
         var Configuration;
         (function (Configuration_19) {
             "use strict";
@@ -2264,13 +2289,17 @@ var __extends = (this && this.__extends) || function (d, b) {
                     _super.call(this);
                     this.name = name;
                     this.definition = definition;
+                    this.proxies = {};
                     this.createProxies(proxies);
                 }
                 Container.prototype.getName = function () {
                     return this.name;
                 };
+                Container.prototype.hasProxy = function (type) {
+                    return this.proxies.hasOwnProperty(type);
+                };
                 Container.prototype.getProxy = function (type) {
-                    if (this.proxies.hasOwnProperty(type)) {
+                    if (this.hasProxy(type)) {
                         return this.proxies[type];
                     }
                     return undefined;
@@ -2279,7 +2308,13 @@ var __extends = (this && this.__extends) || function (d, b) {
                     var trace = {
                         definition: this.definition,
                         name: this.name,
+                        proxies: [],
                     };
+                    for (var key in this.proxies) {
+                        if (this.proxies.hasOwnProperty(key)) {
+                            trace["proxies"].push(this.proxies[key].getStackTrace());
+                        }
+                    }
                     return trace;
                 };
                 Container.prototype.doneProxy = function (action, response) {
@@ -2303,7 +2338,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                         for (var i = 0; i < proxies.length; i++) {
                             for (var j = 0; j < configurations.length; j++) {
                                 if (configurations[j].isRelatedTo(proxies[i])) {
-                                    this.proxies[proxies[i][Configuration.PARAMETER_TYPE]] = configurations[i].create(proxies[i], this);
+                                    this.proxies[proxies[i][Configuration.PARAMETER_TYPE]] = configurations[j].create(proxies[i], this);
+                                    break;
                                 }
                             }
                         }
@@ -2385,8 +2421,9 @@ var __extends = (this && this.__extends) || function (d, b) {
             var StringConfiguration = Ompluscript.Model.Configuration.StringConfiguration;
             var Model = (function (_super) {
                 __extends(Model, _super);
-                function Model(name, definition) {
-                    _super.call(this, name, definition);
+                function Model(name, definition, proxies) {
+                    if (proxies === void 0) { proxies = undefined; }
+                    _super.call(this, name, definition, proxies);
                     this.configurations = [
                         Configuration.getInstance(BooleanConfiguration),
                         Configuration.getInstance(DatetimeConfiguration),
@@ -2443,7 +2480,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     var values = {};
                     for (var key in this.attributes) {
                         if (this.attributes.hasOwnProperty(key)) {
-                            values[key] = this.attributes[key];
+                            values[key] = this.attributes[key].getValue();
                         }
                     }
                     return values;
@@ -2588,8 +2625,9 @@ var __extends = (this && this.__extends) || function (d, b) {
             var OnClearTable = Ompluscript.Model.Event.OnClearTable;
             var Table = (function (_super) {
                 __extends(Table, _super);
-                function Table(name, definition) {
-                    _super.call(this, name, definition);
+                function Table(name, definition, proxies) {
+                    if (proxies === void 0) { proxies = undefined; }
+                    _super.call(this, name, definition, proxies);
                     this.rows = [];
                 }
                 Table.prototype.count = function () {
@@ -3645,24 +3683,6 @@ var __extends = (this && this.__extends) || function (d, b) {
             }(Container));
             Container_5.Translation = Translation;
         })(Container = Model.Container || (Model.Container = {}));
-    })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
-})(Ompluscript || (Ompluscript = {}));
-(function (Ompluscript) {
-    var Model;
-    (function (Model) {
-        var Proxy;
-        (function (Proxy) {
-            "use strict";
-            var SessionStorageProxy = (function (_super) {
-                __extends(SessionStorageProxy, _super);
-                function SessionStorageProxy(container) {
-                    _super.call(this, SessionStorageProxy.TYPE_SESSION_STORAGE_PROXY, container, window.sessionStorage);
-                }
-                SessionStorageProxy.TYPE_SESSION_STORAGE_PROXY = "sessionStorage";
-                return SessionStorageProxy;
-            }(Proxy.StorageProxy));
-            Proxy.SessionStorageProxy = SessionStorageProxy;
-        })(Proxy = Model.Proxy || (Model.Proxy = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
 (function (Ompluscript) {

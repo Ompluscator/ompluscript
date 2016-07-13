@@ -81,8 +81,10 @@ describe("Table class tests - creation", function() {
         expect(tableObject.getStackTrace()).toEqual({
             definition: definition,
             name: name,
+            proxies: [],
             rows: [],
         });
+        expect(tableObject.getValues()).toEqual([]);
     });
 
     it("add one row", function() {
@@ -94,10 +96,12 @@ describe("Table class tests - creation", function() {
         expect(tableObject.getStackTrace()).toEqual({
             definition: definition,
             name: name,
+            proxies: [],
             rows: [
                 {
                     definition: definition,
                     name: name,
+                    proxies: [],
                     attributes: {
                         param1: {
                             name: paramName[0],
@@ -143,6 +147,14 @@ describe("Table class tests - creation", function() {
         tableObject.each(dummy.test);
         expect(dummy.test.calls.argsFor(0)).toEqual([0, tableObject.getRowByIndex(0)]);
         expect(dummy.test.calls.count()).toBe(1);
+        expect(tableObject.getValues()).toEqual([
+            {
+                param1: values[0]["param1"],
+                param2: values[0]["param2"],
+                param3: values[0]["param3"],
+                param4: values[0]["param4"],
+            }
+        ]);
     });
 
     it("add two rows", function() {
@@ -157,10 +169,12 @@ describe("Table class tests - creation", function() {
         expect(tableObject.getStackTrace()).toEqual({
             definition: definition,
             name: name,
+            proxies: [],
             rows: [
                 {
                     definition: definition,
                     name: name,
+                    proxies: [],
                     attributes: {
                         param1: {
                             name: paramName[0],
@@ -203,6 +217,7 @@ describe("Table class tests - creation", function() {
                 {
                     definition: definition,
                     name: name,
+                    proxies: [],
                     attributes: {
                         param1: {
                             name: paramName[0],
@@ -249,6 +264,20 @@ describe("Table class tests - creation", function() {
         expect(dummy.test.calls.argsFor(0)).toEqual([0, tableObject.getRowByIndex(0)]);
         expect(dummy.test.calls.argsFor(1)).toEqual([1, tableObject.getRowByIndex(1)]);
         expect(dummy.test.calls.count()).toBe(2);
+        expect(tableObject.getValues()).toEqual([
+            {
+                param1: values[0]["param1"],
+                param2: values[0]["param2"],
+                param3: values[0]["param3"],
+                param4: values[0]["param4"],
+            },
+            {
+                param1: values[1]["param1"],
+                param2: values[1]["param2"],
+                param3: values[1]["param3"],
+                param4: values[1]["param4"],
+            }
+        ]);
     });
 
     it("add two row and remove first", function() {
@@ -262,10 +291,12 @@ describe("Table class tests - creation", function() {
         expect(tableObject.getStackTrace()).toEqual({
             definition: definition,
             name: name,
+            proxies: [],
             rows: [
                 {
                     definition: definition,
                     name: name,
+                    proxies: [],
                     attributes: {
                         param1: {
                             name: paramName[0],
@@ -311,6 +342,14 @@ describe("Table class tests - creation", function() {
         tableObject.each(dummy.test);
         expect(dummy.test.calls.argsFor(0)).toEqual([0, tableObject.getRowByIndex(0)]);
         expect(dummy.test.calls.count()).toBe(1);
+        expect(tableObject.getValues()).toEqual([
+            {
+                param1: values[1]["param1"],
+                param2: values[1]["param2"],
+                param3: values[1]["param3"],
+                param4: values[1]["param4"],
+            }
+        ]);
     });
 });
 
@@ -361,5 +400,55 @@ describe("Table class tests - events", function() {
 
         expect(tableObject.notifyObservers.calls.argsFor(3)).toEqual([onClearTable]);
         expect(tableObject.notifyObservers.calls.count()).toBe(4);
+    });
+});
+
+describe("Table class tests - proxies", function() {
+
+    var tableObject;
+    var name = "model";
+    var value = "value";
+    var proxies;
+
+    var Table = Ompluscript.Model.Container.Table;
+    var AjaxProxy = Ompluscript.Model.Proxy.AjaxProxy;
+    var LocaleStorageProxy = Ompluscript.Model.Proxy.LocaleStorageProxy;
+    var SessionStorageProxy = Ompluscript.Model.Proxy.SessionStorageProxy;
+
+    beforeAll(function() {
+        proxies = [
+            {
+                type: "ajax",
+                saveLink: "save",
+                updateLink: "update",
+                deleteLink: "delete",
+                selectLink: "select"
+            },
+            {
+                type: "localStorage",
+            },
+            {
+                type: "sessionStorage",
+            },
+        ];
+
+        tableObject = new Table(name, [], proxies);
+    });
+
+    it("get configuration", function() {
+        expect(tableObject.getName()).toBe(name);
+        expect(tableObject.hasProxy("ajax")).toBeTruthy();
+        expect(tableObject.getProxy("ajax") instanceof AjaxProxy).toBeTruthy();
+        expect(tableObject.hasProxy("localStorage")).toBeTruthy();
+        expect(tableObject.getProxy("localStorage") instanceof LocaleStorageProxy).toBeTruthy();
+        expect(tableObject.hasProxy("sessionStorage")).toBeTruthy();
+        expect(tableObject.getProxy("sessionStorage") instanceof SessionStorageProxy).toBeTruthy();
+        expect(tableObject.getStackTrace()).toEqual({
+            definition: [],
+            name: name,
+            proxies: proxies,
+            rows: [],
+        });
+        expect(tableObject.getValues()).toEqual([]);
     });
 });

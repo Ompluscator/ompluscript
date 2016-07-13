@@ -43,6 +43,9 @@ module Ompluscript.Model.Container {
          */
         protected attributes: Object;
 
+        /**
+         * @type {Configuration[]} configurations List of all attributes configuration
+         */
         protected configurations: Configuration[];
 
         /**
@@ -52,10 +55,11 @@ module Ompluscript.Model.Container {
          *
          * @param {string} name Name of model
          * @param {Object[]} definition Definition for all attributes
+         * @param {Object[]} proxies Definitions for all proxies
          * @constructs
          */
-        constructor(name: string, definition: Object[]) {
-            super(name, definition);
+        constructor(name: string, definition: Object[], proxies: Object[] = undefined) {
+            super(name, definition, proxies);
             this.configurations = [
                 Configuration.getInstance(BooleanConfiguration),
                 Configuration.getInstance(DatetimeConfiguration),
@@ -132,6 +136,11 @@ module Ompluscript.Model.Container {
             }
         }
 
+        /**
+         * Method that sets values into model.
+         *
+         * @param {Object} values
+         */
         public setValues(values: Object): void {
             for (let key in values) {
                 if (this.attributes.hasOwnProperty(key) && values.hasOwnProperty(key)) {
@@ -140,11 +149,16 @@ module Ompluscript.Model.Container {
             }
         }
 
+        /**
+         * Method that returns values from model.
+         *
+         * @returns {Object}
+         */
         public getValues(): Object {
             let values: Object = {};
             for (let key in this.attributes) {
                 if (this.attributes.hasOwnProperty(key)) {
-                    values[key] = this.attributes[key];
+                    values[key] = this.attributes[key].getValue();
                 }
             }
             return values;

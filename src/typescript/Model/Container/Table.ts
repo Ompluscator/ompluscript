@@ -42,10 +42,11 @@ module Ompluscript.Model.Container {
          *
          * @param {string} name Name of model
          * @param {Object[]} definition Attributes' configuration
+         * @param {Object[]} proxies Definitions for all proxies
          * @constructs
          */
-        constructor(name: string, definition: Object[]) {
-            super(name, definition);
+        constructor(name: string, definition: Object[], proxies: Object[] = undefined) {
+            super(name, definition, proxies);
             this.rows = [];
         }
 
@@ -163,6 +164,11 @@ module Ompluscript.Model.Container {
             this.clearObservers();
         }
 
+        /**
+         * Method that sets values into table.
+         *
+         * @param {Object} values
+         */
         public setValues(values: Object): void {
             this.clearRows();
             if (Array.isArray(values)) {
@@ -174,7 +180,12 @@ module Ompluscript.Model.Container {
                 this.addRow(values);
             }
         }
-        
+
+        /**
+         * Method that returns values from table.
+         *
+         * @returns {Object}
+         */
         public getValues(): Object {
             let values: Object[] = [];
             for (let i: number = 0; i < this.rows.length; i++) {
