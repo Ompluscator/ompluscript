@@ -91,7 +91,7 @@ module Ompluscript.Model.Proxy {
          *
          * @param {Object} query Contains parameters for request
          */
-        public abstract select(query: Object): void;
+        public abstract select(query?: Object): void;
 
         /**
          * Method that finalize request after receiving answer from proxy

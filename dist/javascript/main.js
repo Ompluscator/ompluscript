@@ -2165,7 +2165,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     this.storage.removeItem(this.container.getName());
                     this.finish(OnDoneProxyEvent.TYPE_DELETED, this.container.getValues());
                 };
-                StorageProxy.prototype.select = function (query) {
+                StorageProxy.prototype.select = function () {
                     var result = this.storage.getItem(this.container.getName());
                     this.finish(OnDoneProxyEvent.TYPE_SELECTED, JSON.parse(result));
                 };

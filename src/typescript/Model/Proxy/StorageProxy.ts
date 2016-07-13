@@ -65,10 +65,8 @@ module Ompluscript.Model.Proxy {
 
         /**
          * Method that should perform query request of storage proxy
-         *
-         * @param {Object} query Contains parameters for request
          */
-        public select(query: Object): void {
+        public select(): void {
             let result: string = this.storage.getItem(this.container.getName());
             this.finish(OnDoneProxyEvent.TYPE_SELECTED, JSON.parse(result));
         }
