@@ -91,19 +91,6 @@ module Ompluscript.Model.Container {
         }
 
         /**
-         * Method that sets values to desired attributes
-         * 
-         * @param {Object} values Container of attributes
-         */
-        public setValue(values: Object): void {
-            for (let i in values) {
-                if (values.hasOwnProperty(i) && this.hasAttribute(i)) {
-                    this.getAttribute(i).setValue(values[i]);
-                }
-            }
-        }
-
-        /**
          * Method that validates all attributes in model.
          *
          * @returns {boolean} Result of validation
@@ -145,6 +132,24 @@ module Ompluscript.Model.Container {
             }
         }
 
+        public setValues(values: Object): void {
+            for (let key in values) {
+                if (this.attributes.hasOwnProperty(key) && values.hasOwnProperty(key)) {
+                    this.attributes[key].setValue(values[key]);
+                }
+            }
+        }
+
+        public getValues(): Object {
+            let values: Object = {};
+            for (let key in this.attributes) {
+                if (this.attributes.hasOwnProperty(key)) {
+                    values[key] = this.attributes[key];
+                }
+            }
+            return values;
+        }
+
         /**
          * Method that creates attribute from its definition
          *
@@ -152,13 +157,11 @@ module Ompluscript.Model.Container {
          */
         private addAttribute(definition: Object): void {
             let name: string = definition[Configuration.PARAMETER_NAME];
-            definition[Configuration.PARAMETER_NAME] = this.name + "." + name;
             for (let i: number = 0; i < this.configurations.length; i++) {
                 if (this.configurations[i].isRelatedTo(definition)) {
                     this.attributes[name] = this.configurations[i].create(definition);
                 }
             }
-            definition[Configuration.PARAMETER_NAME] = name;
         }
     }
 }

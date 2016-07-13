@@ -36,12 +36,12 @@ module Ompluscript.Model {
      *
      * @class Creator
      */
-    class Creator extends CreatorParent {
+    export class Creator extends CreatorParent {
 
         /**
          * @type {Creator} instance Instance for singleton pattern
          */
-        private static instance: Creator = new Creator();
+        private static instance: Creator;
 
         /**
          * Method for singleton pattern
@@ -49,6 +49,9 @@ module Ompluscript.Model {
          * @return {Creator} Instance for singleton pattern
          */
         public static getInstance(): Creator {
+            if (Creator.instance === undefined) {
+                Creator.instance = new Creator();
+            }
             return Creator.instance;
         }
 
@@ -90,30 +93,6 @@ module Ompluscript.Model {
      */
     export function create(name: string): IBase {
         return Creator.getInstance().create(name);
-    }
-
-    /**
-     * Method that defines if there are errors in defintions
-     *
-     * @return {boolean} Defines if there are errors in defintions
-     */
-    export function hasErrors(): boolean {
-        return Creator.getInstance().hasErrors();
-    }
-
-    /**
-     * Method that returns all errors in definitions
-     *
-     * @return {Object[]} All errors in definitions
-     */
-    export function getErrors(): Object[] {
-        return Creator.getInstance().getErrors();
-    }
-    /**
-     * Method that resets map of definition and error list
-     */
-    export function reset(): void {
-        Creator.getInstance().reset();
     }
 }
 

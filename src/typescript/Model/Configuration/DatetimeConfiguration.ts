@@ -18,17 +18,17 @@ module Ompluscript.Model.Configuration {
             return definition[Configuration.PARAMETER_TYPE] === Datetime.TYPE_DATETIME;
         }
 
-        public getErrors(definition: Object, prefix: string): string[] {
-            let errors: string[] = super.getErrors(definition, prefix);
-            errors.push(this.shouldBeDatetime(definition, Attribute.PARAMETER_MINIMUM, prefix));
-            errors.push(this.shouldBeDatetime(definition, Attribute.PARAMETER_MAXIMUM, prefix));
+        public getErrors(definition: Object): string[] {
+            let errors: string[] = super.getErrors(definition);
+            errors.push(this.shouldBeDatetime(definition, Attribute.PARAMETER_MINIMUM));
+            errors.push(this.shouldBeDatetime(definition, Attribute.PARAMETER_MAXIMUM));
             errors = this.filterErrors(errors);
             if (errors.length === 0) {
                 let minimum: Date = new Date(definition[Attribute.PARAMETER_MINIMUM]);
                 let maximum: Date = new Date(definition[Attribute.PARAMETER_MAXIMUM]);
                 if (minimum !== undefined && maximum !== undefined) {
                     errors.push(this.mustBeGreater(
-                        definition, Attribute.PARAMETER_MINIMUM, Attribute.PARAMETER_MAXIMUM, minimum, maximum, true, prefix
+                        definition, Attribute.PARAMETER_MINIMUM, Attribute.PARAMETER_MAXIMUM, minimum, maximum, true
                     ));
                 }
             }

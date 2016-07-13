@@ -8,24 +8,24 @@ module Ompluscript.Core.Configuration {
 
     export abstract class GroupConfiguration extends Configuration {
         
-        private configurations: Configuration[];
+        private configurations: Object;
         
-        private key: string;
-        
-        constructor(configurations: Configuration[], key: string) {
+        constructor(configurations: Object) {
             super();
             this.configurations = configurations;
-            this.key = key;
         }
 
-        public getErrors(definition: Object, prefix: string): string[] {
+        public getErrors(definition: Object, key: string = undefined): string[] {
             let errors: string[] = [];
-            if (definition.hasOwnProperty(this.key)) {
-                for (let i: number = 0; i < definition[this.key].length; i++) {
-                    for (let j: number = 0; j < this.configurations.length; j++) {
-                        if (this.configurations[j].isRelatedTo(definition[this.key][i])) {
-                            errors.push.apply(errors, this.configurations[j].getErrors(definition[this.key][i], prefix));
-                            break;
+            if (this.configurations.hasOwnProperty(key)) {
+                let configuration: Configuration[] = this.configurations[key];
+                if (definition.hasOwnProperty(key)) {
+                    for (let i: number = 0; i < definition[key].length; i++) {
+                        for (let j: number = 0; j < configuration.length; j++) {
+                            if (configuration[j].isRelatedTo(definition[key][i])) {
+                                errors.push.apply(errors, configuration[j].getErrors(definition[key][i]));
+                                break;
+                            }
                         }
                     }
                 }

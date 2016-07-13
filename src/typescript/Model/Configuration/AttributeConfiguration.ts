@@ -9,10 +9,10 @@ module Ompluscript.Model.Configuration {
 
     export abstract class AttributeConfiguration extends Configuration {
 
-        public getErrors(definition: Object, prefix: string): string[] {
+        public getErrors(definition: Object): string[] {
             let errors: string[] = [];
-            errors.push(this.mustBeString(definition, Configuration.PARAMETER_NAME, prefix));
-            errors.push(this.shouldBeBoolean(definition, Attribute.PARAMETER_REQUIRED, prefix));
+            errors.push(this.mustBeString(definition, Configuration.PARAMETER_NAME));
+            errors.push(this.shouldBeBoolean(definition, Attribute.PARAMETER_REQUIRED));
             return this.filterErrors(errors);
         }
     }

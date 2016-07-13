@@ -42,7 +42,7 @@ describe("Model class tests - add string", function() {
             name: name,
             attributes: {
                 param: {
-                    name: name + "." + paramName,
+                    name: paramName,
                     required: required,
                     type: "string",
                     value: value,
@@ -109,7 +109,7 @@ describe("Model class tests - add number", function() {
             name: name,
             attributes: {
                 param: {
-                    name: name + "." + paramName,
+                    name: paramName,
                     required: required,
                     type: "number",
                     value: value,
@@ -175,7 +175,7 @@ describe("Model class tests - add datetime", function() {
             name: name,
             attributes: {
                 param: {
-                    name: name + "." + paramName,
+                    name: paramName,
                     required: required,
                     type: "string",
                     value: value,
@@ -239,7 +239,7 @@ describe("Model class tests - add boolean", function() {
             name: name,
             attributes: {
                 param: {
-                    name: name + "." + paramName,
+                    name: paramName,
                     required: required,
                     type: "boolean",
                     value: value,
@@ -300,7 +300,7 @@ describe("Model class tests - add singleChoice", function() {
             name: name,
             attributes: {
                 param: {
-                    name: name + "." + paramName,
+                    name: paramName,
                     required: required,
                     type: "number",
                     value: value,
@@ -361,7 +361,7 @@ describe("Model class tests - add multipleChoice", function() {
             name: name,
             attributes: {
                 param: {
-                    name: name + "." + paramName,
+                    name: paramName,
                     required: required,
                     type: "number",
                     value: value,

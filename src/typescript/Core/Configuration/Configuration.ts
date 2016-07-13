@@ -10,7 +10,7 @@ module Ompluscript.Core.Configuration {
         /**
          * @type {string} IS_WRONG_CONFIGURATION Message for wrong value of definition.
          */
-        public static IS_WRONG_CONFIGURATION: string = " is wrong configuration.";
+        public static IS_WRONG_CONFIGURATION: string = "Is wrong configuration.";
 
         /**
          * @type {string} HAS_WRONG_VALUE Message for wrong value of definition.
@@ -93,7 +93,7 @@ module Ompluscript.Core.Configuration {
 
         public abstract isRelatedTo(definition: Object): boolean;
         
-        public abstract getErrors(definition: Object, prefix: string): string[];
+        public abstract getErrors(definition: Object): string[];
         
         public abstract create(definition: Object): IBase;
 
@@ -110,92 +110,92 @@ module Ompluscript.Core.Configuration {
             return [];
         }
 
-        protected mustBeValue(definition: Object, key: string, values: any[], prefix: string = ""): string {
+        protected mustBeValue(definition: Object, key: string, values: any[]): string {
             if (values.indexOf(definition[key]) === -1) {
-                return this.getName(definition, key, prefix) + Configuration.HAS_WRONG_VALUE;
+                return this.getName(definition, key) + Configuration.HAS_WRONG_VALUE;
             }
             return undefined;
         }
 
-        protected mustBeString(definition: Object, key: string, prefix: string = ""): string {
+        protected mustBeString(definition: Object, key: string): string {
             if (typeof definition[key] !== "string") {
-                return this.getName(definition, key, prefix) + Configuration.MUST_BE_STRING;
+                return this.getName(definition, key) + Configuration.MUST_BE_STRING;
             }
             return undefined;
         }
 
-        protected shouldBeString(definition: Object, key: string, prefix: string = ""): string {
+        protected shouldBeString(definition: Object, key: string): string {
             if (definition[key] !== undefined && typeof definition[key] !== "string") {
-                return this.getName(definition, key, prefix) + Configuration.MUST_BE_STRING_OR_UNDEFINED;
+                return this.getName(definition, key) + Configuration.MUST_BE_STRING_OR_UNDEFINED;
             }
             return undefined;
         }
 
-        protected shouldBeStringOrObject(definition: Object, key: string, prefix: string = ""): string {
+        protected shouldBeStringOrObject(definition: Object, key: string): string {
             if (definition[key] !== undefined && typeof definition[key] !== "string" && typeof definition[key] !== "object") {
-                return this.getName(definition, key, prefix) + Configuration.MUST_BE_STRING_OR_OBJECT_OR_UNDEFINED;
+                return this.getName(definition, key) + Configuration.MUST_BE_STRING_OR_OBJECT_OR_UNDEFINED;
             }
             return undefined;
         }
 
-        protected shouldBeBoolean(definition: Object, key: string, prefix: string = ""): string {
+        protected shouldBeBoolean(definition: Object, key: string): string {
             if (definition[key] !== undefined && typeof definition[key] !== "boolean") {
-                return this.getName(definition, key, prefix) + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED;
+                return this.getName(definition, key) + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED;
             }
             return undefined;
         }
 
-        protected shouldBeNumber(definition: Object, key: string, prefix: string = ""): string {
+        protected shouldBeNumber(definition: Object, key: string): string {
             if (definition[key] !== undefined && typeof definition[key] !== "number") {
-                return this.getName(definition, key, prefix) + Configuration.MUST_BE_NUMBER_OR_UNDEFINED;
+                return this.getName(definition, key) + Configuration.MUST_BE_NUMBER_OR_UNDEFINED;
             }
             return undefined;
         }
 
-        protected shouldBeRegex(definition: Object, key: string, prefix: string = ""): string {
+        protected shouldBeRegex(definition: Object, key: string): string {
             if (definition[key] !== undefined && !(definition[key] instanceof RegExp)) {
-                return this.getName(definition, key, prefix) + Configuration.MUST_BE_REGEX_OR_UNDEFINED;
+                return this.getName(definition, key) + Configuration.MUST_BE_REGEX_OR_UNDEFINED;
             }
             return undefined;
         }
 
-        protected shouldBeDatetime(definition: Object, key: string, prefix: string = ""): string {
+        protected shouldBeDatetime(definition: Object, key: string): string {
             if (definition[key] !== undefined && (typeof definition[key] !== "string" || isNaN(new Date(definition[key]).getTime()))) {
-                return this.getName(definition, key, prefix) + Configuration.MUST_BE_DATETIME_OR_UNDEFINED;
+                return this.getName(definition, key) + Configuration.MUST_BE_DATETIME_OR_UNDEFINED;
             }
             return undefined;
         }
 
-        protected shouldBeArray(definition: Object, key: string, prefix: string = ""): string {
+        protected shouldBeArray(definition: Object, key: string): string {
             if (definition[key] !== undefined && !Array.isArray(definition[key])) {
-                return this.getName(definition, key, prefix) + Configuration.MUST_BE_ARRAY_OR_UNDEFINED;
+                return this.getName(definition, key) + Configuration.MUST_BE_ARRAY_OR_UNDEFINED;
             }
             return undefined;
         }
 
-        protected shouldBeObject(definition: Object, key: string, prefix: string = ""): string {
+        protected shouldBeObject(definition: Object, key: string): string {
             if (definition[key] !== undefined && typeof definition[key] !== "object") {
-                return this.getName(definition, key, prefix) + Configuration.MUST_BE_OBJECT_OR_UNDEFINED;
+                return this.getName(definition, key) + Configuration.MUST_BE_OBJECT_OR_UNDEFINED;
             }
             return undefined;
         }
 
         protected mustBeGreater(definition: Object, first: string, second: string, firstValue: any,
-                                secondValue: any, include: boolean, prefix: string = ""): string {
+                                secondValue: any, include: boolean): string {
             if (firstValue !== undefined && secondValue !== undefined) {
                 if (include === true && firstValue > secondValue) {
-                    return this.getName(definition, second, prefix) + Configuration.MUST_BE_GREATER
-                        + this.getName(definition, first, prefix);
+                    return this.getName(definition, second) + Configuration.MUST_BE_GREATER
+                        + this.getName(definition, first);
                 } else if (include !== true && firstValue >= secondValue) {
-                    return this.getName(definition, second, prefix) + Configuration.MUST_BE_GREATER
-                        + this.getName(definition, first, prefix);
+                    return this.getName(definition, second) + Configuration.MUST_BE_GREATER
+                        + this.getName(definition, first);
                 }
             }
             return undefined;
         }
         
-        protected getName(definition: Object, key: string, prefix: string): string {
-            return prefix + definition[Configuration.PARAMETER_NAME] + "." + key;
+        protected getName(definition: Object, key: string): string {
+            return definition[Configuration.PARAMETER_NAME] + "." + key;
         }
     }
 }

@@ -77,7 +77,7 @@ module Ompluscript.Core.Configuration {
             let errors: string[] = [];
             for (let i: number = 0; i < this.configurations.length; i++) {
                 if (this.configurations[i].isRelatedTo(definition)) {
-                    errors = this.configurations[i].getErrors(definition, "");
+                    errors = this.configurations[i].getErrors(definition);
                     break;
                 }
             }

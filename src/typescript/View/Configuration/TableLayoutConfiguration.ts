@@ -15,10 +15,10 @@ module Ompluscript.View.Configuration {
             return definition[Configuration.PARAMETER_TYPE] === TableLayout.TYPE_LINEAR_LAYOUT;
         }
 
-        public getErrors(definition: Object, prefix: string): string[] {
-            let errors: string[] = super.getErrors(definition, prefix);
-            errors.push(this.shouldBeNumber(definition, TableLayout.PARAMETER_ROWS, prefix));
-            errors.push(this.shouldBeNumber(definition, TableLayout.PARAMETER_CELLS, prefix));
+        public getErrors(definition: Object): string[] {
+            let errors: string[] = super.getErrors(definition);
+            errors.push(this.shouldBeNumber(definition, TableLayout.PARAMETER_ROWS));
+            errors.push(this.shouldBeNumber(definition, TableLayout.PARAMETER_CELLS));
             return this.filterErrors(errors);
         }
 

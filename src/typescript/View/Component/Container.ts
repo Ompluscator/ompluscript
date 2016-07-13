@@ -5,6 +5,11 @@
 /// <reference path="../Configuration/RelativeLayoutConfiguration.ts" />
 /// <reference path="../Configuration/LinearLayoutConfiguration.ts" />
 /// <reference path="../Configuration/TableLayoutConfiguration.ts" />
+/// <reference path="../Configuration/CheckBoxInputConfiguration.ts" />
+/// <reference path="../Configuration/EmailInputConfiguration.ts" />
+/// <reference path="../Configuration/NumberInputConfiguration.ts" />
+/// <reference path="../Configuration/PasswordInputConfiguration.ts" />
+/// <reference path="../Configuration/TextInputConfiguration.ts" />
 
 /**
  * Module that contains base components
@@ -21,6 +26,11 @@ module Ompluscript.View.Component {
     import RelativeLayoutConfiguration = Ompluscript.View.Configuration.RelativeLayoutConfiguration;
     import LinearLayoutConfiguration = Ompluscript.View.Configuration.LinearLayoutConfiguration;
     import TableLayoutConfiguration = Ompluscript.View.Configuration.TableLayoutConfiguration;
+    import CheckBoxInputConfiguration = Ompluscript.View.Configuration.CheckBoxInputConfiguration;
+    import EmailInputConfiguration = Ompluscript.View.Configuration.EmailInputConfiguration;
+    import NumberInputConfiguration = Ompluscript.View.Configuration.NumberInputConfiguration;
+    import PasswordInputConfiguration = Ompluscript.View.Configuration.PasswordInputConfiguration;
+    import TextInputConfiguration = Ompluscript.View.Configuration.TextInputConfiguration;
 
     /**
      * Class that defines basic container
@@ -28,16 +38,19 @@ module Ompluscript.View.Component {
      * @class Container
      */
     export abstract class Container extends Layout {
-        
+
         public static PARAMETER_LAYOUT: string = "layout";
+
+        public static PARAMETER_CHILDREN: string = "children";
         
         public static CONTAINER_PAGE: string = "page";
         
         protected layout: Layout;
         
-        constructor(name: string, layoutDefinition: Object = undefined, styles: Object = undefined) {
+        constructor(name: string, layoutDefinition: Object = undefined, children: Object[] = undefined, styles: Object = undefined) {
             super(name, styles);
             this.createLayout(layoutDefinition);
+            this.createChildren(children);
         }
 
         public addChild(component: Component): void {
@@ -89,6 +102,25 @@ module Ompluscript.View.Component {
                 for (let i: number = 0; i < configurations.length; i++) {
                     if (configurations[i].isRelatedTo(layoutDefinition)) {
                         this.layout = <Layout>configurations[i].create(layoutDefinition);
+                    }
+                }
+            }
+        }
+
+        private createChildren(children: Object[] = undefined): void {
+            if (children !== undefined) {
+                let configurations: Configuration[] = [
+                    Configuration.getInstance(CheckBoxInputConfiguration),
+                    Configuration.getInstance(EmailInputConfiguration),
+                    Configuration.getInstance(NumberInputConfiguration),
+                    Configuration.getInstance(PasswordInputConfiguration),
+                    Configuration.getInstance(TextInputConfiguration),
+                ];
+                for (let i: number = 0; i < children.length; i++) {
+                    for (let j: number = 0; j < configurations.length; j++) {
+                        if (configurations[j].isRelatedTo(children[i])) {
+                            this.addChild(<Component>configurations[i].create(children[i]));
+                        }
                     }
                 }
             }

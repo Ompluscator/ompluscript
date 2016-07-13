@@ -95,10 +95,10 @@ module Ompluscript.Model.Container {
          * @param {Object} values Container for values
          */
         public addRow(values: Object): void {
-            let model: Model = new Model(this.getName() + "." + this.rows.length, this.definition);
+            let model: Model = new Model(this.name, this.definition);
             this.rows.push(model);
             this.fireOnAddRowToTableEvent(this.rows.length - 1, model);
-            model.setValue(values);
+            model.setValues(values);
         }
 
         /**
@@ -161,6 +161,26 @@ module Ompluscript.Model.Container {
                 }
             }
             this.clearObservers();
+        }
+
+        public setValues(values: Object): void {
+            this.clearRows();
+            if (Array.isArray(values)) {
+                let rows: Object[] = <Object[]> values;
+                for (let i: number = 0; i < rows.length; i++) {
+                    this.addRow(rows[i]);
+                }
+            } else {
+                this.addRow(values);
+            }
+        }
+        
+        public getValues(): Object {
+            let values: Object[] = [];
+            for (let i: number = 0; i < this.rows.length; i++) {
+                values.push(this.rows[i].getValues());
+            }
+            return values;
         }
 
         /**

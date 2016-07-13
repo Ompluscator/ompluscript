@@ -18,10 +18,10 @@ module Ompluscript.Model.Configuration {
             return definition[Configuration.PARAMETER_TYPE] === StringAttribute.TYPE_STRING;
         }
 
-        public getErrors(definition: Object, prefix: string): string[] {
-            let errors: string[] = super.getErrors(definition, prefix);
-            errors.push(this.shouldBeNumber(definition, StringAttribute.PARAMETER_MINIMUM_LENGTH, prefix));
-            errors.push(this.shouldBeNumber(definition, StringAttribute.PARAMETER_MAXIMUM_LENGTH, prefix));
+        public getErrors(definition: Object): string[] {
+            let errors: string[] = super.getErrors(definition);
+            errors.push(this.shouldBeNumber(definition, StringAttribute.PARAMETER_MINIMUM_LENGTH));
+            errors.push(this.shouldBeNumber(definition, StringAttribute.PARAMETER_MAXIMUM_LENGTH));
             errors = this.filterErrors(errors);
             if (errors.length === 0) {
                 let minimum: number = definition[StringAttribute.PARAMETER_MINIMUM_LENGTH];
@@ -30,11 +30,11 @@ module Ompluscript.Model.Configuration {
                 let maximumKey: string = StringAttribute.PARAMETER_MAXIMUM_LENGTH;
                 if (minimum !== undefined && maximum !== undefined) {
                     errors.push(this.mustBeGreater(
-                        definition, minimumKey, maximumKey, minimum, maximum, true, prefix
+                        definition, minimumKey, maximumKey, minimum, maximum, true
                     ));
                 }
             }
-            errors.push(this.shouldBeRegex(definition, StringAttribute.PARAMETER_PATTERN, prefix));
+            errors.push(this.shouldBeRegex(definition, StringAttribute.PARAMETER_PATTERN));
             return this.filterErrors(errors);
         }
 

@@ -97,10 +97,10 @@ describe("Table class tests - creation", function() {
             rows: [
                 {
                     definition: definition,
-                    name: name + ".0",
+                    name: name,
                     attributes: {
                         param1: {
-                            name: name + ".0." + paramName[0],
+                            name: paramName[0],
                             required: required,
                             type: "string",
                             value: values[0]["param1"],
@@ -109,14 +109,14 @@ describe("Table class tests - creation", function() {
                             pattern: additional[0],
                         },
                         param2: {
-                            name: name + ".0." + paramName[1],
+                            name: paramName[1],
                             required: required,
                             type: "boolean",
                             value: values[0]["param2"],
                             mustBeTrue: additional[1],
                         },
                         param3: {
-                            name: name + ".0." + paramName[2],
+                            name: paramName[2],
                             required: required,
                             type: "number",
                             value: values[0]["param3"],
@@ -126,7 +126,7 @@ describe("Table class tests - creation", function() {
                             includeMaximum: additional[2],
                         },
                         param4: {
-                            name: name + ".0." + paramName[3],
+                            name: paramName[3],
                             required: required,
                             type: "string",
                             value: values[0]["param4"],
@@ -160,10 +160,10 @@ describe("Table class tests - creation", function() {
             rows: [
                 {
                     definition: definition,
-                    name: name + ".0",
+                    name: name,
                     attributes: {
                         param1: {
-                            name: name + ".0." + paramName[0],
+                            name: paramName[0],
                             required: required,
                             type: "string",
                             value: values[0]["param1"],
@@ -172,14 +172,14 @@ describe("Table class tests - creation", function() {
                             pattern: additional[0],
                         },
                         param2: {
-                            name: name + ".0." + paramName[1],
+                            name: paramName[1],
                             required: required,
                             type: "boolean",
                             value: values[0]["param2"],
                             mustBeTrue: additional[1],
                         },
                         param3: {
-                            name: name + ".0." + paramName[2],
+                            name: paramName[2],
                             required: required,
                             type: "number",
                             value: values[0]["param3"],
@@ -189,7 +189,7 @@ describe("Table class tests - creation", function() {
                             includeMaximum: additional[2],
                         },
                         param4: {
-                            name: name + ".0." + paramName[3],
+                            name: paramName[3],
                             required: required,
                             type: "string",
                             value: values[0]["param4"],
@@ -202,10 +202,10 @@ describe("Table class tests - creation", function() {
                 },
                 {
                     definition: definition,
-                    name: name + ".1",
+                    name: name,
                     attributes: {
                         param1: {
-                            name: name + ".1." + paramName[0],
+                            name: paramName[0],
                             required: required,
                             type: "string",
                             value: values[1]["param1"],
@@ -214,14 +214,14 @@ describe("Table class tests - creation", function() {
                             pattern: additional[0],
                         },
                         param2: {
-                            name: name + ".1." + paramName[1],
+                            name: paramName[1],
                             required: required,
                             type: "boolean",
                             value: values[1]["param2"],
                             mustBeTrue: additional[1],
                         },
                         param3: {
-                            name: name + ".1." + paramName[2],
+                            name: paramName[2],
                             required: required,
                             type: "number",
                             value: values[1]["param3"],
@@ -231,7 +231,7 @@ describe("Table class tests - creation", function() {
                             includeMaximum: additional[2],
                         },
                         param4: {
-                            name: name + ".1." + paramName[3],
+                            name: paramName[3],
                             required: required,
                             type: "string",
                             value: values[1]["param4"],
@@ -265,10 +265,10 @@ describe("Table class tests - creation", function() {
             rows: [
                 {
                     definition: definition,
-                    name: name + ".1",
+                    name: name,
                     attributes: {
                         param1: {
-                            name: name + ".1." + paramName[0],
+                            name: paramName[0],
                             required: required,
                             type: "string",
                             value: values[1]["param1"],
@@ -277,14 +277,14 @@ describe("Table class tests - creation", function() {
                             pattern: additional[0],
                         },
                         param2: {
-                            name: name + ".1." + paramName[1],
+                            name: paramName[1],
                             required: required,
                             type: "boolean",
                             value: values[1]["param2"],
                             mustBeTrue: additional[1],
                         },
                         param3: {
-                            name: name + ".1." + paramName[2],
+                            name: paramName[2],
                             required: required,
                             type: "number",
                             value: values[1]["param3"],
@@ -294,7 +294,7 @@ describe("Table class tests - creation", function() {
                             includeMaximum: additional[2],
                         },
                         param4: {
-                            name: name + ".1." + paramName[3],
+                            name: paramName[3],
                             required: required,
                             type: "string",
                             value: values[1]["param4"],

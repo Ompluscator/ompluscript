@@ -18,9 +18,9 @@ module Ompluscript.Model.Configuration {
             return definition[Configuration.PARAMETER_TYPE] === BooleanAttribute.TYPE_BOOLEAN;
         }
 
-        public getErrors(definition: Object, prefix: string): string[] {
-            let errors: string[] = super.getErrors(definition, prefix);
-            errors.push(this.shouldBeBoolean(definition, BooleanAttribute.PARAMETER_MUST_BE_TRUE, prefix));
+        public getErrors(definition: Object): string[] {
+            let errors: string[] = super.getErrors(definition);
+            errors.push(this.shouldBeBoolean(definition, BooleanAttribute.PARAMETER_MUST_BE_TRUE));
             return this.filterErrors(errors);
         }
 

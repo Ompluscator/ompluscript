@@ -9,10 +9,10 @@ module Ompluscript.View.Configuration {
 
     export abstract class ComponentConfiguration extends Configuration {
 
-        public getErrors(definition: Object, prefix: string): string[] {
+        public getErrors(definition: Object): string[] {
             let errors: string[] = [];
-            errors.push(this.mustBeString(definition, Configuration.PARAMETER_NAME, prefix));
-            errors.push(this.shouldBeBoolean(definition, Component.PARAMETER_STYLES, prefix));
+            errors.push(this.mustBeString(definition, Configuration.PARAMETER_NAME));
+            errors.push(this.shouldBeBoolean(definition, Component.PARAMETER_STYLES));
             return this.filterErrors(errors);
         }
     }

@@ -1,6 +1,6 @@
 describe("Creator class tests - valid creator", function() {
 
-    var Creator = Ompluscript.Model;
+    var Creator = Ompluscript.Model.Creator;
     var Model = Ompluscript.Model.Container.Model;
 
     var definition = {
@@ -57,32 +57,32 @@ describe("Creator class tests - valid creator", function() {
     };
 
     beforeAll(function() {
-        Creator.reset();
+        Creator.getInstance().reset();
     });
 
     it("get configuration", function() {
-        expect(Creator.hasErrors()).toBeFalsy();
-        expect(Creator.getErrors()).toEqual([]);
+        expect(Creator.getInstance().hasErrors()).toBeFalsy();
+        expect(Creator.getInstance().getErrors()).toEqual([]);
     });
 
     it("valid creation", function() {
-        Creator.define(definition);
+        Creator.getInstance().define(definition);
 
-        expect(Creator.hasErrors()).toBeFalsy();
-        expect(Creator.getErrors()).toEqual([]);
-        expect(Creator.create("model") instanceof Model).toBeTruthy();
+        expect(Creator.getInstance().hasErrors()).toBeFalsy();
+        expect(Creator.getInstance().getErrors()).toEqual([]);
+        expect(Creator.getInstance().create("model") instanceof Model).toBeTruthy();
     });
 });
 
 describe("Creator class tests - invalid string", function() {
 
-    var Creator = Ompluscript.Model;
+    var Creator = Ompluscript.Model.Creator;
     var Attribute = Ompluscript.Model.Attribute.Attribute;
     var String = Ompluscript.Model.Attribute.String;
     var Configuration = Ompluscript.Core.Configuration.Configuration;
 
     beforeAll(function() {
-        Creator.reset();
+        Creator.getInstance().reset();
     });
 
     it("invalid creation", function() {
@@ -129,20 +129,20 @@ describe("Creator class tests - invalid string", function() {
                 }
             ]
         };
-        Creator.define(definition);
+        Creator.getInstance().define(definition);
 
-        expect(Creator.hasErrors()).toBeTruthy();
-        expect(Creator.getErrors()).toEqual([
+        expect(Creator.getInstance().hasErrors()).toBeTruthy();
+        expect(Creator.getInstance().getErrors()).toEqual([
             {
                 definition: definition,
                 errors: [
-                    "model." + Configuration.IS_WRONG_CONFIGURATION,
-                    "model.undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
-                    "model.param1." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
-                    "model.param2." + String.PARAMETER_MINIMUM_LENGTH + Configuration.MUST_BE_NUMBER_OR_UNDEFINED,
-                    "model.param3." + String.PARAMETER_MAXIMUM_LENGTH + Configuration.MUST_BE_NUMBER_OR_UNDEFINED,
-                    "model.param4." + String.PARAMETER_MAXIMUM_LENGTH + Configuration.MUST_BE_GREATER + "model.param4." + String.PARAMETER_MINIMUM_LENGTH,
-                    "model.param5." + String.PARAMETER_PATTERN + Configuration.MUST_BE_REGEX_OR_UNDEFINED
+                    "" + Configuration.IS_WRONG_CONFIGURATION,
+                    "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
+                    "param1." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
+                    "param2." + String.PARAMETER_MINIMUM_LENGTH + Configuration.MUST_BE_NUMBER_OR_UNDEFINED,
+                    "param3." + String.PARAMETER_MAXIMUM_LENGTH + Configuration.MUST_BE_NUMBER_OR_UNDEFINED,
+                    "param4." + String.PARAMETER_MAXIMUM_LENGTH + Configuration.MUST_BE_GREATER + "param4." + String.PARAMETER_MINIMUM_LENGTH,
+                    "param5." + String.PARAMETER_PATTERN + Configuration.MUST_BE_REGEX_OR_UNDEFINED
                 ],
                 name: "model",
                 type: "Model"
@@ -153,13 +153,13 @@ describe("Creator class tests - invalid string", function() {
 
 describe("Creator class tests - invalid number", function() {
 
-    var Creator = Ompluscript.Model;
+    var Creator = Ompluscript.Model.Creator;
     var Attribute = Ompluscript.Model.Attribute.Attribute;
     var Number = Ompluscript.Model.Attribute.Number;
     var Configuration = Ompluscript.Core.Configuration.Configuration;
 
     beforeAll(function() {
-        Creator.reset();
+        Creator.getInstance().reset();
     });
 
     it("invalid creation", function() {
@@ -224,22 +224,22 @@ describe("Creator class tests - invalid number", function() {
                 }
             ]
         };
-        Creator.define(definition);
+        Creator.getInstance().define(definition);
 
-        expect(Creator.hasErrors()).toBeTruthy();
-        expect(Creator.getErrors()).toEqual([
+        expect(Creator.getInstance().hasErrors()).toBeTruthy();
+        expect(Creator.getInstance().getErrors()).toEqual([
             {
                 definition: definition,
                 errors: [
-                    "model." + Configuration.IS_WRONG_CONFIGURATION,
-                    "model.undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
-                    "model.param1." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
-                    "model.param2." + Attribute.PARAMETER_MINIMUM + Configuration.MUST_BE_NUMBER_OR_UNDEFINED,
-                    "model.param3." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_NUMBER_OR_UNDEFINED,
-                    "model.param4." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_GREATER + "model.param4." + Attribute.PARAMETER_MINIMUM,
-                    "model.param5." + Number.PARAMETER_INCLUDE_MINIMUM + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
-                    "model.param6." + Number.PARAMETER_INCLUDE_MAXIMUM + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
-                    "model.param7." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_GREATER + "model.param7." + Attribute.PARAMETER_MINIMUM,
+                    "" + Configuration.IS_WRONG_CONFIGURATION,
+                    "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
+                    "param1." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
+                    "param2." + Attribute.PARAMETER_MINIMUM + Configuration.MUST_BE_NUMBER_OR_UNDEFINED,
+                    "param3." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_NUMBER_OR_UNDEFINED,
+                    "param4." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_GREATER + "param4." + Attribute.PARAMETER_MINIMUM,
+                    "param5." + Number.PARAMETER_INCLUDE_MINIMUM + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
+                    "param6." + Number.PARAMETER_INCLUDE_MAXIMUM + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
+                    "param7." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_GREATER + "param7." + Attribute.PARAMETER_MINIMUM,
                 ],
                 name: "model",
                 type: "Model"
@@ -250,13 +250,13 @@ describe("Creator class tests - invalid number", function() {
 
 describe("Creator class tests - invalid boolean", function() {
 
-    var Creator = Ompluscript.Model;
+    var Creator = Ompluscript.Model.Creator;
     var Attribute = Ompluscript.Model.Attribute.Attribute;
     var Boolean = Ompluscript.Model.Attribute.Boolean;
     var Configuration = Ompluscript.Core.Configuration.Configuration;
 
     beforeAll(function() {
-        Creator.reset();
+        Creator.getInstance().reset();
     });
 
     it("invalid creation", function() {
@@ -281,17 +281,17 @@ describe("Creator class tests - invalid boolean", function() {
                 },
             ]
         };
-        Creator.define(definition);
+        Creator.getInstance().define(definition);
 
-        expect(Creator.hasErrors()).toBeTruthy();
-        expect(Creator.getErrors()).toEqual([
+        expect(Creator.getInstance().hasErrors()).toBeTruthy();
+        expect(Creator.getInstance().getErrors()).toEqual([
             {
                 definition: definition,
                 errors: [
-                    "model." + Configuration.IS_WRONG_CONFIGURATION,
-                    "model.undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
-                    "model.param1." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
-                    "model.param2." + Boolean.PARAMETER_MUST_BE_TRUE + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
+                    "" + Configuration.IS_WRONG_CONFIGURATION,
+                    "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
+                    "param1." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
+                    "param2." + Boolean.PARAMETER_MUST_BE_TRUE + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
                 ],
                 name: "model",
                 type: "Model"
@@ -302,12 +302,12 @@ describe("Creator class tests - invalid boolean", function() {
 
 describe("Creator class tests - invalid datetime", function() {
 
-    var Creator = Ompluscript.Model;
+    var Creator = Ompluscript.Model.Creator;
     var Attribute = Ompluscript.Model.Attribute.Attribute;
     var Configuration = Ompluscript.Core.Configuration.Configuration;
 
     beforeAll(function() {
-        Creator.reset();
+        Creator.getInstance().reset();
     });
 
     it("invalid creation", function() {
@@ -346,19 +346,19 @@ describe("Creator class tests - invalid datetime", function() {
                 },
             ]
         };
-        Creator.define(definition);
+        Creator.getInstance().define(definition);
 
-        expect(Creator.hasErrors()).toBeTruthy();
-        expect(Creator.getErrors()).toEqual([
+        expect(Creator.getInstance().hasErrors()).toBeTruthy();
+        expect(Creator.getInstance().getErrors()).toEqual([
             {
                 definition: definition,
                 errors: [
-                    "model." + Configuration.IS_WRONG_CONFIGURATION,
-                    "model.undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
-                    "model.param1." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
-                    "model.param2." + Attribute.PARAMETER_MINIMUM + Configuration.MUST_BE_DATETIME_OR_UNDEFINED,
-                    "model.param3." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_DATETIME_OR_UNDEFINED,
-                    "model.param4." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_GREATER + "model.param4." + Attribute.PARAMETER_MINIMUM,
+                    "" + Configuration.IS_WRONG_CONFIGURATION,
+                    "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
+                    "param1." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
+                    "param2." + Attribute.PARAMETER_MINIMUM + Configuration.MUST_BE_DATETIME_OR_UNDEFINED,
+                    "param3." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_DATETIME_OR_UNDEFINED,
+                    "param4." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_GREATER + "param4." + Attribute.PARAMETER_MINIMUM,
                 ],
                 name: "model",
                 type: "Model"
@@ -369,13 +369,13 @@ describe("Creator class tests - invalid datetime", function() {
 
 describe("Creator class tests - invalid singleChoice", function() {
 
-    var Creator = Ompluscript.Model;
+    var Creator = Ompluscript.Model.Creator;
     var Attribute = Ompluscript.Model.Attribute.Attribute;
     var Choice = Ompluscript.Model.Attribute.Choice;
     var Configuration = Ompluscript.Core.Configuration.Configuration;
 
     beforeAll(function() {
-        Creator.reset();
+        Creator.getInstance().reset();
     });
 
     it("invalid creation", function() {
@@ -400,17 +400,17 @@ describe("Creator class tests - invalid singleChoice", function() {
                 },
             ]
         };
-        Creator.define(definition);
+        Creator.getInstance().define(definition);
 
-        expect(Creator.hasErrors()).toBeTruthy();
-        expect(Creator.getErrors()).toEqual([
+        expect(Creator.getInstance().hasErrors()).toBeTruthy();
+        expect(Creator.getInstance().getErrors()).toEqual([
             {
                 definition: definition,
                 errors: [
-                    "model." + Configuration.IS_WRONG_CONFIGURATION,
-                    "model.undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
-                    "model.param1." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
-                    "model.param2." + Choice.PARAMETER_CHOICES + Configuration.MUST_BE_ARRAY_OR_UNDEFINED,
+                    "" + Configuration.IS_WRONG_CONFIGURATION,
+                    "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
+                    "param1." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
+                    "param2." + Choice.PARAMETER_CHOICES + Configuration.MUST_BE_ARRAY_OR_UNDEFINED,
                 ],
                 name: "model",
                 type: "Model"
@@ -421,13 +421,13 @@ describe("Creator class tests - invalid singleChoice", function() {
 
 describe("Creator class tests - invalid multipleChoice", function() {
 
-    var Creator = Ompluscript.Model;
+    var Creator = Ompluscript.Model.Creator;
     var Attribute = Ompluscript.Model.Attribute.Attribute;
     var Choice = Ompluscript.Model.Attribute.Choice;
     var Configuration = Ompluscript.Core.Configuration.Configuration;
 
     beforeAll(function() {
-        Creator.reset();
+        Creator.getInstance().reset();
     });
 
     it("invalid creation", function() {
@@ -452,17 +452,17 @@ describe("Creator class tests - invalid multipleChoice", function() {
                 },
             ]
         };
-        Creator.define(definition);
+        Creator.getInstance().define(definition);
 
-        expect(Creator.hasErrors()).toBeTruthy();
-        expect(Creator.getErrors()).toEqual([
+        expect(Creator.getInstance().hasErrors()).toBeTruthy();
+        expect(Creator.getInstance().getErrors()).toEqual([
             {
                 definition: definition,
                 errors: [
-                    "model." + Configuration.IS_WRONG_CONFIGURATION,
-                    "model.undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
-                    "model.param1." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
-                    "model.param2." + Choice.PARAMETER_CHOICES + Configuration.MUST_BE_ARRAY_OR_UNDEFINED,
+                    "" + Configuration.IS_WRONG_CONFIGURATION,
+                    "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
+                    "param1." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
+                    "param2." + Choice.PARAMETER_CHOICES + Configuration.MUST_BE_ARRAY_OR_UNDEFINED,
                 ],
                 name: "model",
                 type: "Model"

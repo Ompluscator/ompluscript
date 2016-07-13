@@ -13,8 +13,8 @@ module Ompluscript.Core.Configuration {
             return true;
         }
 
-        public getErrors(definition: Object, prefix: string): string[] {
-            return [prefix + Configuration.IS_WRONG_CONFIGURATION];
+        public getErrors(definition: Object): string[] {
+            return [Configuration.IS_WRONG_CONFIGURATION];
         }
 
         public create(definition: Object): IBase {

@@ -23,14 +23,14 @@ module Ompluscript.View.Configuration {
             this.type = type;
         }
 
-        public getErrors(definition: Object, prefix: string): string[] {
-            let errors: string[] = super.getErrors(definition, prefix);
-            let error: string = this.shouldBeStringOrObject(definition, Input.PARAMETER_ATTRIBUTE, prefix);
+        public getErrors(definition: Object): string[] {
+            let errors: string[] = super.getErrors(definition);
+            let error: string = this.shouldBeStringOrObject(definition, Input.PARAMETER_ATTRIBUTE);
             if (error === undefined) {
                 if (typeof definition[Input.PARAMETER_ATTRIBUTE] === "object") {
                     definition[Input.PARAMETER_ATTRIBUTE][Configuration.PARAMETER_NAME] =  Input.PARAMETER_ATTRIBUTE;
                     definition[Input.PARAMETER_ATTRIBUTE][Configuration.PARAMETER_TYPE] = this.type;
-                    errors.push.apply(errors, this.configuration.getErrors(definition, definition[Configuration.PARAMETER_NAME]));
+                    errors.push.apply(errors, this.configuration.getErrors(definition));
                 } else if (typeof definition[Input.PARAMETER_ATTRIBUTE] === "string") {
                     if (create(definition[Input.PARAMETER_ATTRIBUTE]) === undefined) {
                         errors.push(definition[Input.PARAMETER_ATTRIBUTE] + Configuration.MODEL_MUST_BE_DEFINED);

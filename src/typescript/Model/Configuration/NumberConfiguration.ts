@@ -18,12 +18,12 @@ module Ompluscript.Model.Configuration {
             return definition[Configuration.PARAMETER_TYPE] === NumberAttribute.TYPE_NUMBER;
         }
 
-        public getErrors(definition: Object, prefix: string): string[] {
-            let errors: string[] = super.getErrors(definition, prefix);
-            errors.push(this.shouldBeNumber(definition, Attribute.PARAMETER_MINIMUM, prefix));
-            errors.push(this.shouldBeNumber(definition, Attribute.PARAMETER_MAXIMUM, prefix));
-            errors.push(this.shouldBeBoolean(definition, NumberAttribute.PARAMETER_INCLUDE_MINIMUM, prefix));
-            errors.push(this.shouldBeBoolean(definition, NumberAttribute.PARAMETER_INCLUDE_MAXIMUM, prefix));
+        public getErrors(definition: Object): string[] {
+            let errors: string[] = super.getErrors(definition);
+            errors.push(this.shouldBeNumber(definition, Attribute.PARAMETER_MINIMUM));
+            errors.push(this.shouldBeNumber(definition, Attribute.PARAMETER_MAXIMUM));
+            errors.push(this.shouldBeBoolean(definition, NumberAttribute.PARAMETER_INCLUDE_MINIMUM));
+            errors.push(this.shouldBeBoolean(definition, NumberAttribute.PARAMETER_INCLUDE_MAXIMUM));
             errors = this.filterErrors(errors);
             if (errors.length === 0) {
                 let minimum: number = definition[Attribute.PARAMETER_MINIMUM];
@@ -32,7 +32,7 @@ module Ompluscript.Model.Configuration {
                     definition[NumberAttribute.PARAMETER_INCLUDE_MAXIMUM];
                 if (minimum !== undefined && maximum !== undefined) {
                     errors.push(this.mustBeGreater(
-                        definition, Attribute.PARAMETER_MINIMUM, Attribute.PARAMETER_MAXIMUM, minimum, maximum, include, prefix
+                        definition, Attribute.PARAMETER_MINIMUM, Attribute.PARAMETER_MAXIMUM, minimum, maximum, include
                     ));
                 }
             }

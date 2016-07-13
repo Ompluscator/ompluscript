@@ -8,6 +8,8 @@
 module Ompluscript.Model.Attribute {
     "use strict";
 
+    import Attribute = Ompluscript.Model.Attribute.Attribute;
+    
     /**
      * Class that contains functionality for Datetime attribute.
      *
