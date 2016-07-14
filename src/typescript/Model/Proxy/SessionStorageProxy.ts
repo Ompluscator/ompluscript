@@ -1,5 +1,4 @@
 /// <reference path="StorageProxy.ts" />
-/// <reference path="../Container/Container.ts" />
 
 /**
  * Module that contains proxy classes.
@@ -9,8 +8,6 @@
 module Ompluscript.Model.Proxy {
     "use strict";
     
-    import Container = Ompluscript.Model.Container.Container;
-
     /**
      * Class that contains functionality for Session Storage Proxy.
      *
@@ -28,11 +25,10 @@ module Ompluscript.Model.Proxy {
          *
          * Calls constructor of superclass.
          *
-         * @param {Container} container Container for which proxy refers
          * @constructs
          */
-        constructor(container: Container) {
-            super(SessionStorageProxy.TYPE_SESSION_STORAGE_PROXY, container, window.sessionStorage);
+        constructor() {
+            super(SessionStorageProxy.TYPE_SESSION_STORAGE_PROXY, window.sessionStorage);
         }
     }
 }

@@ -1,5 +1,4 @@
 /// <reference path="Proxy.ts" />
-/// <reference path="../Container/Container.ts" />
 /// <reference path="../Event/OnDoneProxy.ts" />
 
 /**
@@ -10,7 +9,6 @@
 module Ompluscript.Model.Proxy {
     "use strict";
 
-    import Container = Ompluscript.Model.Container.Container;
     import OnDoneProxy = Ompluscript.Model.Event.OnDoneProxy;
 
     /**
@@ -86,15 +84,14 @@ module Ompluscript.Model.Proxy {
          * Sets save, update, delete and select link for ajax request
          * and calls constructor of superclass.
          *
-         * @param {Container} container Container for which proxy refers
          * @param {string} saveLink Defines save link for ajax request
          * @param {string} updateLink Defines update link for ajax request
          * @param {string} deleteLink Defines delete link for ajax request
          * @param {string} selectLink Defines select link for ajax request
          */
-        constructor(container: Container, saveLink: string = undefined, updateLink: string = undefined,
+        constructor(saveLink: string = undefined, updateLink: string = undefined,
                     deleteLink: string = undefined, selectLink: string = undefined) {
-            super(AjaxProxy.TYPE_AJAX_PROXY, container);
+            super(AjaxProxy.TYPE_AJAX_PROXY);
             this.saveLink = saveLink;
             this.updateLink = updateLink;
             this.deleteLink = deleteLink;

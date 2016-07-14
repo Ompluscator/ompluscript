@@ -2,7 +2,6 @@ describe("Model class tests - add string", function() {
 
     var modelObject;
     var name = "model";
-    var type = "String";
     var paramName = "param";
     var value = "value";
     var minimumLength = 2;
@@ -10,25 +9,17 @@ describe("Model class tests - add string", function() {
     var pattern = /value/;
     var required = true;
     var undefined;
-    var definition;
+    var attributes;
 
     var Model = Ompluscript.Model.Container.Model;
     var String = Ompluscript.Model.Attribute.String;
 
     beforeAll(function() {
-        definition = [
-            {
-                name: paramName,
-                required: required,
-                type: type,
-                value: value,
-                minimumLength: minimumLength,
-                maximumLength: maximumLength,
-                pattern: pattern,
-            }
+        attributes = [
+            new String(paramName, value, required, minimumLength, maximumLength, pattern)
         ];
 
-        modelObject = new Model(name, definition);
+        modelObject = new Model(name, attributes);
     });
 
     it("get configuration", function() {
@@ -44,7 +35,6 @@ describe("Model class tests - add string", function() {
         expect(modelObject.hasProxy("SessionStorageProxy")).toBeFalsy();
         expect(modelObject.getProxy("SessionStorageProxy")).toBeUndefined();
         expect(modelObject.getStackTrace()).toEqual({
-            definition: definition,
             name: name,
             proxies: [],
             attributes: {
@@ -101,26 +91,17 @@ describe("Model class tests - add number", function() {
     var included = true;
     var required = true;
     var undefined;
-    var definition;
+    var attributes;
 
     var Model = Ompluscript.Model.Container.Model;
     var Number = Ompluscript.Model.Attribute.Number;
-    var type = Number.name;
 
     beforeAll(function() {
-        definition = [
-            {
-                name: paramName,
-                required: required,
-                type: type,
-                value: value,
-                minimum: minimum,
-                maximum: maximum,
-                includeMinimum: included,
-                includeMaximum: included
-            }
+        attributes = [
+            new Number(paramName, value, required, minimum, included, maximum, included)
         ];
-        modelObject = new Model(name, definition);
+
+        modelObject = new Model(name, attributes);
     });
 
     it("get configuration", function() {
@@ -136,7 +117,6 @@ describe("Model class tests - add number", function() {
         expect(modelObject.hasProxy("SessionStorageProxy")).toBeFalsy();
         expect(modelObject.getProxy("SessionStorageProxy")).toBeUndefined();
         expect(modelObject.getStackTrace()).toEqual({
-            definition: definition,
             name: name,
             proxies: [],
             attributes: {
@@ -193,25 +173,17 @@ describe("Model class tests - add datetime", function() {
     var maximum = "1/12/1985";
     var required = true;
     var undefined;
-    var definition;
+    var attributes;
 
     var Model = Ompluscript.Model.Container.Model;
     var Datetime = Ompluscript.Model.Attribute.Datetime;
-    var type = Datetime.name;
 
     beforeAll(function() {
-        definition = [
-            {
-                name: paramName,
-                required: required,
-                type: type,
-                value: value,
-                minimum: minimum,
-                maximum: maximum,
-            }
+        attributes = [
+            new Datetime(paramName, value, required, minimum, maximum)
         ];
 
-        modelObject = new Model(name, definition);
+        modelObject = new Model(name, attributes);
     });
 
     it("get configuration", function() {
@@ -227,7 +199,6 @@ describe("Model class tests - add datetime", function() {
         expect(modelObject.hasProxy("SessionStorageProxy")).toBeFalsy();
         expect(modelObject.getProxy("SessionStorageProxy")).toBeUndefined();
         expect(modelObject.getStackTrace()).toEqual({
-            definition: definition,
             name: name,
             proxies: [],
             attributes: {
@@ -282,7 +253,7 @@ describe("Model class tests - add boolean", function() {
     var value = true;
     var required = true;
     var undefined;
-    var definition;
+    var attributes;
     var mustBeTrue = true;
 
     var Model = Ompluscript.Model.Container.Model;
@@ -290,17 +261,11 @@ describe("Model class tests - add boolean", function() {
     var type = Boolean.name;
 
     beforeAll(function() {
-        definition = [
-            {
-                name: paramName,
-                required: required,
-                type: type,
-                value: value,
-                mustBeTrue: mustBeTrue,
-            }
+        attributes = [
+            new Boolean(paramName, value, required, mustBeTrue)
         ];
 
-        modelObject = new Model(name, definition);
+        modelObject = new Model(name, attributes);
     });
 
     it("get configuration", function() {
@@ -316,7 +281,6 @@ describe("Model class tests - add boolean", function() {
         expect(modelObject.hasProxy("SessionStorageProxy")).toBeFalsy();
         expect(modelObject.getProxy("SessionStorageProxy")).toBeUndefined();
         expect(modelObject.getStackTrace()).toEqual({
-            definition: definition,
             name: name,
             proxies: [],
             attributes: {
@@ -369,24 +333,17 @@ describe("Model class tests - add singleChoice", function() {
     var choices = [2, 3];
     var required = true;
     var undefined;
-    var definition;
+    var attributes;
 
     var Model = Ompluscript.Model.Container.Model;
     var SingleChoice = Ompluscript.Model.Attribute.SingleChoice;
-    var type = SingleChoice.name;
 
     beforeAll(function() {
-        definition = [
-            {
-                name: paramName,
-                required: required,
-                type: type,
-                value: value,
-                choices: choices,
-            }
+        attributes = [
+            new SingleChoice(paramName, value, required, choices)
         ];
 
-        modelObject = new Model(name, definition);
+        modelObject = new Model(name, attributes);
     });
 
     it("get configuration", function() {
@@ -402,7 +359,6 @@ describe("Model class tests - add singleChoice", function() {
         expect(modelObject.hasProxy("SessionStorageProxy")).toBeFalsy();
         expect(modelObject.getProxy("SessionStorageProxy")).toBeUndefined();
         expect(modelObject.getStackTrace()).toEqual({
-            definition: definition,
             name: name,
             proxies: [],
             attributes: {
@@ -455,24 +411,17 @@ describe("Model class tests - add multipleChoice", function() {
     var choices = [2, 3];
     var required = true;
     var undefined;
-    var definition;
+    var attributes;
 
     var Model = Ompluscript.Model.Container.Model;
     var MultipleChoice = Ompluscript.Model.Attribute.MultipleChoice;
-    var type = MultipleChoice.name;
 
     beforeAll(function() {
-        definition = [
-            {
-                name: paramName,
-                required: required,
-                type: type,
-                value: value,
-                choices: choices,
-            }
+        attributes = [
+            new MultipleChoice(paramName, value, required, choices)
         ];
 
-        modelObject = new Model(name, definition);
+        modelObject = new Model(name, attributes);
     });
 
     it("get configuration", function() {
@@ -488,7 +437,6 @@ describe("Model class tests - add multipleChoice", function() {
         expect(modelObject.hasProxy("SessionStorageProxy")).toBeFalsy();
         expect(modelObject.getProxy("SessionStorageProxy")).toBeUndefined();
         expect(modelObject.getStackTrace()).toEqual({
-            definition: definition,
             name: name,
             proxies: [],
             attributes: {
@@ -546,19 +494,9 @@ describe("Model class tests - proxies", function() {
 
     beforeAll(function() {
         proxies = [
-            {
-                type: "AjaxProxy",
-                saveLink: "save",
-                updateLink: "update",
-                deleteLink: "delete",
-                selectLink: "select"
-            },
-            {
-                type: "LocalStorageProxy",
-            },
-            {
-                type: "SessionStorageProxy",
-            },
+            new AjaxProxy("save", "update", "delete", "select"),
+            new LocalStorageProxy(),
+            new SessionStorageProxy(),
         ];
 
         modelObject = new Model(name, [], proxies);
@@ -575,9 +513,22 @@ describe("Model class tests - proxies", function() {
         expect(modelObject.hasProxy("SessionStorageProxy")).toBeTruthy();
         expect(modelObject.getProxy("SessionStorageProxy") instanceof SessionStorageProxy).toBeTruthy();
         expect(modelObject.getStackTrace()).toEqual({
-            definition: [],
             name: name,
-            proxies: proxies,
+            proxies: [
+                {
+                    type: "AjaxProxy",
+                    saveLink: "save",
+                    updateLink: "update",
+                    deleteLink: "delete",
+                    selectLink: "select"
+                },
+                {
+                    type: "LocalStorageProxy",
+                },
+                {
+                    type: "SessionStorageProxy",
+                },
+            ],
             attributes: {},
         });
         expect(modelObject.getValues()).toEqual({});

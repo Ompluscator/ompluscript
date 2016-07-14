@@ -15,7 +15,7 @@ module Ompluscript.Model.Attribute {
      *
      * @class Choice
      */
-    export class Choice<T> extends Attribute<T> {
+    export abstract class Choice<T> extends Attribute<T> {
 
         /**
          * @type {string} PARAMETER_VALUES Choices parameter name.

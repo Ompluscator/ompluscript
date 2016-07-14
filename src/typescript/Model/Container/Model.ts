@@ -1,12 +1,6 @@
 /// <reference path="Container.ts" />
 /// <reference path="../Attribute/Attribute.ts" />
-/// <reference path="../../Core/Configuration/Configuration.ts" />
-/// <reference path="../Configuration/Attribute/BooleanConfiguration.ts" />
-/// <reference path="../Configuration/Attribute/DatetimeConfiguration.ts" />
-/// <reference path="../Configuration/Attribute/MultipleChoiceConfiguration.ts" />
-/// <reference path="../Configuration/Attribute/NumberConfiguration.ts" />
-/// <reference path="../Configuration/Attribute/SingleChoiceConfiguration.ts" />
-/// <reference path="../Configuration/Attribute/StringConfiguration.ts" />
+/// <reference path="../Proxy/Proxy.ts" />
 
 /**
  * Module that contains container classes.
@@ -17,14 +11,8 @@ module Ompluscript.Model.Container {
     "use strict";
 
     import Container = Ompluscript.Model.Container.Container;
-    import Configuration = Ompluscript.Core.Configuration.Configuration;
-    import BooleanConfiguration = Ompluscript.Model.Configuration.Attribute.BooleanConfiguration;
-    import DatetimeConfiguration = Ompluscript.Model.Configuration.Attribute.DatetimeConfiguration;
-    import MultipleChoiceConfiguration = Ompluscript.Model.Configuration.Attribute.MultipleChoiceConfiguration;
-    import NumberConfiguration = Ompluscript.Model.Configuration.Attribute.NumberConfiguration;
-    import SingleChoiceConfiguration = Ompluscript.Model.Configuration.Attribute.SingleChoiceConfiguration;
-    import StringConfiguration = Ompluscript.Model.Configuration.Attribute.StringConfiguration;
     import Attribute = Ompluscript.Model.Attribute.Attribute;
+    import Proxy = Ompluscript.Model.Proxy.Proxy;
 
     /**
      * Class that contains functionality for Model.
@@ -44,33 +32,22 @@ module Ompluscript.Model.Container {
         protected attributes: Object;
 
         /**
-         * @type {Configuration[]} configurations List of all attributes configuration
-         */
-        protected configurations: Configuration[];
-
-        /**
          * Class constructor.
          *
          * Sets name and creates all attributes from definition.
          *
          * @param {string} name Name of model
-         * @param {Object[]} definition Definition for all attributes
+         * @param {Attribute<any>[]} attributes Definition for all attributes
          * @param {Object[]} proxies Definitions for all proxies
          * @constructs
          */
-        constructor(name: string, definition: Object[], proxies: Object[] = undefined) {
-            super(name, definition, proxies);
-            this.configurations = [
-                Configuration.getInstance(BooleanConfiguration),
-                Configuration.getInstance(DatetimeConfiguration),
-                Configuration.getInstance(MultipleChoiceConfiguration),
-                Configuration.getInstance(NumberConfiguration),
-                Configuration.getInstance(SingleChoiceConfiguration),
-                Configuration.getInstance(StringConfiguration),
-            ];
+        constructor(name: string, attributes: Attribute<any>[] = undefined, proxies: Proxy[] = undefined) {
+            super(name, proxies);
             this.attributes = {};
-            for (let i: number = 0; i < this.definition.length; i++) {
-                this.addAttribute(this.definition[i]);
+            if (Array.isArray(attributes)) {
+                for (let i: number = 0; i < attributes.length; i++) {
+                    this.attributes[attributes[i].getName()] = attributes[i];
+                }
             }
         }
 
@@ -162,20 +139,6 @@ module Ompluscript.Model.Container {
                 }
             }
             return values;
-        }
-
-        /**
-         * Method that creates attribute from its definition
-         *
-         * @param {Object} definition
-         */
-        private addAttribute(definition: Object): void {
-            let name: string = definition[Configuration.PARAMETER_NAME];
-            for (let i: number = 0; i < this.configurations.length; i++) {
-                if (this.configurations[i].isRelatedTo(definition)) {
-                    this.attributes[name] = this.configurations[i].create(definition);
-                }
-            }
         }
     }
 }

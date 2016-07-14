@@ -7,6 +7,7 @@
  */
 module Ompluscript.Model.Attribute {
     "use strict";
+    import IBase = Ompluscript.Core.Interfaces.IBase;
 
     /**
      * Class that contains functionality for SingleChoice attribute.
@@ -51,6 +52,19 @@ module Ompluscript.Model.Attribute {
             return false;
         }
 
+        /**
+         * Method that should be called when class object should be cloned.
+         */
+        public clone(): IBase {
+            let choices: number[] = undefined;
+            if (Array.isArray(this.choices)) {
+                choices = [];
+                for (let i: number = 0; i < this.choices.length; i++) {
+                    choices.push(this.choices[i]);
+                }
+            }
+            return new SingleChoice(this.name, undefined, this.required, choices);
+        }
     }
 
 }

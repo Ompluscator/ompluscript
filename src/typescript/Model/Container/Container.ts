@@ -1,10 +1,5 @@
 /// <reference path="../../Core/Observer/Observable.ts" />
-/// <reference path="../../Core/Configuration/Configuration.ts" />
 /// <reference path="../Event/OnDoneProxy.ts" />
-/// <reference path="../Configuration/Proxy/AjaxProxyConfiguration.ts" />
-/// <reference path="../Configuration/Proxy/LocalStorageProxyConfiguration.ts" />
-/// <reference path="../Configuration/Proxy/SessionStorageProxyConfiguration.ts" />
-/// <reference path="../Configuration/Proxy/ProxyConfiguration.ts" />
 /// <reference path="../Proxy/Proxy.ts" />
 
 /**
@@ -17,12 +12,7 @@ module Ompluscript.Model.Container {
 
     import Observable = Ompluscript.Core.Observer.Observable;
     import OnDoneProxy = Ompluscript.Model.Event.OnDoneProxy;
-    import Configuration = Ompluscript.Core.Configuration.Configuration;
-    import AjaxProxyConfiguration = Ompluscript.Model.Configuration.Proxy.AjaxProxyConfiguration;
-    import SessionStorageProxyConfiguration = Ompluscript.Model.Configuration.Proxy.SessionStorageProxyConfiguration;
-    import LocalStorageProxyConfiguration = Ompluscript.Model.Configuration.Proxy.LocalStorageProxyConfiguration;
     import Proxy = Ompluscript.Model.Proxy.Proxy;
-    import ProxyConfiguration = Ompluscript.Model.Configuration.Proxy.ProxyConfiguration;
 
     /**
      * Class that contains functionality for Container.
@@ -32,9 +22,9 @@ module Ompluscript.Model.Container {
     export abstract class Container extends Observable {
 
         /**
-         * @type {string} PARAMETER_DEFINITION Definition parameter name.
+         * @type {string} PARAMETER_ATTRIBUTES Attributes parameter name.
          */
-        public static PARAMETER_DEFINITION: string = "definition";
+        public static PARAMETER_ATTRIBUTES: string = "attributes";
 
         /**
          * @type {string} PARAMETER_PROXIES Proxies parameter name.
@@ -47,11 +37,6 @@ module Ompluscript.Model.Container {
         protected name: string;
 
         /**
-         * @type {Object[]} definition Definition for all attributes.
-         */
-        protected definition: Object[];
-
-        /**
          * @type {Object} proxies List of all proxies inside container.
          */
         protected proxies: Object;
@@ -62,16 +47,19 @@ module Ompluscript.Model.Container {
          * Sets name of container and definition for attributes.
          * 
          * @param {string} name Name of model
-         * @param {Object[]} definition Definition for all attributes
          * @param {Object[]} proxies Definitions for all proxies
          * @constructs
          */
-        constructor(name: string, definition: Object[] = [], proxies: Object[] = undefined) {
+        constructor(name: string, proxies: Proxy[] = undefined) {
             super();
             this.name = name;
-            this.definition = definition;
             this.proxies = {};
-            this.createProxies(proxies);
+            if (Array.isArray(proxies)) {
+                for (let i: number = 0; i < proxies.length; i++) {
+                    proxies[i].setContainer(this);
+                    this.proxies[proxies[i].getName()] = proxies[i];
+                }
+            }
         }
 
         /**
@@ -113,7 +101,6 @@ module Ompluscript.Model.Container {
          */
         public getStackTrace(): Object {
             let trace: Object = {
-                definition: this.definition,
                 name: this.name,
                 proxies: [],
             };
@@ -174,30 +161,6 @@ module Ompluscript.Model.Container {
             let event: OnDoneProxy = new OnDoneProxy(this, action, response);
             this.notifyObservers(event);
         }
-
-        /**
-         * Method that creates proxies from defintion
-         * 
-         * @param {Object[]} proxies Definition for proxies
-         */
-        private createProxies(proxies: Object[] = undefined): void {
-            if (proxies !== undefined) {
-                let configurations: ProxyConfiguration[] = [
-                    Configuration.getInstance(AjaxProxyConfiguration),
-                    Configuration.getInstance(SessionStorageProxyConfiguration),
-                    Configuration.getInstance(LocalStorageProxyConfiguration),
-                ];
-                for (let i: number = 0; i < proxies.length; i++) {
-                    for (let j: number = 0; j < configurations.length; j++) {
-                        if (configurations[j].isRelatedTo(proxies[i])) {
-                            this.proxies[proxies[i][Configuration.PARAMETER_TYPE]] = <Proxy>configurations[j].create(proxies[i], this);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
     }
 }
 

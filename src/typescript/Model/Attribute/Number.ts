@@ -9,6 +9,7 @@ module Ompluscript.Model.Attribute {
     "use strict";
 
     import Attribute = Ompluscript.Model.Attribute.Attribute;
+    import IBase = Ompluscript.Core.Interfaces.IBase;
 
     /**
      * Class that contains functionality for Number attribute.
@@ -158,6 +159,14 @@ module Ompluscript.Model.Attribute {
             return trace;
         }
 
+        /**
+         * Method that should be called when class object should be cloned.
+         */
+        public clone(): IBase {
+            return new Ompluscript.Model.Attribute.Number(
+                this.name, undefined, this.required, this.minimum, this.includeMinimum, this.maximum, this.includeMaximum
+            );
+        }
     }
 
 }

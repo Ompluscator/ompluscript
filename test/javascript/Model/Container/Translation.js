@@ -34,12 +34,6 @@ describe("Translation class tests", function() {
         expect(translationObject.hasProxy("AjaxProxy")).toBeTruthy();
         expect(translationObject.getProxy("AjaxProxy") instanceof AjaxProxy).toBeTruthy();
         expect(translationObject.getStackTrace()).toEqual({
-            definition: [
-                {
-                    name: "asset",
-                    type: "String"
-                }
-            ],
             name: "Translation",
             proxies: [
                 {
@@ -51,6 +45,15 @@ describe("Translation class tests", function() {
                 }
             ],
             assets: {},
+            attribute: {
+                name: "asset",
+                required: false,
+                type: "string",
+                value: undefined,
+                minimumLength: undefined,
+                maximumLength: undefined,
+                pattern: undefined
+            },
         });
     });
 

@@ -1,7 +1,6 @@
 /// <reference path="Container.ts" />
-/// <reference path="../Attribute/Attribute.ts" />
-/// <reference path="../../Core/Configuration/Configuration.ts" />
-/// <reference path="../Configuration/Attribute/StringConfiguration.ts" />
+/// <reference path="../Attribute/String.ts" />
+/// <reference path="../Proxy/Proxy.ts" />
 /// <reference path="../Proxy/AjaxProxy.ts" />
 /// <reference path="../Event/OnUpdateAsset.ts" />
 /// <reference path="../../Core/Observer/IObserver.ts" />
@@ -15,12 +14,11 @@ module Ompluscript.Model.Container {
     "use strict";
 
     import Container = Ompluscript.Model.Container.Container;
-    import Configuration = Ompluscript.Core.Configuration.Configuration;
-    import String = Ompluscript.Model.Attribute.String;
-    import StringConfiguration = Ompluscript.Model.Configuration.Attribute.StringConfiguration;
-    import AjaxProxy = Ompluscript.Model.Proxy.AjaxProxy;
     import IObserver = Ompluscript.Core.Observer.IObserver;
     import OnUpdateAsset = Ompluscript.Model.Event.OnUpdateAsset;
+    import Proxy = Ompluscript.Model.Proxy.Proxy;
+    import StringAttribute = Ompluscript.Model.Attribute.String;
+    import AjaxProxy = Ompluscript.Model.Proxy.AjaxProxy;
 
     /**
      * Class that contains functionality for Translation.
@@ -50,6 +48,11 @@ module Ompluscript.Model.Container {
         protected observers: Object;
 
         /**
+         * @type {StringAttribute} attribute Contains a definition for columns
+         */
+        protected attribute: StringAttribute;
+
+        /**
          * Class constructor.
          *
          * Sets list of assets and observers and calls constructor of superclass.
@@ -57,18 +60,14 @@ module Ompluscript.Model.Container {
          * @param {Object[]} proxies Definitions for all proxies
          * @constructs
          */
-        constructor(proxies: Object[] = undefined) {
-            let definition: Object = {};
-            definition[Configuration.PARAMETER_NAME] = Translation.ATTRIBUTE_ASSET;
-            definition[Configuration.PARAMETER_TYPE] = String.TYPE_STRING;
-            if (proxies === undefined) {
+        constructor(proxies: Proxy[] = undefined) {
+            if (!Array.isArray(proxies) || proxies.length === 0) {
                 proxies = [
-                    {
-                        type: AjaxProxy.TYPE_AJAX_PROXY,
-                    },
+                    new AjaxProxy(),
                 ];
             }
-            super(Translation.TYPE_TRANSLATION, [definition], proxies);
+            super(Translation.TYPE_TRANSLATION, proxies);
+            this.attribute = new StringAttribute(Translation.ATTRIBUTE_ASSET, undefined);
             this.assets = {};
             this.observers = {};
         }
@@ -135,6 +134,7 @@ module Ompluscript.Model.Container {
                     trace["assets"][i] = this.assets[i].getStackTrace();
                 }
             }
+            trace["attribute"] = this.attribute.getStackTrace();
             return trace;
         }
 
@@ -210,7 +210,7 @@ module Ompluscript.Model.Container {
          * @param {value} value Value of asset
          */
         private addAsset(key: string, value: string): void {
-            this.assets[key] = Configuration.getInstance(StringConfiguration).create(this.definition);
+            this.assets[key] = this.attribute.clone();
             this.assets[key].setValue(value);
             this.fireOnUpdateAssetEvent(key, key, value);
         }

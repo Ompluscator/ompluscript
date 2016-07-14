@@ -2,6 +2,8 @@
 /// <reference path="../../../Core/Configuration/Configuration.ts" />
 /// <reference path="ContainerConfiguration.ts" />
 /// <reference path="../../Container/Table.ts" />
+/// <reference path="../../Attribute/Attribute.ts" />
+/// <reference path="../../Proxy/Proxy.ts" />
 
 /**
  * Module that contains containers' configuration classes.
@@ -15,6 +17,8 @@ module Ompluscript.Model.Configuration.Container {
     import Table = Ompluscript.Model.Container.Table;
     import Container = Ompluscript.Model.Container.Container;
     import Configuration = Ompluscript.Core.Configuration.Configuration;
+    import Attribute = Ompluscript.Model.Attribute.Attribute;
+    import Proxy = Ompluscript.Model.Proxy.Proxy;
 
     /**
      * Class that contains functionality for model configuration.
@@ -41,8 +45,8 @@ module Ompluscript.Model.Configuration.Container {
          */
         public create(definition: Object): IBase {
             let name: string = definition[Configuration.PARAMETER_NAME];
-            let attributes: Object[] = definition[Container.PARAMETER_DEFINITION];
-            let proxies: Object[] = definition[Container.PARAMETER_PROXIES];
+            let attributes: Attribute<any>[] = <Attribute<any>[]>super.createChildren(definition, Container.PARAMETER_ATTRIBUTES);
+            let proxies: Proxy[] = <Proxy[]>super.createChildren(definition, Container.PARAMETER_PROXIES);
             return new Table(name, attributes, proxies);
         }
     }

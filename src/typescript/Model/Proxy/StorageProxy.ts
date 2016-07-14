@@ -1,5 +1,4 @@
 /// <reference path="Proxy.ts" />
-/// <reference path="../Container/Container.ts" />
 /// <reference path="../Event/OnDoneProxy.ts" />
 
 /**
@@ -10,7 +9,6 @@
 module Ompluscript.Model.Proxy {
     "use strict";
 
-    import Container = Ompluscript.Model.Container.Container;
     import OnDoneProxy = Ompluscript.Model.Event.OnDoneProxy;
 
     /**
@@ -31,12 +29,11 @@ module Ompluscript.Model.Proxy {
          * Sets storage reference and calls constructor of superclass.
          * 
          * @param {string} name Name of proxy
-         * @param {Container} container Container for which proxy refers
          * @param {Storage} storage Contains a reference to desired storage object
          * @constructs
          */
-        constructor(name: string, container: Container, storage: Storage) {
-            super(name, container);
+        constructor(name: string, storage: Storage) {
+            super(name);
             this.storage = storage;
         }
 

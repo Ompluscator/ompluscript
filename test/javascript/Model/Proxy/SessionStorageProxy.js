@@ -3,18 +3,22 @@ describe("SessionStorageProxy class tests", function() {
     var proxyObject;
     var modelObject;
     var proxies;
+    var attributes;
 
     var Model = Ompluscript.Model.Container.Model;
+    var String = Ompluscript.Model.Attribute.String;
     var OnDoneProxy = Ompluscript.Model.Event.OnDoneProxy;
+    var SessionStorageProxy = Ompluscript.Model.Proxy.SessionStorageProxy;
 
     beforeAll(function() {
-        proxies = [
-            {
-                type: "SessionStorageProxy",
-            },
+        proxyObject = new SessionStorageProxy();
+        attributes = [
+            new String("param", "value")
         ];
-        modelObject = new Model("model", [], proxies);
-        proxyObject = modelObject.getProxy("SessionStorageProxy");
+        proxies = [
+            proxyObject,
+        ];
+        modelObject = new Model("model", attributes, proxies);
     });
 
     beforeEach(function() {

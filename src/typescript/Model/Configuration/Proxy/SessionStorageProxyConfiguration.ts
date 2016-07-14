@@ -1,8 +1,6 @@
 /// <reference path="../../../Core/Interfaces/IBase.ts" />
 /// <reference path="../../../Core/Configuration/Configuration.ts" />
-/// <reference path="ProxyConfiguration.ts" />
 /// <reference path="../../Proxy/SessionStorageProxy.ts" />
-/// <reference path="../../Container/Container.ts" />
 
 /**
  * Module that contains proxies' configuration classes.
@@ -14,7 +12,6 @@ module Ompluscript.Model.Configuration.Proxy {
     
     import Configuration = Ompluscript.Core.Configuration.Configuration;
     import IBase = Ompluscript.Core.Interfaces.IBase;
-    import Container = Ompluscript.Model.Container.Container;
     import SessionStorageProxy = Ompluscript.Model.Proxy.SessionStorageProxy;
 
     /**
@@ -22,7 +19,7 @@ module Ompluscript.Model.Configuration.Proxy {
      *
      * @class LocalStorageProxyConfiguration
      */
-    export class SessionStorageProxyConfiguration extends ProxyConfiguration {
+    export class SessionStorageProxyConfiguration extends Configuration {
 
         /**
          * Method that decides if this configuration is related to this class.
@@ -48,11 +45,10 @@ module Ompluscript.Model.Configuration.Proxy {
          * Method that creates new instance from configuration
          *
          * @param {Object} definition Class definition
-         * @param {Container} container Container for which proxy is related to
          * @returns {IBase} New instance
          */
-        public create(definition: Object, container: Container = undefined): IBase {
-            return new SessionStorageProxy(container);
+        public create(definition: Object): IBase {
+            return new SessionStorageProxy();
         }
     }
 }

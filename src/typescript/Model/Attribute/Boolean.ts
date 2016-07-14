@@ -7,6 +7,8 @@
  */
 module Ompluscript.Model.Attribute {
     "use strict";
+    
+    import IBase = Ompluscript.Core.Interfaces.IBase;
 
     /**
      * Class that contains functionality for Boolean attribute.
@@ -82,6 +84,12 @@ module Ompluscript.Model.Attribute {
             return trace;
         }
 
+        /**
+         * Method that should be called when class object should be cloned.
+         */
+        public clone(): IBase {
+            return new Ompluscript.Model.Attribute.Boolean(this.name, undefined, this.required, this.mustBeTrue);
+        }
     }
 
 }

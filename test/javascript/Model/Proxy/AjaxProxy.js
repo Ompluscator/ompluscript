@@ -3,30 +3,22 @@ describe("AjaxProxy class tests", function() {
     var proxyObject;
     var modelObject;
     var proxies;
-    var definition;
+    var attributes;
 
     var Model = Ompluscript.Model.Container.Model;
+    var String = Ompluscript.Model.Attribute.String;
     var OnDoneProxy = Ompluscript.Model.Event.OnDoneProxy;
+    var AjaxProxy = Ompluscript.Model.Proxy.AjaxProxy;
 
     beforeAll(function() {
-        definition = [
-            {
-                name: "param",
-                type: "String",
-                value: "value",
-            }
+        proxyObject = new AjaxProxy("save", "update", "delete", "select");
+        attributes = [
+            new String("param", "value")
         ];
         proxies = [
-            {
-                type: "AjaxProxy",
-                saveLink: "save",
-                updateLink: "update",
-                deleteLink: "delete",
-                selectLink: "select"
-            },
+            proxyObject,
         ];
-        modelObject = new Model("model", definition, proxies);
-        proxyObject = modelObject.getProxy("AjaxProxy");
+        modelObject = new Model("model", attributes, proxies);
     });
 
     beforeEach(function() {

@@ -9,6 +9,7 @@ module Ompluscript.Model.Attribute {
     "use strict";
 
     import Attribute = Ompluscript.Model.Attribute.Attribute;
+    import IBase = Ompluscript.Core.Interfaces.IBase;
     
     /**
      * Class that contains functionality for Datetime attribute.
@@ -151,6 +152,12 @@ module Ompluscript.Model.Attribute {
             return trace;
         }
 
+        /**
+         * Method that should be called when class object should be cloned.
+         */
+        public clone(): IBase {
+            return new Datetime(this.name, undefined, this.required, this.minimum, this.maximum);
+        }
     }
 
 }

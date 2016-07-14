@@ -3,18 +3,22 @@ describe("LocalStorageProxy class tests", function() {
     var proxyObject;
     var modelObject;
     var proxies;
+    var attributes;
 
     var Model = Ompluscript.Model.Container.Model;
+    var String = Ompluscript.Model.Attribute.String;
     var OnDoneProxy = Ompluscript.Model.Event.OnDoneProxy;
+    var LocalStorageProxy = Ompluscript.Model.Proxy.LocalStorageProxy;
 
     beforeAll(function() {
-        proxies = [
-            {
-                type: "LocalStorageProxy",
-            },
+        proxyObject = new LocalStorageProxy();
+        attributes = [
+            new String("param", "value")
         ];
-        modelObject = new Model("model", [], proxies);
-        proxyObject = modelObject.getProxy("LocalStorageProxy");
+        proxies = [
+            proxyObject,
+        ];
+        modelObject = new Model("model", attributes, proxies);
     });
 
     beforeEach(function() {

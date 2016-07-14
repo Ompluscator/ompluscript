@@ -67,7 +67,7 @@ module Ompluscript.Model.Configuration.Container {
                 Configuration.getInstance(ErrorConfiguration),
             ];
             let configurations: Object = {};
-            configurations[Container.PARAMETER_DEFINITION] = definition;
+            configurations[Container.PARAMETER_ATTRIBUTES] = definition;
             configurations[Container.PARAMETER_PROXIES] = proxies;
             super(configurations);
         }
@@ -81,10 +81,10 @@ module Ompluscript.Model.Configuration.Container {
         public getErrors(definition: Object): string[] {
             let errors: string[] = [];
             errors.push(this.mustBeString(definition, Configuration.PARAMETER_NAME));
-            errors.push(this.shouldBeArray(definition, Container.PARAMETER_DEFINITION));
+            errors.push(this.shouldBeArray(definition, Container.PARAMETER_ATTRIBUTES));
             errors.push(this.shouldBeArray(definition, Container.PARAMETER_PROXIES));
-            if (definition.hasOwnProperty(Container.PARAMETER_DEFINITION)) {
-                errors.push.apply(errors, super.getErrors(definition, Container.PARAMETER_DEFINITION));
+            if (definition.hasOwnProperty(Container.PARAMETER_ATTRIBUTES)) {
+                errors.push.apply(errors, super.getErrors(definition, Container.PARAMETER_ATTRIBUTES));
             }
             if (definition.hasOwnProperty(Container.PARAMETER_PROXIES)) {
                 errors.push.apply(errors, super.getErrors(definition, Container.PARAMETER_PROXIES));

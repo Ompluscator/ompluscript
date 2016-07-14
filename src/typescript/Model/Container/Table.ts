@@ -1,5 +1,7 @@
 /// <reference path="Container.ts" />
 /// <reference path="Model.ts" />
+/// <reference path="../Attribute/Attribute.ts" />
+/// <reference path="../Proxy/Proxy.ts" />
 /// <reference path="../Event/OnAddRowToTable.ts" />
 /// <reference path="../Event/OnRemoveRowFromTable.ts" />
 /// <reference path="../Event/OnClearTable.ts" />
@@ -17,6 +19,8 @@ module Ompluscript.Model.Container {
     import OnAddRowToTable = Ompluscript.Model.Event.OnAddRowToTable;
     import OnRemoveRowFromTable = Ompluscript.Model.Event.OnRemoveRowFromTable;
     import OnClearTable = Ompluscript.Model.Event.OnClearTable;
+    import Attribute = Ompluscript.Model.Attribute.Attribute;
+    import Proxy = Ompluscript.Model.Proxy.Proxy;
 
     /**
      * Class that contains functionality for Table.
@@ -36,18 +40,24 @@ module Ompluscript.Model.Container {
         protected rows: Model[];
 
         /**
+         * @type {Attribute[]} attributes Contains a definition for columns
+         */
+        protected attributes: Attribute<any>[];
+
+        /**
          * Class constructor.
          *
          * Sets name and attributes' configuration.
          *
          * @param {string} name Name of model
-         * @param {Object[]} definition Attributes' configuration
+         * @param {Attribute<any>[]} attributes Attributes' configuration
          * @param {Object[]} proxies Definitions for all proxies
          * @constructs
          */
-        constructor(name: string, definition: Object[], proxies: Object[] = undefined) {
-            super(name, definition, proxies);
+        constructor(name: string, attributes: Attribute<any>[] = undefined, proxies: Proxy[] = undefined) {
+            super(name, proxies);
             this.rows = [];
+            this.attributes = attributes;
         }
 
         /**
@@ -96,7 +106,14 @@ module Ompluscript.Model.Container {
          * @param {Object} values Container for values
          */
         public addRow(values: Object): void {
-            let model: Model = new Model(this.name, this.definition);
+            let attributes: Attribute<any>[] = undefined;
+            if (this.attributes !== undefined) {
+                attributes = [];
+                for (let i: number = 0; i < this.attributes.length; i++) {
+                    attributes.push(<Attribute<any>>this.attributes[i].clone());
+                }
+            }
+            let model: Model = new Model(this.name, attributes);
             this.rows.push(model);
             this.fireOnAddRowToTableEvent(this.rows.length - 1, model);
             model.setValues(values);
@@ -132,6 +149,12 @@ module Ompluscript.Model.Container {
             for (let i in this.rows) {
                 if (this.rows[i] !== undefined) {
                     trace["rows"].push(this.rows[i].getStackTrace());
+                }
+            }
+            trace["attributes"] = [];
+            for (let i in this.attributes) {
+                if (this.attributes.hasOwnProperty(i)) {
+                    trace["attributes"][i] = this.attributes[i].getStackTrace();
                 }
             }
             return trace;
@@ -222,7 +245,6 @@ module Ompluscript.Model.Container {
             let event: OnClearTable = new OnClearTable(this);
             this.notifyObservers(event);
         }
-
     }
 }
 

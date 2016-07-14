@@ -1,8 +1,6 @@
 /// <reference path="../../../Core/Interfaces/IBase.ts" />
 /// <reference path="../../../Core/Configuration/Configuration.ts" />
-/// <reference path="ProxyConfiguration.ts" />
 /// <reference path="../../Proxy/AjaxProxy.ts" />
-/// <reference path="../../Container/Container.ts" />
 
 /**
  * Module that contains proxies' configuration classes.
@@ -15,14 +13,13 @@ module Ompluscript.Model.Configuration.Proxy {
     import Configuration = Ompluscript.Core.Configuration.Configuration;
     import AjaxProxy = Ompluscript.Model.Proxy.AjaxProxy;
     import IBase = Ompluscript.Core.Interfaces.IBase;
-    import Container = Ompluscript.Model.Container.Container;
 
     /**
      * Class that contains functionality for ajax proxy configuration.
      *
      * @class AjaxProxyConfiguration
      */
-    export class AjaxProxyConfiguration extends ProxyConfiguration {
+    export class AjaxProxyConfiguration extends Configuration {
 
         /**
          * Method that decides if this configuration is related to this class.
@@ -54,15 +51,14 @@ module Ompluscript.Model.Configuration.Proxy {
          * Method that creates new instance from configuration
          *
          * @param {Object} definition Class definition
-         * @param {Container} container Container for which proxy is related to
          * @returns {IBase} New instance
          */
-        public create(definition: Object, container: Container = undefined): IBase {
+        public create(definition: Object): IBase {
             let saveLink: string = definition[AjaxProxy.PARAMETER_SAVE_LINK];
             let updateLink: string = definition[AjaxProxy.PARAMETER_UPDATE_LINK];
             let deleteLink: string = definition[AjaxProxy.PARAMETER_DELETE_LINK];
             let selectLink: string = definition[AjaxProxy.PARAMETER_SELECT_LINK];
-            return new AjaxProxy(container, saveLink, updateLink, deleteLink, selectLink);
+            return new AjaxProxy(saveLink, updateLink, deleteLink, selectLink);
         }
     }
 }

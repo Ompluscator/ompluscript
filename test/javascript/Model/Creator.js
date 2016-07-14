@@ -6,7 +6,7 @@ describe("Creator class tests - valid creator", function() {
     var definition = {
         name: "model",
         type: Model.name,
-        definition: [
+        attributes: [
              {
                 name: "param1",
                 required: true,
@@ -89,7 +89,7 @@ describe("Creator class tests - invalid string", function() {
         var definition = {
             type: "Model",
             name: "model",
-            definition: [
+            attributes: [
                 {},
                 {
                     type: "String"
@@ -166,7 +166,7 @@ describe("Creator class tests - invalid number", function() {
         var definition = {
             type: "Model",
             name: "model",
-            definition: [
+            attributes: [
                 {},
                 {
                     type: "Number"
@@ -263,7 +263,7 @@ describe("Creator class tests - invalid boolean", function() {
         var definition = {
             type: "Model",
             name: "model",
-            definition: [
+            attributes: [
                 {},
                 {
                     type: "Boolean"
@@ -314,7 +314,7 @@ describe("Creator class tests - invalid datetime", function() {
         var definition = {
             type: "Model",
             name: "model",
-            definition: [
+            attributes: [
                 {},
                 {
                     type: "Datetime"
@@ -382,7 +382,7 @@ describe("Creator class tests - invalid singleChoice", function() {
         var definition = {
             type: "Model",
             name: "model",
-            definition: [
+            attributes: [
                 {},
                 {
                     type: "SingleChoice"
@@ -434,7 +434,7 @@ describe("Creator class tests - invalid multipleChoice", function() {
         var definition = {
             type: "Model",
             name: "model",
-            definition: [
+            attributes: [
                 {},
                 {
                     type: "MultipleChoice"

@@ -38,11 +38,19 @@ module Ompluscript.Model.Proxy {
          * @param {Container} container Container for which proxy refers
          * @constructs
          */
-        constructor(name: string, container: Container) {
+        constructor(name: string) {
             this.name = name;
-            this.container = container;
         }
 
+        /**
+         * Method that sets container for proxy
+         * 
+         * @param {Container} container
+         */
+        public setContainer(container: Container): void {
+            this.container = container;
+        }
+        
         /**
          * Method that returns name of proxy.
          *

@@ -7,6 +7,7 @@
 /// <reference path="../Proxy/LocalStorageProxyConfiguration.ts" />
 /// <reference path="../Proxy/SessionStorageProxyConfiguration.ts" />
 /// <reference path="../../Container/Translation.ts" />
+/// <reference path="../../Proxy/Proxy.ts" />
 
 /**
  * Module that contains containers' configuration classes.
@@ -25,6 +26,7 @@ module Ompluscript.Model.Configuration.Container {
     import LocalStorageProxyConfiguration = Ompluscript.Model.Configuration.Proxy.LocalStorageProxyConfiguration;
     import Translation = Ompluscript.Model.Container.Translation;
     import IBase = Ompluscript.Core.Interfaces.IBase;
+    import Proxy = Ompluscript.Model.Proxy.Proxy;
 
     /**
      * Class that contains functionality for translation configuration.
@@ -87,7 +89,7 @@ module Ompluscript.Model.Configuration.Container {
          * @returns {IBase} New instance
          */
         public create(definition: Object): IBase {
-            let proxies: Object[] = definition[Container.PARAMETER_PROXIES];
+            let proxies: Proxy[] = <Proxy[]>super.createChildren(definition, Container.PARAMETER_PROXIES);
             return new Translation(proxies);
         }
     }

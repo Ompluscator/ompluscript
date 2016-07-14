@@ -7,6 +7,7 @@
  */
 module Ompluscript.Model.Attribute {
     "use strict";
+    import IBase = Ompluscript.Core.Interfaces.IBase;
     
     /**
      * Class that contains functionality for String attribute.
@@ -150,6 +151,18 @@ module Ompluscript.Model.Attribute {
             return trace;
         }
 
+        /**
+         * Method that should be called when class object should be cloned.
+         */
+        public clone(): IBase {
+            let pattern: RegExp = undefined;
+            if (this.pattern !== undefined) {
+                pattern = new RegExp(this.pattern.source);
+            }
+            return new Ompluscript.Model.Attribute.String(
+                this.name, undefined, this.required, this.minimumLength, this.maximumLength, pattern
+            );
+        }
     }
 
 }

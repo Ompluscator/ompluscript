@@ -1,4 +1,5 @@
 /// <reference path="../../Core/Observer/Observable.ts" />
+/// <reference path="../../Core/Interfaces/ICloneable.ts" />
 /// <reference path="../Event/OnUpdateAttribute.ts" />
 /// <reference path="../Event/OnInvalidAttribute.ts" />
 
@@ -13,13 +14,15 @@ module Ompluscript.Model.Attribute {
     import Observable = Ompluscript.Core.Observer.Observable;
     import OnUpdateAttribute = Ompluscript.Model.Event.OnUpdateAttribute;
     import OnInvalidAttribute = Ompluscript.Model.Event.OnInvalidAttribute;
+    import ICloneable = Ompluscript.Core.Interfaces.ICloneable;
+    import IBase = Ompluscript.Core.Interfaces.IBase;
 
     /**
      * Class that contains functionality for single attribute.
      *
      * @class Attribute<T>
      */
-    export abstract class Attribute<T> extends Observable {
+    export abstract class Attribute<T> extends Observable implements ICloneable {
 
         /**
          * @type {number} ERROR_WRONG_TYPE Error code for setting a wrong type of value.
@@ -194,6 +197,11 @@ module Ompluscript.Model.Attribute {
             };
             return trace;
         }
+
+        /**
+         * Method that should be called when class object should be cloned.
+         */
+        public abstract clone(): IBase;
 
         /**
          * Method that fires event when attribute is updated

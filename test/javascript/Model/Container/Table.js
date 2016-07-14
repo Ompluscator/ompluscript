@@ -23,49 +23,27 @@ describe("Table class tests - creation", function() {
     var maximum = [6, undefined, 6, "1/13/1985"];
     var additional = [/value/, false, true, undefined];
     var required = true;
-    var definition;
+    var attributes;
     var dummy = {
         test: function (index, model) {}
     };
 
     var Model = Ompluscript.Model.Container.Model;
     var Table = Ompluscript.Model.Container.Table;
+    var String = Ompluscript.Model.Attribute.String;
+    var Boolean = Ompluscript.Model.Attribute.Boolean;
+    var Number = Ompluscript.Model.Attribute.Number;
+    var Datetime = Ompluscript.Model.Attribute.Datetime;
 
     beforeAll(function() {
-        definition = [
-            {
-                name: paramName[0],
-                required: required,
-                type: type[0],
-                minimumLength: minimum[0],
-                maximumLength: maximum[0],
-                pattern: additional[0],
-            },
-            {
-                name: paramName[1],
-                required: required,
-                type: type[1],
-                mustBeTrue: additional[1],
-            },
-            {
-                name: paramName[2],
-                required: required,
-                type: type[2],
-                minimum: minimum[2],
-                includeMinimum: additional[2],
-                maximum: maximum[2],
-                includeMaximum: additional[2],
-            },
-            {
-                name: paramName[3],
-                required: required,
-                type: type[3],
-                minimum: minimum[3],
-                maximum: maximum[3],
-            }
+        attributes = [
+            new String(paramName[0], undefined, required, minimum[0], maximum[0], additional[0]),
+            new Boolean(paramName[1], undefined, required, additional[1]),
+            new Number(paramName[2], undefined, required, minimum[2], additional[2], maximum[2], additional[2]),
+            new Datetime(paramName[3], undefined, required, minimum[3], maximum[3]),
         ];
 
-        tableObject = new Table(name, definition);
+        tableObject = new Table(name, attributes);
     });
 
     beforeEach(function() {
@@ -79,10 +57,47 @@ describe("Table class tests - creation", function() {
         expect(tableObject.hasRowOnIndex(0)).toBeFalsy();
         expect(tableObject.getRowByIndex(0)).toBeUndefined();
         expect(tableObject.getStackTrace()).toEqual({
-            definition: definition,
             name: name,
             proxies: [],
             rows: [],
+            attributes: [
+                {
+                    name: paramName[0],
+                    required: required,
+                    type: "string",
+                    value: undefined,
+                    minimumLength: minimum[0],
+                    maximumLength: maximum[0],
+                    pattern: additional[0],
+                },
+                {
+                    name: paramName[1],
+                    required: required,
+                    type: "boolean",
+                    value: undefined,
+                    mustBeTrue: additional[1],
+                },
+                {
+                    name: paramName[2],
+                    required: required,
+                    type: "number",
+                    value: undefined,
+                    minimum: minimum[2],
+                    includeMinimum: additional[2],
+                    maximum: maximum[2],
+                    includeMaximum: additional[2],
+                },
+                {
+                    name: paramName[3],
+                    required: required,
+                    type: "string",
+                    value: undefined,
+                    minimum: minimum[3],
+                    minimumObject: new Date(minimum[3]),
+                    maximum: maximum[3],
+                    maximumObject: new Date(maximum[3]),
+                },
+            ],
         });
         expect(tableObject.getValues()).toEqual([]);
     });
@@ -94,12 +109,10 @@ describe("Table class tests - creation", function() {
         expect(tableObject.hasRowOnIndex(0)).toBeTruthy();
         expect(tableObject.getRowByIndex(0) instanceof Model).toBeTruthy();
         expect(tableObject.getStackTrace()).toEqual({
-            definition: definition,
             name: name,
             proxies: [],
             rows: [
                 {
-                    definition: definition,
                     name: name,
                     proxies: [],
                     attributes: {
@@ -142,6 +155,44 @@ describe("Table class tests - creation", function() {
                     },
                 }
             ],
+            attributes: [
+                {
+                    name: paramName[0],
+                    required: required,
+                    type: "string",
+                    value: undefined,
+                    minimumLength: minimum[0],
+                    maximumLength: maximum[0],
+                    pattern: additional[0],
+                },
+                {
+                    name: paramName[1],
+                    required: required,
+                    type: "boolean",
+                    value: undefined,
+                    mustBeTrue: additional[1],
+                },
+                {
+                    name: paramName[2],
+                    required: required,
+                    type: "number",
+                    value: undefined,
+                    minimum: minimum[2],
+                    includeMinimum: additional[2],
+                    maximum: maximum[2],
+                    includeMaximum: additional[2],
+                },
+                {
+                    name: paramName[3],
+                    required: required,
+                    type: "string",
+                    value: undefined,
+                    minimum: minimum[3],
+                    minimumObject: new Date(minimum[3]),
+                    maximum: maximum[3],
+                    maximumObject: new Date(maximum[3]),
+                },
+            ],
         });
 
         tableObject.each(dummy.test);
@@ -167,12 +218,10 @@ describe("Table class tests - creation", function() {
         expect(tableObject.hasRowOnIndex(1)).toBeTruthy();
         expect(tableObject.getRowByIndex(1) instanceof Model).toBeTruthy();
         expect(tableObject.getStackTrace()).toEqual({
-            definition: definition,
             name: name,
             proxies: [],
             rows: [
                 {
-                    definition: definition,
                     name: name,
                     proxies: [],
                     attributes: {
@@ -215,7 +264,6 @@ describe("Table class tests - creation", function() {
                     },
                 },
                 {
-                    definition: definition,
                     name: name,
                     proxies: [],
                     attributes: {
@@ -257,6 +305,44 @@ describe("Table class tests - creation", function() {
                         }
                     },
                 }
+            ],
+            attributes: [
+                {
+                    name: paramName[0],
+                    required: required,
+                    type: "string",
+                    value: undefined,
+                    minimumLength: minimum[0],
+                    maximumLength: maximum[0],
+                    pattern: additional[0],
+                },
+                {
+                    name: paramName[1],
+                    required: required,
+                    type: "boolean",
+                    value: undefined,
+                    mustBeTrue: additional[1],
+                },
+                {
+                    name: paramName[2],
+                    required: required,
+                    type: "number",
+                    value: undefined,
+                    minimum: minimum[2],
+                    includeMinimum: additional[2],
+                    maximum: maximum[2],
+                    includeMaximum: additional[2],
+                },
+                {
+                    name: paramName[3],
+                    required: required,
+                    type: "string",
+                    value: undefined,
+                    minimum: minimum[3],
+                    minimumObject: new Date(minimum[3]),
+                    maximum: maximum[3],
+                    maximumObject: new Date(maximum[3]),
+                },
             ],
         });
 
@@ -289,12 +375,10 @@ describe("Table class tests - creation", function() {
         expect(tableObject.hasRowOnIndex(0)).toBeTruthy();
         expect(tableObject.getRowByIndex(0) instanceof Model).toBeTruthy();
         expect(tableObject.getStackTrace()).toEqual({
-            definition: definition,
             name: name,
             proxies: [],
             rows: [
                 {
-                    definition: definition,
                     name: name,
                     proxies: [],
                     attributes: {
@@ -337,6 +421,44 @@ describe("Table class tests - creation", function() {
                     },
                 }
             ],
+            attributes: [
+                {
+                    name: paramName[0],
+                    required: required,
+                    type: "string",
+                    value: undefined,
+                    minimumLength: minimum[0],
+                    maximumLength: maximum[0],
+                    pattern: additional[0],
+                },
+                {
+                    name: paramName[1],
+                    required: required,
+                    type: "boolean",
+                    value: undefined,
+                    mustBeTrue: additional[1],
+                },
+                {
+                    name: paramName[2],
+                    required: required,
+                    type: "number",
+                    value: undefined,
+                    minimum: minimum[2],
+                    includeMinimum: additional[2],
+                    maximum: maximum[2],
+                    includeMaximum: additional[2],
+                },
+                {
+                    name: paramName[3],
+                    required: required,
+                    type: "string",
+                    value: undefined,
+                    minimum: minimum[3],
+                    minimumObject: new Date(minimum[3]),
+                    maximum: maximum[3],
+                    maximumObject: new Date(maximum[3]),
+                },
+            ],
         });
 
         tableObject.each(dummy.test);
@@ -356,21 +478,15 @@ describe("Table class tests - creation", function() {
 describe("Table class tests - events", function() {
 
     var tableObject;
-    var definition = [
-        {
-            name: "param",
-            required: true,
-            type: "String",
-        }
-    ];
 
     var Table = Ompluscript.Model.Container.Table;
     var OnAddRowToTable = Ompluscript.Model.Event.OnAddRowToTable;
     var OnClearTable = Ompluscript.Model.Event.OnClearTable;
     var OnRemoveRowFromTable = Ompluscript.Model.Event.OnRemoveRowFromTable;
+    var String = Ompluscript.Model.Attribute.String;
 
     beforeAll(function() {
-        tableObject = new Table(name, definition);
+        tableObject = new Table(name, [new String("param", void(0), true)]);
     });
 
     beforeEach(function() {
@@ -417,19 +533,9 @@ describe("Table class tests - proxies", function() {
 
     beforeAll(function() {
         proxies = [
-            {
-                type: "AjaxProxy",
-                saveLink: "save",
-                updateLink: "update",
-                deleteLink: "delete",
-                selectLink: "select"
-            },
-            {
-                type: "LocalStorageProxy",
-            },
-            {
-                type: "SessionStorageProxy",
-            },
+            new AjaxProxy("save", "update", "delete", "select"),
+            new LocalStorageProxy(),
+            new SessionStorageProxy(),
         ];
 
         tableObject = new Table(name, [], proxies);
@@ -444,10 +550,24 @@ describe("Table class tests - proxies", function() {
         expect(tableObject.hasProxy("SessionStorageProxy")).toBeTruthy();
         expect(tableObject.getProxy("SessionStorageProxy") instanceof SessionStorageProxy).toBeTruthy();
         expect(tableObject.getStackTrace()).toEqual({
-            definition: [],
             name: name,
-            proxies: proxies,
+            proxies: [
+                {
+                    type: "AjaxProxy",
+                    saveLink: "save",
+                    updateLink: "update",
+                    deleteLink: "delete",
+                    selectLink: "select"
+                },
+                {
+                    type: "LocalStorageProxy",
+                },
+                {
+                    type: "SessionStorageProxy",
+                },
+            ],
             rows: [],
+            attributes: [],
         });
         expect(tableObject.getValues()).toEqual([]);
     });

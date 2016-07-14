@@ -9,7 +9,7 @@ describe("OnUpdateAsset class tests", function() {
     var Translation = Ompluscript.Model.Container.Translation;
 
     beforeAll(function() {
-        attribute = new Translation("param");
+        attribute = new Translation();
         event = new OnUpdateAsset(attribute, oldValue, newValue);
     });
 

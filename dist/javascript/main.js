@@ -812,6 +812,15 @@ var __extends = (this && this.__extends) || function (d, b) {
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
 (function (Ompluscript) {
+    var Core;
+    (function (Core) {
+        var Interfaces;
+        (function (Interfaces) {
+            "use strict";
+        })(Interfaces = Core.Interfaces || (Core.Interfaces = {}));
+    })(Core = Ompluscript.Core || (Ompluscript.Core = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
     var Model;
     (function (Model) {
         var Event;
@@ -1227,6 +1236,9 @@ var __extends = (this && this.__extends) || function (d, b) {
                     trace[Boolean.PARAMETER_MUST_BE_TRUE] = this.mustBeTrue;
                     return trace;
                 };
+                Boolean.prototype.clone = function () {
+                    return new Ompluscript.Model.Attribute.Boolean(this.name, undefined, this.required, this.mustBeTrue);
+                };
                 Boolean.PARAMETER_MUST_BE_TRUE = "mustBeTrue";
                 Boolean.TYPE_BOOLEAN = Boolean["name"];
                 Boolean.ERROR_MUST_BE_TRUE = 204;
@@ -1340,6 +1352,9 @@ var __extends = (this && this.__extends) || function (d, b) {
                     trace[Attribute.PARAMETER_MAXIMUM] = this.maximum;
                     trace["maximumObject"] = this.maximumObject;
                     return trace;
+                };
+                Datetime.prototype.clone = function () {
+                    return new Datetime(this.name, undefined, this.required, this.minimum, this.maximum);
                 };
                 Datetime.TYPE_DATETIME = Datetime["name"];
                 return Datetime;
@@ -1534,6 +1549,16 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                     return true;
                 };
+                MultipleChoice.prototype.clone = function () {
+                    var choices = undefined;
+                    if (Array.isArray(this.choices)) {
+                        choices = [];
+                        for (var i = 0; i < this.choices.length; i++) {
+                            choices.push(this.choices[i]);
+                        }
+                    }
+                    return new MultipleChoice(this.name, undefined, this.required, choices);
+                };
                 MultipleChoice.TYPE_MULTIPLE_CHOICE = MultipleChoice["name"];
                 return MultipleChoice;
             }(Attribute_6.Choice));
@@ -1645,6 +1670,9 @@ var __extends = (this && this.__extends) || function (d, b) {
                     trace[Number.PARAMETER_INCLUDE_MAXIMUM] = this.includeMaximum;
                     return trace;
                 };
+                Number.prototype.clone = function () {
+                    return new Ompluscript.Model.Attribute.Number(this.name, undefined, this.required, this.minimum, this.includeMinimum, this.maximum, this.includeMaximum);
+                };
                 Number.PARAMETER_INCLUDE_MINIMUM = "includeMinimum";
                 Number.PARAMETER_INCLUDE_MAXIMUM = "includeMaximum";
                 Number.TYPE_NUMBER = Number["name"];
@@ -1731,6 +1759,16 @@ var __extends = (this && this.__extends) || function (d, b) {
                         return true;
                     }
                     return false;
+                };
+                SingleChoice.prototype.clone = function () {
+                    var choices = undefined;
+                    if (Array.isArray(this.choices)) {
+                        choices = [];
+                        for (var i = 0; i < this.choices.length; i++) {
+                            choices.push(this.choices[i]);
+                        }
+                    }
+                    return new SingleChoice(this.name, undefined, this.required, choices);
                 };
                 SingleChoice.TYPE_SINGLE_CHOICE = SingleChoice["name"];
                 return SingleChoice;
@@ -1825,6 +1863,13 @@ var __extends = (this && this.__extends) || function (d, b) {
                     trace[String.PARAMETER_MAXIMUM_LENGTH] = this.maximumLength;
                     trace[String.PARAMETER_PATTERN] = this.pattern;
                     return trace;
+                };
+                String.prototype.clone = function () {
+                    var pattern = undefined;
+                    if (this.pattern !== undefined) {
+                        pattern = new RegExp(this.pattern.source);
+                    }
+                    return new Ompluscript.Model.Attribute.String(this.name, undefined, this.required, this.minimumLength, this.maximumLength, pattern);
                 };
                 String.ERROR_BELOW_MINIMUM_LENGTH = 211;
                 String.ERROR_OVER_MAXIMUM_LENGTH = 212;
@@ -1922,6 +1967,24 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                     return this.filterErrors(errors);
                 };
+                GroupConfiguration.prototype.createChildren = function (definition, key) {
+                    if (key === void 0) { key = undefined; }
+                    var children = [];
+                    if (this.configurations.hasOwnProperty(key)) {
+                        var configuration = this.configurations[key];
+                        if (definition.hasOwnProperty(key)) {
+                            for (var i = 0; i < definition[key].length; i++) {
+                                for (var j = 0; j < configuration.length; j++) {
+                                    if (configuration[j].isRelatedTo(definition[key][i])) {
+                                        children.push(configuration[j].create(definition[key][i]));
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return children;
+                };
                 return GroupConfiguration;
             }(Configuration));
             Configuration_15.GroupConfiguration = GroupConfiguration;
@@ -1963,35 +2026,16 @@ var __extends = (this && this.__extends) || function (d, b) {
 (function (Ompluscript) {
     var Model;
     (function (Model) {
-        var Configuration;
-        (function (Configuration_16) {
-            var Proxy;
-            (function (Proxy) {
-                "use strict";
-                var Configuration = Ompluscript.Core.Configuration.Configuration;
-                var ProxyConfiguration = (function (_super) {
-                    __extends(ProxyConfiguration, _super);
-                    function ProxyConfiguration() {
-                        _super.apply(this, arguments);
-                    }
-                    return ProxyConfiguration;
-                }(Configuration));
-                Proxy.ProxyConfiguration = ProxyConfiguration;
-            })(Proxy = Configuration_16.Proxy || (Configuration_16.Proxy = {}));
-        })(Configuration = Model.Configuration || (Model.Configuration = {}));
-    })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
-})(Ompluscript || (Ompluscript = {}));
-(function (Ompluscript) {
-    var Model;
-    (function (Model) {
         var Proxy;
         (function (Proxy_1) {
             "use strict";
             var Proxy = (function () {
-                function Proxy(name, container) {
+                function Proxy(name) {
                     this.name = name;
-                    this.container = container;
                 }
+                Proxy.prototype.setContainer = function (container) {
+                    this.container = container;
+                };
                 Proxy.prototype.getName = function () {
                     return this.name;
                 };
@@ -2016,18 +2060,82 @@ var __extends = (this && this.__extends) || function (d, b) {
 (function (Ompluscript) {
     var Model;
     (function (Model) {
+        var Container;
+        (function (Container_1) {
+            "use strict";
+            var Observable = Ompluscript.Core.Observer.Observable;
+            var OnDoneProxy = Ompluscript.Model.Event.OnDoneProxy;
+            var Container = (function (_super) {
+                __extends(Container, _super);
+                function Container(name, proxies) {
+                    if (proxies === void 0) { proxies = undefined; }
+                    _super.call(this);
+                    this.name = name;
+                    this.proxies = {};
+                    if (Array.isArray(proxies)) {
+                        for (var i = 0; i < proxies.length; i++) {
+                            proxies[i].setContainer(this);
+                            this.proxies[proxies[i].getName()] = proxies[i];
+                        }
+                    }
+                }
+                Container.prototype.getName = function () {
+                    return this.name;
+                };
+                Container.prototype.hasProxy = function (type) {
+                    return this.proxies.hasOwnProperty(type);
+                };
+                Container.prototype.getProxy = function (type) {
+                    if (this.hasProxy(type)) {
+                        return this.proxies[type];
+                    }
+                    return undefined;
+                };
+                Container.prototype.getStackTrace = function () {
+                    var trace = {
+                        name: this.name,
+                        proxies: [],
+                    };
+                    for (var key in this.proxies) {
+                        if (this.proxies.hasOwnProperty(key)) {
+                            trace["proxies"].push(this.proxies[key].getStackTrace());
+                        }
+                    }
+                    return trace;
+                };
+                Container.prototype.doneProxy = function (action, response) {
+                    if (action === OnDoneProxy.TYPE_SELECTED) {
+                        this.setValues(response);
+                    }
+                    this.fireOnDoneProxyEvent(action, response);
+                };
+                Container.prototype.fireOnDoneProxyEvent = function (action, response) {
+                    var event = new OnDoneProxy(this, action, response);
+                    this.notifyObservers(event);
+                };
+                Container.PARAMETER_ATTRIBUTES = "attributes";
+                Container.PARAMETER_PROXIES = "proxies";
+                return Container;
+            }(Observable));
+            Container_1.Container = Container;
+        })(Container = Model.Container || (Model.Container = {}));
+    })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var Model;
+    (function (Model) {
         var Proxy;
         (function (Proxy) {
             "use strict";
             var OnDoneProxy = Ompluscript.Model.Event.OnDoneProxy;
             var AjaxProxy = (function (_super) {
                 __extends(AjaxProxy, _super);
-                function AjaxProxy(container, saveLink, updateLink, deleteLink, selectLink) {
+                function AjaxProxy(saveLink, updateLink, deleteLink, selectLink) {
                     if (saveLink === void 0) { saveLink = undefined; }
                     if (updateLink === void 0) { updateLink = undefined; }
                     if (deleteLink === void 0) { deleteLink = undefined; }
                     if (selectLink === void 0) { selectLink = undefined; }
-                    _super.call(this, AjaxProxy.TYPE_AJAX_PROXY, container);
+                    _super.call(this, AjaxProxy.TYPE_AJAX_PROXY);
                     this.saveLink = saveLink;
                     this.updateLink = updateLink;
                     this.deleteLink = deleteLink;
@@ -2158,7 +2266,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_17) {
+        (function (Configuration_16) {
             var Proxy;
             (function (Proxy) {
                 "use strict";
@@ -2181,18 +2289,17 @@ var __extends = (this && this.__extends) || function (d, b) {
                         errors.push(this.shouldBeString(definition, AjaxProxy.PARAMETER_SELECT_LINK));
                         return this.filterErrors(errors);
                     };
-                    AjaxProxyConfiguration.prototype.create = function (definition, container) {
-                        if (container === void 0) { container = undefined; }
+                    AjaxProxyConfiguration.prototype.create = function (definition) {
                         var saveLink = definition[AjaxProxy.PARAMETER_SAVE_LINK];
                         var updateLink = definition[AjaxProxy.PARAMETER_UPDATE_LINK];
                         var deleteLink = definition[AjaxProxy.PARAMETER_DELETE_LINK];
                         var selectLink = definition[AjaxProxy.PARAMETER_SELECT_LINK];
-                        return new AjaxProxy(container, saveLink, updateLink, deleteLink, selectLink);
+                        return new AjaxProxy(saveLink, updateLink, deleteLink, selectLink);
                     };
                     return AjaxProxyConfiguration;
-                }(Proxy.ProxyConfiguration));
+                }(Configuration));
                 Proxy.AjaxProxyConfiguration = AjaxProxyConfiguration;
-            })(Proxy = Configuration_17.Proxy || (Configuration_17.Proxy = {}));
+            })(Proxy = Configuration_16.Proxy || (Configuration_16.Proxy = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2205,8 +2312,8 @@ var __extends = (this && this.__extends) || function (d, b) {
             var OnDoneProxy = Ompluscript.Model.Event.OnDoneProxy;
             var StorageProxy = (function (_super) {
                 __extends(StorageProxy, _super);
-                function StorageProxy(name, container, storage) {
-                    _super.call(this, name, container);
+                function StorageProxy(name, storage) {
+                    _super.call(this, name);
                     this.storage = storage;
                 }
                 StorageProxy.prototype.save = function () {
@@ -2239,8 +2346,8 @@ var __extends = (this && this.__extends) || function (d, b) {
             "use strict";
             var LocalStorageProxy = (function (_super) {
                 __extends(LocalStorageProxy, _super);
-                function LocalStorageProxy(container) {
-                    _super.call(this, LocalStorageProxy.TYPE_LOCAL_STORAGE_PROXY, container, window.localStorage);
+                function LocalStorageProxy() {
+                    _super.call(this, LocalStorageProxy.TYPE_LOCAL_STORAGE_PROXY, window.localStorage);
                 }
                 LocalStorageProxy.TYPE_LOCAL_STORAGE_PROXY = LocalStorageProxy["name"];
                 return LocalStorageProxy;
@@ -2253,7 +2360,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_18) {
+        (function (Configuration_17) {
             var Proxy;
             (function (Proxy) {
                 "use strict";
@@ -2270,14 +2377,13 @@ var __extends = (this && this.__extends) || function (d, b) {
                     LocalStorageProxyConfiguration.prototype.getErrors = function (definition) {
                         return [];
                     };
-                    LocalStorageProxyConfiguration.prototype.create = function (definition, container) {
-                        if (container === void 0) { container = undefined; }
-                        return new LocalStorageProxy(container);
+                    LocalStorageProxyConfiguration.prototype.create = function (definition) {
+                        return new LocalStorageProxy();
                     };
                     return LocalStorageProxyConfiguration;
-                }(Proxy.ProxyConfiguration));
+                }(Configuration));
                 Proxy.LocalStorageProxyConfiguration = LocalStorageProxyConfiguration;
-            })(Proxy = Configuration_18.Proxy || (Configuration_18.Proxy = {}));
+            })(Proxy = Configuration_17.Proxy || (Configuration_17.Proxy = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2289,8 +2395,8 @@ var __extends = (this && this.__extends) || function (d, b) {
             "use strict";
             var SessionStorageProxy = (function (_super) {
                 __extends(SessionStorageProxy, _super);
-                function SessionStorageProxy(container) {
-                    _super.call(this, SessionStorageProxy.TYPE_SESSION_STORAGE_PROXY, container, window.sessionStorage);
+                function SessionStorageProxy() {
+                    _super.call(this, SessionStorageProxy.TYPE_SESSION_STORAGE_PROXY, window.sessionStorage);
                 }
                 SessionStorageProxy.TYPE_SESSION_STORAGE_PROXY = SessionStorageProxy["name"];
                 return SessionStorageProxy;
@@ -2303,7 +2409,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_19) {
+        (function (Configuration_18) {
             var Proxy;
             (function (Proxy) {
                 "use strict";
@@ -2320,106 +2426,21 @@ var __extends = (this && this.__extends) || function (d, b) {
                     SessionStorageProxyConfiguration.prototype.getErrors = function (definition) {
                         return [];
                     };
-                    SessionStorageProxyConfiguration.prototype.create = function (definition, container) {
-                        if (container === void 0) { container = undefined; }
-                        return new SessionStorageProxy(container);
+                    SessionStorageProxyConfiguration.prototype.create = function (definition) {
+                        return new SessionStorageProxy();
                     };
                     return SessionStorageProxyConfiguration;
-                }(Proxy.ProxyConfiguration));
+                }(Configuration));
                 Proxy.SessionStorageProxyConfiguration = SessionStorageProxyConfiguration;
-            })(Proxy = Configuration_19.Proxy || (Configuration_19.Proxy = {}));
+            })(Proxy = Configuration_18.Proxy || (Configuration_18.Proxy = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
 (function (Ompluscript) {
     var Model;
     (function (Model) {
-        var Container;
-        (function (Container_1) {
-            "use strict";
-            var Observable = Ompluscript.Core.Observer.Observable;
-            var OnDoneProxy = Ompluscript.Model.Event.OnDoneProxy;
-            var Configuration = Ompluscript.Core.Configuration.Configuration;
-            var AjaxProxyConfiguration = Ompluscript.Model.Configuration.Proxy.AjaxProxyConfiguration;
-            var SessionStorageProxyConfiguration = Ompluscript.Model.Configuration.Proxy.SessionStorageProxyConfiguration;
-            var LocalStorageProxyConfiguration = Ompluscript.Model.Configuration.Proxy.LocalStorageProxyConfiguration;
-            var Container = (function (_super) {
-                __extends(Container, _super);
-                function Container(name, definition, proxies) {
-                    if (definition === void 0) { definition = []; }
-                    if (proxies === void 0) { proxies = undefined; }
-                    _super.call(this);
-                    this.name = name;
-                    this.definition = definition;
-                    this.proxies = {};
-                    this.createProxies(proxies);
-                }
-                Container.prototype.getName = function () {
-                    return this.name;
-                };
-                Container.prototype.hasProxy = function (type) {
-                    return this.proxies.hasOwnProperty(type);
-                };
-                Container.prototype.getProxy = function (type) {
-                    if (this.hasProxy(type)) {
-                        return this.proxies[type];
-                    }
-                    return undefined;
-                };
-                Container.prototype.getStackTrace = function () {
-                    var trace = {
-                        definition: this.definition,
-                        name: this.name,
-                        proxies: [],
-                    };
-                    for (var key in this.proxies) {
-                        if (this.proxies.hasOwnProperty(key)) {
-                            trace["proxies"].push(this.proxies[key].getStackTrace());
-                        }
-                    }
-                    return trace;
-                };
-                Container.prototype.doneProxy = function (action, response) {
-                    if (action === OnDoneProxy.TYPE_SELECTED) {
-                        this.setValues(response);
-                    }
-                    this.fireOnDoneProxyEvent(action, response);
-                };
-                Container.prototype.fireOnDoneProxyEvent = function (action, response) {
-                    var event = new OnDoneProxy(this, action, response);
-                    this.notifyObservers(event);
-                };
-                Container.prototype.createProxies = function (proxies) {
-                    if (proxies === void 0) { proxies = undefined; }
-                    if (proxies !== undefined) {
-                        var configurations = [
-                            Configuration.getInstance(AjaxProxyConfiguration),
-                            Configuration.getInstance(SessionStorageProxyConfiguration),
-                            Configuration.getInstance(LocalStorageProxyConfiguration),
-                        ];
-                        for (var i = 0; i < proxies.length; i++) {
-                            for (var j = 0; j < configurations.length; j++) {
-                                if (configurations[j].isRelatedTo(proxies[i])) {
-                                    this.proxies[proxies[i][Configuration.PARAMETER_TYPE]] = configurations[j].create(proxies[i], this);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                };
-                Container.PARAMETER_DEFINITION = "definition";
-                Container.PARAMETER_PROXIES = "proxies";
-                return Container;
-            }(Observable));
-            Container_1.Container = Container;
-        })(Container = Model.Container || (Model.Container = {}));
-    })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
-})(Ompluscript || (Ompluscript = {}));
-(function (Ompluscript) {
-    var Model;
-    (function (Model) {
         var Configuration;
-        (function (Configuration_20) {
+        (function (Configuration_19) {
             var Container;
             (function (Container_2) {
                 "use strict";
@@ -2455,17 +2476,17 @@ var __extends = (this && this.__extends) || function (d, b) {
                             Configuration.getInstance(ErrorConfiguration),
                         ];
                         var configurations = {};
-                        configurations[Container.PARAMETER_DEFINITION] = definition;
+                        configurations[Container.PARAMETER_ATTRIBUTES] = definition;
                         configurations[Container.PARAMETER_PROXIES] = proxies;
                         _super.call(this, configurations);
                     }
                     ContainerConfiguration.prototype.getErrors = function (definition) {
                         var errors = [];
                         errors.push(this.mustBeString(definition, Configuration.PARAMETER_NAME));
-                        errors.push(this.shouldBeArray(definition, Container.PARAMETER_DEFINITION));
+                        errors.push(this.shouldBeArray(definition, Container.PARAMETER_ATTRIBUTES));
                         errors.push(this.shouldBeArray(definition, Container.PARAMETER_PROXIES));
-                        if (definition.hasOwnProperty(Container.PARAMETER_DEFINITION)) {
-                            errors.push.apply(errors, _super.prototype.getErrors.call(this, definition, Container.PARAMETER_DEFINITION));
+                        if (definition.hasOwnProperty(Container.PARAMETER_ATTRIBUTES)) {
+                            errors.push.apply(errors, _super.prototype.getErrors.call(this, definition, Container.PARAMETER_ATTRIBUTES));
                         }
                         if (definition.hasOwnProperty(Container.PARAMETER_PROXIES)) {
                             errors.push.apply(errors, _super.prototype.getErrors.call(this, definition, Container.PARAMETER_PROXIES));
@@ -2475,7 +2496,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return ContainerConfiguration;
                 }(GroupConfiguration));
                 Container_2.ContainerConfiguration = ContainerConfiguration;
-            })(Container = Configuration_20.Container || (Configuration_20.Container = {}));
+            })(Container = Configuration_19.Container || (Configuration_19.Container = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2486,29 +2507,17 @@ var __extends = (this && this.__extends) || function (d, b) {
         (function (Container_3) {
             "use strict";
             var Container = Ompluscript.Model.Container.Container;
-            var Configuration = Ompluscript.Core.Configuration.Configuration;
-            var BooleanConfiguration = Ompluscript.Model.Configuration.Attribute.BooleanConfiguration;
-            var DatetimeConfiguration = Ompluscript.Model.Configuration.Attribute.DatetimeConfiguration;
-            var MultipleChoiceConfiguration = Ompluscript.Model.Configuration.Attribute.MultipleChoiceConfiguration;
-            var NumberConfiguration = Ompluscript.Model.Configuration.Attribute.NumberConfiguration;
-            var SingleChoiceConfiguration = Ompluscript.Model.Configuration.Attribute.SingleChoiceConfiguration;
-            var StringConfiguration = Ompluscript.Model.Configuration.Attribute.StringConfiguration;
             var Model = (function (_super) {
                 __extends(Model, _super);
-                function Model(name, definition, proxies) {
+                function Model(name, attributes, proxies) {
+                    if (attributes === void 0) { attributes = undefined; }
                     if (proxies === void 0) { proxies = undefined; }
-                    _super.call(this, name, definition, proxies);
-                    this.configurations = [
-                        Configuration.getInstance(BooleanConfiguration),
-                        Configuration.getInstance(DatetimeConfiguration),
-                        Configuration.getInstance(MultipleChoiceConfiguration),
-                        Configuration.getInstance(NumberConfiguration),
-                        Configuration.getInstance(SingleChoiceConfiguration),
-                        Configuration.getInstance(StringConfiguration),
-                    ];
+                    _super.call(this, name, proxies);
                     this.attributes = {};
-                    for (var i = 0; i < this.definition.length; i++) {
-                        this.addAttribute(this.definition[i]);
+                    if (Array.isArray(attributes)) {
+                        for (var i = 0; i < attributes.length; i++) {
+                            this.attributes[attributes[i].getName()] = attributes[i];
+                        }
                     }
                 }
                 Model.prototype.hasAttribute = function (name) {
@@ -2559,14 +2568,6 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                     return values;
                 };
-                Model.prototype.addAttribute = function (definition) {
-                    var name = definition[Configuration.PARAMETER_NAME];
-                    for (var i = 0; i < this.configurations.length; i++) {
-                        if (this.configurations[i].isRelatedTo(definition)) {
-                            this.attributes[name] = this.configurations[i].create(definition);
-                        }
-                    }
-                };
                 Model.TYPE_MODEL = Model["name"];
                 return Model;
             }(Container));
@@ -2578,7 +2579,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model_2) {
         var Configuration;
-        (function (Configuration_21) {
+        (function (Configuration_20) {
             var Container;
             (function (Container_4) {
                 "use strict";
@@ -2595,14 +2596,14 @@ var __extends = (this && this.__extends) || function (d, b) {
                     };
                     ModelConfiguration.prototype.create = function (definition) {
                         var name = definition[Configuration.PARAMETER_NAME];
-                        var attributes = definition[Container.PARAMETER_DEFINITION];
-                        var proxies = definition[Container.PARAMETER_PROXIES];
+                        var attributes = _super.prototype.createChildren.call(this, definition, Container.PARAMETER_ATTRIBUTES);
+                        var proxies = _super.prototype.createChildren.call(this, definition, Container.PARAMETER_PROXIES);
                         return new Model(name, attributes, proxies);
                     };
                     return ModelConfiguration;
                 }(Container_4.ContainerConfiguration));
                 Container_4.ModelConfiguration = ModelConfiguration;
-            })(Container = Configuration_21.Container || (Configuration_21.Container = {}));
+            })(Container = Configuration_20.Container || (Configuration_20.Container = {}));
         })(Configuration = Model_2.Configuration || (Model_2.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2703,10 +2704,12 @@ var __extends = (this && this.__extends) || function (d, b) {
             var OnClearTable = Ompluscript.Model.Event.OnClearTable;
             var Table = (function (_super) {
                 __extends(Table, _super);
-                function Table(name, definition, proxies) {
+                function Table(name, attributes, proxies) {
+                    if (attributes === void 0) { attributes = undefined; }
                     if (proxies === void 0) { proxies = undefined; }
-                    _super.call(this, name, definition, proxies);
+                    _super.call(this, name, proxies);
                     this.rows = [];
+                    this.attributes = attributes;
                 }
                 Table.prototype.count = function () {
                     return this.rows.length;
@@ -2723,7 +2726,14 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return this.rows[index];
                 };
                 Table.prototype.addRow = function (values) {
-                    var model = new Model(this.name, this.definition);
+                    var attributes = undefined;
+                    if (this.attributes !== undefined) {
+                        attributes = [];
+                        for (var i = 0; i < this.attributes.length; i++) {
+                            attributes.push(this.attributes[i].clone());
+                        }
+                    }
+                    var model = new Model(this.name, attributes);
                     this.rows.push(model);
                     this.fireOnAddRowToTableEvent(this.rows.length - 1, model);
                     model.setValues(values);
@@ -2743,6 +2753,12 @@ var __extends = (this && this.__extends) || function (d, b) {
                     for (var i in this.rows) {
                         if (this.rows[i] !== undefined) {
                             trace["rows"].push(this.rows[i].getStackTrace());
+                        }
+                    }
+                    trace["attributes"] = [];
+                    for (var i in this.attributes) {
+                        if (this.attributes.hasOwnProperty(i)) {
+                            trace["attributes"][i] = this.attributes[i].getStackTrace();
                         }
                     }
                     return trace;
@@ -2806,7 +2822,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_22) {
+        (function (Configuration_21) {
             var Container;
             (function (Container_6) {
                 "use strict";
@@ -2823,14 +2839,14 @@ var __extends = (this && this.__extends) || function (d, b) {
                     };
                     TableConfiguration.prototype.create = function (definition) {
                         var name = definition[Configuration.PARAMETER_NAME];
-                        var attributes = definition[Container.PARAMETER_DEFINITION];
-                        var proxies = definition[Container.PARAMETER_PROXIES];
+                        var attributes = _super.prototype.createChildren.call(this, definition, Container.PARAMETER_ATTRIBUTES);
+                        var proxies = _super.prototype.createChildren.call(this, definition, Container.PARAMETER_PROXIES);
                         return new Table(name, attributes, proxies);
                     };
                     return TableConfiguration;
                 }(Container_6.ContainerConfiguration));
                 Container_6.TableConfiguration = TableConfiguration;
-            })(Container = Configuration_22.Container || (Configuration_22.Container = {}));
+            })(Container = Configuration_21.Container || (Configuration_21.Container = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2889,7 +2905,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_23) {
+        (function (Configuration_22) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -2938,7 +2954,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return InputConfiguration;
                 }(ComponentConfiguration));
                 Field.InputConfiguration = InputConfiguration;
-            })(Field = Configuration_23.Field || (Configuration_23.Field = {}));
+            })(Field = Configuration_22.Field || (Configuration_22.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2981,7 +2997,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_24) {
+        (function (Configuration_23) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -3008,7 +3024,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return CheckBoxInputConfiguration;
                 }(Field.InputConfiguration));
                 Field.CheckBoxInputConfiguration = CheckBoxInputConfiguration;
-            })(Field = Configuration_24.Field || (Configuration_24.Field = {}));
+            })(Field = Configuration_23.Field || (Configuration_23.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -3077,7 +3093,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_25) {
+        (function (Configuration_24) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -3104,7 +3120,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return EmailInputConfiguration;
                 }(Field.InputConfiguration));
                 Field.EmailInputConfiguration = EmailInputConfiguration;
-            })(Field = Configuration_25.Field || (Configuration_25.Field = {}));
+            })(Field = Configuration_24.Field || (Configuration_24.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -3154,7 +3170,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_26) {
+        (function (Configuration_25) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -3181,7 +3197,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return NumberInputConfiguration;
                 }(Field.InputConfiguration));
                 Field.NumberInputConfiguration = NumberInputConfiguration;
-            })(Field = Configuration_26.Field || (Configuration_26.Field = {}));
+            })(Field = Configuration_25.Field || (Configuration_25.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -3210,7 +3226,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_27) {
+        (function (Configuration_26) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -3237,7 +3253,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return PasswordInputConfiguration;
                 }(Field.InputConfiguration));
                 Field.PasswordInputConfiguration = PasswordInputConfiguration;
-            })(Field = Configuration_27.Field || (Configuration_27.Field = {}));
+            })(Field = Configuration_26.Field || (Configuration_26.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -3245,7 +3261,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_28) {
+        (function (Configuration_27) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -3272,7 +3288,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return TextInputConfiguration;
                 }(Field.InputConfiguration));
                 Field.TextInputConfiguration = TextInputConfiguration;
-            })(Field = Configuration_28.Field || (Configuration_28.Field = {}));
+            })(Field = Configuration_27.Field || (Configuration_27.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -3740,26 +3756,20 @@ var __extends = (this && this.__extends) || function (d, b) {
         (function (Container_8) {
             "use strict";
             var Container = Ompluscript.Model.Container.Container;
-            var Configuration = Ompluscript.Core.Configuration.Configuration;
-            var String = Ompluscript.Model.Attribute.String;
-            var StringConfiguration = Ompluscript.Model.Configuration.Attribute.StringConfiguration;
-            var AjaxProxy = Ompluscript.Model.Proxy.AjaxProxy;
             var OnUpdateAsset = Ompluscript.Model.Event.OnUpdateAsset;
+            var StringAttribute = Ompluscript.Model.Attribute.String;
+            var AjaxProxy = Ompluscript.Model.Proxy.AjaxProxy;
             var Translation = (function (_super) {
                 __extends(Translation, _super);
                 function Translation(proxies) {
                     if (proxies === void 0) { proxies = undefined; }
-                    var definition = {};
-                    definition[Configuration.PARAMETER_NAME] = Translation.ATTRIBUTE_ASSET;
-                    definition[Configuration.PARAMETER_TYPE] = String.TYPE_STRING;
-                    if (proxies === undefined) {
+                    if (!Array.isArray(proxies) || proxies.length === 0) {
                         proxies = [
-                            {
-                                type: AjaxProxy.TYPE_AJAX_PROXY,
-                            },
+                            new AjaxProxy(),
                         ];
                     }
-                    _super.call(this, Translation.TYPE_TRANSLATION, [definition], proxies);
+                    _super.call(this, Translation.TYPE_TRANSLATION, proxies);
+                    this.attribute = new StringAttribute(Translation.ATTRIBUTE_ASSET, undefined);
                     this.assets = {};
                     this.observers = {};
                 }
@@ -3793,6 +3803,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                             trace["assets"][i] = this.assets[i].getStackTrace();
                         }
                     }
+                    trace["attribute"] = this.attribute.getStackTrace();
                     return trace;
                 };
                 Translation.prototype.dispose = function () {
@@ -3838,7 +3849,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                 };
                 Translation.prototype.addAsset = function (key, value) {
-                    this.assets[key] = Configuration.getInstance(StringConfiguration).create(this.definition);
+                    this.assets[key] = this.attribute.clone();
                     this.assets[key].setValue(value);
                     this.fireOnUpdateAssetEvent(key, key, value);
                 };
@@ -3865,7 +3876,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_29) {
+        (function (Configuration_28) {
             var Container;
             (function (Container_9) {
                 "use strict";
@@ -3904,13 +3915,13 @@ var __extends = (this && this.__extends) || function (d, b) {
                         return this.filterErrors(errors);
                     };
                     TranslationConfiguration.prototype.create = function (definition) {
-                        var proxies = definition[Container.PARAMETER_PROXIES];
+                        var proxies = _super.prototype.createChildren.call(this, definition, Container.PARAMETER_PROXIES);
                         return new Translation(proxies);
                     };
                     return TranslationConfiguration;
                 }(GroupConfiguration));
                 Container_9.TranslationConfiguration = TranslationConfiguration;
-            })(Container = Configuration_29.Container || (Configuration_29.Container = {}));
+            })(Container = Configuration_28.Container || (Configuration_28.Container = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -3918,7 +3929,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_30) {
+        (function (Configuration_29) {
             var Component;
             (function (Component) {
                 "use strict";
@@ -3974,7 +3985,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return ContainerConfiguration;
                 }(GroupConfiguration));
                 Component.ContainerConfiguration = ContainerConfiguration;
-            })(Component = Configuration_30.Component || (Configuration_30.Component = {}));
+            })(Component = Configuration_29.Component || (Configuration_29.Component = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -3982,7 +3993,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_31) {
+        (function (Configuration_30) {
             var Container;
             (function (Container_10) {
                 "use strict";
@@ -4009,7 +4020,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return PageConfiguration;
                 }(ContainerConfiguration));
                 Container_10.PageConfiguration = PageConfiguration;
-            })(Container = Configuration_31.Container || (Configuration_31.Container = {}));
+            })(Container = Configuration_30.Container || (Configuration_30.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
