@@ -48,10 +48,7 @@ module Ompluscript.Model.Attribute {
          */
         constructor(name: string, value: boolean = undefined, required: boolean = false, mustBeTrue: boolean = false) {
             super("boolean", name, value, required);
-            this.mustBeTrue = false;
-            if (mustBeTrue === true) {
-                this.mustBeTrue = true;
-            }
+            this.mustBeTrue = mustBeTrue;
         }
         
         public isMustBeTrue(): boolean {

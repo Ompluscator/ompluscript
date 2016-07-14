@@ -1,12 +1,12 @@
 /// <reference path="Container.ts" />
 /// <reference path="../Attribute/Attribute.ts" />
 /// <reference path="../../Core/Configuration/Configuration.ts" />
-/// <reference path="../Configuration/BooleanConfiguration.ts" />
-/// <reference path="../Configuration/DatetimeConfiguration.ts" />
-/// <reference path="../Configuration/MultipleChoiceConfiguration.ts" />
-/// <reference path="../Configuration/NumberConfiguration.ts" />
-/// <reference path="../Configuration/SingleChoiceConfiguration.ts" />
-/// <reference path="../Configuration/StringConfiguration.ts" />
+/// <reference path="../Configuration/Attribute/BooleanConfiguration.ts" />
+/// <reference path="../Configuration/Attribute/DatetimeConfiguration.ts" />
+/// <reference path="../Configuration/Attribute/MultipleChoiceConfiguration.ts" />
+/// <reference path="../Configuration/Attribute/NumberConfiguration.ts" />
+/// <reference path="../Configuration/Attribute/SingleChoiceConfiguration.ts" />
+/// <reference path="../Configuration/Attribute/StringConfiguration.ts" />
 
 /**
  * Module that contains container classes.
@@ -18,12 +18,12 @@ module Ompluscript.Model.Container {
 
     import Container = Ompluscript.Model.Container.Container;
     import Configuration = Ompluscript.Core.Configuration.Configuration;
-    import BooleanConfiguration = Ompluscript.Model.Configuration.BooleanConfiguration;
-    import DatetimeConfiguration = Ompluscript.Model.Configuration.DatetimeConfiguration;
-    import MultipleChoiceConfiguration = Ompluscript.Model.Configuration.MultipleChoiceConfiguration;
-    import NumberConfiguration = Ompluscript.Model.Configuration.NumberConfiguration;
-    import SingleChoiceConfiguration = Ompluscript.Model.Configuration.SingleChoiceConfiguration;
-    import StringConfiguration = Ompluscript.Model.Configuration.StringConfiguration;
+    import BooleanConfiguration = Ompluscript.Model.Configuration.Attribute.BooleanConfiguration;
+    import DatetimeConfiguration = Ompluscript.Model.Configuration.Attribute.DatetimeConfiguration;
+    import MultipleChoiceConfiguration = Ompluscript.Model.Configuration.Attribute.MultipleChoiceConfiguration;
+    import NumberConfiguration = Ompluscript.Model.Configuration.Attribute.NumberConfiguration;
+    import SingleChoiceConfiguration = Ompluscript.Model.Configuration.Attribute.SingleChoiceConfiguration;
+    import StringConfiguration = Ompluscript.Model.Configuration.Attribute.StringConfiguration;
     import Attribute = Ompluscript.Model.Attribute.Attribute;
 
     /**

@@ -6,7 +6,7 @@ describe("AjaxProxy class tests", function() {
     var definition;
 
     var Model = Ompluscript.Model.Container.Model;
-    var OnDoneProxyEvent = Ompluscript.Model.Event.OnDoneProxyEvent;
+    var OnDoneProxy = Ompluscript.Model.Event.OnDoneProxy;
 
     beforeAll(function() {
         definition = [
@@ -18,7 +18,7 @@ describe("AjaxProxy class tests", function() {
         ];
         proxies = [
             {
-                type: "ajax",
+                type: "AjaxProxy",
                 saveLink: "save",
                 updateLink: "update",
                 deleteLink: "delete",
@@ -26,7 +26,7 @@ describe("AjaxProxy class tests", function() {
             },
         ];
         modelObject = new Model("model", definition, proxies);
-        proxyObject = modelObject.getProxy("ajax");
+        proxyObject = modelObject.getProxy("AjaxProxy");
     });
 
     beforeEach(function() {
@@ -40,9 +40,9 @@ describe("AjaxProxy class tests", function() {
     });
 
     it("get configuration", function() {
-        expect(proxyObject.getName()).toBe("ajax");
+        expect(proxyObject.getName()).toBe("AjaxProxy");
         expect(proxyObject.getStackTrace()).toEqual({
-            type: "ajax",
+            type: "AjaxProxy",
             saveLink: "save",
             updateLink: "update",
             deleteLink: "delete",
@@ -51,7 +51,7 @@ describe("AjaxProxy class tests", function() {
     });
 
     it("save functionality", function() {
-        var onDoneProxyEvent = new OnDoneProxyEvent(modelObject, OnDoneProxyEvent.TYPE_SAVED, {
+        var onDoneProxy = new OnDoneProxy(modelObject, OnDoneProxy.TYPE_SAVED, {
             a: "a"
         });
 
@@ -67,12 +67,12 @@ describe("AjaxProxy class tests", function() {
         });
 
         expect(modelObject.setValues.calls.count()).toBe(0);
-        expect(modelObject.notifyObservers.calls.argsFor(0)).toEqual([onDoneProxyEvent]);
+        expect(modelObject.notifyObservers.calls.argsFor(0)).toEqual([onDoneProxy]);
         expect(modelObject.notifyObservers.calls.count()).toBe(1);
     });
 
     it("update functionality", function() {
-        var onDoneProxyEvent = new OnDoneProxyEvent(modelObject, OnDoneProxyEvent.TYPE_UPDATED, {
+        var onDoneProxy = new OnDoneProxy(modelObject, OnDoneProxy.TYPE_UPDATED, {
             a: "a"
         });
 
@@ -88,12 +88,12 @@ describe("AjaxProxy class tests", function() {
         });
 
         expect(modelObject.setValues.calls.count()).toBe(0);
-        expect(modelObject.notifyObservers.calls.argsFor(0)).toEqual([onDoneProxyEvent]);
+        expect(modelObject.notifyObservers.calls.argsFor(0)).toEqual([onDoneProxy]);
         expect(modelObject.notifyObservers.calls.count()).toBe(1);
     });
 
     it("delete functionality", function() {
-        var onDoneProxyEvent = new OnDoneProxyEvent(modelObject, OnDoneProxyEvent.TYPE_DELETED, {
+        var onDoneProxy = new OnDoneProxy(modelObject, OnDoneProxy.TYPE_DELETED, {
             a: "a"
         });
 
@@ -109,12 +109,12 @@ describe("AjaxProxy class tests", function() {
         });
 
         expect(modelObject.setValues.calls.count()).toBe(0);
-        expect(modelObject.notifyObservers.calls.argsFor(0)).toEqual([onDoneProxyEvent]);
+        expect(modelObject.notifyObservers.calls.argsFor(0)).toEqual([onDoneProxy]);
         expect(modelObject.notifyObservers.calls.count()).toBe(1);
     });
 
     it("select functionality", function() {
-        var onDoneProxyEvent = new OnDoneProxyEvent(modelObject, OnDoneProxyEvent.TYPE_SELECTED, {
+        var onDoneProxy = new OnDoneProxy(modelObject, OnDoneProxy.TYPE_SELECTED, {
             a: "a"
         });
 
@@ -135,12 +135,12 @@ describe("AjaxProxy class tests", function() {
             a: "a"
         }]);
         expect(modelObject.setValues.calls.count()).toBe(1);
-        expect(modelObject.notifyObservers.calls.argsFor(0)).toEqual([onDoneProxyEvent]);
+        expect(modelObject.notifyObservers.calls.argsFor(0)).toEqual([onDoneProxy]);
         expect(modelObject.notifyObservers.calls.count()).toBe(1);
     });
 
     it("failed functionality", function() {
-        var onDoneProxyEvent = new OnDoneProxyEvent(modelObject, OnDoneProxyEvent.TYPE_FAILED, {
+        var onDoneProxy = new OnDoneProxy(modelObject, OnDoneProxy.TYPE_FAILED, {
             a: "a"
         });
 
@@ -158,7 +158,7 @@ describe("AjaxProxy class tests", function() {
         });
 
         expect(modelObject.setValues.calls.count()).toBe(0);
-        expect(modelObject.notifyObservers.calls.argsFor(0)).toEqual([onDoneProxyEvent]);
+        expect(modelObject.notifyObservers.calls.argsFor(0)).toEqual([onDoneProxy]);
         expect(modelObject.notifyObservers.calls.count()).toBe(1);
     });
 

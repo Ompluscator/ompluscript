@@ -1,5 +1,6 @@
 /// <reference path="Proxy.ts" />
 /// <reference path="../Container/Container.ts" />
+/// <reference path="../Event/OnDoneProxy.ts" />
 
 /**
  * Module that contains proxy classes.
@@ -10,7 +11,7 @@ module Ompluscript.Model.Proxy {
     "use strict";
 
     import Container = Ompluscript.Model.Container.Container;
-    import OnDoneProxyEvent = Ompluscript.Model.Event.OnDoneProxyEvent;
+    import OnDoneProxy = Ompluscript.Model.Event.OnDoneProxy;
 
     /**
      * Class that contains functionality for Ajax Proxy.
@@ -22,7 +23,7 @@ module Ompluscript.Model.Proxy {
         /**
          * @type {string} TYPE_AJAX_PROXY Defines type for ajax proxy
          */
-        public static TYPE_AJAX_PROXY: string = "ajax";
+        public static TYPE_AJAX_PROXY: string = AjaxProxy["name"];
 
         /**
          * @type {string} PARAMETER_SAVE_LINK Defines parameter's name for save link
@@ -101,6 +102,42 @@ module Ompluscript.Model.Proxy {
         }
 
         /**
+         * Method that returns save link for ajax request
+         * 
+         * @returns {string} save link for ajax request
+         */
+        public getSaveLink(): string {
+            return this.saveLink;
+        }
+
+        /**
+         * Method that returns update link for ajax request
+         *
+         * @returns {string} update link for ajax request
+         */
+        public getUpdateLink(): string {
+            return this.updateLink;
+        }
+
+        /**
+         * Method that returns delete link for ajax request
+         *
+         * @returns {string} delete link for ajax request
+         */
+        public getDeleteLink(): string {
+            return this.deleteLink;
+        }
+
+        /**
+         * Method that returns select link for ajax request
+         *
+         * @returns {string} select link for ajax request
+         */
+        public getSelectLink(): string {
+            return this.selectLink;
+        }
+
+        /**
          * Method that should perform save request of ajax proxy
          */
         public save(): void {
@@ -108,7 +145,7 @@ module Ompluscript.Model.Proxy {
             if (link === undefined) {
                 link = "/save" + this.container.getName();
             }
-            this.perform(AjaxProxy.METHOD_POST, link, this.container.getValues(), OnDoneProxyEvent.TYPE_SAVED);
+            this.perform(AjaxProxy.METHOD_POST, link, this.container.getValues(), OnDoneProxy.TYPE_SAVED);
         }
 
         /**
@@ -119,7 +156,7 @@ module Ompluscript.Model.Proxy {
             if (link === undefined) {
                 link = "/update" + this.container.getName();
             }
-            this.perform(AjaxProxy.METHOD_POST, link, this.container.getValues(), OnDoneProxyEvent.TYPE_UPDATED);
+            this.perform(AjaxProxy.METHOD_POST, link, this.container.getValues(), OnDoneProxy.TYPE_UPDATED);
         }
 
         /**
@@ -130,7 +167,7 @@ module Ompluscript.Model.Proxy {
             if (link === undefined) {
                 link = "/delete" + this.container.getName();
             }
-            this.perform(AjaxProxy.METHOD_POST, link, this.container.getValues(), OnDoneProxyEvent.TYPE_DELETED);
+            this.perform(AjaxProxy.METHOD_POST, link, this.container.getValues(), OnDoneProxy.TYPE_DELETED);
         }
 
         /**
@@ -143,7 +180,7 @@ module Ompluscript.Model.Proxy {
             if (link === undefined) {
                 link = "/select" + this.container.getName();
             }
-            this.perform(AjaxProxy.METHOD_GET, link, query, OnDoneProxyEvent.TYPE_SELECTED);
+            this.perform(AjaxProxy.METHOD_GET, link, query, OnDoneProxy.TYPE_SELECTED);
         }
 
         /**
@@ -177,10 +214,10 @@ module Ompluscript.Model.Proxy {
                     if (ajax.readyState === ajax.DONE && ajax.status === 200) {
                         that.finish(type, JSON.parse(ajax.responseText));
                     } else if (ajax.readyState === ajax.DONE) {
-                        that.finish(OnDoneProxyEvent.TYPE_FAILED, JSON.parse(ajax.responseText));
+                        that.finish(OnDoneProxy.TYPE_FAILED, JSON.parse(ajax.responseText));
                     }
                 } catch (ex) {
-                    that.finish(OnDoneProxyEvent.TYPE_FAILED, ajax.responseText);
+                    that.finish(OnDoneProxy.TYPE_FAILED, ajax.responseText);
                 }
             };
             ajax.addEventListener(AjaxProxy.AJAX_STATE_CHANGED, listener, false);

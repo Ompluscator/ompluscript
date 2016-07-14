@@ -1,12 +1,10 @@
 /// <reference path="Container.ts" />
 /// <reference path="../Attribute/Attribute.ts" />
 /// <reference path="../../Core/Configuration/Configuration.ts" />
-/// <reference path="../Configuration/BooleanConfiguration.ts" />
-/// <reference path="../Configuration/DatetimeConfiguration.ts" />
-/// <reference path="../Configuration/MultipleChoiceConfiguration.ts" />
-/// <reference path="../Configuration/NumberConfiguration.ts" />
-/// <reference path="../Configuration/SingleChoiceConfiguration.ts" />
-/// <reference path="../Configuration/StringConfiguration.ts" />
+/// <reference path="../Configuration/Attribute/StringConfiguration.ts" />
+/// <reference path="../Proxy/AjaxProxy.ts" />
+/// <reference path="../Event/OnUpdateAsset.ts" />
+/// <reference path="../../Core/Observer/IObserver.ts" />
 
 /**
  * Module that contains container classes.
@@ -19,8 +17,16 @@ module Ompluscript.Model.Container {
     import Container = Ompluscript.Model.Container.Container;
     import Configuration = Ompluscript.Core.Configuration.Configuration;
     import String = Ompluscript.Model.Attribute.String;
-    import StringConfiguration = Ompluscript.Model.Configuration.StringConfiguration;
+    import StringConfiguration = Ompluscript.Model.Configuration.Attribute.StringConfiguration;
+    import AjaxProxy = Ompluscript.Model.Proxy.AjaxProxy;
+    import IObserver = Ompluscript.Core.Observer.IObserver;
+    import OnUpdateAsset = Ompluscript.Model.Event.OnUpdateAsset;
 
+    /**
+     * Class that contains functionality for Translation.
+     *
+     * @class Translation
+     */
     export class Translation extends Container {
 
         /**
@@ -28,21 +34,78 @@ module Ompluscript.Model.Container {
          */
         public static TYPE_TRANSLATION: string = Translation["name"];
 
+        /**
+         * @type {string} ATTRIBUTE_ASSET Name of asset parameter.
+         */
         public static ATTRIBUTE_ASSET: string = "asset";
 
+        /**
+         * @type {Object} assets List of all assets
+         */
         protected assets: Object;
 
-        constructor() {
+        /**
+         * @type {Object} observers List of all observers by assets
+         */
+        protected observers: Object;
+
+        /**
+         * Class constructor.
+         *
+         * Sets list of assets and observers and calls constructor of superclass.
+         *
+         * @param {Object[]} proxies Definitions for all proxies
+         * @constructs
+         */
+        constructor(proxies: Object[] = undefined) {
             let definition: Object = {};
             definition[Configuration.PARAMETER_NAME] = Translation.ATTRIBUTE_ASSET;
             definition[Configuration.PARAMETER_TYPE] = String.TYPE_STRING;
-            super(Translation.TYPE_TRANSLATION, [definition]);
+            if (proxies === undefined) {
+                proxies = [
+                    {
+                        type: AjaxProxy.TYPE_AJAX_PROXY,
+                    },
+                ];
+            }
+            super(Translation.TYPE_TRANSLATION, [definition], proxies);
+            this.assets = {};
+            this.observers = {};
         }
 
+        /**
+         * Method that adds observer for the asset.
+         *
+         * @param {string} name Name of asset
+         * @param {IObserver} observer Observer for fetching asset
+         */
+        public attachToAsset(name: string, observer: IObserver): void {
+            if (!this.observers.hasOwnProperty(name)) {
+                this.observers[name] = [];
+            }
+            this.observers[name].push(observer);
+            let oldValue: string = name;
+            let newValue: string = this.getAsset(name);
+            let event: OnUpdateAsset = new OnUpdateAsset(this, oldValue, newValue);
+            observer.update(event);
+        }
+
+        /**
+         * Method that returns if there is a asset in the list
+         *
+         * @param {string} name Name of asset
+         * @returns {boolean} if there is a asset in the list
+         */
         public hasAsset(name: string): boolean {
             return this.assets.hasOwnProperty(name);
         }
 
+        /**
+         * Method that returns a asset from the list
+         *
+         * @param {string} name Name of asset
+         * @returns {string} value of asset
+         */
         public getAsset(name: string): string {
             if (this.hasAsset(name)) {
                 return this.assets[name].getValue();
@@ -50,10 +113,20 @@ module Ompluscript.Model.Container {
             return name;
         }
 
+        /**
+         * Method that validates all attributes in translation.
+         *
+         * @returns {boolean} Result of validation
+         */
         public validate(): boolean {
             return true;
         }
 
+        /**
+         * Method that returns all current variables of object.
+         *
+         * @returns {Object} contains all variables of the object
+         */
         public getStackTrace(): Object {
             let trace: Object = super.getStackTrace();
             trace["assets"] = {};
@@ -69,18 +142,41 @@ module Ompluscript.Model.Container {
          * Method that should be called before removing reference from object.
          */
         public dispose(): void {
-            this.clearAssets();
+            for (let i in this.assets) {
+                if (this.assets.hasOwnProperty(i)) {
+                    this.assets[i].dispose();
+                }
+            }
+            this.assets = {};
         }
 
+        /**
+         * Method that sets values into translation.
+         *
+         * @param {Object} values
+         */
         public setValues(values: Object): void {
-            this.clearAssets();
             for (let key in values) {
                 if (values.hasOwnProperty(key)) {
-                    this.addAsset(key, values[key]);
+                    if (!this.assets.hasOwnProperty(key)) {
+                        this.addAsset(key, values[key]);
+                    } else {
+                        this.replaceAsset(key, values[key]);
+                    }
+                }
+            }
+            for (let asset in this.assets) {
+                if (this.assets.hasOwnProperty(asset) && !values.hasOwnProperty(asset)) {
+                    this.deleteAsset(asset);
                 }
             }
         }
 
+        /**
+         * Method that returns values from translation.
+         *
+         * @returns {Object}
+         */
         public getValues(): Object {
             let values: Object = {};
             for (let key in this.assets) {
@@ -91,18 +187,57 @@ module Ompluscript.Model.Container {
             return values;
         }
 
+        /**
+         * Method that fires event when asset is updated
+         *
+         * @param {string} name Asset name
+         * @param {string} oldValue Old asset of attribute
+         * @param {string} newValue New asset of attribute
+         */
+        protected fireOnUpdateAssetEvent(name: string, oldValue: string, newValue: string): void {
+            let event: OnUpdateAsset = new OnUpdateAsset(this, oldValue, newValue);
+            if (this.observers.hasOwnProperty(name)) {
+                for (let i: number = 0; i < this.observers[name].length; i++) {
+                    this.observers[name][i].update(event);
+                }
+            }
+        }
+
+        /**
+         * Method that adds asset into list
+         *
+         * @param {string} key Name of asset
+         * @param {value} value Value of asset
+         */
         private addAsset(key: string, value: string): void {
             this.assets[key] = Configuration.getInstance(StringConfiguration).create(this.definition);
             this.assets[key].setValue(value);
+            this.fireOnUpdateAssetEvent(key, key, value);
         }
-        
-        private clearAssets(): void {
-            for (let i in this.assets) {
-                if (this.assets.hasOwnProperty(i)) {
-                    this.assets[i].dispose();
-                }
-            }
-            this.assets = {};
+
+        /**
+         * Method that replaces asset into list
+         *
+         * @param {string} key Name of asset
+         * @param {value} value Value of asset
+         */
+        private replaceAsset(key: string, value: string): void {
+            let oldValue: string = this.assets[key].getValue();
+            this.assets[key].setValue(value);
+            this.fireOnUpdateAssetEvent(key, oldValue, value);
+        }
+
+        /**
+         * Method that replaces asset into list
+         *
+         * @param {string} key Name of asset
+         * @param {value} value Value of asset
+         */
+        private deleteAsset(key: string): void {
+            let oldValue: string = this.assets[key].getValue();
+            this.assets[key].setValue(key);
+            this.fireOnUpdateAssetEvent(key, oldValue, key);
+            delete this.assets[key];
         }
     }
 }

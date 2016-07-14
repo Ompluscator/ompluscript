@@ -1,5 +1,6 @@
 /// <reference path="Proxy.ts" />
 /// <reference path="../Container/Container.ts" />
+/// <reference path="../Event/OnDoneProxy.ts" />
 
 /**
  * Module that contains proxy classes.
@@ -10,7 +11,7 @@ module Ompluscript.Model.Proxy {
     "use strict";
 
     import Container = Ompluscript.Model.Container.Container;
-    import OnDoneProxyEvent = Ompluscript.Model.Event.OnDoneProxyEvent;
+    import OnDoneProxy = Ompluscript.Model.Event.OnDoneProxy;
 
     /**
      * Abstract class that contains basic functionality for Storage Proxy.
@@ -44,7 +45,7 @@ module Ompluscript.Model.Proxy {
          */
         public save(): void {
             this.storage.setItem(this.container.getName(), JSON.stringify(this.container.getValues()));
-            this.finish(OnDoneProxyEvent.TYPE_SAVED, this.container.getValues());
+            this.finish(OnDoneProxy.TYPE_SAVED, this.container.getValues());
         }
 
         /**
@@ -52,7 +53,7 @@ module Ompluscript.Model.Proxy {
          */
         public update(): void {
             this.storage.setItem(this.container.getName(), JSON.stringify(this.container.getValues()));
-            this.finish(OnDoneProxyEvent.TYPE_UPDATED, this.container.getValues());
+            this.finish(OnDoneProxy.TYPE_UPDATED, this.container.getValues());
         }
 
         /**
@@ -60,7 +61,7 @@ module Ompluscript.Model.Proxy {
          */
         public delete(): void {
             this.storage.removeItem(this.container.getName());
-            this.finish(OnDoneProxyEvent.TYPE_DELETED, this.container.getValues());
+            this.finish(OnDoneProxy.TYPE_DELETED, this.container.getValues());
         }
 
         /**
@@ -68,7 +69,7 @@ module Ompluscript.Model.Proxy {
          */
         public select(): void {
             let result: string = this.storage.getItem(this.container.getName());
-            this.finish(OnDoneProxyEvent.TYPE_SELECTED, JSON.parse(result));
+            this.finish(OnDoneProxy.TYPE_SELECTED, JSON.parse(result));
         }
 
     }

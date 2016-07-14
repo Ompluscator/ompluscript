@@ -2,14 +2,14 @@
 /// <reference path="../Core/Configuration/Creator.ts" />
 /// <reference path="../Core/Configuration/Configuration.ts" />
 /// <reference path="../Core/Configuration/ErrorConfiguration.ts" />
-/// <reference path="Configuration/BooleanConfiguration.ts" />
-/// <reference path="Configuration/DatetimeConfiguration.ts" />
-/// <reference path="Configuration/MultipleChoiceConfiguration.ts" />
-/// <reference path="Configuration/NumberConfiguration.ts" />
-/// <reference path="Configuration/SingleChoiceConfiguration.ts" />
-/// <reference path="Configuration/StringConfiguration.ts" />
-/// <reference path="Configuration/ModelConfiguration.ts" />
-/// <reference path="Configuration/TableConfiguration.ts" />
+/// <reference path="Configuration/Attribute/BooleanConfiguration.ts" />
+/// <reference path="Configuration/Attribute/DatetimeConfiguration.ts" />
+/// <reference path="Configuration/Attribute/MultipleChoiceConfiguration.ts" />
+/// <reference path="Configuration/Attribute/NumberConfiguration.ts" />
+/// <reference path="Configuration/Attribute/SingleChoiceConfiguration.ts" />
+/// <reference path="Configuration/Attribute/StringConfiguration.ts" />
+/// <reference path="Configuration/Container/ModelConfiguration.ts" />
+/// <reference path="Configuration/Container/TableConfiguration.ts" />
 
 /**
  * Module that contains model' classes.
@@ -21,15 +21,15 @@ module Ompluscript.Model {
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import CreatorParent = Ompluscript.Core.Configuration.Creator;
     import Configuration = Ompluscript.Core.Configuration.Configuration;
-    import BooleanConfiguration = Ompluscript.Model.Configuration.BooleanConfiguration;
-    import DatetimeConfiguration = Ompluscript.Model.Configuration.DatetimeConfiguration;
-    import MultipleChoiceConfiguration = Ompluscript.Model.Configuration.MultipleChoiceConfiguration;
-    import NumberConfiguration = Ompluscript.Model.Configuration.NumberConfiguration;
-    import SingleChoiceConfiguration = Ompluscript.Model.Configuration.SingleChoiceConfiguration;
-    import StringConfiguration = Ompluscript.Model.Configuration.StringConfiguration;
+    import BooleanConfiguration = Ompluscript.Model.Configuration.Attribute.BooleanConfiguration;
+    import DatetimeConfiguration = Ompluscript.Model.Configuration.Attribute.DatetimeConfiguration;
+    import MultipleChoiceConfiguration = Ompluscript.Model.Configuration.Attribute.MultipleChoiceConfiguration;
+    import NumberConfiguration = Ompluscript.Model.Configuration.Attribute.NumberConfiguration;
+    import SingleChoiceConfiguration = Ompluscript.Model.Configuration.Attribute.SingleChoiceConfiguration;
+    import StringConfiguration = Ompluscript.Model.Configuration.Attribute.StringConfiguration;
     import ErrorConfiguration = Ompluscript.Core.Configuration.ErrorConfiguration;
-    import ModelConfiguration = Ompluscript.Model.Configuration.ModelConfiguration;
-    import TableConfiguration = Ompluscript.Model.Configuration.TableConfiguration;
+    import ModelConfiguration = Ompluscript.Model.Configuration.Container.ModelConfiguration;
+    import TableConfiguration = Ompluscript.Model.Configuration.Container.TableConfiguration;
 
     /**
      * Class that contains functionality for model creator.

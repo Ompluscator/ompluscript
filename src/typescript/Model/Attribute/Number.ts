@@ -72,14 +72,8 @@ module Ompluscript.Model.Attribute {
             super("number", name, value, required);
             this.minimum = minimum;
             this.maximum = maximum;
-            this.includeMinimum = false;
-            if (includeMinimum === true) {
-                this.includeMinimum = true;
-            }
-            this.includeMaximum = false;
-            if (includeMaximum === true) {
-                this.includeMaximum = true;
-            }
+            this.includeMinimum = includeMinimum;
+            this.includeMaximum = includeMaximum;
         }
 
         /**
@@ -92,12 +86,30 @@ module Ompluscript.Model.Attribute {
         }
 
         /**
+         * Method that returns if minimum is included as allowed.
+         *
+         * @returns {number|undefined} if minimum is included as allowed
+         */
+        public getIncludeMinimum(): boolean {
+            return this.includeMinimum;
+        }
+
+        /**
          * Method that returns maximum allowed value of number.
          *
          * @returns {number|undefined} maximum allowed value of number
          */
         public getMaximum(): number {
             return this.maximum;
+        }
+
+        /**
+         * Method that returns if maximum is included as allowed.
+         *
+         * @returns {number|undefined} if maximum is included as allowed
+         */
+        public getIncludeMaximum(): boolean {
+            return this.includeMaximum;
         }
 
         /**

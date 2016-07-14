@@ -2,12 +2,12 @@
 /// <reference path="../Core/Configuration/Creator.ts" />
 /// <reference path="../Core/Configuration/Configuration.ts" />
 /// <reference path="../Core/Configuration/ErrorConfiguration.ts" />
-/// <reference path="Configuration/PageConfiguration.ts" />
-/// <reference path="Configuration/CheckBoxInputConfiguration.ts" />
-/// <reference path="Configuration/EmailInputConfiguration.ts" />
-/// <reference path="Configuration/NumberInputConfiguration.ts" />
-/// <reference path="Configuration/PasswordInputConfiguration.ts" />
-/// <reference path="Configuration/TextInputConfiguration.ts" />
+/// <reference path="Configuration/Container/PageConfiguration.ts" />
+/// <reference path="Configuration/Field/CheckBoxInputConfiguration.ts" />
+/// <reference path="Configuration/Field/EmailInputConfiguration.ts" />
+/// <reference path="Configuration/Field/NumberInputConfiguration.ts" />
+/// <reference path="Configuration/Field/PasswordInputConfiguration.ts" />
+/// <reference path="Configuration/Field/TextInputConfiguration.ts" />
 
 /**
  * Module that contains model' classes.
@@ -19,12 +19,12 @@ module Ompluscript.View {
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import CreatorParent = Ompluscript.Core.Configuration.Creator;
     import Configuration = Ompluscript.Core.Configuration.Configuration;
-    import PageConfiguration = Ompluscript.View.Configuration.PageConfiguration;
-    import CheckBoxInputConfiguration = Ompluscript.View.Configuration.CheckBoxInputConfiguration;
-    import EmailInputConfiguration = Ompluscript.View.Configuration.EmailInputConfiguration;
-    import NumberInputConfiguration = Ompluscript.View.Configuration.NumberInputConfiguration;
-    import PasswordInputConfiguration = Ompluscript.View.Configuration.PasswordInputConfiguration;
-    import TextInputConfiguration = Ompluscript.View.Configuration.TextInputConfiguration;
+    import PageConfiguration = Ompluscript.View.Configuration.Container.PageConfiguration;
+    import CheckBoxInputConfiguration = Ompluscript.View.Configuration.Field.CheckBoxInputConfiguration;
+    import EmailInputConfiguration = Ompluscript.View.Configuration.Field.EmailInputConfiguration;
+    import NumberInputConfiguration = Ompluscript.View.Configuration.Field.NumberInputConfiguration;
+    import PasswordInputConfiguration = Ompluscript.View.Configuration.Field.PasswordInputConfiguration;
+    import TextInputConfiguration = Ompluscript.View.Configuration.Field.TextInputConfiguration;
 
     /**
      * Class that contains functionality for model creator.

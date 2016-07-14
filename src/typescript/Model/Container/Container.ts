@@ -1,10 +1,10 @@
 /// <reference path="../../Core/Observer/Observable.ts" />
 /// <reference path="../../Core/Configuration/Configuration.ts" />
-/// <reference path="../Event/OnDoneProxyEvent.ts" />
-/// <reference path="../Configuration/AjaxProxyConfiguration.ts" />
-/// <reference path="../Configuration/LocalStorageProxyConfiguration.ts" />
-/// <reference path="../Configuration/SessionStorageProxyConfiguration.ts" />
-/// <reference path="../Configuration/ProxyConfiguration.ts" />
+/// <reference path="../Event/OnDoneProxy.ts" />
+/// <reference path="../Configuration/Proxy/AjaxProxyConfiguration.ts" />
+/// <reference path="../Configuration/Proxy/LocalStorageProxyConfiguration.ts" />
+/// <reference path="../Configuration/Proxy/SessionStorageProxyConfiguration.ts" />
+/// <reference path="../Configuration/Proxy/ProxyConfiguration.ts" />
 /// <reference path="../Proxy/Proxy.ts" />
 
 /**
@@ -16,13 +16,13 @@ module Ompluscript.Model.Container {
     "use strict";
 
     import Observable = Ompluscript.Core.Observer.Observable;
-    import OnDoneProxyEvent = Ompluscript.Model.Event.OnDoneProxyEvent;
+    import OnDoneProxy = Ompluscript.Model.Event.OnDoneProxy;
     import Configuration = Ompluscript.Core.Configuration.Configuration;
-    import AjaxProxyConfiguration = Ompluscript.Model.Configuration.AjaxProxyConfiguration;
-    import SessionStorageProxyConfiguration = Ompluscript.Model.Configuration.SessionStorageProxyConfiguration;
-    import LocalStorageProxyConfiguration = Ompluscript.Model.Configuration.LocalStorageProxyConfiguration;
+    import AjaxProxyConfiguration = Ompluscript.Model.Configuration.Proxy.AjaxProxyConfiguration;
+    import SessionStorageProxyConfiguration = Ompluscript.Model.Configuration.Proxy.SessionStorageProxyConfiguration;
+    import LocalStorageProxyConfiguration = Ompluscript.Model.Configuration.Proxy.LocalStorageProxyConfiguration;
     import Proxy = Ompluscript.Model.Proxy.Proxy;
-    import ProxyConfiguration = Ompluscript.Model.Configuration.ProxyConfiguration;
+    import ProxyConfiguration = Ompluscript.Model.Configuration.Proxy.ProxyConfiguration;
 
     /**
      * Class that contains functionality for Container.
@@ -132,7 +132,7 @@ module Ompluscript.Model.Container {
          * @param {Object} response Result from proxy
          */
         public doneProxy(action: string, response: Object): void {
-            if (action === OnDoneProxyEvent.TYPE_SELECTED) {
+            if (action === OnDoneProxy.TYPE_SELECTED) {
                 this.setValues(response);
             }
             this.fireOnDoneProxyEvent(action, response);
@@ -171,7 +171,7 @@ module Ompluscript.Model.Container {
          * @param {Object} response Result from proxy
          */
         protected fireOnDoneProxyEvent(action: string, response: Object): void {
-            let event: OnDoneProxyEvent = new OnDoneProxyEvent(this, action, response);
+            let event: OnDoneProxy = new OnDoneProxy(this, action, response);
             this.notifyObservers(event);
         }
 

@@ -1,0 +1,49 @@
+/// <reference path="../../../Core/Interfaces/IBase.ts" />
+/// <reference path="../../../Core/Configuration/Configuration.ts" />
+/// <reference path="ContainerConfiguration.ts" />
+/// <reference path="../../Container/Model.ts" />
+
+/**
+ * Module that contains containers' configuration classes.
+ *
+ * @module Ompluscript.Model.Configuration.Container
+ */
+module Ompluscript.Model.Configuration.Container {
+    "use strict";
+
+    import IBase = Ompluscript.Core.Interfaces.IBase;
+    import Model = Ompluscript.Model.Container.Model;
+    import Container = Ompluscript.Model.Container.Container;
+    import Configuration = Ompluscript.Core.Configuration.Configuration;
+
+    /**
+     * Class that contains functionality for model configuration.
+     *
+     * @class ModelConfiguration
+     */
+    export class ModelConfiguration extends ContainerConfiguration {
+
+        /**
+         * Method that decides if this configuration is related to this class.
+         *
+         * @param {Object} definition Class definition
+         * @returns {boolean} Is related to this class
+         */
+        public isRelatedTo(definition: Object): boolean {
+            return definition[Configuration.PARAMETER_TYPE] === Model.TYPE_MODEL;
+        }
+
+        /**
+         * Method that creates new instance from configuration
+         *
+         * @param {Object} definition Class definition
+         * @returns {IBase} New instance
+         */
+        public create(definition: Object): IBase {
+            let name: string = definition[Configuration.PARAMETER_NAME];
+            let attributes: Object[] = definition[Container.PARAMETER_DEFINITION];
+            let proxies: Object[] = definition[Container.PARAMETER_PROXIES];
+            return new Model(name, attributes, proxies);
+        }
+    }
+}

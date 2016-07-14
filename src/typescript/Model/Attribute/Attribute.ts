@@ -17,7 +17,7 @@ module Ompluscript.Model.Attribute {
     /**
      * Class that contains functionality for single attribute.
      *
-     * @class String
+     * @class Attribute<T>
      */
     export abstract class Attribute<T> extends Observable {
 
@@ -102,10 +102,7 @@ module Ompluscript.Model.Attribute {
             this.type = type;
             this.name = name;
             this.value = value;
-            this.required = false;
-            if (required === true) {
-                this.required = true;
-            }
+            this.required = required;
         }
 
         /**

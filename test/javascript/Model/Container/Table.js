@@ -412,23 +412,23 @@ describe("Table class tests - proxies", function() {
 
     var Table = Ompluscript.Model.Container.Table;
     var AjaxProxy = Ompluscript.Model.Proxy.AjaxProxy;
-    var LocaleStorageProxy = Ompluscript.Model.Proxy.LocaleStorageProxy;
+    var LocalStorageProxy = Ompluscript.Model.Proxy.LocalStorageProxy;
     var SessionStorageProxy = Ompluscript.Model.Proxy.SessionStorageProxy;
 
     beforeAll(function() {
         proxies = [
             {
-                type: "ajax",
+                type: "AjaxProxy",
                 saveLink: "save",
                 updateLink: "update",
                 deleteLink: "delete",
                 selectLink: "select"
             },
             {
-                type: "localStorage",
+                type: "LocalStorageProxy",
             },
             {
-                type: "sessionStorage",
+                type: "SessionStorageProxy",
             },
         ];
 
@@ -437,12 +437,12 @@ describe("Table class tests - proxies", function() {
 
     it("get configuration", function() {
         expect(tableObject.getName()).toBe(name);
-        expect(tableObject.hasProxy("ajax")).toBeTruthy();
-        expect(tableObject.getProxy("ajax") instanceof AjaxProxy).toBeTruthy();
-        expect(tableObject.hasProxy("localStorage")).toBeTruthy();
-        expect(tableObject.getProxy("localStorage") instanceof LocaleStorageProxy).toBeTruthy();
-        expect(tableObject.hasProxy("sessionStorage")).toBeTruthy();
-        expect(tableObject.getProxy("sessionStorage") instanceof SessionStorageProxy).toBeTruthy();
+        expect(tableObject.hasProxy("AjaxProxy")).toBeTruthy();
+        expect(tableObject.getProxy("AjaxProxy") instanceof AjaxProxy).toBeTruthy();
+        expect(tableObject.hasProxy("LocalStorageProxy")).toBeTruthy();
+        expect(tableObject.getProxy("LocalStorageProxy") instanceof LocalStorageProxy).toBeTruthy();
+        expect(tableObject.hasProxy("SessionStorageProxy")).toBeTruthy();
+        expect(tableObject.getProxy("SessionStorageProxy") instanceof SessionStorageProxy).toBeTruthy();
         expect(tableObject.getStackTrace()).toEqual({
             definition: [],
             name: name,

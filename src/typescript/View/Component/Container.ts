@@ -1,15 +1,15 @@
 /// <reference path="Component.ts" />
 /// <reference path="Layout.ts" />
 /// <reference path="../Layout/NullLayout.ts" />
-/// <reference path="../Configuration/NullLayoutConfiguration.ts" />
-/// <reference path="../Configuration/RelativeLayoutConfiguration.ts" />
-/// <reference path="../Configuration/LinearLayoutConfiguration.ts" />
-/// <reference path="../Configuration/TableLayoutConfiguration.ts" />
-/// <reference path="../Configuration/CheckBoxInputConfiguration.ts" />
-/// <reference path="../Configuration/EmailInputConfiguration.ts" />
-/// <reference path="../Configuration/NumberInputConfiguration.ts" />
-/// <reference path="../Configuration/PasswordInputConfiguration.ts" />
-/// <reference path="../Configuration/TextInputConfiguration.ts" />
+/// <reference path="../Configuration/Layout/NullLayoutConfiguration.ts" />
+/// <reference path="../Configuration/Layout/RelativeLayoutConfiguration.ts" />
+/// <reference path="../Configuration/Layout/LinearLayoutConfiguration.ts" />
+/// <reference path="../Configuration/Layout/TableLayoutConfiguration.ts" />
+/// <reference path="../Configuration/Field/CheckBoxInputConfiguration.ts" />
+/// <reference path="../Configuration/Field/EmailInputConfiguration.ts" />
+/// <reference path="../Configuration/Field/NumberInputConfiguration.ts" />
+/// <reference path="../Configuration/Field/PasswordInputConfiguration.ts" />
+/// <reference path="../Configuration/Field/TextInputConfiguration.ts" />
 
 /**
  * Module that contains base components
@@ -22,15 +22,15 @@ module Ompluscript.View.Component {
     import Component = Ompluscript.View.Component.Component;
     import NullLayout = Ompluscript.View.Layout.NullLayout;
     import Configuration = Ompluscript.Core.Configuration.Configuration;
-    import NullLayoutConfiguration = Ompluscript.View.Configuration.NullLayoutConfiguration;
-    import RelativeLayoutConfiguration = Ompluscript.View.Configuration.RelativeLayoutConfiguration;
-    import LinearLayoutConfiguration = Ompluscript.View.Configuration.LinearLayoutConfiguration;
-    import TableLayoutConfiguration = Ompluscript.View.Configuration.TableLayoutConfiguration;
-    import CheckBoxInputConfiguration = Ompluscript.View.Configuration.CheckBoxInputConfiguration;
-    import EmailInputConfiguration = Ompluscript.View.Configuration.EmailInputConfiguration;
-    import NumberInputConfiguration = Ompluscript.View.Configuration.NumberInputConfiguration;
-    import PasswordInputConfiguration = Ompluscript.View.Configuration.PasswordInputConfiguration;
-    import TextInputConfiguration = Ompluscript.View.Configuration.TextInputConfiguration;
+    import NullLayoutConfiguration = Ompluscript.View.Configuration.Layout.NullLayoutConfiguration;
+    import RelativeLayoutConfiguration = Ompluscript.View.Configuration.Layout.RelativeLayoutConfiguration;
+    import LinearLayoutConfiguration = Ompluscript.View.Configuration.Layout.LinearLayoutConfiguration;
+    import TableLayoutConfiguration = Ompluscript.View.Configuration.Layout.TableLayoutConfiguration;
+    import CheckBoxInputConfiguration = Ompluscript.View.Configuration.Field.CheckBoxInputConfiguration;
+    import EmailInputConfiguration = Ompluscript.View.Configuration.Field.EmailInputConfiguration;
+    import NumberInputConfiguration = Ompluscript.View.Configuration.Field.NumberInputConfiguration;
+    import PasswordInputConfiguration = Ompluscript.View.Configuration.Field.PasswordInputConfiguration;
+    import TextInputConfiguration = Ompluscript.View.Configuration.Field.TextInputConfiguration;
 
     /**
      * Class that defines basic container
