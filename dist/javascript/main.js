@@ -2035,10 +2035,10 @@ var __extends = (this && this.__extends) || function (d, b) {
                     var request = this.extractToParameters(parameters);
                     var listener = function () {
                         try {
-                            if (ajax.readyState === 4 && ajax.status === 200) {
+                            if (ajax.readyState === ajax.DONE && ajax.status === 200) {
                                 that.finish(type, JSON.parse(ajax.responseText));
                             }
-                            else {
+                            else if (ajax.readyState === ajax.DONE) {
                                 that.finish(OnDoneProxyEvent.TYPE_FAILED, JSON.parse(ajax.responseText));
                             }
                         }

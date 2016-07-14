@@ -174,9 +174,9 @@ module Ompluscript.Model.Proxy {
             let request: string = this.extractToParameters(parameters);
             let listener: () => void = function(): void {
                 try {
-                    if (ajax.readyState === 4 && ajax.status === 200) {
+                    if (ajax.readyState === ajax.DONE && ajax.status === 200) {
                         that.finish(type, JSON.parse(ajax.responseText));
-                    } else {
+                    } else if (ajax.readyState === ajax.DONE) {
                         that.finish(OnDoneProxyEvent.TYPE_FAILED, JSON.parse(ajax.responseText));
                     }
                 } catch (ex) {
