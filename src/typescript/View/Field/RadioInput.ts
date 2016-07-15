@@ -24,6 +24,11 @@ module Ompluscript.View.Field {
         public static TYPE_RADIO_INPUT: string = RadioInput["name"];
 
         /**
+         * @type {string} PARAMETER_VALUE Name of value parameter
+         */
+        public static PARAMETER_VALUE: string = "value";
+
+        /**
          * @type {string} INPUT_RADIO Type of radio input HTML element
          */
         public static INPUT_RADIO: string = "radio";

@@ -5,7 +5,6 @@
 /// <reference path="../../Field/EmailInput.ts" />
 /// <reference path="../../../Model/Attribute/Attribute.ts" />
 /// <reference path="../../../Model/Attribute/String.ts" />
-/// <reference path="../../../Model/Configuration/Attribute/StringConfiguration.ts" />
 
 module Ompluscript.View.Configuration.Field {
     "use strict";
@@ -14,7 +13,6 @@ module Ompluscript.View.Configuration.Field {
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import Input = Ompluscript.View.Field.Input;
     import Component = Ompluscript.View.Component.Component;
-    import StringConfiguration = Ompluscript.Model.Configuration.Attribute.StringConfiguration;
     import String = Ompluscript.Model.Attribute.String;
     import EmailInput = Ompluscript.View.Field.EmailInput;
 
@@ -41,7 +39,7 @@ module Ompluscript.View.Configuration.Field {
             let name: string = definition[Configuration.PARAMETER_NAME];
             attribute = <String>this.createAttribute(definition, attribute);
             let placeholder: string = definition[Input.PARAMETER_PLACEHOLDER];
-            let styles: string = definition[Component.PARAMETER_STYLES];
+            let styles: Object = definition[Component.PARAMETER_STYLES];
             return new EmailInput(name, attribute, placeholder, styles);
         }
     }

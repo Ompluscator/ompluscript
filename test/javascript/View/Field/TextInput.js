@@ -1,4 +1,4 @@
-describe("TextInput class tests", function() {
+describe("TextInput class tests - events", function() {
 
     var stringObject;
     var textInput;
@@ -17,6 +17,7 @@ describe("TextInput class tests", function() {
     it("get configuration", function() {
         expect(textInput.hasClass(Input.FIELD_INPUT)).toBeTruthy();
         expect(textInput.isBound()).toBeTruthy();
+        expect(textInput.isTranslated()).toBeFalsy();
         expect(textInput.getStackTrace()).toEqual({
             html: '<input type="text" name="param" class="input">',
             name: "param",
@@ -97,4 +98,42 @@ describe("TextInput class tests", function() {
         expect(textInput.getId()).toBe("id");
         expect(textInput.getAttribute(Input.ATTRIBUTE_CLASS)).toBe("class");
     });
+});
+
+describe("TextInput class tests - placeholder", function() {
+
+    var textInput;
+
+    var Input = Ompluscript.View.Field.Input;
+    var TextInput = Ompluscript.View.Field.TextInput;
+    var Creator = Ompluscript.Model.Creator;
+
+    beforeAll(function() {
+        textInput = new TextInput("param", void(0), "text")
+    });
+
+    it("get configuration", function() {
+        expect(textInput.hasClass(Input.FIELD_INPUT)).toBeTruthy();
+        expect(textInput.isBound()).toBeFalsy();
+        expect(textInput.isTranslated()).toBeTruthy();
+        expect(textInput.getPlaceholderContent()).toBe("text");
+        expect(textInput.getStackTrace()).toEqual({
+            html: '<input type="text" name="param" class="input" placeholder="text">',
+            name: "param",
+            attribute: void(0),
+        });
+    });
+
+    it("placeholder - functional test", function() {
+        Creator.getInstance().getTranslation().setValues({
+            text: "value"
+        });
+        expect(textInput.getPlaceholderContent()).toBe("value");
+        expect(textInput.getStackTrace()).toEqual({
+            html: '<input type="text" name="param" class="input" placeholder="value">',
+            name: "param",
+            attribute: void(0),
+        });
+    });
+
 });

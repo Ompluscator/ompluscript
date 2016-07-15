@@ -59,8 +59,8 @@ module Ompluscript.View.Configuration.Field {
          */
         public getErrors(definition: Object): string[] {
             let errors: string[] = super.getErrors(definition);
+            errors.push(this.shouldBeString(definition, Input.PARAMETER_PLACEHOLDER));
             let error: string = this.shouldBeStringOrObject(definition, Input.PARAMETER_ATTRIBUTE);
-            let error: string = this.shouldBeString(definition, Input.PARAMETER_PLACEHOLDER);
             if (error === undefined) {
                 if (typeof definition[Input.PARAMETER_ATTRIBUTE] === "string") {
                     if (!Creator.getInstance().ifDefined(definition[Input.PARAMETER_ATTRIBUTE])) {
@@ -104,7 +104,7 @@ module Ompluscript.View.Configuration.Field {
          * @param {String} attribute Instance of binding attribute
          * @returns {IBase} New instance
          */
-        public abstract create(definition: Object, attribute?: Attribute): IBase;
+        public abstract create(definition: Object, attribute?: Attribute<any>): IBase;
 
     }
 }

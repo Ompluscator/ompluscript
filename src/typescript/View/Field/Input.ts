@@ -171,7 +171,7 @@ module Ompluscript.View.Field {
         public setValue(value: any): void {
             this.updateValue(value);
             if (this.isBound()) {
-                this.attribute.setValue(value);
+                this.attribute.setValue(this.getValue());
             }
         }
 
@@ -194,6 +194,21 @@ module Ompluscript.View.Field {
                 return this.placeholderContent;
             }
             return this.placeholder;
+        }
+
+        /**
+         * Method that returns all current values of object.
+         *
+         * @returns {Object} contains all values of the object
+         */
+        public getStackTrace(): Object {
+            let trace: Object = super.getStackTrace();
+            if (this.isBound()) {
+                trace["attribute"] = this.attribute.getStackTrace();
+            } else {
+                trace["attribute"] = undefined;
+            }
+            return trace;
         }
 
         /**
@@ -222,21 +237,6 @@ module Ompluscript.View.Field {
         protected fireOnUpdateInputEvent(value: any): void {
             let event: OnUpdateInput = new OnUpdateInput(this, value);
             this.notifyObservers(event);
-        }
-
-        /**
-         * Method that returns all current values of object.
-         *
-         * @returns {Object} contains all values of the object
-         */
-        public getStackTrace(): Object {
-            let trace: Object = super.getStackTrace();
-            if (this.isBound()) {
-                trace["attribute"] = this.attribute.getStackTrace();
-            } else {
-                trace["attribute"] = undefined;
-            }
-            return trace;
         }
 
         /**

@@ -38,6 +38,11 @@ module Ompluscript.Core.Configuration {
         public static MUST_BE_BOOLEAN_OR_UNDEFINED: string = " must be a boolean or undefined.";
 
         /**
+         * @type {string} MUST_BE_NUMBER Message for definition that should be number.
+         */
+        public static MUST_BE_NUMBER: string = " must be a number.";
+
+        /**
          * @type {string} MUST_BE_NUMBER_OR_UNDEFINED Message for definition that should be number or undefined.
          */
         public static MUST_BE_NUMBER_OR_UNDEFINED: string = " must be a number or undefined.";
@@ -141,6 +146,13 @@ module Ompluscript.Core.Configuration {
         protected shouldBeBoolean(definition: Object, key: string): string {
             if (definition[key] !== undefined && typeof definition[key] !== "boolean") {
                 return this.getName(definition, key) + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED;
+            }
+            return undefined;
+        }
+
+        protected mustBeNumber(definition: Object, key: string): string {
+            if (typeof definition[key] !== "number") {
+                return this.getName(definition, key) + Configuration.MUST_BE_NUMBER;
             }
             return undefined;
         }

@@ -40,14 +40,14 @@ describe("CheckBoxInput class tests", function() {
     it("simulate update input - functional test with spy", function() {
         spyOn(booleanObject, 'setValue');
 
-        checkBoxInput.setValue("value");
+        checkBoxInput.setValue(false);
 
         expect(checkBoxInput.getStackTrace()).toEqual({
             html: '<input type="checkbox" name="param" class="input">',
             name: "param",
             attribute: booleanObject.getStackTrace(),
         });
-        expect(booleanObject.setValue.calls.argsFor(0)).toEqual(["value"]);
+        expect(booleanObject.setValue.calls.argsFor(0)).toEqual([false]);
         expect(booleanObject.setValue.calls.count()).toBe(1);
     });
 

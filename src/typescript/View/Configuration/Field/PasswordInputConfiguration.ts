@@ -5,7 +5,6 @@
 /// <reference path="../../Field/PasswordInput.ts" />
 /// <reference path="../../../Model/Attribute/Attribute.ts" />
 /// <reference path="../../../Model/Attribute/String.ts" />
-/// <reference path="../../../Model/Configuration/Attribute/StringConfiguration.ts" />
 
 /**
  * Module that contains fields' configuration classes.
@@ -19,7 +18,6 @@ module Ompluscript.View.Configuration.Field {
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import Input = Ompluscript.View.Field.Input;
     import Component = Ompluscript.View.Component.Component;
-    import StringConfiguration = Ompluscript.Model.Configuration.Attribute.StringConfiguration;
     import String = Ompluscript.Model.Attribute.String;
     import PasswordInput = Ompluscript.View.Field.PasswordInput;
 
@@ -51,7 +49,7 @@ module Ompluscript.View.Configuration.Field {
             let name: string = definition[Configuration.PARAMETER_NAME];
             attribute = <String>this.createAttribute(definition, attribute);
             let placeholder: string = definition[Input.PARAMETER_PLACEHOLDER];
-            let styles: string = definition[Component.PARAMETER_STYLES];
+            let styles: Object = definition[Component.PARAMETER_STYLES];
             return new PasswordInput(name, attribute, placeholder, styles);
         }
     }

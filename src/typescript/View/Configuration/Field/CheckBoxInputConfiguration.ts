@@ -1,7 +1,6 @@
 /// <reference path="../../../Core/Interfaces/IBase.ts" />
 /// <reference path="InputConfiguration.ts" />
 /// <reference path="../../Component/Component.ts" />
-/// <reference path="../../Field/Input.ts" />
 /// <reference path="../../Field/CheckBoxInput.ts" />
 /// <reference path="../../../Model/Attribute/Attribute.ts" />
 /// <reference path="../../../Model/Attribute/Boolean.ts" />
@@ -17,7 +16,6 @@ module Ompluscript.View.Configuration.Field {
     
     import Configuration = Ompluscript.Core.Configuration.Configuration;
     import IBase = Ompluscript.Core.Interfaces.IBase;
-    import Input = Ompluscript.View.Field.Input;
     import Component = Ompluscript.View.Component.Component;
     import CheckBoxInput = Ompluscript.View.Field.CheckBoxInput;
     import BooleanConfiguration = Ompluscript.Model.Configuration.Attribute.BooleanConfiguration;
@@ -64,7 +62,7 @@ module Ompluscript.View.Configuration.Field {
         public create(definition: Object, attribute: Boolean = undefined): IBase {
             let name: string = definition[Configuration.PARAMETER_NAME];
             attribute = <Boolean>this.createAttribute(definition, attribute);
-            let styles: string = definition[Component.PARAMETER_STYLES];
+            let styles: Object = definition[Component.PARAMETER_STYLES];
             return new CheckBoxInput(name, attribute, styles);
         }
     }
