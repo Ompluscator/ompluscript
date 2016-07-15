@@ -29,12 +29,17 @@ module Ompluscript.Core.Configuration {
          */
         private errors: Object[];
 
+        /**
+         * @type {Configuration[]} configurations Contains a list with all configurations
+         */
         private configurations: Configuration[];
 
         /**
          * Class constructor
          *
          * Initializes definition map and errors list
+         * 
+         * @param {Configuration[]} configurations Contains a list with all configurations
          */
         constructor(configurations: Configuration[]) {
             this.definition = {};
@@ -66,6 +71,16 @@ module Ompluscript.Core.Configuration {
         public reset(): void {
             this.definition = {};
             this.errors = [];
+        }
+
+        /**
+         * Method that returns if definition already exists by name
+         *
+         * @param {string} name Name of container
+         * @returns {boolean} if definition already exists by name
+         */
+        public ifDefined(name: string): boolean {
+            return this.definition.hasOwnProperty(name);
         }
 
         /**
@@ -101,6 +116,7 @@ module Ompluscript.Core.Configuration {
          * Method that creates defined containers
          *
          * @param {string} name Name of container
+         * @returns {IBase} New instance
          */
         public create(name: string): IBase {
             if (this.definition.hasOwnProperty(name)) {

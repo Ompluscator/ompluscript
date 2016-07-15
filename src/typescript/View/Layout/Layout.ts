@@ -1,7 +1,9 @@
-/// <reference path="Component.ts" />
+/// <reference path="../Component/Component.ts" />
 
-module Ompluscript.View.Component {
+module Ompluscript.View.Layout {
     "use strict";
+    
+    import Component = Ompluscript.View.Component.Component;
     
     export abstract class Layout extends Component {
 

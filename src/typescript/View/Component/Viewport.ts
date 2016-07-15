@@ -18,7 +18,7 @@ module Ompluscript.View.Component {
         protected activePageIndex: number;
 
         constructor(pages: Page[]) {
-            super(Viewport.VIEWPORT, undefined);
+            super(Viewport.VIEWPORT);
             this.pages = pages;
             this.activePageIndex = 0;
         }

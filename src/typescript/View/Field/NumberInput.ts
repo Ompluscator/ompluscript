@@ -8,6 +8,7 @@
  */
 module Ompluscript.View.Field {
     "use strict";
+    
     import Number = Ompluscript.Model.Attribute.Number;
 
     /**
@@ -17,16 +18,36 @@ module Ompluscript.View.Field {
      */
     export class NumberInput extends Input {
 
+        /**
+         * @type {string} TYPE_NUMBER_INPUT Type of number input
+         */
         public static TYPE_NUMBER_INPUT: string = NumberInput["name"];
 
+        /**
+         * @type {string} INPUT_NUMBER Type of number input HTML element
+         */
         public static INPUT_NUMBER: string = "number";
 
-        public static EVENT_KEY_PRESS: string = "keypress";
-
-        constructor(name: string, numberAttribute: Number = undefined, styles: Object = {}) {
-            super(name, numberAttribute, styles, NumberInput.INPUT_NUMBER);
+        /**
+         * Class constructor.
+         *
+         * Calls constructor of superclass.
+         *
+         * @param {string} name Name of component
+         * @param {Number} numberAttribute Attribute for binding with
+         * @param {string} placeholder Placeholder asset name
+         * @param {Object} styles Styles for component
+         * @constructs
+         */
+        constructor(name: string, numberAttribute: Number = undefined, placeholder: string = undefined, styles: Object = {}) {
+            super(name, numberAttribute, placeholder, styles, NumberInput.INPUT_NUMBER);
         }
 
+        /**
+         * Method that returns value of input HTML element
+         *
+         * @returns {any} value for input HTML element
+         */
         public getValue(): any {
             let value: string = this.getAttribute(Input.ATTRIBUTE_VALUE);
             if (typeof value === "string") {
@@ -38,6 +59,9 @@ module Ompluscript.View.Field {
             return undefined;
         }
 
+        /**
+         * Method that defines event for updating input value
+         */
         protected addOnUpdateInputEvent(): void {
             let that: NumberInput = this;
             let listener: () => void = function(): void {
@@ -46,6 +70,11 @@ module Ompluscript.View.Field {
             that.htmlElement.addEventListener(TextInput.EVENT_KEY_PRESS, listener, false);
         }
 
+        /**
+         * Method that sets new value of input HTML element
+         *
+         * @param {any} value New value for input HTML element
+         */
         protected updateValue(value: number): void {
             this.setAttribute(Input.ATTRIBUTE_VALUE, value.toString());
         }

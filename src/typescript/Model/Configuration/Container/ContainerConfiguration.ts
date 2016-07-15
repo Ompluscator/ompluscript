@@ -84,10 +84,10 @@ module Ompluscript.Model.Configuration.Container {
             errors.push(this.shouldBeArray(definition, Container.PARAMETER_ATTRIBUTES));
             errors.push(this.shouldBeArray(definition, Container.PARAMETER_PROXIES));
             if (definition.hasOwnProperty(Container.PARAMETER_ATTRIBUTES)) {
-                errors.push.apply(errors, super.getErrors(definition, Container.PARAMETER_ATTRIBUTES));
+                errors.push.apply(errors, super.getErrorsForChildren(definition, Container.PARAMETER_ATTRIBUTES));
             }
             if (definition.hasOwnProperty(Container.PARAMETER_PROXIES)) {
-                errors.push.apply(errors, super.getErrors(definition, Container.PARAMETER_PROXIES));
+                errors.push.apply(errors, super.getErrorsForChildren(definition, Container.PARAMETER_PROXIES));
             }
             return this.filterErrors(errors);
         }

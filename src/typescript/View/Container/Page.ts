@@ -1,4 +1,6 @@
-/// <reference path="../Component/Container.ts" />
+/// <reference path="Container.ts" />
+/// <reference path="../Layout/Layout.ts" />
+/// <reference path="../Component/Component.ts" />
 
 /**
  * Module that contains base components
@@ -8,8 +10,9 @@
 module Ompluscript.View.Container {
     "use strict";
     
-    import Container = Ompluscript.View.Component.Container;
-
+    import Layout = Ompluscript.View.Layout.Layout;
+    import Component = Ompluscript.View.Component.Component;
+    
     /**
      * Class that defines basic container
      *
@@ -19,8 +22,8 @@ module Ompluscript.View.Container {
         
         public static TYPE_PAGE: string = Page["name"];
 
-        constructor(name: string, layoutDefinition: Object = undefined, children: Object[] = undefined, styles: Object = undefined) {
-            super(name, layoutDefinition, children, styles);
+        constructor(name: string, layout: Layout = undefined, children: Component[] = undefined, styles: Object = undefined) {
+            super(name, layout, children, styles);
         }
         
     }

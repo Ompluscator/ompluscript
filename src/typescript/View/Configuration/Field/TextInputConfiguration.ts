@@ -7,6 +7,11 @@
 /// <reference path="../../../Model/Attribute/String.ts" />
 /// <reference path="../../../Model/Configuration/Attribute/StringConfiguration.ts" />
 
+/**
+ * Module that contains fields' configuration classes.
+ *
+ * @module Ompluscript.View.Configuration.Field
+ */
 module Ompluscript.View.Configuration.Field {
     "use strict";
     
@@ -18,21 +23,50 @@ module Ompluscript.View.Configuration.Field {
     import StringConfiguration = Ompluscript.Model.Configuration.Attribute.StringConfiguration;
     import String = Ompluscript.Model.Attribute.String;
 
+    /**
+     * Class that contains functionality for text input configuration.
+     *
+     * @class TextInputConfiguration
+     */
     export class TextInputConfiguration extends InputConfiguration {
-        
+
+        /**
+         * Class constructor.
+         * 
+         * Sets attributes and calls superclass constructor.
+         * 
+         * @constructs
+         */
         constructor() {
-            super(Configuration.getInstance(StringConfiguration), String.TYPE_STRING);
+            let attributes: Configuration[] = [
+                Configuration.getInstance(StringConfiguration),
+            ];
+            super(attributes, String.TYPE_STRING);
         }
 
+        /**
+         * Method that decides if this configuration is related to this class.
+         *
+         * @param {Object} definition Class definition
+         * @returns {boolean} Is related to this class
+         */
         public isRelatedTo(definition: Object): boolean {
             return definition[Configuration.PARAMETER_TYPE] === TextInput.TYPE_TEXT_INPUT;
         }
 
-        public create(definition: Object): IBase {
+        /**
+         * Method that creates new instance from configuration
+         *
+         * @param {Object} definition Class definition
+         * @param {String} attribute Instance of binding attribute
+         * @returns {IBase} New instance
+         */
+        public create(definition: Object, attribute: String = undefined): IBase {
             let name: string = definition[Configuration.PARAMETER_NAME];
-            let attribute: String = <String>this.createAttribute(definition[Input.PARAMETER_ATTRIBUTE]);
+            attribute = <String>this.createAttribute(definition, attribute);
+            let placeholder: string = definition[Input.PARAMETER_PLACEHOLDER];
             let styles: string = definition[Component.PARAMETER_STYLES];
-            return new TextInput(name, attribute, styles);
+            return new TextInput(name, attribute, placeholder, styles);
         }
     }
 }

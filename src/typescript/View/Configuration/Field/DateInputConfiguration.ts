@@ -1,11 +1,11 @@
 /// <reference path="../../../Core/Interfaces/IBase.ts" />
-/// <reference path="TextInputConfiguration.ts" />
+/// <reference path="InputConfiguration.ts" />
 /// <reference path="../../Component/Component.ts" />
 /// <reference path="../../Field/Input.ts" />
-/// <reference path="../../Field/PasswordInput.ts" />
+/// <reference path="../../Field/DateInput.ts" />
 /// <reference path="../../../Model/Attribute/Attribute.ts" />
-/// <reference path="../../../Model/Attribute/String.ts" />
-/// <reference path="../../../Model/Configuration/Attribute/StringConfiguration.ts" />
+/// <reference path="../../../Model/Attribute/Datetime.ts" />
+/// <reference path="../../../Model/Configuration/Attribute/DatetimeConfiguration.ts" />
 
 /**
  * Module that contains fields' configuration classes.
@@ -17,18 +17,32 @@ module Ompluscript.View.Configuration.Field {
     
     import Configuration = Ompluscript.Core.Configuration.Configuration;
     import IBase = Ompluscript.Core.Interfaces.IBase;
+    import DateInput = Ompluscript.View.Field.DateInput;
     import Input = Ompluscript.View.Field.Input;
     import Component = Ompluscript.View.Component.Component;
-    import StringConfiguration = Ompluscript.Model.Configuration.Attribute.StringConfiguration;
-    import String = Ompluscript.Model.Attribute.String;
-    import PasswordInput = Ompluscript.View.Field.PasswordInput;
+    import DatetimeConfiguration = Ompluscript.Model.Configuration.Attribute.DatetimeConfiguration;
+    import Datetime = Ompluscript.Model.Attribute.Datetime;
 
     /**
-     * Class that contains functionality for password input configuration.
+     * Class that contains functionality for date input configuration.
      *
-     * @class PasswordInputConfiguration
+     * @class DateInputConfiguration
      */
-    export class PasswordInputConfiguration extends TextInputConfiguration {
+    export class DateInputConfiguration extends InputConfiguration {
+
+        /**
+         * Class constructor.
+         * 
+         * Sets attributes and calls superclass constructor.
+         * 
+         * @constructs
+         */
+        constructor() {
+            let attributes: Configuration[] = [
+                Configuration.getInstance(DatetimeConfiguration),
+            ];
+            super(attributes, Datetime.TYPE_DATETIME);
+        }
 
         /**
          * Method that decides if this configuration is related to this class.
@@ -37,7 +51,7 @@ module Ompluscript.View.Configuration.Field {
          * @returns {boolean} Is related to this class
          */
         public isRelatedTo(definition: Object): boolean {
-            return definition[Configuration.PARAMETER_TYPE] === PasswordInput.TYPE_PASSWORD_INPUT;
+            return definition[Configuration.PARAMETER_TYPE] === DateInput.TYPE_DATE_INPUT;
         }
 
         /**
@@ -47,12 +61,12 @@ module Ompluscript.View.Configuration.Field {
          * @param {String} attribute Instance of binding attribute
          * @returns {IBase} New instance
          */
-        public create(definition: Object, attribute: String = undefined): IBase {
+        public create(definition: Object, attribute: Datetime = undefined): IBase {
             let name: string = definition[Configuration.PARAMETER_NAME];
-            attribute = <String>this.createAttribute(definition, attribute);
+            attribute = <Datetime>this.createAttribute(definition, attribute);
             let placeholder: string = definition[Input.PARAMETER_PLACEHOLDER];
             let styles: string = definition[Component.PARAMETER_STYLES];
-            return new PasswordInput(name, attribute, placeholder, styles);
+            return new DateInput(name, attribute, placeholder, styles);
         }
     }
 }

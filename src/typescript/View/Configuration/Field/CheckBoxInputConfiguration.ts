@@ -7,6 +7,11 @@
 /// <reference path="../../../Model/Attribute/Boolean.ts" />
 /// <reference path="../../../Model/Configuration/Attribute/BooleanConfiguration.ts" />
 
+/**
+ * Module that contains fields' configuration classes.
+ *
+ * @module Ompluscript.View.Configuration.Field
+ */
 module Ompluscript.View.Configuration.Field {
     "use strict";
     
@@ -18,19 +23,47 @@ module Ompluscript.View.Configuration.Field {
     import BooleanConfiguration = Ompluscript.Model.Configuration.Attribute.BooleanConfiguration;
     import Boolean = Ompluscript.Model.Attribute.Boolean;
 
+    /**
+     * Class that contains functionality for check box input configuration.
+     *
+     * @class CheckBoxInputConfiguration
+     */
     export class CheckBoxInputConfiguration extends InputConfiguration {
-        
+
+        /**
+         * Class constructor.
+         *
+         * Sets attributes and calls superclass constructor.
+         *
+         * @constructs
+         */
         constructor() {
-            super(Configuration.getInstance(BooleanConfiguration), Boolean.TYPE_BOOLEAN);
+            let attributes: Configuration[] = [
+                Configuration.getInstance(BooleanConfiguration),
+            ];
+            super(attributes, Boolean.TYPE_BOOLEAN);
         }
 
+        /**
+         * Method that decides if this configuration is related to this class.
+         *
+         * @param {Object} definition Class definition
+         * @returns {boolean} Is related to this class
+         */
         public isRelatedTo(definition: Object): boolean {
             return definition[Configuration.PARAMETER_TYPE] === CheckBoxInput.TYPE_CHECK_BOX_INPUT;
         }
 
-        public create(definition: Object): IBase {
+        /**
+         * Method that creates new instance from configuration
+         *
+         * @param {Object} definition Class definition
+         * @param {String} attribute Instance of binding attribute
+         * @returns {IBase} New instance
+         */
+        public create(definition: Object, attribute: Boolean = undefined): IBase {
             let name: string = definition[Configuration.PARAMETER_NAME];
-            let attribute: Boolean = <Boolean>this.createAttribute(definition[Input.PARAMETER_ATTRIBUTE]);
+            attribute = <Boolean>this.createAttribute(definition, attribute);
             let styles: string = definition[Component.PARAMETER_STYLES];
             return new CheckBoxInput(name, attribute, styles);
         }

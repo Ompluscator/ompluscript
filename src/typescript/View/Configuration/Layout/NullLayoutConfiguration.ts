@@ -1,5 +1,5 @@
 /// <reference path="../../../Core/Interfaces/IBase.ts" />
-/// <reference path="../Component/ComponentConfiguration.ts" />
+/// <reference path="LayoutConfiguration.ts" />
 /// <reference path="../../Layout/NullLayout.ts" />
 
 module Ompluscript.View.Configuration.Layout {
@@ -8,9 +8,8 @@ module Ompluscript.View.Configuration.Layout {
     import Configuration = Ompluscript.Core.Configuration.Configuration;
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import NullLayout = Ompluscript.View.Layout.NullLayout;
-    import ComponentConfiguration = Ompluscript.View.Configuration.Component.ComponentConfiguration;
 
-    export class NullLayoutConfiguration extends ComponentConfiguration {
+    export class NullLayoutConfiguration extends LayoutConfiguration {
 
         public isRelatedTo(definition: Object): boolean {
             return definition[Configuration.PARAMETER_TYPE] === NullLayout.TYPE_NULL_LAYOUT;

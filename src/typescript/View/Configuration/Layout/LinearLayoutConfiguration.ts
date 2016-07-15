@@ -1,5 +1,5 @@
 /// <reference path="../../../Core/Interfaces/IBase.ts" />
-/// <reference path="../Component/ComponentConfiguration.ts" />
+/// <reference path="LayoutConfiguration.ts" />
 /// <reference path="../../Layout/LinearLayout.ts" />
 
 module Ompluscript.View.Configuration.Layout {
@@ -8,9 +8,8 @@ module Ompluscript.View.Configuration.Layout {
     import Configuration = Ompluscript.Core.Configuration.Configuration;
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import LinearLayout = Ompluscript.View.Layout.LinearLayout;
-    import ComponentConfiguration = Ompluscript.View.Configuration.Component.ComponentConfiguration;
 
-    export class LinearLayoutConfiguration extends ComponentConfiguration {
+    export class LinearLayoutConfiguration extends LayoutConfiguration {
 
         public isRelatedTo(definition: Object): boolean {
             return definition[Configuration.PARAMETER_TYPE] === LinearLayout.TYPE_LINEAR_LAYOUT;

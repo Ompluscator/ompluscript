@@ -1,4 +1,4 @@
-/// <reference path="../Component/Layout.ts" />
+/// <reference path="Layout.ts" />
 
 /**
  * Module that contains layout components
@@ -7,8 +7,6 @@
  */
 module Ompluscript.View.Layout {
     "use strict";
-
-    import Layout = Ompluscript.View.Component.Layout;
 
     /**
      * Class that defines null layout

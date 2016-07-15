@@ -1,11 +1,11 @@
 /// <reference path="Controller.ts" />
 /// <reference path="../../Model/Container/Container.ts" />
-/// <reference path="../../View/Component/Container.ts" />
+/// <reference path="../../View/Container/Container.ts" />
 
 module Ompluscript.Controller.Controller {
     "use strict";
     import ModelContainer = Ompluscript.Model.Container.Container;
-    import ViewContainer = Ompluscript.View.Component.Container;
+    import ViewContainer = Ompluscript.View.Container.Container;
 
     export class ComponentController extends Controller {
 

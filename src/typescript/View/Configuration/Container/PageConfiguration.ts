@@ -2,8 +2,9 @@
 /// <reference path="../../Component/Component.ts" />
 /// <reference path="../../Container/Page.ts" />
 /// <reference path="../../../Core/Configuration/Configuration.ts" />
-/// <reference path="../../Component/Container.ts" />
-/// <reference path="../Component/ContainerConfiguration.ts" />
+/// <reference path="../../Container/Container.ts" />
+/// <reference path="../../Layout/Layout.ts" />
+/// <reference path="ContainerConfiguration.ts" />
 
 module Ompluscript.View.Configuration.Container {
     "use strict";
@@ -12,15 +13,11 @@ module Ompluscript.View.Configuration.Container {
     import Page = Ompluscript.View.Container.Page;
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import Component = Ompluscript.View.Component.Component;
-    import Container = Ompluscript.View.Component.Container;
-    import ContainerConfiguration = Ompluscript.View.Configuration.Component.ContainerConfiguration;
-    
+    import Container = Ompluscript.View.Container.Container;
+    import Layout = Ompluscript.View.Layout.Layout;
+
 
     export class PageConfiguration extends ContainerConfiguration {
-        
-        constructor() {
-            super();
-        }
 
         public isRelatedTo(definition: Object): boolean {
             return definition[Configuration.PARAMETER_TYPE] === Page.TYPE_PAGE;
@@ -28,10 +25,10 @@ module Ompluscript.View.Configuration.Container {
 
         public create(definition: Object): IBase {
             let name: string = definition[Configuration.PARAMETER_NAME];
-            let layoutDefinition: Object = definition[Container.PARAMETER_LAYOUT];
-            let children: Object[] = definition[Container.PARAMETER_CHILDREN];
+            let layout: Layout = <Layout>super.createChild(definition, Container.PARAMETER_LAYOUT);
+            let children: Component[] = <Component[]>super.createChildren(definition, Container.PARAMETER_CHILDREN);
             let styles: string = definition[Component.PARAMETER_STYLES];
-            return new Page(name, layoutDefinition, children, styles);
+            return new Page(name, layout, children, styles);
         }
     }
 }

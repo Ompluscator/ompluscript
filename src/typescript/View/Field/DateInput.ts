@@ -9,6 +9,7 @@
  */
 module Ompluscript.View.Field {
     "use strict";
+
     import Datetime = Ompluscript.Model.Attribute.Datetime;
 
     /**
@@ -16,36 +17,33 @@ module Ompluscript.View.Field {
      *
      * @class DateInput
      */
-    export class DateInput extends Input {
+    export class DateInput extends TextInput {
 
-        public static EVENT_KEY_PRESS: string = "keypress";
+        /**
+         * @type {string} TYPE_DATE_INPUT Type of date input
+         */
+        public static TYPE_DATE_INPUT: string = DateInput["name"];
 
-        constructor(name: string, datetimeAttribute: Datetime = undefined, styles: Object = {}) {
-            super(name, datetimeAttribute, styles, TextInput.INPUT_TEXT);
+        /**
+         * @type {string} INPUT_DATE Type of date input HTML element
+         */
+        public static INPUT_DATE: string = "date";
+
+        /**
+         * Class constructor.
+         *
+         * Calls constructor of superclass.
+         *
+         * @param {string} name Name of component
+         * @param {Datetime} datetimeAttribute Attribute for binding with
+         * @param {string} placeholder Placeholder asset name
+         * @param {Object} styles Styles for component
+         * @constructs
+         */
+        constructor(name: string, datetimeAttribute: Datetime = undefined, placeholder: string = undefined, styles: Object = {}) {
+            super(name, datetimeAttribute, placeholder, styles, DateInput.INPUT_DATE);
         }
 
-        public getValue(): any {
-            let value: string = this.getAttribute(Input.ATTRIBUTE_VALUE);
-            if (typeof value === "string") {
-                if (isNaN(parseInt(value, 10))) {
-                    return value;
-                }
-                return parseInt(value, 10);
-            }
-            return undefined;
-        }
-
-        protected addOnUpdateInputEvent(): void {
-            let that: DateInput = this;
-            let listener: () => void = function(): void {
-                that.fireOnUpdateInputEvent(that.getValue());
-            };
-            that.htmlElement.addEventListener(TextInput.EVENT_KEY_PRESS, listener, false);
-        }
-
-        protected updateValue(value: number): void {
-            this.setAttribute(Input.ATTRIBUTE_VALUE, value.toString());
-        }
     }
 
 }

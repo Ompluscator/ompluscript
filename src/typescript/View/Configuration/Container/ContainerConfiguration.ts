@@ -1,5 +1,5 @@
-/// <reference path="../../../Core/Configuration/GroupConfiguration.ts" />
-/// <reference path="../../Component/Container.ts" />
+/// <reference path="../Component/ComponentConfiguration.ts" />
+/// <reference path="../../Container/Container.ts" />
 /// <reference path="../../../Core/Configuration/Configuration.ts" />
 /// <reference path="../../../Core/Configuration/GroupConfiguration.ts" />
 /// <reference path="../../../Core/Configuration/ErrorConfiguration.ts" />
@@ -13,12 +13,11 @@
 /// <reference path="../Layout/LinearLayoutConfiguration.ts" />
 /// <reference path="../Layout/TableLayoutConfiguration.ts" />
 
-module Ompluscript.View.Configuration.Component {
+module Ompluscript.View.Configuration.Container {
     "use strict";
     
-    import Container = Ompluscript.View.Component.Container;
+    import Container = Ompluscript.View.Container.Container;
     import Configuration = Ompluscript.Core.Configuration.Configuration;
-    import GroupConfiguration = Ompluscript.Core.Configuration.GroupConfiguration;
     import ErrorConfiguration = Ompluscript.Core.Configuration.ErrorConfiguration;
     import NullLayoutConfiguration = Ompluscript.View.Configuration.Layout.NullLayoutConfiguration;
     import RelativeLayoutConfiguration = Ompluscript.View.Configuration.Layout.RelativeLayoutConfiguration;
@@ -29,8 +28,9 @@ module Ompluscript.View.Configuration.Component {
     import NumberInputConfiguration = Ompluscript.View.Configuration.Field.NumberInputConfiguration;
     import PasswordInputConfiguration = Ompluscript.View.Configuration.Field.PasswordInputConfiguration;
     import TextInputConfiguration = Ompluscript.View.Configuration.Field.TextInputConfiguration;
+    import ComponentConfiguration = Ompluscript.View.Configuration.Component.ComponentConfiguration;
 
-    export abstract class ContainerConfiguration extends GroupConfiguration {
+    export abstract class ContainerConfiguration extends ComponentConfiguration {
         
         constructor() {
             let layouts: Configuration[] = [
@@ -55,15 +55,15 @@ module Ompluscript.View.Configuration.Component {
         }
 
         public getErrors(definition: Object): string[] {
-            let errors: string[] = [];
+            let errors: string[] = super.getErrors(definition);
             errors.push(this.mustBeString(definition, Configuration.PARAMETER_NAME));
             errors.push(this.shouldBeArray(definition, Container.PARAMETER_CHILDREN));
             errors = this.filterErrors(errors);
             if (errors.length === 0) {
-                errors.push.apply(errors, super.getErrors(definition, Container.PARAMETER_CHILDREN));
+                errors.push.apply(errors, super.getErrorsForChildren(definition, Container.PARAMETER_CHILDREN));
             }
             if (definition.hasOwnProperty(Container.PARAMETER_LAYOUT)) {
-                errors.push.apply(errors, super.getErrors(definition, Container.PARAMETER_LAYOUT));
+                errors.push.apply(errors, super.getErrorsForChildren(definition, Container.PARAMETER_LAYOUT));
             }
             return this.filterErrors(errors);
         }

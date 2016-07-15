@@ -2,6 +2,7 @@
 /// <reference path="../Core/Configuration/Creator.ts" />
 /// <reference path="../Core/Configuration/Configuration.ts" />
 /// <reference path="../Core/Configuration/ErrorConfiguration.ts" />
+/// <reference path="Container/Translation.ts" />
 /// <reference path="Configuration/Attribute/BooleanConfiguration.ts" />
 /// <reference path="Configuration/Attribute/DatetimeConfiguration.ts" />
 /// <reference path="Configuration/Attribute/MultipleChoiceConfiguration.ts" />
@@ -10,6 +11,7 @@
 /// <reference path="Configuration/Attribute/StringConfiguration.ts" />
 /// <reference path="Configuration/Container/ModelConfiguration.ts" />
 /// <reference path="Configuration/Container/TableConfiguration.ts" />
+/// <reference path="Configuration/Container/TranslationConfiguration.ts" />
 
 /**
  * Module that contains model' classes.
@@ -30,6 +32,8 @@ module Ompluscript.Model {
     import ErrorConfiguration = Ompluscript.Core.Configuration.ErrorConfiguration;
     import ModelConfiguration = Ompluscript.Model.Configuration.Container.ModelConfiguration;
     import TableConfiguration = Ompluscript.Model.Configuration.Container.TableConfiguration;
+    import Translation = Ompluscript.Model.Container.Translation;
+    import TranslationConfiguration = Ompluscript.Model.Configuration.Container.TranslationConfiguration;
 
     /**
      * Class that contains functionality for model creator.
@@ -42,6 +46,11 @@ module Ompluscript.Model {
          * @type {Creator} instance Instance for singleton pattern
          */
         private static instance: Creator;
+
+        /**
+         * @type {Translation} translation Instance of translation
+         */
+        private translation: Translation;
 
         /**
          * Method for singleton pattern
@@ -70,11 +79,27 @@ module Ompluscript.Model {
                 Configuration.getInstance(StringConfiguration),
                 Configuration.getInstance(ModelConfiguration),
                 Configuration.getInstance(TableConfiguration),
+                Configuration.getInstance(TranslationConfiguration),
                 Configuration.getInstance(ErrorConfiguration),
             ];
             super(configurations);
         }
 
+        /**
+         * Method that returns single instance of translation
+         * 
+         * @returns {Translation} Single instance of translation
+         */
+        public getTranslation(): Translation {
+            if (this.translation === undefined) {
+                if (!this.ifDefined(Translation.TYPE_TRANSLATION)) {
+                    this.translation = new Translation();
+                } else {
+                    this.translation = <Translation>this.create(Translation.TYPE_TRANSLATION);
+                }
+            }
+            return this.translation;
+        }
     }
 
     /**

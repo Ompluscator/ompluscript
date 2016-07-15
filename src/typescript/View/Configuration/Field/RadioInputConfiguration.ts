@@ -1,11 +1,11 @@
 /// <reference path="../../../Core/Interfaces/IBase.ts" />
-/// <reference path="TextInputConfiguration.ts" />
+/// <reference path="InputConfiguration.ts" />
 /// <reference path="../../Component/Component.ts" />
 /// <reference path="../../Field/Input.ts" />
-/// <reference path="../../Field/PasswordInput.ts" />
+/// <reference path="../../Field/RadioInput.ts" />
 /// <reference path="../../../Model/Attribute/Attribute.ts" />
-/// <reference path="../../../Model/Attribute/String.ts" />
-/// <reference path="../../../Model/Configuration/Attribute/StringConfiguration.ts" />
+/// <reference path="../../../Model/Attribute/Boolean.ts" />
+/// <reference path="../../../Model/Configuration/Attribute/BooleanConfiguration.ts" />
 
 /**
  * Module that contains fields' configuration classes.
@@ -19,16 +19,30 @@ module Ompluscript.View.Configuration.Field {
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import Input = Ompluscript.View.Field.Input;
     import Component = Ompluscript.View.Component.Component;
-    import StringConfiguration = Ompluscript.Model.Configuration.Attribute.StringConfiguration;
-    import String = Ompluscript.Model.Attribute.String;
-    import PasswordInput = Ompluscript.View.Field.PasswordInput;
+    import RadioInput = Ompluscript.View.Field.RadioInput;
+    import BooleanConfiguration = Ompluscript.Model.Configuration.Attribute.BooleanConfiguration;
+    import Boolean = Ompluscript.Model.Attribute.Boolean;
 
     /**
-     * Class that contains functionality for password input configuration.
+     * Class that contains functionality for radio input configuration.
      *
-     * @class PasswordInputConfiguration
+     * @class RadioInputConfiguration
      */
-    export class PasswordInputConfiguration extends TextInputConfiguration {
+    export class RadioInputConfiguration extends InputConfiguration {
+
+        /**
+         * Class constructor.
+         *
+         * Sets attributes and calls superclass constructor.
+         *
+         * @constructs
+         */
+        constructor() {
+            let attributes: Configuration[] = [
+                Configuration.getInstance(BooleanConfiguration),
+            ];
+            super(attributes, Boolean.TYPE_BOOLEAN);
+        }
 
         /**
          * Method that decides if this configuration is related to this class.
@@ -37,7 +51,7 @@ module Ompluscript.View.Configuration.Field {
          * @returns {boolean} Is related to this class
          */
         public isRelatedTo(definition: Object): boolean {
-            return definition[Configuration.PARAMETER_TYPE] === PasswordInput.TYPE_PASSWORD_INPUT;
+            return definition[Configuration.PARAMETER_TYPE] === RadioInput.TYPE_RADIO_INPUT;
         }
 
         /**
@@ -47,12 +61,11 @@ module Ompluscript.View.Configuration.Field {
          * @param {String} attribute Instance of binding attribute
          * @returns {IBase} New instance
          */
-        public create(definition: Object, attribute: String = undefined): IBase {
+        public create(definition: Object, attribute: Boolean = undefined): IBase {
             let name: string = definition[Configuration.PARAMETER_NAME];
-            attribute = <String>this.createAttribute(definition, attribute);
-            let placeholder: string = definition[Input.PARAMETER_PLACEHOLDER];
+            attribute = <Boolean>this.createAttribute(definition, attribute);
             let styles: string = definition[Component.PARAMETER_STYLES];
-            return new PasswordInput(name, attribute, placeholder, styles);
+            return new RadioInput(name, attribute, styles);
         }
     }
 }

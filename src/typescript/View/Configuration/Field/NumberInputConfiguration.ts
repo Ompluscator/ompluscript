@@ -7,6 +7,11 @@
 /// <reference path="../../../Model/Attribute/String.ts" />
 /// <reference path="../../../Model/Configuration/Attribute/NumberConfiguration.ts" />
 
+/**
+ * Module that contains fields' configuration classes.
+ *
+ * @module Ompluscript.View.Configuration.Field
+ */
 module Ompluscript.View.Configuration.Field {
     "use strict";
     
@@ -18,21 +23,50 @@ module Ompluscript.View.Configuration.Field {
     import Number = Ompluscript.Model.Attribute.Number;
     import NumberInput = Ompluscript.View.Field.NumberInput;
 
+    /**
+     * Class that contains functionality for number input configuration.
+     *
+     * @class NumberInputConfiguration
+     */
     export class NumberInputConfiguration extends InputConfiguration {
-        
+
+        /**
+         * Class constructor.
+         *
+         * Sets attributes and calls superclass constructor.
+         *
+         * @constructs
+         */
         constructor() {
-            super(Configuration.getInstance(NumberConfiguration), Number.TYPE_NUMBER);
+            let attributes: Configuration[] = [
+                Configuration.getInstance(NumberConfiguration),
+            ];
+            super(attributes, Number.TYPE_NUMBER);
         }
 
+        /**
+         * Method that decides if this configuration is related to this class.
+         *
+         * @param {Object} definition Class definition
+         * @returns {boolean} Is related to this class
+         */
         public isRelatedTo(definition: Object): boolean {
             return definition[Configuration.PARAMETER_TYPE] === NumberInput.TYPE_NUMBER_INPUT;
         }
 
-        public create(definition: Object): IBase {
+        /**
+         * Method that creates new instance from configuration
+         *
+         * @param {Object} definition Class definition
+         * @param {String} attribute Instance of binding attribute
+         * @returns {IBase} New instance
+         */
+        public create(definition: Object, attribute: Number = undefined): IBase {
             let name: string = definition[Configuration.PARAMETER_NAME];
-            let attribute: Number = <Number>this.createAttribute(definition[Input.PARAMETER_ATTRIBUTE]);
+            attribute = <Number>this.createAttribute(definition, attribute);
+            let placeholder: string = definition[Input.PARAMETER_PLACEHOLDER];
             let styles: string = definition[Component.PARAMETER_STYLES];
-            return new NumberInput(name, attribute, styles);
+            return new NumberInput(name, attribute, placeholder, styles);
         }
     }
 }
