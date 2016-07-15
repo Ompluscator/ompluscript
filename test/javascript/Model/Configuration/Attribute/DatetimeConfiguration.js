@@ -14,6 +14,7 @@ describe("DatetimeConfiguration class tests - valid datetime", function() {
             type: "Datetime",
             name: "datetime"
         };
+        expect(datetimeConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(datetimeConfiguration.getErrors(definition)).toEqual([]);
         expect(datetimeConfiguration.create(definition) instanceof Datetime).toBeTruthy();
         expect(datetimeConfiguration.create(definition).isRequired()).toBeFalsy();
@@ -31,6 +32,7 @@ describe("DatetimeConfiguration class tests - valid datetime", function() {
             minimum: "1/10/1985",
             maximum: "1/12/1985",
         };
+        expect(datetimeConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(datetimeConfiguration.getErrors(definition)).toEqual([]);
         expect(datetimeConfiguration.create(definition) instanceof Datetime).toBeTruthy();
         expect(datetimeConfiguration.create(definition).isRequired()).toBeTruthy();
@@ -46,6 +48,7 @@ describe("DatetimeConfiguration class tests - valid datetime", function() {
             name: "datetime",
             required: false,
         };
+        expect(datetimeConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(datetimeConfiguration.getErrors(definition)).toEqual([]);
         expect(datetimeConfiguration.create(definition) instanceof Datetime).toBeTruthy();
         expect(datetimeConfiguration.create(definition).isRequired()).toBeFalsy();
@@ -61,6 +64,7 @@ describe("DatetimeConfiguration class tests - valid datetime", function() {
             name: "datetime",
             minimum: "1/10/1985",
         };
+        expect(datetimeConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(datetimeConfiguration.getErrors(definition)).toEqual([]);
         expect(datetimeConfiguration.create(definition) instanceof Datetime).toBeTruthy();
         expect(datetimeConfiguration.create(definition).isRequired()).toBeFalsy();
@@ -76,6 +80,7 @@ describe("DatetimeConfiguration class tests - valid datetime", function() {
             name: "datetime",
             maximum: "1/12/1985",
         };
+        expect(datetimeConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(datetimeConfiguration.getErrors(definition)).toEqual([]);
         expect(datetimeConfiguration.create(definition) instanceof Datetime).toBeTruthy();
         expect(datetimeConfiguration.create(definition).isRequired()).toBeFalsy();
@@ -104,6 +109,7 @@ describe("DatetimeConfiguration class tests - invalid datetime", function() {
         var definition = {
             type: "Datetime"
         };
+        expect(datetimeConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(datetimeConfiguration.getErrors(definition)).toEqual([
             "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
@@ -117,6 +123,7 @@ describe("DatetimeConfiguration class tests - invalid datetime", function() {
             minimum: "1/10/1985",
             maximum: "1/09/1985",
         };
+        expect(datetimeConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(datetimeConfiguration.getErrors(definition)).toEqual([
             "datetime." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
             "datetime." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_GREATER + "datetime." + Attribute.PARAMETER_MINIMUM,
@@ -131,6 +138,7 @@ describe("DatetimeConfiguration class tests - invalid datetime", function() {
             minimum: true,
             maximum: 1,
         };
+        expect(datetimeConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(datetimeConfiguration.getErrors(definition)).toEqual([
             "datetime." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
             "datetime." + Attribute.PARAMETER_MINIMUM + Configuration.MUST_BE_DATETIME_OR_UNDEFINED,
@@ -146,6 +154,7 @@ describe("DatetimeConfiguration class tests - invalid datetime", function() {
             minimum: "1/10/1985",
             maximum: "1/12/1985",
         };
+        expect(datetimeConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(datetimeConfiguration.getErrors(definition)).toEqual([
             "datetime." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
         ]);
@@ -159,6 +168,7 @@ describe("DatetimeConfiguration class tests - invalid datetime", function() {
             minimum: false,
             maximum: "1/12/1985",
         };
+        expect(datetimeConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(datetimeConfiguration.getErrors(definition)).toEqual([
             "datetime." + Attribute.PARAMETER_MINIMUM + Configuration.MUST_BE_DATETIME_OR_UNDEFINED,
         ]);
@@ -172,6 +182,7 @@ describe("DatetimeConfiguration class tests - invalid datetime", function() {
             minimum: "1/10/1985",
             maximum: "not",
         };
+        expect(datetimeConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(datetimeConfiguration.getErrors(definition)).toEqual([
             "datetime." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_DATETIME_OR_UNDEFINED,
         ]);
@@ -185,6 +196,7 @@ describe("DatetimeConfiguration class tests - invalid datetime", function() {
             minimum: "1/10/1985",
             maximum: "1/09/1985",
         };
+        expect(datetimeConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(datetimeConfiguration.getErrors(definition)).toEqual([
             "datetime." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_GREATER + "datetime." + Attribute.PARAMETER_MINIMUM,
         ]);

@@ -2,7 +2,7 @@
 /// <reference path="Controller.ts" />
 /// <reference path="NavigationController.ts" />
 
-module Ompluscript.Contoller.Controller {
+module Ompluscript.Controller.Controller {
     "use strict";
 
     export class ApplicationController extends Controller {

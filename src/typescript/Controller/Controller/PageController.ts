@@ -2,7 +2,7 @@
 /// <reference path="../../View/Container/Page.ts" />
 /// <reference path="../Event/OnActionRunEvent.ts" />
 
-module Ompluscript.Contoller.Controller {
+module Ompluscript.Controller.Controller {
     "use strict";
 
     import Page = Ompluscript.View.Container.Page;

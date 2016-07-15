@@ -13,6 +13,7 @@ describe("SessionStorageProxyConfiguration class tests - valid sessionStoragePro
         var definition = {
             type: "SessionStorageProxy",
         };
+        expect(sessionStorageProxyConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(sessionStorageProxyConfiguration.getErrors(definition)).toEqual([]);
         expect(sessionStorageProxyConfiguration.create(definition) instanceof SessionStorageProxy).toBeTruthy();
         expect(sessionStorageProxyConfiguration.create(definition).getName()).toBe("SessionStorageProxy");

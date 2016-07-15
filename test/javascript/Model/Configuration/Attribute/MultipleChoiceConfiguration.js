@@ -14,6 +14,7 @@ describe("MultipleChoiceConfiguration class tests - valid multipleChoice", funct
             type: "MultipleChoice",
             name: "multipleChoice"
         };
+        expect(multipleChoiceConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(multipleChoiceConfiguration.getErrors(definition)).toEqual([]);
         expect(multipleChoiceConfiguration.create(definition) instanceof MultipleChoice).toBeTruthy();
         expect(multipleChoiceConfiguration.create(definition).isRequired()).toBeFalsy();
@@ -27,6 +28,7 @@ describe("MultipleChoiceConfiguration class tests - valid multipleChoice", funct
             required: true,
             choices: [1, 2],
         };
+        expect(multipleChoiceConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(multipleChoiceConfiguration.getErrors(definition)).toEqual([]);
         expect(multipleChoiceConfiguration.create(definition) instanceof MultipleChoice).toBeTruthy();
         expect(multipleChoiceConfiguration.create(definition).isRequired()).toBeTruthy();
@@ -39,6 +41,7 @@ describe("MultipleChoiceConfiguration class tests - valid multipleChoice", funct
             name: "multipleChoice",
             required: true,
         };
+        expect(multipleChoiceConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(multipleChoiceConfiguration.getErrors(definition)).toEqual([]);
         expect(multipleChoiceConfiguration.create(definition) instanceof MultipleChoice).toBeTruthy();
         expect(multipleChoiceConfiguration.create(definition).isRequired()).toBeTruthy();
@@ -51,6 +54,7 @@ describe("MultipleChoiceConfiguration class tests - valid multipleChoice", funct
             name: "multipleChoice",
             choices: [1, 2],
         };
+        expect(multipleChoiceConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(multipleChoiceConfiguration.getErrors(definition)).toEqual([]);
         expect(multipleChoiceConfiguration.create(definition) instanceof MultipleChoice).toBeTruthy();
         expect(multipleChoiceConfiguration.create(definition).isRequired()).toBeFalsy();
@@ -77,6 +81,7 @@ describe("MultipleChoiceConfiguration class tests - invalid multipleChoice", fun
         var definition = {
             type: "MultipleChoice"
         };
+        expect(multipleChoiceConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(multipleChoiceConfiguration.getErrors(definition)).toEqual([
             "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
@@ -89,6 +94,7 @@ describe("MultipleChoiceConfiguration class tests - invalid multipleChoice", fun
             required: 1,
             choices: {},
         };
+        expect(multipleChoiceConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(multipleChoiceConfiguration.getErrors(definition)).toEqual([
             "multipleChoice." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
             "multipleChoice." + Choice.PARAMETER_CHOICES + Configuration.MUST_BE_ARRAY_OR_UNDEFINED,
@@ -102,6 +108,7 @@ describe("MultipleChoiceConfiguration class tests - invalid multipleChoice", fun
             required: 1,
             choices: [],
         };
+        expect(multipleChoiceConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(multipleChoiceConfiguration.getErrors(definition)).toEqual([
             "multipleChoice." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
         ]);
@@ -114,6 +121,7 @@ describe("MultipleChoiceConfiguration class tests - invalid multipleChoice", fun
             required: true,
             choices: false,
         };
+        expect(multipleChoiceConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(multipleChoiceConfiguration.getErrors(definition)).toEqual([
             "multipleChoice." + Choice.PARAMETER_CHOICES + Configuration.MUST_BE_ARRAY_OR_UNDEFINED,
         ]);

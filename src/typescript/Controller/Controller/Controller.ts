@@ -3,7 +3,7 @@
 /// <reference path="../../Core/Observer/Observable.ts" />
 /// <reference path="../../Core/Observer/Event.ts" />
 
-module Ompluscript.Contoller.Controller {
+module Ompluscript.Controller.Controller {
     "use strict";
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import IObserver = Ompluscript.Core.Observer.IObserver;

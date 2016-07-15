@@ -14,6 +14,7 @@ describe("StringConfiguration class tests - valid string", function() {
             type: "String",
             name: "string"
         };
+        expect(stringConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(stringConfiguration.getErrors(definition)).toEqual([]);
         expect(stringConfiguration.create(definition) instanceof String).toBeTruthy();
         expect(stringConfiguration.create(definition).isRequired()).toBeFalsy();
@@ -31,6 +32,7 @@ describe("StringConfiguration class tests - valid string", function() {
             maximumLength: 5,
             pattern: /value/,
         };
+        expect(stringConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(stringConfiguration.getErrors(definition)).toEqual([]);
         expect(stringConfiguration.create(definition) instanceof String).toBeTruthy();
         expect(stringConfiguration.create(definition).isRequired()).toBeTruthy();
@@ -45,6 +47,7 @@ describe("StringConfiguration class tests - valid string", function() {
             name: "string",
             required: false,
         };
+        expect(stringConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(stringConfiguration.getErrors(definition)).toEqual([]);
         expect(stringConfiguration.create(definition) instanceof String).toBeTruthy();
         expect(stringConfiguration.create(definition).isRequired()).toBeFalsy();
@@ -61,6 +64,7 @@ describe("StringConfiguration class tests - valid string", function() {
             minimumLength: 5,
             maximumLength: 5,
         };
+        expect(stringConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(stringConfiguration.getErrors(definition)).toEqual([]);
         expect(stringConfiguration.create(definition) instanceof String).toBeTruthy();
         expect(stringConfiguration.create(definition).isRequired()).toBeFalsy();
@@ -75,6 +79,7 @@ describe("StringConfiguration class tests - valid string", function() {
             name: "string",
             pattern: /value/,
         };
+        expect(stringConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(stringConfiguration.getErrors(definition)).toEqual([]);
         expect(stringConfiguration.create(definition) instanceof String).toBeTruthy();
         expect(stringConfiguration.create(definition).isRequired()).toBeFalsy();
@@ -116,6 +121,7 @@ describe("StringConfiguration class tests - invalid string", function() {
             maximumLength: "not",
             pattern: "value",
         };
+        expect(stringConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(stringConfiguration.getErrors(definition)).toEqual([
             "string." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
             "string." + String.PARAMETER_MINIMUM_LENGTH + Configuration.MUST_BE_NUMBER_OR_UNDEFINED,
@@ -131,6 +137,7 @@ describe("StringConfiguration class tests - invalid string", function() {
             minimumLength: 4,
             maximumLength: 2,
         };
+        expect(stringConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(stringConfiguration.getErrors(definition)).toEqual([
             "string." + String.PARAMETER_MAXIMUM_LENGTH + Configuration.MUST_BE_GREATER + "string." + String.PARAMETER_MINIMUM_LENGTH,
         ]);
@@ -144,6 +151,7 @@ describe("StringConfiguration class tests - invalid string", function() {
             minimumLength: 4,
             maximumLength: 2,
         };
+        expect(stringConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(stringConfiguration.getErrors(definition)).toEqual([
             "string." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
         ]);
@@ -157,6 +165,7 @@ describe("StringConfiguration class tests - invalid string", function() {
             minimumLength: "not",
             maximumLength: 2,
         };
+        expect(stringConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(stringConfiguration.getErrors(definition)).toEqual([
             "string." + String.PARAMETER_MINIMUM_LENGTH + Configuration.MUST_BE_NUMBER_OR_UNDEFINED,
         ]);
@@ -170,6 +179,7 @@ describe("StringConfiguration class tests - invalid string", function() {
             minimumLength: 4,
             maximumLength: true,
         };
+        expect(stringConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(stringConfiguration.getErrors(definition)).toEqual([
             "string." + String.PARAMETER_MAXIMUM_LENGTH + Configuration.MUST_BE_NUMBER_OR_UNDEFINED,
         ]);

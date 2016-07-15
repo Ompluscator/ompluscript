@@ -2,7 +2,7 @@
 /// <reference path="../../Model/Container/Container.ts" />
 /// <reference path="../../View/Component/Container.ts" />
 
-module Ompluscript.Contoller.Controller {
+module Ompluscript.Controller.Controller {
     "use strict";
     import ModelContainer = Ompluscript.Model.Container.Container;
     import ViewContainer = Ompluscript.View.Component.Container;

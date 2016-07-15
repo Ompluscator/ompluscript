@@ -99,10 +99,10 @@ var __extends = (this && this.__extends) || function (d, b) {
     })(Core = Ompluscript.Core || (Ompluscript.Core = {}));
 })(Ompluscript || (Ompluscript = {}));
 (function (Ompluscript) {
-    var Contoller;
-    (function (Contoller) {
+    var Controller;
+    (function (Controller_1) {
         var Controller;
-        (function (Controller_1) {
+        (function (Controller_2) {
             "use strict";
             var Observable = Ompluscript.Core.Observer.Observable;
             var Controller = (function (_super) {
@@ -140,9 +140,9 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 return Controller;
             }(Observable));
-            Controller_1.Controller = Controller;
-        })(Controller = Contoller.Controller || (Contoller.Controller = {}));
-    })(Contoller = Ompluscript.Contoller || (Ompluscript.Contoller = {}));
+            Controller_2.Controller = Controller;
+        })(Controller = Controller_1.Controller || (Controller_1.Controller = {}));
+    })(Controller = Ompluscript.Controller || (Ompluscript.Controller = {}));
 })(Ompluscript || (Ompluscript = {}));
 (function (Ompluscript) {
     var View;
@@ -3499,8 +3499,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     })(Controller = Ompluscript.Controller || (Ompluscript.Controller = {}));
 })(Ompluscript || (Ompluscript = {}));
 (function (Ompluscript) {
-    var Contoller;
-    (function (Contoller) {
+    var Controller;
+    (function (Controller_3) {
         var Controller;
         (function (Controller) {
             "use strict";
@@ -3597,12 +3597,12 @@ var __extends = (this && this.__extends) || function (d, b) {
                 return NavigationController;
             }(Controller.Controller));
             Controller.NavigationController = NavigationController;
-        })(Controller = Contoller.Controller || (Contoller.Controller = {}));
-    })(Contoller = Ompluscript.Contoller || (Ompluscript.Contoller = {}));
+        })(Controller = Controller_3.Controller || (Controller_3.Controller = {}));
+    })(Controller = Ompluscript.Controller || (Ompluscript.Controller = {}));
 })(Ompluscript || (Ompluscript = {}));
 (function (Ompluscript) {
-    var Contoller;
-    (function (Contoller) {
+    var Controller;
+    (function (Controller_4) {
         var Controller;
         (function (Controller) {
             "use strict";
@@ -3635,12 +3635,12 @@ var __extends = (this && this.__extends) || function (d, b) {
                 return ApplicationController;
             }(Controller.Controller));
             Controller.ApplicationController = ApplicationController;
-        })(Controller = Contoller.Controller || (Contoller.Controller = {}));
-    })(Contoller = Ompluscript.Contoller || (Ompluscript.Contoller = {}));
+        })(Controller = Controller_4.Controller || (Controller_4.Controller = {}));
+    })(Controller = Ompluscript.Controller || (Ompluscript.Controller = {}));
 })(Ompluscript || (Ompluscript = {}));
 (function (Ompluscript) {
-    var Contoller;
-    (function (Contoller) {
+    var Controller;
+    (function (Controller_5) {
         var Controller;
         (function (Controller) {
             "use strict";
@@ -3668,12 +3668,12 @@ var __extends = (this && this.__extends) || function (d, b) {
                 return ComponentController;
             }(Controller.Controller));
             Controller.ComponentController = ComponentController;
-        })(Controller = Contoller.Controller || (Contoller.Controller = {}));
-    })(Contoller = Ompluscript.Contoller || (Ompluscript.Contoller = {}));
+        })(Controller = Controller_5.Controller || (Controller_5.Controller = {}));
+    })(Controller = Ompluscript.Controller || (Ompluscript.Controller = {}));
 })(Ompluscript || (Ompluscript = {}));
 (function (Ompluscript) {
-    var Contoller;
-    (function (Contoller) {
+    var Controller;
+    (function (Controller_6) {
         var Controller;
         (function (Controller) {
             "use strict";
@@ -3719,8 +3719,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                 return PageController;
             }(Controller.Controller));
             Controller.PageController = PageController;
-        })(Controller = Contoller.Controller || (Contoller.Controller = {}));
-    })(Contoller = Ompluscript.Contoller || (Ompluscript.Contoller = {}));
+        })(Controller = Controller_6.Controller || (Controller_6.Controller = {}));
+    })(Controller = Ompluscript.Controller || (Ompluscript.Controller = {}));
 })(Ompluscript || (Ompluscript = {}));
 (function (Ompluscript) {
     var Model;

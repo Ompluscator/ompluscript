@@ -14,6 +14,7 @@ describe("NumberConfiguration class tests - valid number", function() {
             type: "Number",
             name: "number"
         };
+        expect(numberConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(numberConfiguration.getErrors(definition)).toEqual([]);
         expect(numberConfiguration.create(definition) instanceof Number).toBeTruthy();
         expect(numberConfiguration.create(definition).isRequired()).toBeFalsy();
@@ -33,6 +34,7 @@ describe("NumberConfiguration class tests - valid number", function() {
             maximum: 5,
             includeMaximum: true,
         };
+        expect(numberConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(numberConfiguration.getErrors(definition)).toEqual([]);
         expect(numberConfiguration.create(definition) instanceof Number).toBeTruthy();
         expect(numberConfiguration.create(definition).isRequired()).toBeTruthy();
@@ -48,6 +50,7 @@ describe("NumberConfiguration class tests - valid number", function() {
             name: "number",
             required: false,
         };
+        expect(numberConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(numberConfiguration.getErrors(definition)).toEqual([]);
         expect(numberConfiguration.create(definition) instanceof Number).toBeTruthy();
         expect(numberConfiguration.create(definition).isRequired()).toBeFalsy();
@@ -64,6 +67,7 @@ describe("NumberConfiguration class tests - valid number", function() {
             minimum: 1,
             includeMinimum: false,
         };
+        expect(numberConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(numberConfiguration.getErrors(definition)).toEqual([]);
         expect(numberConfiguration.create(definition) instanceof Number).toBeTruthy();
         expect(numberConfiguration.create(definition).isRequired()).toBeFalsy();
@@ -79,6 +83,7 @@ describe("NumberConfiguration class tests - valid number", function() {
             name: "number",
             maximum: 5,
         };
+        expect(numberConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(numberConfiguration.getErrors(definition)).toEqual([]);
         expect(numberConfiguration.create(definition) instanceof Number).toBeTruthy();
         expect(numberConfiguration.create(definition).isRequired()).toBeFalsy();
@@ -98,6 +103,7 @@ describe("NumberConfiguration class tests - valid number", function() {
             maximum: 5,
             includeMaximum: true,
         };
+        expect(numberConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(numberConfiguration.getErrors(definition)).toEqual([]);
         expect(numberConfiguration.create(definition) instanceof Number).toBeTruthy();
         expect(numberConfiguration.create(definition).isRequired()).toBeTruthy();
@@ -126,6 +132,7 @@ describe("NumberConfiguration class tests - invalid number", function() {
         var definition = {
             type: "Number"
         };
+        expect(numberConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(numberConfiguration.getErrors(definition)).toEqual([
             "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
@@ -141,6 +148,7 @@ describe("NumberConfiguration class tests - invalid number", function() {
             maximum: false,
             includeMaximum: "not",
         };
+        expect(numberConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(numberConfiguration.getErrors(definition)).toEqual([
             "number." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
             "number." + Attribute.PARAMETER_MINIMUM + Configuration.MUST_BE_NUMBER_OR_UNDEFINED,
@@ -157,6 +165,7 @@ describe("NumberConfiguration class tests - invalid number", function() {
             minimum: 4,
             maximum: 2,
         };
+        expect(numberConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(numberConfiguration.getErrors(definition)).toEqual([
             "number." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_GREATER + "number." + Attribute.PARAMETER_MINIMUM,
         ]);
@@ -170,6 +179,7 @@ describe("NumberConfiguration class tests - invalid number", function() {
             minimum: 2,
             maximum: 3,
         };
+        expect(numberConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(numberConfiguration.getErrors(definition)).toEqual([
             "number." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
         ]);
@@ -183,6 +193,7 @@ describe("NumberConfiguration class tests - invalid number", function() {
             minimum: false,
             maximum: 3,
         };
+        expect(numberConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(numberConfiguration.getErrors(definition)).toEqual([
             "number." + Attribute.PARAMETER_MINIMUM + Configuration.MUST_BE_NUMBER_OR_UNDEFINED,
         ]);
@@ -196,6 +207,7 @@ describe("NumberConfiguration class tests - invalid number", function() {
             minimum: 2,
             maximum: "not",
         };
+        expect(numberConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(numberConfiguration.getErrors(definition)).toEqual([
             "number." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_NUMBER_OR_UNDEFINED,
         ]);
@@ -209,6 +221,7 @@ describe("NumberConfiguration class tests - invalid number", function() {
             minimum: 3,
             maximum: 3,
         };
+        expect(numberConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(numberConfiguration.getErrors(definition)).toEqual([
             "number." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_GREATER + "number." + Attribute.PARAMETER_MINIMUM,
         ]);
@@ -224,6 +237,7 @@ describe("NumberConfiguration class tests - invalid number", function() {
             maximum: 3,
             includeMaximum: true,
         };
+        expect(numberConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(numberConfiguration.getErrors(definition)).toEqual([
             "number." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_GREATER + "number." + Attribute.PARAMETER_MINIMUM,
         ]);

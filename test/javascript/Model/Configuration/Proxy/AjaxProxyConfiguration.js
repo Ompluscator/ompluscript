@@ -13,6 +13,7 @@ describe("AjaxProxyConfiguration class tests - valid ajaxProxy", function() {
         var definition = {
             type: "AjaxProxy",
         };
+        expect(ajaxProxyConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(ajaxProxyConfiguration.getErrors(definition)).toEqual([]);
         expect(ajaxProxyConfiguration.create(definition) instanceof AjaxProxy).toBeTruthy();
         expect(ajaxProxyConfiguration.create(definition).getName()).toBe("AjaxProxy");
@@ -30,6 +31,7 @@ describe("AjaxProxyConfiguration class tests - valid ajaxProxy", function() {
             deleteLink: "delete",
             selectLink: "select"
         };
+        expect(ajaxProxyConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(ajaxProxyConfiguration.getErrors(definition)).toEqual([]);
         expect(ajaxProxyConfiguration.create(definition) instanceof AjaxProxy).toBeTruthy();
         expect(ajaxProxyConfiguration.create(definition).getName()).toBe("AjaxProxy");
@@ -61,6 +63,7 @@ describe("AjaxProxyConfiguration class tests - invalid ajaxProxy", function() {
             deleteLink: {},
             selectLink: []
         };
+        expect(ajaxProxyConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(ajaxProxyConfiguration.getErrors(definition)).toEqual([
             "AjaxProxy." + AjaxProxy.PARAMETER_SAVE_LINK + Configuration.MUST_BE_STRING_OR_UNDEFINED,
             "AjaxProxy." + AjaxProxy.PARAMETER_UPDATE_LINK + Configuration.MUST_BE_STRING_OR_UNDEFINED,

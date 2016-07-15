@@ -14,6 +14,7 @@ describe("SingleChoiceConfiguration class tests - valid singleChoice", function(
             type: "SingleChoice",
             name: "singleChoice"
         };
+        expect(singleChoiceConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(singleChoiceConfiguration.getErrors(definition)).toEqual([]);
         expect(singleChoiceConfiguration.create(definition) instanceof SingleChoice).toBeTruthy();
         expect(singleChoiceConfiguration.create(definition).isRequired()).toBeFalsy();
@@ -27,6 +28,7 @@ describe("SingleChoiceConfiguration class tests - valid singleChoice", function(
             required: true,
             choices: [1, 2],
         };
+        expect(singleChoiceConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(singleChoiceConfiguration.getErrors(definition)).toEqual([]);
         expect(singleChoiceConfiguration.create(definition) instanceof SingleChoice).toBeTruthy();
         expect(singleChoiceConfiguration.create(definition).isRequired()).toBeTruthy();
@@ -39,6 +41,7 @@ describe("SingleChoiceConfiguration class tests - valid singleChoice", function(
             name: "singleChoice",
             required: true,
         };
+        expect(singleChoiceConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(singleChoiceConfiguration.getErrors(definition)).toEqual([]);
         expect(singleChoiceConfiguration.create(definition) instanceof SingleChoice).toBeTruthy();
         expect(singleChoiceConfiguration.create(definition).isRequired()).toBeTruthy();
@@ -51,6 +54,7 @@ describe("SingleChoiceConfiguration class tests - valid singleChoice", function(
             name: "singleChoice",
             choices: [1, 2],
         };
+        expect(singleChoiceConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(singleChoiceConfiguration.getErrors(definition)).toEqual([]);
         expect(singleChoiceConfiguration.create(definition) instanceof SingleChoice).toBeTruthy();
         expect(singleChoiceConfiguration.create(definition).isRequired()).toBeFalsy();
@@ -77,6 +81,7 @@ describe("SingleChoiceConfiguration class tests - invalid singleChoice", functio
         var definition = {
             type: "SingleChoice"
         };
+        expect(singleChoiceConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(singleChoiceConfiguration.getErrors(definition)).toEqual([
             "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
@@ -89,6 +94,7 @@ describe("SingleChoiceConfiguration class tests - invalid singleChoice", functio
             required: 1,
             choices: {},
         };
+        expect(singleChoiceConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(singleChoiceConfiguration.getErrors(definition)).toEqual([
             "singleChoice." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
             "singleChoice." + Choice.PARAMETER_CHOICES + Configuration.MUST_BE_ARRAY_OR_UNDEFINED,
@@ -102,6 +108,7 @@ describe("SingleChoiceConfiguration class tests - invalid singleChoice", functio
             required: 1,
             choices: [],
         };
+        expect(singleChoiceConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(singleChoiceConfiguration.getErrors(definition)).toEqual([
             "singleChoice." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
         ]);
@@ -114,6 +121,7 @@ describe("SingleChoiceConfiguration class tests - invalid singleChoice", functio
             required: true,
             choices: false,
         };
+        expect(singleChoiceConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(singleChoiceConfiguration.getErrors(definition)).toEqual([
             "singleChoice." + Choice.PARAMETER_CHOICES + Configuration.MUST_BE_ARRAY_OR_UNDEFINED,
         ]);

@@ -14,6 +14,7 @@ describe("BooleanConfiguration class tests - valid boolean", function() {
             type: "Boolean",
             name: "boolean"
         };
+        expect(booleanConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(booleanConfiguration.getErrors(definition)).toEqual([]);
         expect(booleanConfiguration.create(definition) instanceof Boolean).toBeTruthy();
         expect(booleanConfiguration.create(definition).getName()).toBe("boolean");
@@ -28,6 +29,7 @@ describe("BooleanConfiguration class tests - valid boolean", function() {
             required: true,
             mustBeTrue: true,
         };
+        expect(booleanConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(booleanConfiguration.getErrors(definition)).toEqual([]);
         expect(booleanConfiguration.create(definition) instanceof Boolean).toBeTruthy();
         expect(booleanConfiguration.create(definition).getName()).toBe("boolean");
@@ -42,6 +44,7 @@ describe("BooleanConfiguration class tests - valid boolean", function() {
             required: false,
             mustBeTrue: false,
         };
+        expect(booleanConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(booleanConfiguration.getErrors(definition)).toEqual([]);
         expect(booleanConfiguration.create(definition) instanceof Boolean).toBeTruthy();
         expect(booleanConfiguration.create(definition).getName()).toBe("boolean");
@@ -55,6 +58,7 @@ describe("BooleanConfiguration class tests - valid boolean", function() {
             name: "boolean",
             mustBeTrue: true,
         };
+        expect(booleanConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(booleanConfiguration.getErrors(definition)).toEqual([]);
         expect(booleanConfiguration.create(definition) instanceof Boolean).toBeTruthy();
         expect(booleanConfiguration.create(definition).getName()).toBe("boolean");
@@ -68,6 +72,7 @@ describe("BooleanConfiguration class tests - valid boolean", function() {
             name: "boolean",
             required: true,
         };
+        expect(booleanConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(booleanConfiguration.getErrors(definition)).toEqual([]);
         expect(booleanConfiguration.create(definition) instanceof Boolean).toBeTruthy();
         expect(booleanConfiguration.create(definition).getName()).toBe("boolean");
@@ -94,6 +99,7 @@ describe("BooleanConfiguration class tests - invalid boolean", function() {
         var definition = {
             type: "Boolean"
         };
+        expect(booleanConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(booleanConfiguration.getErrors(definition)).toEqual([
             "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
@@ -106,6 +112,7 @@ describe("BooleanConfiguration class tests - invalid boolean", function() {
             required: 1,
             mustBeTrue: 1,
         };
+        expect(booleanConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(booleanConfiguration.getErrors(definition)).toEqual([
             "boolean." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
             "boolean." + Boolean.PARAMETER_MUST_BE_TRUE + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED
@@ -119,6 +126,7 @@ describe("BooleanConfiguration class tests - invalid boolean", function() {
             required: 1,
             mustBeTrue: true,
         };
+        expect(booleanConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(booleanConfiguration.getErrors(definition)).toEqual([
             "boolean." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
         ]);
@@ -131,6 +139,7 @@ describe("BooleanConfiguration class tests - invalid boolean", function() {
             required: true,
             mustBeTrue: 1,
         };
+        expect(booleanConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(booleanConfiguration.getErrors(definition)).toEqual([
             "boolean." + Boolean.PARAMETER_MUST_BE_TRUE + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED
         ]);

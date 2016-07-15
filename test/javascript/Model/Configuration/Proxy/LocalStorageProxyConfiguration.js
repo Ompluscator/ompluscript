@@ -13,6 +13,7 @@ describe("LocalStorageProxyConfiguration class tests - valid localStorageProxy",
         var definition = {
             type: "LocalStorageProxy",
         };
+        expect(localStorageProxyConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(localStorageProxyConfiguration.getErrors(definition)).toEqual([]);
         expect(localStorageProxyConfiguration.create(definition) instanceof LocalStorageProxy).toBeTruthy();
         expect(localStorageProxyConfiguration.create(definition).getName()).toBe("LocalStorageProxy");
