@@ -15,7 +15,7 @@ describe("TextInput class tests - events", function() {
     });
 
     it("get configuration", function() {
-        expect(textInput.hasClass(Input.FIELD_INPUT)).toBeTruthy();
+        expect(textInput.hasClass(Input.CLASS_INPUT)).toBeTruthy();
         expect(textInput.isBound()).toBeTruthy();
         expect(textInput.isTranslated()).toBeFalsy();
         expect(textInput.getStackTrace()).toEqual({
@@ -113,7 +113,7 @@ describe("TextInput class tests - placeholder", function() {
     });
 
     it("get configuration", function() {
-        expect(textInput.hasClass(Input.FIELD_INPUT)).toBeTruthy();
+        expect(textInput.hasClass(Input.CLASS_INPUT)).toBeTruthy();
         expect(textInput.isBound()).toBeFalsy();
         expect(textInput.isTranslated()).toBeTruthy();
         expect(textInput.getPlaceholderContent()).toBe("text");

@@ -15,7 +15,7 @@ describe("PasswordInput class tests - events", function() {
     });
 
     it("get configuration", function() {
-        expect(passwordInput.hasClass(Input.FIELD_INPUT)).toBeTruthy();
+        expect(passwordInput.hasClass(Input.CLASS_INPUT)).toBeTruthy();
         expect(passwordInput.isBound()).toBeTruthy();
         expect(passwordInput.getStackTrace()).toEqual({
             html: '<input type="password" name="param" class="input">',
@@ -112,7 +112,7 @@ describe("PasswordInput class tests - placeholder", function() {
     });
 
     it("get configuration", function() {
-        expect(passwordInput.hasClass(Input.FIELD_INPUT)).toBeTruthy();
+        expect(passwordInput.hasClass(Input.CLASS_INPUT)).toBeTruthy();
         expect(passwordInput.isBound()).toBeFalsy();
         expect(passwordInput.isTranslated()).toBeTruthy();
         expect(passwordInput.getPlaceholderContent()).toBe("password");

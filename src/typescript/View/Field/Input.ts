@@ -41,9 +41,9 @@ module Ompluscript.View.Field {
         public static PARAMETER_PLACEHOLDER: string = "placeholder";
 
         /**
-         * @type {string} FIELD_INPUT HTML input element
+         * @type {string} ELEMENT_INPUT HTML input element
          */
-        public static FIELD_INPUT: string = "input";
+        public static ELEMENT_INPUT: string = "input";
 
         /**
          * @type {string} CLASS_INPUT Class of HTML input element
@@ -154,6 +154,15 @@ module Ompluscript.View.Field {
         }
 
         /**
+         * Methode that returns an attribute for binding with
+         * 
+         * @returns {Attribute<any>} attribute Attribute for binding with
+         */
+        public getBindingAttribute(): Attribute<any> {
+            return this.attribute;
+        }
+
+        /**
          * Method that removes binding with any attribute
          */
         public removeBinding(): void {
@@ -225,7 +234,7 @@ module Ompluscript.View.Field {
          * Method that generates HTML content of component
          */
         protected initializeHtmlElement(): void {
-            this.htmlElement = document.createElement(Input.FIELD_INPUT);
+            this.htmlElement = document.createElement(Input.ELEMENT_INPUT);
             this.addOnUpdateInputEvent();
         }
 

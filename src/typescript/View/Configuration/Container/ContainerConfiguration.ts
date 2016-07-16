@@ -8,6 +8,7 @@
 /// <reference path="../Field/NumberInputConfiguration.ts" />
 /// <reference path="../Field/PasswordInputConfiguration.ts" />
 /// <reference path="../Field/TextInputConfiguration.ts" />
+/// <reference path="../Field/DateInputConfiguration.ts" />
 /// <reference path="../Layout/NullLayoutConfiguration.ts" />
 /// <reference path="../Layout/RelativeLayoutConfiguration.ts" />
 /// <reference path="../Layout/LinearLayoutConfiguration.ts" />
@@ -29,6 +30,7 @@ module Ompluscript.View.Configuration.Container {
     import PasswordInputConfiguration = Ompluscript.View.Configuration.Field.PasswordInputConfiguration;
     import TextInputConfiguration = Ompluscript.View.Configuration.Field.TextInputConfiguration;
     import ComponentConfiguration = Ompluscript.View.Configuration.Component.ComponentConfiguration;
+    import DateInputConfiguration = Ompluscript.View.Configuration.Field.DateInputConfiguration;
 
     export abstract class ContainerConfiguration extends ComponentConfiguration {
         
@@ -46,6 +48,7 @@ module Ompluscript.View.Configuration.Container {
                 Configuration.getInstance(NumberInputConfiguration),
                 Configuration.getInstance(PasswordInputConfiguration),
                 Configuration.getInstance(TextInputConfiguration),
+                Configuration.getInstance(DateInputConfiguration),
                 Configuration.getInstance(ErrorConfiguration),
             ];
             let configurations: Object = {};

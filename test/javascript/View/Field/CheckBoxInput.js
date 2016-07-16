@@ -15,7 +15,7 @@ describe("CheckBoxInput class tests", function() {
     });
 
     it("get configuration", function() {
-        expect(checkBoxInput.hasClass(Input.FIELD_INPUT)).toBeTruthy();
+        expect(checkBoxInput.hasClass(Input.CLASS_INPUT)).toBeTruthy();
         expect(checkBoxInput.isBound()).toBeTruthy();
         expect(checkBoxInput.getStackTrace()).toEqual({
             html: '<input type="checkbox" name="param" class="input">',

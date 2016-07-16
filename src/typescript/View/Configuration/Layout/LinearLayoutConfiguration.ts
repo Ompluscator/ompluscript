@@ -2,6 +2,11 @@
 /// <reference path="LayoutConfiguration.ts" />
 /// <reference path="../../Layout/LinearLayout.ts" />
 
+/**
+ * Module that contains layouts' configuration classes.
+ *
+ * @module Ompluscript.View.Configuration.Layout
+ */
 module Ompluscript.View.Configuration.Layout {
     "use strict";
     
@@ -9,12 +14,29 @@ module Ompluscript.View.Configuration.Layout {
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import LinearLayout = Ompluscript.View.Layout.LinearLayout;
 
+    /**
+     * Class that contains functionality for linear layout configuration.
+     *
+     * @class LinearLayoutConfiguration
+     */
     export class LinearLayoutConfiguration extends LayoutConfiguration {
 
+        /**
+         * Method that decides if this configuration is related to this class.
+         *
+         * @param {Object} definition Class definition
+         * @returns {boolean} Is related to this class
+         */
         public isRelatedTo(definition: Object): boolean {
             return definition[Configuration.PARAMETER_TYPE] === LinearLayout.TYPE_LINEAR_LAYOUT;
         }
 
+        /**
+         * Method that decides if this configuration is related to this class.
+         *
+         * @param {Object} definition Class definition
+         * @returns {boolean} Is related to this class
+         */
         public getErrors(definition: Object): string[] {
             let errors: string[] = super.getErrors(definition);
             let error: string = this.shouldBeString(definition, LinearLayout.PARAMETER_DIRECTION);
@@ -35,6 +57,13 @@ module Ompluscript.View.Configuration.Layout {
             return this.filterErrors(errors);
         }
 
+        /**
+         * Method that creates new instance from configuration
+         *
+         * @param {Object} definition Class definition
+         * @param {String} attribute Instance of binding attribute
+         * @returns {IBase} New instance
+         */
         public create(definition: Object): IBase {
             let direction: string = definition[LinearLayout.PARAMETER_DIRECTION];
             let reverse: boolean = definition[LinearLayout.PARAMETER_REVERSE];

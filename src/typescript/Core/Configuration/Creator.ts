@@ -104,11 +104,7 @@ module Ompluscript.Core.Configuration {
                     type: definition[ConfigurationClass.PARAMETER_TYPE],
                 });
             } else {
-                this.definition[definition[ConfigurationClass.PARAMETER_NAME]] = {
-                    definition: definition,
-                    name: definition[ConfigurationClass.PARAMETER_NAME],
-                    type: definition[ConfigurationClass.PARAMETER_TYPE],
-                };
+                this.definition[definition[ConfigurationClass.PARAMETER_NAME]] = definition;
             }
         }
 

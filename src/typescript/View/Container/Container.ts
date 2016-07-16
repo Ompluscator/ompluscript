@@ -80,10 +80,6 @@ module Ompluscript.View.Container {
         protected appendChild(component: Component): void {
             this.htmlElement.appendChild(component.render());
         }
-
-        protected initializeHtmlElement(): void {
-            this.htmlElement = document.createElement(Layout.DIV_ELEMENT);
-        }
     }
 
 }

@@ -15,7 +15,7 @@ describe("EmailInput class tests - events", function() {
     });
 
     it("get configuration", function() {
-        expect(emailInput.hasClass(Input.FIELD_INPUT)).toBeTruthy();
+        expect(emailInput.hasClass(Input.CLASS_INPUT)).toBeTruthy();
         expect(emailInput.isBound()).toBeTruthy();
         expect(emailInput.getStackTrace()).toEqual({
             html: '<input type="email" name="param" class="input">',
@@ -112,7 +112,7 @@ describe("EmailInput class tests - placeholder", function() {
     });
 
     it("get configuration", function() {
-        expect(emailInput.hasClass(Input.FIELD_INPUT)).toBeTruthy();
+        expect(emailInput.hasClass(Input.CLASS_INPUT)).toBeTruthy();
         expect(emailInput.isBound()).toBeFalsy();
         expect(emailInput.isTranslated()).toBeTruthy();
         expect(emailInput.getPlaceholderContent()).toBe("email");

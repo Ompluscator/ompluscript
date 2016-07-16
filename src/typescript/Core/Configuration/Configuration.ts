@@ -28,9 +28,9 @@ module Ompluscript.Core.Configuration {
         public static MUST_BE_STRING_OR_UNDEFINED: string = " must be a string or undefined.";
 
         /**
-         * @type {string} MUST_BE_STRING_OR_OBJECT_OR_UNDEFINED Message for definition that should be string or object or undefined.
+         * @type {string} MUST_BE_STRING_OR_OBJECT_OR_BOOLEAN_UNDEFINED Message for definition that should be string or object or undefined.
          */
-        public static MUST_BE_STRING_OR_OBJECT_OR_UNDEFINED: string = " must be a string or object or undefined.";
+        public static MUST_BE_STRING_OR_OBJECT_OR_BOOLEAN_OR_UNDEFINED: string = " must be a string or object or boolean or undefined.";
 
         /**
          * @type {string} MUST_BE_BOOLEAN_OR_UNDEFINED Message for definition that should be boolean or undefined.
@@ -136,9 +136,10 @@ module Ompluscript.Core.Configuration {
             return undefined;
         }
 
-        protected shouldBeStringOrObject(definition: Object, key: string): string {
-            if (definition[key] !== undefined && typeof definition[key] !== "string" && typeof definition[key] !== "object") {
-                return this.getName(definition, key) + Configuration.MUST_BE_STRING_OR_OBJECT_OR_UNDEFINED;
+        protected shouldBeStringOrObjectBoolean(definition: Object, key: string): string {
+            if (definition[key] !== undefined && typeof definition[key] !== "boolean"
+                && typeof definition[key] !== "string" && typeof definition[key] !== "object") {
+                return this.getName(definition, key) + Configuration.MUST_BE_STRING_OR_OBJECT_OR_BOOLEAN_OR_UNDEFINED;
             }
             return undefined;
         }

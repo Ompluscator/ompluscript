@@ -64,13 +64,13 @@ module Ompluscript.Core.Configuration {
         }
 
         public createChild(definition: Object, key: string, creator: Creator = undefined): IBase {
-            if (this.configurations.hasOwnProperty(key)) {
+            if (creator !== undefined && typeof definition[key] === "string") {
+                return creator.create(definition[key]);
+            } else if (this.configurations.hasOwnProperty(key)) {
                 let configuration: Configuration[] = this.configurations[key];
                 if (definition.hasOwnProperty(key)) {
                     for (let i: number = 0; i < configuration.length; i++) {
-                        if (creator !== undefined && typeof definition[key] === "string") {
-                            return creator.create(definition[key]);
-                        } else if (configuration[i].isRelatedTo(definition[key])) {
+                        if (configuration[i].isRelatedTo(definition[key])) {
                             return configuration[i].create(definition[key]);
                         }
                     }

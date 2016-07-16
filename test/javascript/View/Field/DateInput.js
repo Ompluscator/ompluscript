@@ -15,7 +15,7 @@ describe("DateInput class tests - events", function() {
     });
 
     it("get configuration", function() {
-        expect(dateInput.hasClass(Input.FIELD_INPUT)).toBeTruthy();
+        expect(dateInput.hasClass(Input.CLASS_INPUT)).toBeTruthy();
         expect(dateInput.isBound()).toBeTruthy();
         expect(dateInput.isTranslated()).toBeFalsy();
         expect(dateInput.getStackTrace()).toEqual({
@@ -113,7 +113,7 @@ describe("DateInput class tests - placeholder", function() {
     });
 
     it("get configuration", function() {
-        expect(dateInput.hasClass(Input.FIELD_INPUT)).toBeTruthy();
+        expect(dateInput.hasClass(Input.CLASS_INPUT)).toBeTruthy();
         expect(dateInput.isBound()).toBeFalsy();
         expect(dateInput.isTranslated()).toBeTruthy();
         expect(dateInput.getPlaceholderContent()).toBe("date");

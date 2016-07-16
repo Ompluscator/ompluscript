@@ -15,7 +15,7 @@ describe("NumberInput class tests - events", function() {
     });
 
     it("get configuration", function() {
-        expect(numberInput.hasClass(Input.FIELD_INPUT)).toBeTruthy();
+        expect(numberInput.hasClass(Input.CLASS_INPUT)).toBeTruthy();
         expect(numberInput.isBound()).toBeTruthy();
         expect(numberInput.getStackTrace()).toEqual({
             html: '<input type="number" name="param" class="input">',
@@ -112,7 +112,7 @@ describe("NumberInput class tests - placeholder", function() {
     });
 
     it("get configuration", function() {
-        expect(numberInput.hasClass(Input.FIELD_INPUT)).toBeTruthy();
+        expect(numberInput.hasClass(Input.CLASS_INPUT)).toBeTruthy();
         expect(numberInput.isBound()).toBeFalsy();
         expect(numberInput.isTranslated()).toBeTruthy();
         expect(numberInput.getPlaceholderContent()).toBe("number");
