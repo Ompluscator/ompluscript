@@ -41,15 +41,19 @@ module Ompluscript.View.Configuration.Layout {
             let errors: string[] = super.getErrors(definition);
             let error: string = this.shouldBeString(definition, LinearLayout.PARAMETER_DIRECTION);
             if (error === undefined) {
-                let values: string[] = [LinearLayout.DIRECTION_VERTICAL, LinearLayout.DIRECTION_HORIZONTAL];
-                errors.push(this.mustBeValue(definition, LinearLayout.PARAMETER_DIRECTION, values));
+                if (definition[LinearLayout.PARAMETER_DIRECTION]) {
+                    let values: string[] = [LinearLayout.DIRECTION_VERTICAL, LinearLayout.DIRECTION_HORIZONTAL];
+                    errors.push(this.mustBeValue(definition, LinearLayout.PARAMETER_DIRECTION, values));
+                }
             } else {
                 errors.push(error);
             }
             error = this.shouldBeString(definition, LinearLayout.PARAMETER_ALIGN);
             if (error === undefined) {
-                let values: string[] = [LinearLayout.ALIGN_START, LinearLayout.ALIGN_CENTER, LinearLayout.ALIGN_END];
-                errors.push(this.mustBeValue(definition, LinearLayout.PARAMETER_ALIGN, values));
+                if (definition[LinearLayout.PARAMETER_ALIGN]) {
+                    let values: string[] = [LinearLayout.ALIGN_START, LinearLayout.ALIGN_CENTER, LinearLayout.ALIGN_END];
+                    errors.push(this.mustBeValue(definition, LinearLayout.PARAMETER_ALIGN, values));
+                }
             } else {
                 errors.push(error);
             }

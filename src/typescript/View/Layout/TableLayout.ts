@@ -88,15 +88,14 @@ module Ompluscript.View.Layout {
          * @param {Component} component
          */
         public removeChild(component: Component): void {
-            for (let i: number = 0; i < this.children.length; i++) {
-                (<Layout>this.children[i]).clearChildren();
-            }
-            let index: number = this.copies.indexOf(component);
+            let copies: Component[] = this.copies.slice();
+            this.clearChildren();
+            let index: number = copies.indexOf(component);
             if (index > -1) {
-                this.copies.splice(index, 1);
+                copies.splice(index, 1);
             }
-            for (let i: number = 0; i < this.copies.length; i++) {
-                this.addChild(this.copies[i]);
+            for (let i: number = 0; i < copies.length; i++) {
+                this.addChild(copies[i]);
             }
         }
 
@@ -116,11 +115,7 @@ module Ompluscript.View.Layout {
          * @returns {number} number of components in list
          */
         public getChildrenCount(): number {
-            let count: number = 0;
-            for (let i: number = 0; i < this.children.length; i++) {
-                count += (<Layout>this.children[i]).getChildrenCount();
-            }
-            return count;
+            return this.copies.length;
         }
 
         /**

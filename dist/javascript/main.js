@@ -599,20 +599,25 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration) {
+        (function (Configuration_4) {
             var Layout;
             (function (Layout) {
                 "use strict";
                 var ComponentConfiguration = Ompluscript.View.Configuration.Component.ComponentConfiguration;
+                var Configuration = Ompluscript.Core.Configuration.Configuration;
                 var LayoutConfiguration = (function (_super) {
                     __extends(LayoutConfiguration, _super);
                     function LayoutConfiguration() {
                         _super.call(this, undefined);
                     }
+                    LayoutConfiguration.prototype.getErrors = function (definition) {
+                        definition[Configuration.PARAMETER_NAME] = definition[Configuration.PARAMETER_TYPE];
+                        return this.filterErrors(_super.prototype.getErrors.call(this, definition));
+                    };
                     return LayoutConfiguration;
                 }(ComponentConfiguration));
                 Layout.LayoutConfiguration = LayoutConfiguration;
-            })(Layout = Configuration.Layout || (Configuration.Layout = {}));
+            })(Layout = Configuration_4.Layout || (Configuration_4.Layout = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -620,7 +625,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_4) {
+        (function (Configuration_5) {
             var Layout;
             (function (Layout) {
                 "use strict";
@@ -640,7 +645,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return NullLayoutConfiguration;
                 }(Layout.LayoutConfiguration));
                 Layout.NullLayoutConfiguration = NullLayoutConfiguration;
-            })(Layout = Configuration_4.Layout || (Configuration_4.Layout = {}));
+            })(Layout = Configuration_5.Layout || (Configuration_5.Layout = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -676,7 +681,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_5) {
+        (function (Configuration_6) {
             var Layout;
             (function (Layout) {
                 "use strict";
@@ -696,7 +701,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return RelativeLayoutConfiguration;
                 }(Layout.LayoutConfiguration));
                 Layout.RelativeLayoutConfiguration = RelativeLayoutConfiguration;
-            })(Layout = Configuration_5.Layout || (Configuration_5.Layout = {}));
+            })(Layout = Configuration_6.Layout || (Configuration_6.Layout = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -764,7 +769,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_6) {
+        (function (Configuration_7) {
             var Layout;
             (function (Layout) {
                 "use strict";
@@ -782,16 +787,20 @@ var __extends = (this && this.__extends) || function (d, b) {
                         var errors = _super.prototype.getErrors.call(this, definition);
                         var error = this.shouldBeString(definition, LinearLayout.PARAMETER_DIRECTION);
                         if (error === undefined) {
-                            var values = [LinearLayout.DIRECTION_VERTICAL, LinearLayout.DIRECTION_HORIZONTAL];
-                            errors.push(this.mustBeValue(definition, LinearLayout.PARAMETER_DIRECTION, values));
+                            if (definition[LinearLayout.PARAMETER_DIRECTION]) {
+                                var values = [LinearLayout.DIRECTION_VERTICAL, LinearLayout.DIRECTION_HORIZONTAL];
+                                errors.push(this.mustBeValue(definition, LinearLayout.PARAMETER_DIRECTION, values));
+                            }
                         }
                         else {
                             errors.push(error);
                         }
                         error = this.shouldBeString(definition, LinearLayout.PARAMETER_ALIGN);
                         if (error === undefined) {
-                            var values = [LinearLayout.ALIGN_START, LinearLayout.ALIGN_CENTER, LinearLayout.ALIGN_END];
-                            errors.push(this.mustBeValue(definition, LinearLayout.PARAMETER_ALIGN, values));
+                            if (definition[LinearLayout.PARAMETER_ALIGN]) {
+                                var values = [LinearLayout.ALIGN_START, LinearLayout.ALIGN_CENTER, LinearLayout.ALIGN_END];
+                                errors.push(this.mustBeValue(definition, LinearLayout.PARAMETER_ALIGN, values));
+                            }
                         }
                         else {
                             errors.push(error);
@@ -808,7 +817,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return LinearLayoutConfiguration;
                 }(Layout.LayoutConfiguration));
                 Layout.LinearLayoutConfiguration = LinearLayoutConfiguration;
-            })(Layout = Configuration_6.Layout || (Configuration_6.Layout = {}));
+            })(Layout = Configuration_7.Layout || (Configuration_7.Layout = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -839,15 +848,14 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                 };
                 TableLayout.prototype.removeChild = function (component) {
-                    for (var i = 0; i < this.children.length; i++) {
-                        this.children[i].clearChildren();
-                    }
-                    var index = this.copies.indexOf(component);
+                    var copies = this.copies.slice();
+                    this.clearChildren();
+                    var index = copies.indexOf(component);
                     if (index > -1) {
-                        this.copies.splice(index, 1);
+                        copies.splice(index, 1);
                     }
-                    for (var i = 0; i < this.copies.length; i++) {
-                        this.addChild(this.copies[i]);
+                    for (var i = 0; i < copies.length; i++) {
+                        this.addChild(copies[i]);
                     }
                 };
                 TableLayout.prototype.clearChildren = function () {
@@ -857,11 +865,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     this.copies = [];
                 };
                 TableLayout.prototype.getChildrenCount = function () {
-                    var count = 0;
-                    for (var i = 0; i < this.children.length; i++) {
-                        count += this.children[i].getChildrenCount();
-                    }
-                    return count;
+                    return this.copies.length;
                 };
                 TableLayout.prototype.getStackTrace = function () {
                     var trace = _super.prototype.getStackTrace.call(this);
@@ -885,7 +889,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_7) {
+        (function (Configuration_8) {
             var Layout;
             (function (Layout) {
                 "use strict";
@@ -913,7 +917,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return TableLayoutConfiguration;
                 }(Layout.LayoutConfiguration));
                 Layout.TableLayoutConfiguration = TableLayoutConfiguration;
-            })(Layout = Configuration_7.Layout || (Configuration_7.Layout = {}));
+            })(Layout = Configuration_8.Layout || (Configuration_8.Layout = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -921,7 +925,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Core;
     (function (Core) {
         var Configuration;
-        (function (Configuration_8) {
+        (function (Configuration_9) {
             "use strict";
             var Configuration = Ompluscript.Core.Configuration.Configuration;
             var ErrorConfiguration = (function (_super) {
@@ -940,7 +944,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 return ErrorConfiguration;
             }(Configuration));
-            Configuration_8.ErrorConfiguration = ErrorConfiguration;
+            Configuration_9.ErrorConfiguration = ErrorConfiguration;
         })(Configuration = Core.Configuration || (Core.Configuration = {}));
     })(Core = Ompluscript.Core || (Ompluscript.Core = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -1670,7 +1674,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_9) {
+        (function (Configuration_10) {
             var Attribute;
             (function (Attribute_2) {
                 "use strict";
@@ -1690,7 +1694,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return AttributeConfiguration;
                 }(Configuration));
                 Attribute_2.AttributeConfiguration = AttributeConfiguration;
-            })(Attribute = Configuration_9.Attribute || (Configuration_9.Attribute = {}));
+            })(Attribute = Configuration_10.Attribute || (Configuration_10.Attribute = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -1743,7 +1747,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_10) {
+        (function (Configuration_11) {
             var Attribute;
             (function (Attribute_3) {
                 "use strict";
@@ -1773,7 +1777,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return BooleanConfiguration;
                 }(Attribute_3.AttributeConfiguration));
                 Attribute_3.BooleanConfiguration = BooleanConfiguration;
-            })(Attribute = Configuration_10.Attribute || (Configuration_10.Attribute = {}));
+            })(Attribute = Configuration_11.Attribute || (Configuration_11.Attribute = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -1858,7 +1862,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_11) {
+        (function (Configuration_12) {
             var Attribute;
             (function (Attribute_5) {
                 "use strict";
@@ -1898,7 +1902,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return DatetimeConfiguration;
                 }(Attribute_5.AttributeConfiguration));
                 Attribute_5.DatetimeConfiguration = DatetimeConfiguration;
-            })(Attribute = Configuration_11.Attribute || (Configuration_11.Attribute = {}));
+            })(Attribute = Configuration_12.Attribute || (Configuration_12.Attribute = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2061,7 +2065,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_12) {
+        (function (Configuration_13) {
             var Attribute;
             (function (Attribute_7) {
                 "use strict";
@@ -2087,7 +2091,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return MultipleChoiceConfiguration;
                 }(Attribute_7.ChoiceConfiguration));
                 Attribute_7.MultipleChoiceConfiguration = MultipleChoiceConfiguration;
-            })(Attribute = Configuration_12.Attribute || (Configuration_12.Attribute = {}));
+            })(Attribute = Configuration_13.Attribute || (Configuration_13.Attribute = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2177,7 +2181,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_13) {
+        (function (Configuration_14) {
             var Attribute;
             (function (Attribute_9) {
                 "use strict";
@@ -2223,7 +2227,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return NumberConfiguration;
                 }(Attribute_9.AttributeConfiguration));
                 Attribute_9.NumberConfiguration = NumberConfiguration;
-            })(Attribute = Configuration_13.Attribute || (Configuration_13.Attribute = {}));
+            })(Attribute = Configuration_14.Attribute || (Configuration_14.Attribute = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2272,7 +2276,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_14) {
+        (function (Configuration_15) {
             var Attribute;
             (function (Attribute_10) {
                 "use strict";
@@ -2298,7 +2302,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return SingleChoiceConfiguration;
                 }(Attribute_10.ChoiceConfiguration));
                 Attribute_10.SingleChoiceConfiguration = SingleChoiceConfiguration;
-            })(Attribute = Configuration_14.Attribute || (Configuration_14.Attribute = {}));
+            })(Attribute = Configuration_15.Attribute || (Configuration_15.Attribute = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2306,7 +2310,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_15) {
+        (function (Configuration_16) {
             var Attribute;
             (function (Attribute_11) {
                 "use strict";
@@ -2350,7 +2354,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return StringConfiguration;
                 }(Attribute_11.AttributeConfiguration));
                 Attribute_11.StringConfiguration = StringConfiguration;
-            })(Attribute = Configuration_15.Attribute || (Configuration_15.Attribute = {}));
+            })(Attribute = Configuration_16.Attribute || (Configuration_16.Attribute = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2358,7 +2362,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_16) {
+        (function (Configuration_17) {
             var Proxy;
             (function (Proxy) {
                 "use strict";
@@ -2391,7 +2395,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return AjaxProxyConfiguration;
                 }(Configuration));
                 Proxy.AjaxProxyConfiguration = AjaxProxyConfiguration;
-            })(Proxy = Configuration_16.Proxy || (Configuration_16.Proxy = {}));
+            })(Proxy = Configuration_17.Proxy || (Configuration_17.Proxy = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2452,7 +2456,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_17) {
+        (function (Configuration_18) {
             var Proxy;
             (function (Proxy) {
                 "use strict";
@@ -2475,7 +2479,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return LocalStorageProxyConfiguration;
                 }(Configuration));
                 Proxy.LocalStorageProxyConfiguration = LocalStorageProxyConfiguration;
-            })(Proxy = Configuration_17.Proxy || (Configuration_17.Proxy = {}));
+            })(Proxy = Configuration_18.Proxy || (Configuration_18.Proxy = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2501,7 +2505,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_18) {
+        (function (Configuration_19) {
             var Proxy;
             (function (Proxy) {
                 "use strict";
@@ -2524,7 +2528,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return SessionStorageProxyConfiguration;
                 }(Configuration));
                 Proxy.SessionStorageProxyConfiguration = SessionStorageProxyConfiguration;
-            })(Proxy = Configuration_18.Proxy || (Configuration_18.Proxy = {}));
+            })(Proxy = Configuration_19.Proxy || (Configuration_19.Proxy = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2532,7 +2536,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_19) {
+        (function (Configuration_20) {
             var Container;
             (function (Container_3) {
                 "use strict";
@@ -2588,7 +2592,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return ContainerConfiguration;
                 }(GroupConfiguration));
                 Container_3.ContainerConfiguration = ContainerConfiguration;
-            })(Container = Configuration_19.Container || (Configuration_19.Container = {}));
+            })(Container = Configuration_20.Container || (Configuration_20.Container = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2671,7 +2675,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model_2) {
         var Configuration;
-        (function (Configuration_20) {
+        (function (Configuration_21) {
             var Container;
             (function (Container_5) {
                 "use strict";
@@ -2695,7 +2699,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return ModelConfiguration;
                 }(Container_5.ContainerConfiguration));
                 Container_5.ModelConfiguration = ModelConfiguration;
-            })(Container = Configuration_20.Container || (Configuration_20.Container = {}));
+            })(Container = Configuration_21.Container || (Configuration_21.Container = {}));
         })(Configuration = Model_2.Configuration || (Model_2.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2914,7 +2918,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_21) {
+        (function (Configuration_22) {
             var Container;
             (function (Container_7) {
                 "use strict";
@@ -2938,7 +2942,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return TableConfiguration;
                 }(Container_7.ContainerConfiguration));
                 Container_7.TableConfiguration = TableConfiguration;
-            })(Container = Configuration_21.Container || (Configuration_21.Container = {}));
+            })(Container = Configuration_22.Container || (Configuration_22.Container = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2946,7 +2950,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Configuration;
-        (function (Configuration_22) {
+        (function (Configuration_23) {
             var Container;
             (function (Container_8) {
                 "use strict";
@@ -2991,7 +2995,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return TranslationConfiguration;
                 }(GroupConfiguration));
                 Container_8.TranslationConfiguration = TranslationConfiguration;
-            })(Container = Configuration_22.Container || (Configuration_22.Container = {}));
+            })(Container = Configuration_23.Container || (Configuration_23.Container = {}));
         })(Configuration = Model.Configuration || (Model.Configuration = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -3224,7 +3228,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_23) {
+        (function (Configuration_24) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -3279,7 +3283,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return InputConfiguration;
                 }(ComponentConfiguration));
                 Field.InputConfiguration = InputConfiguration;
-            })(Field = Configuration_23.Field || (Configuration_23.Field = {}));
+            })(Field = Configuration_24.Field || (Configuration_24.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -3322,7 +3326,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_24) {
+        (function (Configuration_25) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -3352,7 +3356,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return CheckBoxInputConfiguration;
                 }(Field.InputConfiguration));
                 Field.CheckBoxInputConfiguration = CheckBoxInputConfiguration;
-            })(Field = Configuration_24.Field || (Configuration_24.Field = {}));
+            })(Field = Configuration_25.Field || (Configuration_25.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -3401,7 +3405,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_25) {
+        (function (Configuration_26) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -3433,7 +3437,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return TextInputConfiguration;
                 }(Field.InputConfiguration));
                 Field.TextInputConfiguration = TextInputConfiguration;
-            })(Field = Configuration_25.Field || (Configuration_25.Field = {}));
+            })(Field = Configuration_26.Field || (Configuration_26.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -3463,7 +3467,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_26) {
+        (function (Configuration_27) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -3490,7 +3494,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return EmailInputConfiguration;
                 }(Field.TextInputConfiguration));
                 Field.EmailInputConfiguration = EmailInputConfiguration;
-            })(Field = Configuration_26.Field || (Configuration_26.Field = {}));
+            })(Field = Configuration_27.Field || (Configuration_27.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -3540,7 +3544,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_27) {
+        (function (Configuration_28) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -3572,7 +3576,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return NumberInputConfiguration;
                 }(Field.InputConfiguration));
                 Field.NumberInputConfiguration = NumberInputConfiguration;
-            })(Field = Configuration_27.Field || (Configuration_27.Field = {}));
+            })(Field = Configuration_28.Field || (Configuration_28.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -3602,7 +3606,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_28) {
+        (function (Configuration_29) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -3629,7 +3633,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return PasswordInputConfiguration;
                 }(Field.TextInputConfiguration));
                 Field.PasswordInputConfiguration = PasswordInputConfiguration;
-            })(Field = Configuration_28.Field || (Configuration_28.Field = {}));
+            })(Field = Configuration_29.Field || (Configuration_29.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -4044,7 +4048,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_29) {
+        (function (Configuration_30) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -4076,7 +4080,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return DateInputConfiguration;
                 }(Field.InputConfiguration));
                 Field.DateInputConfiguration = DateInputConfiguration;
-            })(Field = Configuration_29.Field || (Configuration_29.Field = {}));
+            })(Field = Configuration_30.Field || (Configuration_30.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -4084,7 +4088,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_30) {
+        (function (Configuration_31) {
             var Container;
             (function (Container_10) {
                 "use strict";
@@ -4142,7 +4146,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return ContainerConfiguration;
                 }(ComponentConfiguration));
                 Container_10.ContainerConfiguration = ContainerConfiguration;
-            })(Container = Configuration_30.Container || (Configuration_30.Container = {}));
+            })(Container = Configuration_31.Container || (Configuration_31.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -4150,7 +4154,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_31) {
+        (function (Configuration_32) {
             var Container;
             (function (Container_11) {
                 "use strict";
@@ -4176,7 +4180,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return PageConfiguration;
                 }(Container_11.ContainerConfiguration));
                 Container_11.PageConfiguration = PageConfiguration;
-            })(Container = Configuration_31.Container || (Configuration_31.Container = {}));
+            })(Container = Configuration_32.Container || (Configuration_32.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
