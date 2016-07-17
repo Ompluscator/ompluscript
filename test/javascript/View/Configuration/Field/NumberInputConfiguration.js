@@ -300,7 +300,7 @@ describe("NumberInputConfiguration class tests - invalid NumberInput", function(
         };
         expect(numberInputConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(numberInputConfiguration.getErrors(definition)).toEqual([
-            "not" + Configuration.MODEL_MUST_BE_DEFINED,
+            "not" + Configuration.MUST_BE_DEFINED,
         ]);
     });
 

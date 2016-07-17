@@ -290,7 +290,7 @@ describe("TextInputConfiguration class tests - invalid TextInput", function() {
         };
         expect(textInputConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(textInputConfiguration.getErrors(definition)).toEqual([
-            "not" + Configuration.MODEL_MUST_BE_DEFINED,
+            "not" + Configuration.MUST_BE_DEFINED,
         ]);
     });
 

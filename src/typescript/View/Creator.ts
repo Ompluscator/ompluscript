@@ -8,6 +8,8 @@
 /// <reference path="Configuration/Field/NumberInputConfiguration.ts" />
 /// <reference path="Configuration/Field/PasswordInputConfiguration.ts" />
 /// <reference path="Configuration/Field/TextInputConfiguration.ts" />
+/// <reference path="Configuration/Field/DateInputConfiguration.ts" />
+/// <reference path="Configuration/Viewport/ViewportConfiguration.ts" />
 
 /**
  * Module that contains model' classes.
@@ -25,6 +27,8 @@ module Ompluscript.View {
     import NumberInputConfiguration = Ompluscript.View.Configuration.Field.NumberInputConfiguration;
     import PasswordInputConfiguration = Ompluscript.View.Configuration.Field.PasswordInputConfiguration;
     import TextInputConfiguration = Ompluscript.View.Configuration.Field.TextInputConfiguration;
+    import DateInputConfiguration = Ompluscript.View.Configuration.Field.DateInputConfiguration;
+    import ViewportConfiguration = Ompluscript.View.Configuration.Viewport.ViewportConfiguration;
 
     /**
      * Class that contains functionality for model creator.
@@ -62,7 +66,9 @@ module Ompluscript.View {
                 Configuration.getInstance(NumberInputConfiguration),
                 Configuration.getInstance(PasswordInputConfiguration),
                 Configuration.getInstance(TextInputConfiguration),
+                Configuration.getInstance(DateInputConfiguration),
                 Configuration.getInstance(PageConfiguration),
+                Configuration.getInstance(ViewportConfiguration),
             ];
             super(configurations);
         }

@@ -36,16 +36,6 @@ module Ompluscript.Model.Configuration.Container {
     export class TranslationConfiguration extends GroupConfiguration {
 
         /**
-         * Method that decides if this configuration is related to this class.
-         *
-         * @param {Object} definition Class definition
-         * @returns {boolean} Is related to this class
-         */
-        public isRelatedTo(definition: Object): boolean {
-            return definition[Configuration.PARAMETER_TYPE] === Translation.TYPE_TRANSLATION;
-        }
-
-        /**
          * Class constructor
          * 
          * Sets up configuration for child elements and
@@ -63,6 +53,16 @@ module Ompluscript.Model.Configuration.Container {
             let configurations: Object = {};
             configurations[Container.PARAMETER_PROXIES] = proxies;
             super(configurations);
+        }
+
+        /**
+         * Method that decides if this configuration is related to this class.
+         *
+         * @param {Object} definition Class definition
+         * @returns {boolean} Is related to this class
+         */
+        public isRelatedTo(definition: Object): boolean {
+            return definition[Configuration.PARAMETER_TYPE] === Translation.TYPE_TRANSLATION;
         }
 
         /**

@@ -32,6 +32,7 @@ module Ompluscript.View.Event {
          * Calls superclass' constructor
          *
          * @param {IBase} sender Object that fired event
+         * @param {any} value Value of input
          * @constructs
          */
         constructor(sender: IBase, value: any) {

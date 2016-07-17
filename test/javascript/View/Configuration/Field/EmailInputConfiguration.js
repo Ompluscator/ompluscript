@@ -290,7 +290,7 @@ describe("EmailInputConfiguration class tests - invalid EmailInput", function() 
         };
         expect(emailInputConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(emailInputConfiguration.getErrors(definition)).toEqual([
-            "not" + Configuration.MODEL_MUST_BE_DEFINED,
+            "not" + Configuration.MUST_BE_DEFINED,
         ]);
     });
 

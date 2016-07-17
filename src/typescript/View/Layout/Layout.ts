@@ -58,7 +58,13 @@ module Ompluscript.View.Layout {
          * @param {Component} component
          */
         public addChild(component: Component): void {
-            this.children.push(component);
+            let index: number = this.children.indexOf(component);
+            if (index === -1) {
+                this.children.push(component);
+            } else {
+                this.removeChild(component);
+                this.addChild(component);
+            }
         }
 
         /**

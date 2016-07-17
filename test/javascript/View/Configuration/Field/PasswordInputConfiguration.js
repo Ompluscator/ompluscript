@@ -290,7 +290,7 @@ describe("PasswordInputConfiguration class tests - invalid PasswordInput", funct
         };
         expect(passwordInputConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(passwordInputConfiguration.getErrors(definition)).toEqual([
-            "not" + Configuration.MODEL_MUST_BE_DEFINED,
+            "not" + Configuration.MUST_BE_DEFINED,
         ]);
     });
 

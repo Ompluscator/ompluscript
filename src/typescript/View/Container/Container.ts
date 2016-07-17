@@ -12,9 +12,9 @@
 /// <reference path="../Configuration/Field/TextInputConfiguration.ts" />
 
 /**
- * Module that contains base components
+ * Module that contains containers
  *
- * @module Ompluscript.View.Component
+ * @module Ompluscript.View.Container
  */
 module Ompluscript.View.Container {
     "use strict";
@@ -30,12 +30,28 @@ module Ompluscript.View.Container {
      */
     export abstract class Container extends Layout {
 
+        /**
+         * @type {string} PARAMETER_LAYOUT Name of layout parameter
+         */
         public static PARAMETER_LAYOUT: string = "layout";
 
-        public static PARAMETER_CHILDREN: string = "children";
-        
+        /**
+         * @param {Layout} layout Layout for container
+         */
         protected layout: Layout;
-        
+
+        /**
+         * Class constructor.
+         * 
+         * Sets children and layout and calls constructor
+         * of superclass
+         * 
+         * @param {string} name Name of container
+         * @param {Layout} layout Layout for container
+         * @param {Component[]} children List of children components
+         * @param {Object} styles Styles for container
+         * @constructs
+         */
         constructor(name: string, layout: Layout = undefined, children: Component[] = undefined, styles: Object = undefined) {
             super(name, styles);
             this.layout = layout;
@@ -47,36 +63,49 @@ module Ompluscript.View.Container {
                     this.addChild(children[i]);
                 }
             }
+            this.removeClass(Layout.CLASS_LAYOUT);
         }
 
-        public addChild(component: Component): void {
-            super.addChild(component);
-            this.layout.addChild(component);
+        /**
+         * Method that returns all current values of object.
+         *
+         * @returns {Object} contains all values of the object
+         */
+        public getStackTrace(): Object {
+            let trace: Object = super.getStackTrace();
+            trace[Container.PARAMETER_LAYOUT] = this.layout.getStackTrace();
+            return trace;
         }
 
-        public removeChild(component: Component): void {
-            super.removeChild(component);
-            this.layout.removeChild(component);
-        }
-
-        public clearChildren(): void {
-            super.clearChildren();
-            this.layout.clearChildren();
-        }
-
+        /**
+         * Method that returns HTML content of component
+         *
+         * @returns {HTMLElement} HTML content of component
+         */
         public render(): HTMLElement {
             this.clear();
-            this.layout.render();
+            this.layout.clearChildren();
+            for (let i: number = 0; i < this.children.length; i++) {
+                this.layout.addChild(this.children[i]);
+            }
             this.appendChild(this.layout);
             return this.htmlElement;
         }
-        
+
+        /**
+         * Method that defines how component's HTML content should be cleared
+         */
         protected clear(): void {
             while (this.htmlElement.firstChild) {
                 this.htmlElement.removeChild(this.htmlElement.firstChild);
             }
         }
-        
+
+        /**
+         * Method that defines how component's HTML content should be added to DOM
+         *
+         * @param {Component} component That should be added
+         */
         protected appendChild(component: Component): void {
             this.htmlElement.appendChild(component.render());
         }

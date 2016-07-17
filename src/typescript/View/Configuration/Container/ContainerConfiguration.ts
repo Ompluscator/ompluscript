@@ -14,6 +14,11 @@
 /// <reference path="../Layout/LinearLayoutConfiguration.ts" />
 /// <reference path="../Layout/TableLayoutConfiguration.ts" />
 
+/**
+ * Module that contains containers' configuration classes.
+ *
+ * @module Ompluscript.View.Configuration.Container
+ */
 module Ompluscript.View.Configuration.Container {
     "use strict";
     
@@ -32,8 +37,21 @@ module Ompluscript.View.Configuration.Container {
     import ComponentConfiguration = Ompluscript.View.Configuration.Component.ComponentConfiguration;
     import DateInputConfiguration = Ompluscript.View.Configuration.Field.DateInputConfiguration;
 
+    /**
+     * Abstract class that contains functionality for container configuration.
+     *
+     * @class InputConfiguration
+     */
     export abstract class ContainerConfiguration extends ComponentConfiguration {
-        
+
+        /**
+         * Class constructor.
+         *
+         * Creates configuration list for children and layouts.
+         * Calls constructor of superclass.
+         *
+         * @constructs
+         */
         constructor() {
             let layouts: Configuration[] = [
                 Configuration.getInstance(NullLayoutConfiguration),
@@ -57,15 +75,23 @@ module Ompluscript.View.Configuration.Container {
             super(configurations);
         }
 
+        /**
+         * Method that searches for errors in configuration
+         *
+         * @param {Object} definition Class definition
+         * @returns {string[]} List of errors
+         */
         public getErrors(definition: Object): string[] {
             let errors: string[] = super.getErrors(definition);
-            errors.push(this.mustBeString(definition, Configuration.PARAMETER_NAME));
             errors.push(this.shouldBeArray(definition, Container.PARAMETER_CHILDREN));
             errors = this.filterErrors(errors);
-            if (errors.length === 0) {
-                errors.push.apply(errors, super.getErrorsForChildren(definition, Container.PARAMETER_CHILDREN));
+            if (Array.isArray(definition[Container.PARAMETER_CHILDREN])) {
+                errors.push.apply(errors, super.getErrorsForChildren(
+                    definition, Container.PARAMETER_CHILDREN, Ompluscript.View.Creator.getInstance())
+                );
             }
-            if (definition.hasOwnProperty(Container.PARAMETER_LAYOUT)) {
+            errors.push(this.shouldBeObject(definition, Container.PARAMETER_LAYOUT));
+            if (typeof definition[Container.PARAMETER_LAYOUT] === "object") {
                 errors.push.apply(errors, super.getErrorsForChildren(definition, Container.PARAMETER_LAYOUT));
             }
             return this.filterErrors(errors);

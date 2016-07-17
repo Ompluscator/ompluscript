@@ -64,7 +64,7 @@ module Ompluscript.View.Configuration.Field {
             if (error === undefined) {
                 if (typeof definition[Input.PARAMETER_ATTRIBUTE] === "string") {
                     if (!Creator.getInstance().ifDefined(definition[Input.PARAMETER_ATTRIBUTE])) {
-                        errors.push(definition[Input.PARAMETER_ATTRIBUTE] + Configuration.MODEL_MUST_BE_DEFINED);
+                        errors.push(definition[Input.PARAMETER_ATTRIBUTE] + Configuration.MUST_BE_DEFINED);
                     }
                 } else if (definition[Input.PARAMETER_ATTRIBUTE] !== undefined) {
                     if (typeof definition[Input.PARAMETER_ATTRIBUTE] === "boolean") {

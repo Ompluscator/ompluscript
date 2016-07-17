@@ -29,6 +29,16 @@ module Ompluscript.View.Configuration.Field {
         }
 
         /**
+         * Method that searches for errors in configuration
+         *
+         * @param {Object} definition Class definition
+         * @returns {string[]} List of errors
+         */
+        public getErrors(definition: Object): string[] {
+            return this.filterErrors(super.getErrors(definition));
+        }
+
+        /**
          * Method that creates new instance from configuration
          *
          * @param {Object} definition Class definition

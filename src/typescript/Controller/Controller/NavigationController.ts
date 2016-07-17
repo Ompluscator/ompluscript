@@ -1,13 +1,13 @@
 /// <reference path="../../Core/Interfaces/IBase.ts" />
 /// <reference path="../../View/Container/Page.ts" />
-/// <reference path="../../View/Component/Viewport.ts" />
+/// <reference path="../../View/Viewport/Viewport.ts" />
 /// <reference path="../Event/OnActionRunEvent.ts" />
 
 module Ompluscript.Controller.Controller {
     "use strict";
     
     import Page = Ompluscript.View.Container.Page;
-    import Viewport = Ompluscript.View.Component.Viewport;
+    import Viewport = Ompluscript.View.Viewport.Viewport;
     import OnActionRunEvent = Ompluscript.Controller.Event.OnActionRunEvent;
     import IBase = Ompluscript.Core.Interfaces.IBase;
 

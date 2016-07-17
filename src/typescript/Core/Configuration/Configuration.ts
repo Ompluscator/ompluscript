@@ -73,9 +73,9 @@ module Ompluscript.Core.Configuration {
         public static MUST_BE_GREATER: string = " must be greater than ";
 
         /**
-         * @type {string} MODEL_MUST_BE_DEFINED Message for model definition that should defined.
+         * @type {string} MUST_BE_DEFINED Message for model definition that should defined.
          */
-        public static MODEL_MUST_BE_DEFINED: string = " model must be defined ";
+        public static MUST_BE_DEFINED: string = " must be defined ";
 
         /**
          * @type {string} PARAMETER_TYPE Type parameter name.
