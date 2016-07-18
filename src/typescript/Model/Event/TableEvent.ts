@@ -1,5 +1,5 @@
 /// <reference path="../../Core/Interfaces/IBase.ts" />
-/// <reference path="../../Core/Observer/Event.ts" />
+/// <reference path="../../Core/Observer/OEvent.ts" />
 
 /**
  * Module that contains model's events
@@ -10,14 +10,14 @@ module Ompluscript.Model.Event {
     "use strict";
 
     import IBase = Ompluscript.Core.Interfaces.IBase;
-    import Event = Ompluscript.Core.Observer.Event;
+    import OEvent = Ompluscript.Core.Observer.OEvent;
 
     /**
      * Class that defines basic table event
      *
      * @class TableEvent
      */
-    export abstract class TableEvent extends Event {
+    export abstract class TableEvent extends OEvent {
 
         /**
          * @type {string} ON_ADD_ROW_TO_TABLE Defines event when row is added to table

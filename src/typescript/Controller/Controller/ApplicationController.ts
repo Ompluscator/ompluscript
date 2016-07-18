@@ -90,19 +90,19 @@ module Ompluscript.Controller.Controller {
         /**
          * Method that attach handler for application start event
          *
-         * @param {Function} handler Event handler
+         * @param {Function} callback Event handler
          */
-        public attachOnApplicationStartEvent(handler: Function): void {
-            this.attachEventHandler(this, ApplicationControllerEvent.ON_APPLICATION_START, handler);
+        public attachOnApplicationStartEvent(callback: Function): void {
+            this.addGenericObserverByType(this, ApplicationControllerEvent.ON_APPLICATION_START, callback);
         }
 
         /**
          * Method that attach handler for component load event
          *
-         * @param {Function} handler Event handler
+         * @param {Function} callback Event handler
          */
-        public attachOnComponentLoadEvent(handler: Function): void {
-            this.attachEventHandler(this, ApplicationControllerEvent.ON_COMPONENT_LOAD, handler);
+        public attachOnComponentLoadEvent(callback: Function): void {
+            this.addGenericObserverByType(this, ApplicationControllerEvent.ON_COMPONENT_LOAD, callback);
         }
 
         /**

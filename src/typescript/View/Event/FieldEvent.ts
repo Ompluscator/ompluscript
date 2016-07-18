@@ -3,7 +3,7 @@
 
 /**
  * Module that contains view's events
- * 
+ *
  * @module Ompluscript.View.Event
  */
 module Ompluscript.View.Event {
@@ -13,21 +13,16 @@ module Ompluscript.View.Event {
     import OEvent = Ompluscript.Core.Observer.OEvent;
 
     /**
-     * Abstract class that defines page's events
-     * 
+     * Abstract class that defines field's events
+     *
      * @class PageEvent
      */
-    export abstract class PageEvent extends OEvent {
+    export abstract class FieldEvent extends OEvent {
 
         /**
-         * @type {string} ON_PAGE_LOAD Defines event when page is loaded
+         * @type {string} ON_FIELD_CLICK Defines event when it's clicked on field
          */
-        public static ON_PAGE_LOAD: string = "onPageLoad";
-
-        /**
-         * @type {string} ON_PAGE_CLOSE Defines event when page is closed
-         */
-        public static ON_PAGE_CLOSE: string = "onPageClose";
+        public static ON_FIELD_CLICK: string = "onFieldClick";
 
         /**
          * Class constructor

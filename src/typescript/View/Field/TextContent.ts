@@ -12,7 +12,7 @@ module Ompluscript.View.Field {
 
     import IObserver = Ompluscript.Core.Observer.IObserver;
     import OnUpdateAsset = Ompluscript.Model.Event.OnUpdateAsset;
-    import Event = Ompluscript.Core.Observer.Event;
+    import OEvent = Ompluscript.Core.Observer.OEvent;
 
     /**
      * Class that defines basic text content element
@@ -57,9 +57,9 @@ module Ompluscript.View.Field {
         /**
          * Method that defines event handler for desired event.
          *
-         * @param {Event} event
+         * @param {OEvent} event
          */
-        public update(event: Event): void {
+        public update(event: OEvent): void {
             if (event instanceof OnUpdateAsset && this.isTranslated()) {
                 let onUpdateAsset: OnUpdateAsset = <OnUpdateAsset>event;
                 this.updateText(onUpdateAsset.getNewValue());

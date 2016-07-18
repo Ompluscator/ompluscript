@@ -16,5 +16,11 @@ Ompluscript.View.define({
             name: "welcome_message",
             text: "text_welcome_message"
         },
+        {
+            type: "PageLink",
+            name: "welcome_message",
+            text: "text_welcome_message",
+            page: "layouts",
+        },
     ]
 });

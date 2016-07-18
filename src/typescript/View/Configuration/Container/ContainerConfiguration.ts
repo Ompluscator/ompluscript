@@ -11,6 +11,7 @@
 /// <reference path="../Field/DateInputConfiguration.ts" />
 /// <reference path="../Field/ParagraphConfiguration.ts" />
 /// <reference path="../Field/HeaderConfiguration.ts" />
+/// <reference path="../Field/PageLinkConfiguration.ts" />
 /// <reference path="../Layout/NullLayoutConfiguration.ts" />
 /// <reference path="../Layout/RelativeLayoutConfiguration.ts" />
 /// <reference path="../Layout/LinearLayoutConfiguration.ts" />
@@ -40,6 +41,7 @@ module Ompluscript.View.Configuration.Container {
     import DateInputConfiguration = Ompluscript.View.Configuration.Field.DateInputConfiguration;
     import ParagraphConfiguration = Ompluscript.View.Configuration.Field.ParagraphConfiguration;
     import HeaderConfiguration = Ompluscript.View.Configuration.Field.HeaderConfiguration;
+    import PageLinkConfiguration = Ompluscript.View.Configuration.Field.PageLinkConfiguration;
 
     /**
      * Abstract class that contains functionality for container configuration.
@@ -73,6 +75,7 @@ module Ompluscript.View.Configuration.Container {
                 Configuration.getInstance(DateInputConfiguration),
                 Configuration.getInstance(ParagraphConfiguration),
                 Configuration.getInstance(HeaderConfiguration),
+                Configuration.getInstance(PageLinkConfiguration),
                 Configuration.getInstance(ErrorConfiguration),
             ];
             let configurations: Object = {};

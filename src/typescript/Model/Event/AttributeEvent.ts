@@ -1,5 +1,5 @@
 /// <reference path="../../Core/Interfaces/IBase.ts" />
-/// <reference path="../../Core/Observer/Event.ts" />
+/// <reference path="../../Core/Observer/OEvent.ts" />
 
 /**
  * Module that contains model's events
@@ -10,14 +10,14 @@ module Ompluscript.Model.Event {
     "use strict";
 
     import IBase = Ompluscript.Core.Interfaces.IBase;
-    import Event = Ompluscript.Core.Observer.Event;
+    import OEvent = Ompluscript.Core.Observer.OEvent;
 
     /**
      * Class that defines basic attribute event
      * 
      * @class AttributeEvent
      */
-    export abstract class AttributeEvent extends Event {
+    export abstract class AttributeEvent extends OEvent {
 
         /**
          * @type {string} ON_UPDATE_ATTRIBUTE Defines event when attribute is updated

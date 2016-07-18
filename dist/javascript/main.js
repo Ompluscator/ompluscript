@@ -265,20 +265,20 @@ var __extends = (this && this.__extends) || function (d, b) {
         var Observer;
         (function (Observer) {
             "use strict";
-            var Event = (function () {
-                function Event(sender, type) {
+            var OEvent = (function () {
+                function OEvent(sender, type) {
                     this.sender = sender;
                     this.type = type;
                 }
-                Event.prototype.getSender = function () {
+                OEvent.prototype.getSender = function () {
                     return this.sender;
                 };
-                Event.prototype.getType = function () {
+                OEvent.prototype.getType = function () {
                     return this.type;
                 };
-                return Event;
+                return OEvent;
             }());
-            Observer.Event = Event;
+            Observer.OEvent = OEvent;
         })(Observer = Core.Observer || (Core.Observer = {}));
     })(Core = Ompluscript.Core || (Ompluscript.Core = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -288,6 +288,26 @@ var __extends = (this && this.__extends) || function (d, b) {
         var Observer;
         (function (Observer) {
             "use strict";
+        })(Observer = Core.Observer || (Core.Observer = {}));
+    })(Core = Ompluscript.Core || (Ompluscript.Core = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var Core;
+    (function (Core) {
+        var Observer;
+        (function (Observer) {
+            "use strict";
+            var GenericObserver = (function () {
+                function GenericObserver(observer, callback) {
+                    this.observer = observer;
+                    this.callback = callback;
+                }
+                GenericObserver.prototype.update = function (event) {
+                    this.callback.bind(this.observer)(event);
+                };
+                return GenericObserver;
+            }());
+            Observer.GenericObserver = GenericObserver;
         })(Observer = Core.Observer || (Core.Observer = {}));
     })(Core = Ompluscript.Core || (Ompluscript.Core = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -308,6 +328,9 @@ var __extends = (this && this.__extends) || function (d, b) {
                     if (this.events[type].indexOf(observer) === -1) {
                         this.events[type].push(observer);
                     }
+                };
+                Observable.prototype.addGenericObserverByType = function (observer, type, callback) {
+                    this.addObserverByType(new Observer.GenericObserver(observer, callback), type);
                 };
                 Observable.prototype.deleteObserverByType = function (observer, type) {
                     if (this.events.hasOwnProperty(type)) {
@@ -356,39 +379,12 @@ var __extends = (this && this.__extends) || function (d, b) {
                 function Controller(name) {
                     _super.call(this);
                     this.name = name;
-                    this.handlers = {};
                 }
-                Controller.prototype.attachEventHandler = function (observable, type, handler) {
-                    if (!this.handlers.hasOwnProperty(observable.getName())) {
-                        this.handlers[observable.getName()] = {};
-                    }
-                    if (!this.handlers[observable.getName()].hasOwnProperty(type)) {
-                        this.handlers[observable.getName()][type] = [];
-                    }
-                    this.handlers[observable.getName()][type].push(handler);
-                    observable.addObserverByType(this, type);
-                };
-                Controller.prototype.update = function (event) {
-                    if (this.handlers.hasOwnProperty(event.getSender().getName())) {
-                        if (this.handlers[event.getSender().getName()].hasOwnProperty(event.getType())) {
-                            var handlers = this.handlers[event.getSender().getName()][event.getType()];
-                            for (var i = 0; i < handlers.length; i++) {
-                                handlers[i].bind(this)(event);
-                            }
-                        }
-                    }
-                };
                 Controller.prototype.getName = function () {
                     return this.name;
                 };
                 Controller.prototype.getStackTrace = function () {
                     var trace = {};
-                    trace[Controller.PARAMETER_HANDLERS] = [];
-                    for (var key in this.handlers) {
-                        if (this.handlers.hasOwnProperty(key)) {
-                            trace[Controller.PARAMETER_HANDLERS].push(key);
-                        }
-                    }
                     trace[Controller.PARAMETER_NAME] = this.name;
                     return trace;
                 };
@@ -1025,9 +1021,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Event;
-        (function (Event_1) {
+        (function (Event) {
             "use strict";
-            var Event = Ompluscript.Core.Observer.Event;
+            var OEvent = Ompluscript.Core.Observer.OEvent;
             var OnDoneProxy = (function (_super) {
                 __extends(OnDoneProxy, _super);
                 function OnDoneProxy(sender, action, response) {
@@ -1048,8 +1044,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                 OnDoneProxy.TYPE_SELECTED = "selected";
                 OnDoneProxy.TYPE_FAILED = "failed";
                 return OnDoneProxy;
-            }(Event));
-            Event_1.OnDoneProxy = OnDoneProxy;
+            }(OEvent));
+            Event.OnDoneProxy = OnDoneProxy;
         })(Event = Model.Event || (Model.Event = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -1164,9 +1160,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Event;
-        (function (Event_2) {
+        (function (Event) {
             "use strict";
-            var Event = Ompluscript.Core.Observer.Event;
+            var OEvent = Ompluscript.Core.Observer.OEvent;
             var AttributeEvent = (function (_super) {
                 __extends(AttributeEvent, _super);
                 function AttributeEvent(sender, type) {
@@ -1176,8 +1172,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                 AttributeEvent.ON_INVALID_ATTRIBUTE = "onInvalidAttribute";
                 AttributeEvent.ON_UPDATE_CHOICES = "onUpdateChoices";
                 return AttributeEvent;
-            }(Event));
-            Event_2.AttributeEvent = AttributeEvent;
+            }(OEvent));
+            Event.AttributeEvent = AttributeEvent;
         })(Event = Model.Event || (Model.Event = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -1535,9 +1531,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Event;
-        (function (Event_3) {
+        (function (Event) {
             "use strict";
-            var Event = Ompluscript.Core.Observer.Event;
+            var OEvent = Ompluscript.Core.Observer.OEvent;
             var OnUpdateAsset = (function (_super) {
                 __extends(OnUpdateAsset, _super);
                 function OnUpdateAsset(sender, oldValue, newValue) {
@@ -1553,8 +1549,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 OnUpdateAsset.ON_UPDATE_ASSET = "onUpdateAsset";
                 return OnUpdateAsset;
-            }(Event));
-            Event_3.OnUpdateAsset = OnUpdateAsset;
+            }(OEvent));
+            Event.OnUpdateAsset = OnUpdateAsset;
         })(Event = Model.Event || (Model.Event = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -2793,9 +2789,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Model;
     (function (Model) {
         var Event;
-        (function (Event_4) {
+        (function (Event) {
             "use strict";
-            var Event = Ompluscript.Core.Observer.Event;
+            var OEvent = Ompluscript.Core.Observer.OEvent;
             var TableEvent = (function (_super) {
                 __extends(TableEvent, _super);
                 function TableEvent(sender, type) {
@@ -2805,8 +2801,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                 TableEvent.ON_REMOVE_ROW_FROM_TABLE = "onRemoveRowFromTable";
                 TableEvent.ON_CLEAR_TABLE = "onClearTable";
                 return TableEvent;
-            }(Event));
-            Event_4.TableEvent = TableEvent;
+            }(OEvent));
+            Event.TableEvent = TableEvent;
         })(Event = Model.Event || (Model.Event = {}));
     })(Model = Ompluscript.Model || (Ompluscript.Model = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -3156,21 +3152,81 @@ var __extends = (this && this.__extends) || function (d, b) {
 (function (Ompluscript) {
     var View;
     (function (View) {
+        var Event;
+        (function (Event) {
+            "use strict";
+            var OEvent = Ompluscript.Core.Observer.OEvent;
+            var FieldEvent = (function (_super) {
+                __extends(FieldEvent, _super);
+                function FieldEvent(sender, type) {
+                    _super.call(this, sender, type);
+                }
+                FieldEvent.ON_FIELD_CLICK = "onFieldClick";
+                return FieldEvent;
+            }(OEvent));
+            Event.FieldEvent = FieldEvent;
+        })(Event = View.Event || (View.Event = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Event;
+        (function (Event) {
+            "use strict";
+            var OnFieldClick = (function (_super) {
+                __extends(OnFieldClick, _super);
+                function OnFieldClick(sender, event) {
+                    _super.call(this, sender, Event.FieldEvent.ON_FIELD_CLICK);
+                    this.event = event;
+                }
+                OnFieldClick.prototype.preventDefault = function () {
+                    this.event["preventDefault"]();
+                };
+                return OnFieldClick;
+            }(Event.FieldEvent));
+            Event.OnFieldClick = OnFieldClick;
+        })(Event = View.Event || (View.Event = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
         var Field;
         (function (Field_1) {
             "use strict";
             var Component = Ompluscript.View.Component.Component;
             var Creator = Ompluscript.Model.Creator;
+            var OnFieldClick = Ompluscript.View.Event.OnFieldClick;
+            var FieldEvent = Ompluscript.View.Event.FieldEvent;
             var Field = (function (_super) {
                 __extends(Field, _super);
                 function Field(name, styles) {
                     if (styles === void 0) { styles = {}; }
                     _super.call(this, name, styles);
                     this.translation = Creator.getInstance().getTranslation();
+                    this.addOnFieldClickEvent();
                 }
                 Field.prototype.render = function () {
                     return this.htmlElement;
                 };
+                Field.prototype.attachOnFieldClickEvent = function (callback) {
+                    this.addGenericObserverByType(this, FieldEvent.ON_FIELD_CLICK, callback);
+                };
+                Field.prototype.addOnFieldClickEvent = function () {
+                    var that = this;
+                    var listener = function (event) {
+                        that.fireOnFieldClickEvent(event);
+                    };
+                    that.htmlElement.addEventListener(Field.EVENT_CLICK, listener, false);
+                };
+                Field.prototype.fireOnFieldClickEvent = function (event) {
+                    var oEvent = new OnFieldClick(this, event);
+                    this.notifyObservers(oEvent);
+                };
+                Field.PARAMETER_EVENTS = "events";
+                Field.PARAMETER_ON_FIELD_CLICK = "onFieldClick";
+                Field.EVENT_CLICK = "click";
                 return Field;
             }(Component));
             Field_1.Field = Field;
@@ -3181,9 +3237,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Event;
-        (function (Event_5) {
+        (function (Event) {
             "use strict";
-            var Event = Ompluscript.Core.Observer.Event;
+            var OEvent = Ompluscript.Core.Observer.OEvent;
             var OnUpdateInput = (function (_super) {
                 __extends(OnUpdateInput, _super);
                 function OnUpdateInput(sender, value) {
@@ -3195,8 +3251,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 OnUpdateInput.ON_UPDATE_INPUT = "onUpdateInput";
                 return OnUpdateInput;
-            }(Event));
-            Event_5.OnUpdateInput = OnUpdateInput;
+            }(OEvent));
+            Event.OnUpdateInput = OnUpdateInput;
         })(Event = View.Event || (View.Event = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -3800,9 +3856,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Event;
-        (function (Event_6) {
+        (function (Event) {
             "use strict";
-            var Event = Ompluscript.Core.Observer.Event;
+            var OEvent = Ompluscript.Core.Observer.OEvent;
             var PageEvent = (function (_super) {
                 __extends(PageEvent, _super);
                 function PageEvent(sender, type) {
@@ -3811,8 +3867,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                 PageEvent.ON_PAGE_LOAD = "onPageLoad";
                 PageEvent.ON_PAGE_CLOSE = "onPageClose";
                 return PageEvent;
-            }(Event));
-            Event_6.PageEvent = PageEvent;
+            }(OEvent));
+            Event.PageEvent = PageEvent;
         })(Event = View.Event || (View.Event = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -3980,9 +4036,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Controller;
     (function (Controller) {
         var Event;
-        (function (Event_7) {
+        (function (Event) {
             "use strict";
-            var Event = Ompluscript.Core.Observer.Event;
+            var OEvent = Ompluscript.Core.Observer.OEvent;
             var OnActionRun = (function (_super) {
                 __extends(OnActionRun, _super);
                 function OnActionRun(sender, action, parameters) {
@@ -3998,8 +4054,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 OnActionRun.ON_ACTION_RUN = "onActionRun";
                 return OnActionRun;
-            }(Event));
-            Event_7.OnActionRun = OnActionRun;
+            }(OEvent));
+            Event.OnActionRun = OnActionRun;
         })(Event = Controller.Event || (Controller.Event = {}));
     })(Controller = Ompluscript.Controller || (Ompluscript.Controller = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -4037,10 +4093,10 @@ var __extends = (this && this.__extends) || function (d, b) {
                                 paths.push(i, parameters[i]);
                             }
                         }
-                        this.history.pushState(undefined, page, paths.join(NavigationController.PATH_SEPARATOR));
+                        this.history.pushState(paths.join(NavigationController.PATH_SEPARATOR));
                     }
                     else {
-                        this.history.pushState(undefined, page, page);
+                        this.history.pushState(page);
                     }
                 };
                 NavigationController.prototype.showPageFromPath = function (path) {
@@ -4058,6 +4114,12 @@ var __extends = (this && this.__extends) || function (d, b) {
                         if (pageController !== undefined) {
                             pageController.runAction(action, parameters);
                         }
+                    }
+                };
+                NavigationController.prototype.update = function (event) {
+                    if (event instanceof OnActionRun) {
+                        var onActionRun = event;
+                        this.updatePath(onActionRun.getSender().getName(), onActionRun.getAction(), onActionRun.getParameters());
                     }
                 };
                 NavigationController.prototype.findControllerByName = function (name) {
@@ -4087,14 +4149,30 @@ var __extends = (this && this.__extends) || function (d, b) {
                         }
                     }
                     this.viewport = new Viewport(pageList);
-                    this.history = window.history;
+                    this.setupHistoryHandler();
+                };
+                NavigationController.prototype.setupHistoryHandler = function () {
+                    var that = this;
+                    that.history = window.history;
+                    var pushState = that.history.pushState;
+                    that.history.pushState = function (path) {
+                        pushState.apply(that.history, [path, path, path]);
+                        that.showPageFromPath(path);
+                    };
+                    window.onpopstate = function () {
+                        var path = window.location.pathname.substring(1);
+                        if (path.length === 0) {
+                            path = that.pageControllers[0].getPage().getName();
+                        }
+                        that.showPageFromPath(path);
+                    };
                     var path = location.pathname;
                     path = path.slice(1);
                     if (path.length > 0) {
-                        this.showPageFromPath(path);
+                        that.showPageFromPath(path);
                     }
                     else {
-                        this.switchPageByIndex(0);
+                        that.switchPageByIndex(0);
                     }
                 };
                 NavigationController.NAVIGATION_CONTROLLER = "navigationController";
@@ -4256,9 +4334,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Controller;
     (function (Controller) {
         var Event;
-        (function (Event_8) {
+        (function (Event) {
             "use strict";
-            var Event = Ompluscript.Core.Observer.Event;
+            var OEvent = Ompluscript.Core.Observer.OEvent;
             var ApplicationControllerEvent = (function (_super) {
                 __extends(ApplicationControllerEvent, _super);
                 function ApplicationControllerEvent(sender, type) {
@@ -4267,8 +4345,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                 ApplicationControllerEvent.ON_APPLICATION_START = "onApplicationStart";
                 ApplicationControllerEvent.ON_COMPONENT_LOAD = "onComponentLoad";
                 return ApplicationControllerEvent;
-            }(Event));
-            Event_8.ApplicationControllerEvent = ApplicationControllerEvent;
+            }(OEvent));
+            Event.ApplicationControllerEvent = ApplicationControllerEvent;
         })(Event = Controller.Event || (Controller.Event = {}));
     })(Controller = Ompluscript.Controller || (Ompluscript.Controller = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -4331,11 +4409,11 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                     window.addEventListener("load", this.setup.bind(this));
                 }
-                ApplicationController.prototype.attachOnApplicationStartEvent = function (handler) {
-                    this.attachEventHandler(this, ApplicationControllerEvent.ON_APPLICATION_START, handler);
+                ApplicationController.prototype.attachOnApplicationStartEvent = function (callback) {
+                    this.addGenericObserverByType(this, ApplicationControllerEvent.ON_APPLICATION_START, callback);
                 };
-                ApplicationController.prototype.attachOnComponentLoadEvent = function (handler) {
-                    this.attachEventHandler(this, ApplicationControllerEvent.ON_COMPONENT_LOAD, handler);
+                ApplicationController.prototype.attachOnComponentLoadEvent = function (callback) {
+                    this.addGenericObserverByType(this, ApplicationControllerEvent.ON_COMPONENT_LOAD, callback);
                 };
                 ApplicationController.prototype.getStackTrace = function () {
                     var trace = _super.prototype.getStackTrace.call(this);
@@ -4835,8 +4913,115 @@ var __extends = (this && this.__extends) || function (d, b) {
 (function (Ompluscript) {
     var View;
     (function (View) {
+        var Field;
+        (function (Field) {
+            "use strict";
+            var OnFieldClick = Ompluscript.View.Event.OnFieldClick;
+            var Link = (function (_super) {
+                __extends(Link, _super);
+                function Link(name, text, href, styles) {
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, text, styles);
+                    this.addClass(Link.CLASS_LINK);
+                    this.setAttribute(Link.ATTRIBUTE_HREF, href);
+                }
+                Link.prototype.update = function (event) {
+                    _super.prototype.update.call(this, event);
+                    if (event instanceof OnFieldClick) {
+                        this.handleLinking(event);
+                    }
+                };
+                Link.prototype.initializeHtmlElement = function () {
+                    this.htmlElement = document.createElement(Link.ELEMENT_LINK);
+                };
+                Link.CLASS_LINK = "link";
+                Link.ELEMENT_LINK = "a";
+                Link.ATTRIBUTE_HREF = "href";
+                return Link;
+            }(Field.TextContent));
+            Field.Link = Link;
+        })(Field = View.Field || (View.Field = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Field;
+        (function (Field) {
+            "use strict";
+            var FieldEvent = Ompluscript.View.Event.FieldEvent;
+            var PageLink = (function (_super) {
+                __extends(PageLink, _super);
+                function PageLink(name, text, page, styles) {
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, text, page, styles);
+                    this.page = page;
+                    this.addClass(Field.Link.CLASS_LINK);
+                    this.addObserverByType(this, FieldEvent.ON_FIELD_CLICK);
+                }
+                PageLink.prototype.getStackTrace = function () {
+                    var trace = _super.prototype.getStackTrace.call(this);
+                    trace[PageLink.PARAMETER_PAGE] = this.page;
+                    return trace;
+                };
+                PageLink.prototype.handleLinking = function (event) {
+                    event.preventDefault();
+                    window.history.pushState(this.page);
+                };
+                PageLink.TYPE_PAGE_LINK = PageLink["name"];
+                PageLink.PARAMETER_PAGE = "page";
+                PageLink.CLASS_LINK = "link";
+                PageLink.ELEMENT_LINK = "a";
+                return PageLink;
+            }(Field.Link));
+            Field.PageLink = PageLink;
+        })(Field = View.Field || (View.Field = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
         var Configuration;
         (function (Configuration_35) {
+            var Field;
+            (function (Field) {
+                "use strict";
+                var Configuration = Ompluscript.Core.Configuration.Configuration;
+                var Component = Ompluscript.View.Component.Component;
+                var TextContent = Ompluscript.View.Field.TextContent;
+                var PageLink = Ompluscript.View.Field.PageLink;
+                var PageLinkConfiguration = (function (_super) {
+                    __extends(PageLinkConfiguration, _super);
+                    function PageLinkConfiguration() {
+                        _super.apply(this, arguments);
+                    }
+                    PageLinkConfiguration.prototype.isRelatedTo = function (definition) {
+                        return definition[Configuration.PARAMETER_TYPE] === PageLink.TYPE_PAGE_LINK;
+                    };
+                    PageLinkConfiguration.prototype.getErrors = function (definition) {
+                        var errors = _super.prototype.getErrors.call(this, definition);
+                        errors.push(this.mustBeString(definition, PageLink.PARAMETER_PAGE));
+                        return this.filterErrors(errors);
+                    };
+                    PageLinkConfiguration.prototype.create = function (definition) {
+                        var name = definition[Configuration.PARAMETER_NAME];
+                        var text = definition[TextContent.PARAMETER_TEXT];
+                        var page = definition[PageLink.PARAMETER_PAGE];
+                        var styles = definition[Component.PARAMETER_STYLES];
+                        return new PageLink(name, text, page, styles);
+                    };
+                    return PageLinkConfiguration;
+                }(Field.TextContentConfiguration));
+                Field.PageLinkConfiguration = PageLinkConfiguration;
+            })(Field = Configuration_35.Field || (Configuration_35.Field = {}));
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Configuration;
+        (function (Configuration_36) {
             var Container;
             (function (Container_10) {
                 "use strict";
@@ -4856,6 +5041,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 var DateInputConfiguration = Ompluscript.View.Configuration.Field.DateInputConfiguration;
                 var ParagraphConfiguration = Ompluscript.View.Configuration.Field.ParagraphConfiguration;
                 var HeaderConfiguration = Ompluscript.View.Configuration.Field.HeaderConfiguration;
+                var PageLinkConfiguration = Ompluscript.View.Configuration.Field.PageLinkConfiguration;
                 var ContainerConfiguration = (function (_super) {
                     __extends(ContainerConfiguration, _super);
                     function ContainerConfiguration() {
@@ -4875,6 +5061,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                             Configuration.getInstance(DateInputConfiguration),
                             Configuration.getInstance(ParagraphConfiguration),
                             Configuration.getInstance(HeaderConfiguration),
+                            Configuration.getInstance(PageLinkConfiguration),
                             Configuration.getInstance(ErrorConfiguration),
                         ];
                         var configurations = {};
@@ -4898,7 +5085,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return ContainerConfiguration;
                 }(ComponentConfiguration));
                 Container_10.ContainerConfiguration = ContainerConfiguration;
-            })(Container = Configuration_35.Container || (Configuration_35.Container = {}));
+            })(Container = Configuration_36.Container || (Configuration_36.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -4906,7 +5093,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_36) {
+        (function (Configuration_37) {
             var Container;
             (function (Container_11) {
                 "use strict";
@@ -4938,7 +5125,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return PageConfiguration;
                 }(Container_11.ContainerConfiguration));
                 Container_11.PageConfiguration = PageConfiguration;
-            })(Container = Configuration_36.Container || (Configuration_36.Container = {}));
+            })(Container = Configuration_37.Container || (Configuration_37.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -4946,7 +5133,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_37) {
+        (function (Configuration_38) {
             var Viewport;
             (function (Viewport_2) {
                 "use strict";
@@ -4988,7 +5175,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return ViewportConfiguration;
                 }(ComponentConfiguration));
                 Viewport_2.ViewportConfiguration = ViewportConfiguration;
-            })(Viewport = Configuration_37.Viewport || (Configuration_37.Viewport = {}));
+            })(Viewport = Configuration_38.Viewport || (Configuration_38.Viewport = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -5008,6 +5195,7 @@ var __extends = (this && this.__extends) || function (d, b) {
         var Page = Ompluscript.View.Container.Page;
         var ParagraphConfiguration = Ompluscript.View.Configuration.Field.ParagraphConfiguration;
         var HeaderConfiguration = Ompluscript.View.Configuration.Field.HeaderConfiguration;
+        var PageLinkConfiguration = Ompluscript.View.Configuration.Field.PageLinkConfiguration;
         var Creator = (function (_super) {
             __extends(Creator, _super);
             function Creator() {
@@ -5020,6 +5208,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     Configuration.getInstance(DateInputConfiguration),
                     Configuration.getInstance(ParagraphConfiguration),
                     Configuration.getInstance(HeaderConfiguration),
+                    Configuration.getInstance(PageLinkConfiguration),
                     Configuration.getInstance(PageConfiguration),
                 ];
                 _super.call(this, configurations);

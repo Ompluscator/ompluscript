@@ -15,7 +15,7 @@ module Ompluscript.Core.Observer {
      *
      * @class Event
      */
-    export abstract class Event {
+    export abstract class OEvent {
 
         /**
          * @type {IBase} sender Object that fired event

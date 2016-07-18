@@ -1,4 +1,4 @@
-/// <reference path="Event.ts" />
+/// <reference path="OEvent.ts" />
 
 /**
  * Module that creates basic functionality for observing objects.
@@ -18,9 +18,9 @@ module Ompluscript.Core.Observer {
         /**
          * Method that defines event handler for desired event.
          * 
-         * @param {Event} event
+         * @param {OEvent} event
          */
-        update(event: Event): void;
+        update(event: OEvent): void;
         
     }
 

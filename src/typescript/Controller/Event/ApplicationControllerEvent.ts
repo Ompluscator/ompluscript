@@ -1,5 +1,5 @@
 /// <reference path="../../Core/Interfaces/IBase.ts" />
-/// <reference path="../../Core/Observer/Event.ts" />
+/// <reference path="../../Core/Observer/OEvent.ts" />
 
 /**
  * Module that contains controller's events
@@ -10,14 +10,14 @@ module Ompluscript.Controller.Event {
     "use strict";
 
     import IBase = Ompluscript.Core.Interfaces.IBase;
-    import Event = Ompluscript.Core.Observer.Event;
+    import OEvent = Ompluscript.Core.Observer.OEvent;
 
     /**
      * Class that defines event when application has started
      *
      * @class OnApplicationStart
      */
-    export abstract class ApplicationControllerEvent extends Event {
+    export abstract class ApplicationControllerEvent extends OEvent {
 
         /**
          * @type {string} ON_APPLICATION_START Defines event when application has started

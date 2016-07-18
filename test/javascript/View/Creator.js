@@ -51,6 +51,12 @@ describe("Creator class tests - valid creator", function() {
                 type: "Header",
                 name: "eighth",
                 text: "eighth"
+            },
+            {
+                type: "PageLink",
+                name: "ninth",
+                text: "ninth",
+                page: "page"
             }
         ]
     };

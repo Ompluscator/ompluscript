@@ -1,5 +1,4 @@
-/// <reference path="../../Core/Observer/IObserver.ts" />
-/// <reference path="../../Core/Observer/Event.ts" />
+/// <reference path="../../Core/Observer/OEvent.ts" />
 /// <reference path="Field.ts" />
 /// <reference path="../../Model/Attribute/Attribute.ts" />
 /// <reference path="../../Model/Event/AttributeEvent.ts" />
@@ -16,10 +15,9 @@ module Ompluscript.View.Field {
     "use strict";
 
     import Attribute = Ompluscript.Model.Attribute.Attribute;
-    import IObserver = Ompluscript.Core.Observer.IObserver;
     import AttributeEvent = Ompluscript.Model.Event.AttributeEvent;
     import OnUpdateAttribute = Ompluscript.Model.Event.OnUpdateAttribute;
-    import Event = Ompluscript.Core.Observer.Event;
+    import OEvent = Ompluscript.Core.Observer.OEvent;
     import OnUpdateInput = Ompluscript.View.Event.OnUpdateInput;
     import OnUpdateAsset = Ompluscript.Model.Event.OnUpdateAsset;
 
@@ -28,7 +26,7 @@ module Ompluscript.View.Field {
      *
      * @class Input
      */
-    export abstract class Input extends Field implements IObserver {
+    export abstract class Input extends Field {
 
         /**
          * @type {string} PARAMETER_ATTRIBUTE Name of attribute parameter
@@ -116,9 +114,9 @@ module Ompluscript.View.Field {
         /**
          * Method that defines event handler for desired event.
          *
-         * @param {Event} event
+         * @param {OEvent} event
          */
-        public update(event: Event): void {
+        public update(event: OEvent): void {
             if (event instanceof OnUpdateAttribute) {
                 let onUpdateAttribute: OnUpdateAttribute = <OnUpdateAttribute>event;
                 this.updateValue(onUpdateAttribute.getNewValue());

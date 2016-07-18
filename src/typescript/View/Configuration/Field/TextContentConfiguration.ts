@@ -22,9 +22,9 @@ module Ompluscript.View.Configuration.Field {
 
         /**
          * Class constructor.
-         * 
+         *
          * Calls constructor of superclass.
-         * 
+         *
          * @constructs
          */
         constructor() {

@@ -10,6 +10,7 @@
 /// <reference path="Configuration/Field/TextInputConfiguration.ts" />
 /// <reference path="Configuration/Field/DateInputConfiguration.ts" />
 /// <reference path="Configuration/Field/ParagraphConfiguration.ts" />
+/// <reference path="Configuration/Field/PageLinkConfiguration.ts" />
 /// <reference path="Configuration/Field/HeaderConfiguration.ts" />
 
 /**
@@ -32,6 +33,7 @@ module Ompluscript.View {
     import Page = Ompluscript.View.Container.Page;
     import ParagraphConfiguration = Ompluscript.View.Configuration.Field.ParagraphConfiguration;
     import HeaderConfiguration = Ompluscript.View.Configuration.Field.HeaderConfiguration;
+    import PageLinkConfiguration = Ompluscript.View.Configuration.Field.PageLinkConfiguration;
 
     /**
      * Class that contains functionality for model creator.
@@ -77,6 +79,7 @@ module Ompluscript.View {
                 Configuration.getInstance(DateInputConfiguration),
                 Configuration.getInstance(ParagraphConfiguration),
                 Configuration.getInstance(HeaderConfiguration),
+                Configuration.getInstance(PageLinkConfiguration),
                 Configuration.getInstance(PageConfiguration),
             ];
             super(configurations);

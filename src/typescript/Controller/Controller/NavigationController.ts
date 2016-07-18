@@ -1,4 +1,6 @@
 /// <reference path="../../Core/Interfaces/IBase.ts" />
+/// <reference path="../../Core/Observer/IObserver.ts" />
+/// <reference path="../../Core/Observer/OEvent.ts" />
 /// <reference path="../../View/Container/Page.ts" />
 /// <reference path="../../View/Viewport/Viewport.ts" />
 /// <reference path="../Event/OnActionRun.ts" />
@@ -10,8 +12,10 @@ module Ompluscript.Controller.Controller {
     import Viewport = Ompluscript.View.Viewport.Viewport;
     import OnActionRun = Ompluscript.Controller.Event.OnActionRun;
     import IBase = Ompluscript.Core.Interfaces.IBase;
+    import IObserver = Ompluscript.Core.Observer.IObserver;
+    import OEvent = Ompluscript.Core.Observer.OEvent;
 
-    export class NavigationController extends Controller {
+    export class NavigationController extends Controller implements IObserver {
 
         private static NAVIGATION_CONTROLLER: string = "navigationController";
 
@@ -47,9 +51,9 @@ module Ompluscript.Controller.Controller {
                         paths.push(i, parameters[i]);
                     }
                 }
-                this.history.pushState(undefined, page, paths.join(NavigationController.PATH_SEPARATOR));
+                this.history.pushState(paths.join(NavigationController.PATH_SEPARATOR));
             } else {
-                this.history.pushState(undefined, page, page);
+                this.history.pushState(page);
             }
         }
 
@@ -68,6 +72,13 @@ module Ompluscript.Controller.Controller {
                 if (pageController !== undefined) {
                     pageController.runAction(action, parameters);
                 }
+            }
+        }
+
+        public update(event: OEvent): void {
+            if (event instanceof OnActionRun) {
+                let onActionRun: OnActionRun = <OnActionRun>event;
+                this.updatePath(onActionRun.getSender().getName(), onActionRun.getAction(), onActionRun.getParameters());
             }
         }
 
@@ -98,13 +109,30 @@ module Ompluscript.Controller.Controller {
                 }
             }
             this.viewport = new Viewport(pageList);
-            this.history = window.history;
+            this.setupHistoryHandler();
+        }
+        
+        private setupHistoryHandler(): void {
+            let that: NavigationController = this;
+            that.history = window.history;
+            let pushState: (first: string, second: string) => void = that.history.pushState;
+            that.history.pushState = function(path: string): void {
+                pushState.apply(that.history, [path, path, path]);
+                that.showPageFromPath(path);
+            };
+            window.onpopstate = function(): void {
+                let path: string = window.location.pathname.substring(1);
+                if (path.length === 0) {
+                    path = that.pageControllers[0].getPage().getName();
+                }
+                that.showPageFromPath(path);
+            };
             let path: string = location.pathname;
             path = path.slice(1);
             if (path.length > 0) {
-                this.showPageFromPath(path);
+                that.showPageFromPath(path);
             } else {
-                this.switchPageByIndex(0);
+                that.switchPageByIndex(0);
             }
         }
     }

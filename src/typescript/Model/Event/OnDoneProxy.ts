@@ -1,5 +1,5 @@
 /// <reference path="../../Core/Interfaces/IBase.ts" />
-/// <reference path="../../Core/Observer/Event.ts" />
+/// <reference path="../../Core/Observer/OEvent.ts" />
 
 /**
  * Module that contains model's events
@@ -10,14 +10,14 @@ module Ompluscript.Model.Event {
     "use strict";
 
     import IBase = Ompluscript.Core.Interfaces.IBase;
-    import Event = Ompluscript.Core.Observer.Event;
+    import OEvent = Ompluscript.Core.Observer.OEvent;
 
     /**
      * Class that contains info for event when proxy is done
      *
      * @class OnDoneProxy
      */
-    export class OnDoneProxy extends Event {
+    export class OnDoneProxy extends OEvent {
 
         /**
          * @type {string} ON_DONE_PROXY Defines event when proxy is done

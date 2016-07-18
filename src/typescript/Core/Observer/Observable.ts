@@ -1,6 +1,7 @@
 /// <reference path="../Interfaces/IBase.ts" />
 /// <reference path="IObserver.ts" />
-/// <reference path="Event.ts" />
+/// <reference path="OEvent.ts" />
+/// <reference path="GenericObserver.ts" />
 
 /**
  * Module that creates basic functionality for observing objects.
@@ -48,6 +49,17 @@ module Ompluscript.Core.Observer {
             if (this.events[type].indexOf(observer) === -1) {
                 this.events[type].push(observer);
             }
+        }
+
+        /**
+         * Method that adds new generic observer to map
+         *
+         * @param {IObserver} observer Observer that handles event
+         * @param {type} type Type of event
+         * @param {Function} callback Event handler
+         */
+        public addGenericObserverByType(observer: IBase, type: string, callback: Function): void {
+            this.addObserverByType(new GenericObserver(observer, callback), type);
         }
 
         /**
@@ -108,9 +120,9 @@ module Ompluscript.Core.Observer {
         /**
          * Method that fires event.
          * 
-         * @param {Event} event Event that need to be fired
+         * @param {OEvent} event Event that need to be fired
          */
-        protected notifyObservers(event: Event): void {
+        protected notifyObservers(event: OEvent): void {
             if (this.events[event.getType()] !== undefined) {
                 for (let i in this.events[event.getType()]) {
                     if (this.events[event.getType()].hasOwnProperty(i)) {
