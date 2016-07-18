@@ -514,7 +514,7 @@ describe("PageConfiguration class tests - invalid PageConfiguration", function()
         };
         expect(pageConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(pageConfiguration.getErrors(definition)).toEqual([
-            "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
+            Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
     });
 

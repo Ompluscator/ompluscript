@@ -246,7 +246,7 @@ describe("TextInputConfiguration class tests - invalid TextInput", function() {
         };
         expect(textInputConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(textInputConfiguration.getErrors(definition)).toEqual([
-            "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
+            Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
     });
 

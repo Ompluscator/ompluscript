@@ -1,14 +1,14 @@
 /// <reference path="../../Core/Interfaces/IBase.ts" />
 /// <reference path="../../View/Container/Page.ts" />
 /// <reference path="../../View/Viewport/Viewport.ts" />
-/// <reference path="../Event/OnActionRunEvent.ts" />
+/// <reference path="../Event/OnActionRun.ts" />
 
 module Ompluscript.Controller.Controller {
     "use strict";
     
     import Page = Ompluscript.View.Container.Page;
     import Viewport = Ompluscript.View.Viewport.Viewport;
-    import OnActionRunEvent = Ompluscript.Controller.Event.OnActionRunEvent;
+    import OnActionRun = Ompluscript.Controller.Event.OnActionRun;
     import IBase = Ompluscript.Core.Interfaces.IBase;
 
     export class NavigationController extends Controller {
@@ -87,12 +87,12 @@ module Ompluscript.Controller.Controller {
                 if (pages[i] instanceof Page) {
                     let page: Page = <Page>pages[i];
                     let pageController: PageController = new PageController(page.getName(), page);
-                    pageController.addObserverByType(this, OnActionRunEvent.ON_ACTION_RUN);
+                    pageController.addObserverByType(this, OnActionRun.ON_ACTION_RUN);
                     this.pageControllers.push(pageController);
                     pageList.push(page);
                 } else if (pages[i] instanceof PageController) {
                     let pageController: PageController = <PageController>pages[i];
-                    pageController.addObserverByType(this, OnActionRunEvent.ON_ACTION_RUN);
+                    pageController.addObserverByType(this, OnActionRun.ON_ACTION_RUN);
                     this.pageControllers.push(pageController);
                     pageList.push(pageController.getPage());
                 }

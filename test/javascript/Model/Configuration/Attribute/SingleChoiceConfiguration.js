@@ -83,7 +83,7 @@ describe("SingleChoiceConfiguration class tests - invalid singleChoice", functio
         };
         expect(singleChoiceConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(singleChoiceConfiguration.getErrors(definition)).toEqual([
-            "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
+            Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
     });
 

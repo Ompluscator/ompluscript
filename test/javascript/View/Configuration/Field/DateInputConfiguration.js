@@ -248,7 +248,7 @@ describe("DateInputConfiguration class tests - invalid DateInput", function() {
         };
         expect(dateInputConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(dateInputConfiguration.getErrors(definition)).toEqual([
-            "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
+            Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
     });
 

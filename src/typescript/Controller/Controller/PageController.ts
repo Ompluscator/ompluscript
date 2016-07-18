@@ -1,12 +1,12 @@
 /// <reference path="Controller.ts" />
 /// <reference path="../../View/Container/Page.ts" />
-/// <reference path="../Event/OnActionRunEvent.ts" />
+/// <reference path="../Event/OnActionRun.ts" />
 
 module Ompluscript.Controller.Controller {
     "use strict";
 
     import Page = Ompluscript.View.Container.Page;
-    import OnActionRunEvent = Ompluscript.Controller.Event.OnActionRunEvent;
+    import OnActionRun = Ompluscript.Controller.Event.OnActionRun;
 
     export class PageController extends Controller {
 
@@ -45,7 +45,7 @@ module Ompluscript.Controller.Controller {
         }
 
         protected fireOnActionRunEvent(action: string, parameters: Object): void {
-            let event: OnActionRunEvent = new OnActionRunEvent(this, action, parameters);
+            let event: OnActionRun = new OnActionRun(this, action, parameters);
             this.notifyObservers(event);
         }
 

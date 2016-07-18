@@ -111,7 +111,7 @@ describe("DatetimeConfiguration class tests - invalid datetime", function() {
         };
         expect(datetimeConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(datetimeConfiguration.getErrors(definition)).toEqual([
-            "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
+            Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
     });
 

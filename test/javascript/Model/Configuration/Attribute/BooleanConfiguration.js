@@ -101,7 +101,7 @@ describe("BooleanConfiguration class tests - invalid boolean", function() {
         };
         expect(booleanConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(booleanConfiguration.getErrors(definition)).toEqual([
-            "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
+            Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
     });
 

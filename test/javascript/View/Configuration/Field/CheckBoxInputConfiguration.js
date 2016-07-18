@@ -176,7 +176,7 @@ describe("CheckBoxInputConfiguration class tests - invalid CheckBoxInput", funct
         };
         expect(checkBoxInputConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(checkBoxInputConfiguration.getErrors(definition)).toEqual([
-            "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
+            Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
     });
 

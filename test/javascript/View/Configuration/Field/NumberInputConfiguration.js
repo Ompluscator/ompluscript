@@ -254,7 +254,7 @@ describe("NumberInputConfiguration class tests - invalid NumberInput", function(
         };
         expect(numberInputConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(numberInputConfiguration.getErrors(definition)).toEqual([
-            "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
+            Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
     });
 

@@ -137,7 +137,7 @@ describe("Creator class tests - invalid string", function() {
                 definition: definition,
                 errors: [
                     "" + Configuration.IS_WRONG_CONFIGURATION,
-                    "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
+                    Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
                     "param1." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
                     "param2." + String.PARAMETER_MINIMUM_LENGTH + Configuration.MUST_BE_NUMBER_OR_UNDEFINED,
                     "param3." + String.PARAMETER_MAXIMUM_LENGTH + Configuration.MUST_BE_NUMBER_OR_UNDEFINED,
@@ -232,7 +232,7 @@ describe("Creator class tests - invalid number", function() {
                 definition: definition,
                 errors: [
                     "" + Configuration.IS_WRONG_CONFIGURATION,
-                    "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
+                    Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
                     "param1." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
                     "param2." + Attribute.PARAMETER_MINIMUM + Configuration.MUST_BE_NUMBER_OR_UNDEFINED,
                     "param3." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_NUMBER_OR_UNDEFINED,
@@ -289,7 +289,7 @@ describe("Creator class tests - invalid boolean", function() {
                 definition: definition,
                 errors: [
                     "" + Configuration.IS_WRONG_CONFIGURATION,
-                    "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
+                    Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
                     "param1." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
                     "param2." + Boolean.PARAMETER_MUST_BE_TRUE + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
                 ],
@@ -354,7 +354,7 @@ describe("Creator class tests - invalid datetime", function() {
                 definition: definition,
                 errors: [
                     "" + Configuration.IS_WRONG_CONFIGURATION,
-                    "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
+                    Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
                     "param1." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
                     "param2." + Attribute.PARAMETER_MINIMUM + Configuration.MUST_BE_DATETIME_OR_UNDEFINED,
                     "param3." + Attribute.PARAMETER_MAXIMUM + Configuration.MUST_BE_DATETIME_OR_UNDEFINED,
@@ -408,7 +408,7 @@ describe("Creator class tests - invalid singleChoice", function() {
                 definition: definition,
                 errors: [
                     "" + Configuration.IS_WRONG_CONFIGURATION,
-                    "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
+                    Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
                     "param1." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
                     "param2." + Choice.PARAMETER_CHOICES + Configuration.MUST_BE_ARRAY_OR_UNDEFINED,
                 ],
@@ -460,7 +460,7 @@ describe("Creator class tests - invalid multipleChoice", function() {
                 definition: definition,
                 errors: [
                     "" + Configuration.IS_WRONG_CONFIGURATION,
-                    "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
+                    Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING,
                     "param1." + Attribute.PARAMETER_REQUIRED + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
                     "param2." + Choice.PARAMETER_CHOICES + Configuration.MUST_BE_ARRAY_OR_UNDEFINED,
                 ],

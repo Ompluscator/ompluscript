@@ -41,6 +41,16 @@ describe("Creator class tests - valid creator", function() {
                 type: "NumberInput",
                 name: "sixth",
                 attribute: true
+            },
+            {
+                type: "Paragraph",
+                name: "seventh",
+                text: "seventh"
+            },
+            {
+                type: "Header",
+                name: "eighth",
+                text: "eighth"
             }
         ]
     };

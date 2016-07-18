@@ -533,7 +533,7 @@ describe("TableConfiguration class tests - invalid Table", function() {
         };
         expect(tableConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(tableConfiguration.getErrors(definition)).toEqual([
-            "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
+            Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
     });
 

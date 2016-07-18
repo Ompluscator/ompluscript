@@ -9,7 +9,8 @@
 /// <reference path="Configuration/Field/PasswordInputConfiguration.ts" />
 /// <reference path="Configuration/Field/TextInputConfiguration.ts" />
 /// <reference path="Configuration/Field/DateInputConfiguration.ts" />
-/// <reference path="Configuration/Viewport/ViewportConfiguration.ts" />
+/// <reference path="Configuration/Field/ParagraphConfiguration.ts" />
+/// <reference path="Configuration/Field/HeaderConfiguration.ts" />
 
 /**
  * Module that contains model' classes.
@@ -28,7 +29,9 @@ module Ompluscript.View {
     import PasswordInputConfiguration = Ompluscript.View.Configuration.Field.PasswordInputConfiguration;
     import TextInputConfiguration = Ompluscript.View.Configuration.Field.TextInputConfiguration;
     import DateInputConfiguration = Ompluscript.View.Configuration.Field.DateInputConfiguration;
-    import ViewportConfiguration = Ompluscript.View.Configuration.Viewport.ViewportConfiguration;
+    import Page = Ompluscript.View.Container.Page;
+    import ParagraphConfiguration = Ompluscript.View.Configuration.Field.ParagraphConfiguration;
+    import HeaderConfiguration = Ompluscript.View.Configuration.Field.HeaderConfiguration;
 
     /**
      * Class that contains functionality for model creator.
@@ -41,6 +44,11 @@ module Ompluscript.View {
          * @type {Creator} instance Instance for singleton pattern
          */
         private static instance: Creator;
+
+        /**
+         * @type {string[]} pages List of all pages
+         */
+        private pages: string[];
 
         /**
          * Method for singleton pattern
@@ -67,12 +75,34 @@ module Ompluscript.View {
                 Configuration.getInstance(PasswordInputConfiguration),
                 Configuration.getInstance(TextInputConfiguration),
                 Configuration.getInstance(DateInputConfiguration),
+                Configuration.getInstance(ParagraphConfiguration),
+                Configuration.getInstance(HeaderConfiguration),
                 Configuration.getInstance(PageConfiguration),
-                Configuration.getInstance(ViewportConfiguration),
             ];
             super(configurations);
+            this.pages = [];
         }
 
+        /**
+         * Method that defines different types of containers
+         *
+         * @param {Object[]} definition Definition for container
+         */
+        public define(definition: Object): void {
+            super.define(definition);
+            if (definition[Configuration.PARAMETER_TYPE] === Page.TYPE_PAGE) {
+                this.pages.push(definition[Configuration.PARAMETER_NAME]);
+            }
+        }
+
+        /**
+         * Method that returns list of all pages
+         * 
+         * @returns {string[]} List of all pages
+         */
+        public getPages(): string[] {
+            return this.pages;
+        }
     }
 
     /**

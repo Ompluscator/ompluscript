@@ -134,7 +134,7 @@ describe("NumberConfiguration class tests - invalid number", function() {
         };
         expect(numberConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(numberConfiguration.getErrors(definition)).toEqual([
-            "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
+            Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
     });
 

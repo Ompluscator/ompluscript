@@ -17,7 +17,7 @@ module Ompluscript.Controller.Event {
      * 
      * @class OnActionRun
      */
-    export class OnActionRunEvent extends Event {
+    export class OnActionRun extends Event {
 
         /**
          * @type {string} ON_ACTION_RUN Defines event when action is run
@@ -37,7 +37,7 @@ module Ompluscript.Controller.Event {
          * @constructs
          */
         constructor(sender: IBase, action: string, parameters: Object) {
-            super(sender, OnActionRunEvent.ON_ACTION_RUN);
+            super(sender, OnActionRun.ON_ACTION_RUN);
             this.action = action;
             this.parameters = parameters;
         }

@@ -413,7 +413,7 @@ describe("ModelConfiguration class tests - invalid Model", function() {
         };
         expect(modelConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(modelConfiguration.getErrors(definition)).toEqual([
-            "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
+            Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
     });
 

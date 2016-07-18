@@ -22,7 +22,7 @@ module Ompluscript.View.Container {
      *
      * @class Page
      */
-    export class Page extends Container {
+        export class Page extends Container {
 
         /**
          * @type {string} TYPE_PAGE Type of page

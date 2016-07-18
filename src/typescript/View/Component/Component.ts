@@ -11,28 +11,51 @@ module Ompluscript.View.Component {
     import Observable = Ompluscript.Core.Observer.Observable;
 
     /**
-     * Class that defines basic component
+     * Abstract class that defines basic component
      *
      * @class Component
      */
     export abstract class Component extends Observable {
 
+        /**
+         * @type {string} PARAMETER_TYPE Name of type parameter
+         */
         public static PARAMETER_TYPE: string = "type";
-        
+
+        /**
+         * @type {string} PARAMETER_STYLES Name of styles parameter
+         */
         public static PARAMETER_STYLES: string = "styles";
 
+        /**
+         * @type {string} ATTRIBUTE_ID Name of id attribute
+         */
         public static ATTRIBUTE_ID: string = "id";
 
+        /**
+         * @type {string} ATTRIBUTE_ID Name of class attribute
+         */
         public static ATTRIBUTE_CLASS: string = "class";
 
-        public static STYLE_WIDTH: string = "width";
-
-        public static STYLE_HEIGHT: string = "height";
-
+        /**
+         * @type {HTMLElement} htmlElement Contains HTML content of component
+         */
         protected htmlElement: HTMLElement;
 
+        /**
+         * @type {string} name Defines name of component
+         */
         protected name: string;
 
+        /**
+         * Class constructor.
+         * 
+         * Sets name and styles for component, and
+         * initialize HTML content.
+         * 
+         * @param {string} name Name of component
+         * @param {Object} styles Styles for container
+         */
         constructor(name: string, styles: Object = undefined) {
             super();
             this.name = name;
@@ -47,11 +70,22 @@ module Ompluscript.View.Component {
             }
         }
 
+        /**
+         * Method that returns if component has some value for class
+         * 
+         * @param {string} name Name of class
+         * @returns {boolean} if component has some value for class
+         */
         public hasClass(name: string): boolean {
             let classes: string[] = this.extractClasses();
             return classes.indexOf(name) > -1;
         }
 
+        /**
+         * Method that adds some value for class to component
+         *
+         * @param {string} name Name of class
+         */
         public addClass(name: string): void {
             if (!this.hasClass(name)) {
                 let classes: string[] = this.extractClasses();
@@ -61,6 +95,11 @@ module Ompluscript.View.Component {
             }
         }
 
+        /**
+         * Method that removes some value for class to component
+         *
+         * @param {string} name Name of class
+         */
         public removeClass(name: string): void {
             if (this.hasClass(name)) {
                 let classes: string[] = this.extractClasses();
@@ -70,7 +109,12 @@ module Ompluscript.View.Component {
                 this.setAttribute(Component.ATTRIBUTE_CLASS, value);
             }
         }
-
+        
+        /**
+         * Method that adds or remove some value for class to component
+         *
+         * @param {string} name Name of class
+         */
         public toggleClass(name: string): void {
             if (this.hasClass(name)) {
                 this.removeClass(name);
@@ -79,30 +123,69 @@ module Ompluscript.View.Component {
             }
         }
 
+        /**
+         * Method that sets some value for id of component 
+         * 
+         * @param {name} id Value for id of component
+         */
         public setId(id: string): void {
             this.setAttribute(Component.ATTRIBUTE_ID, id);
         }
 
+        /**
+         * Method that returns some value for id of component
+         * 
+         * @returns {string} Value for id of component
+         */
         public getId(): string {
             return this.getAttribute(Component.ATTRIBUTE_ID);
         }
 
+        /**
+         * Method that sets some value for desired attribute of component
+         * 
+         * @param {string} name Name of attribute
+         * @param {string} value New value for attribute
+         */
         public setAttribute(name: string, value: string): void {
             this.htmlElement.setAttribute(name, value);
         }
 
+        /**
+         * Method that returns value for desired attribute of component
+         * 
+         * @param {string} name Name of attribute
+         * @returns {string} Value for attribute
+         */
         public getAttribute(name: string): string {
             return this.htmlElement.getAttribute(name);
         }
 
+        /**
+         * Method that removes value for desired attribute of component
+         *
+         * @param {string} name Name of attribute
+         */
         public removeAttribute(name: string): void {
             this.htmlElement.removeAttribute(name);
         }
-        
+
+        /**
+         * Method that returns value for for desired style of component
+         * 
+         * @param {string} name Name of style
+         * @returns {string} Value for style
+         */
         public getStyle(name: string): string {
             return this.htmlElement.style.getPropertyValue(name);
         }
-        
+
+        /**
+         * Method that sets value for for desired style of component
+         * 
+         * @param {string} name Name of style
+         * @param {string} value Value for style
+         */
         public setStyle(name: string, value: string): void {
             this.htmlElement.style.setProperty(name, value);
         }
@@ -141,8 +224,18 @@ module Ompluscript.View.Component {
             }
         }
 
+        /**
+         * Method that returns HTML content of component
+         *
+         * @returns {HTMLElement} HTML content of component
+         */
         public abstract render(): HTMLElement;
 
+        /**
+         * Method that returns extracted classes of component as array
+         * 
+         * @returns {string[]} Array with all classes
+         */
         protected extractClasses(): string[] {
             let classes: string[];
             let classValue: string = this.getAttribute(Component.ATTRIBUTE_CLASS);
@@ -157,6 +250,9 @@ module Ompluscript.View.Component {
             return classes;
         }
 
+        /**
+         * Method that generates HTML content of component
+         */
         protected abstract initializeHtmlElement(): void;
     }
 

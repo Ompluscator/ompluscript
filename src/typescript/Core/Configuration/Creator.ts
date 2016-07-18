@@ -20,6 +20,26 @@ module Ompluscript.Core.Configuration {
     export class Creator {
 
         /**
+         * @type {string} PARAMETER_TYPE Type parameter name.
+         */
+        public static PARAMETER_TYPE: string = "type";
+
+        /**
+         * @type {string} PARAMETER_NAME Name parameter name.
+         */
+        public static PARAMETER_NAME: string = "name";
+
+        /**
+         * @type {string} PARAMETER_ERRORS Errors parameter name.
+         */
+        public static PARAMETER_ERRORS: string = "errors";
+
+        /**
+         * @type {string} PARAMETER_DEFINITION Definition parameter name.
+         */
+        public static PARAMETER_DEFINITION: string = "definition";
+
+        /**
          * @type {Object} definition Contains a map for all definitions
          */
         private definition: Object;

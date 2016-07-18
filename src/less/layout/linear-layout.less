@@ -1,0 +1,31 @@
+.linear-layout {
+  display: flex;
+
+  &.flex-horizontal {
+    flex-direction: column;
+
+    &.flex-reverse {
+      flex-direction: column-reverse;
+    }
+  }
+
+  &.flex-vertical {
+    flex-direction: row;
+
+    &.flex-reverse {
+      flex-direction: row-reverse;
+    }
+  }
+
+  &.flex-start {
+    justify-content: flex-start;
+  }
+
+  &.flex-center {
+    justify-content: center;
+  }
+
+  &.flex-end {
+    justify-content: flex-end;
+  }
+}

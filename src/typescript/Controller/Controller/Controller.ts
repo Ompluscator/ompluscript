@@ -12,6 +12,21 @@ module Ompluscript.Controller.Controller {
 
     export abstract class Controller extends Observable implements IBase, IObserver {
 
+        /**
+         * @type {string} PARAMETER_EVENTS Name of events parameter
+         */
+        public static PARAMETER_EVENTS: string = "events";
+
+        /**
+         * @type {string} PARAMETER_NAME Name of name parameter
+         */
+        public static PARAMETER_NAME: string = "name";
+
+        /**
+         * @type {string} PARAMETER_HANDLERS Name of handlers parameter
+         */
+        public static PARAMETER_HANDLERS: string = "handlers";
+
         private name: string;
 
         private handlers: Object;
@@ -39,22 +54,40 @@ module Ompluscript.Controller.Controller {
          * @param {Event} event
          */
         public update(event: Event): void {
-            if (!this.handlers.hasOwnProperty(event.getSender().getName())) {
-                if (!this.handlers[event.getSender().getName()].hasOwnProperty(event.getType())) {
+            if (this.handlers.hasOwnProperty(event.getSender().getName())) {
+                if (this.handlers[event.getSender().getName()].hasOwnProperty(event.getType())) {
                     let handlers: Function[] = this.handlers[event.getSender().getName()][event.getType()];
                     for (let i: number = 0; i < handlers.length; i++) {
-                         handlers[i].bind(this)();
+                         handlers[i].bind(this)(event);
                     }
                 }
             }
         }
 
+        /**
+         * Method that returns name of boject
+         *
+         * @returns {string} Object's name
+         */
         public getName(): string {
             return this.name;
         }
 
+        /**
+         * Method that returns all current values of object.
+         *
+         * @returns {Object} contains all values of the object
+         */
         public getStackTrace(): Object {
-            return undefined;
+            let trace: Object = {};
+            trace[Controller.PARAMETER_HANDLERS] = [];
+            for (let key in this.handlers) {
+                if (this.handlers.hasOwnProperty(key)) {
+                    trace[Controller.PARAMETER_HANDLERS].push(key);
+                }
+            }
+            trace[Controller.PARAMETER_NAME] = this.name;
+            return trace;
         }
     }
 }

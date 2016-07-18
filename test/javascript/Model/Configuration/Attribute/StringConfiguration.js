@@ -108,7 +108,7 @@ describe("StringConfiguration class tests - invalid string", function() {
             type: "String"
         };
         expect(stringConfiguration.getErrors(definition)).toEqual([
-            "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
+            Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
     });
 

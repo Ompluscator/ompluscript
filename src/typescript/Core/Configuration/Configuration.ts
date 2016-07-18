@@ -68,6 +68,11 @@ module Ompluscript.Core.Configuration {
         public static MUST_BE_OBJECT_OR_UNDEFINED: string = " must be an object or undefined.";
 
         /**
+         * @type {string} MUST_BE_FUNCTION_OR_UNDEFINED Message for definition that should be function or undefined.
+         */
+        public static MUST_BE_FUNCTION_OR_UNDEFINED: string = " must be a function or undefined.";
+
+        /**
          * @type {string} MUST_BE_GREATER Message for definition that should greater than other.
          */
         public static MUST_BE_GREATER: string = " must be greater than ";
@@ -186,6 +191,14 @@ module Ompluscript.Core.Configuration {
             return undefined;
         }
 
+        protected shouldBeFunction(definition: Object, key: string): string {
+            let helper: Object = {};
+            if (definition[key] !== undefined && helper.toString.call(definition[key]) !== "[object Function]") {
+                return this.getName(definition, key) + Configuration.MUST_BE_FUNCTION_OR_UNDEFINED;
+            }
+            return undefined;
+        }
+
         protected shouldBeObject(definition: Object, key: string): string {
             if (definition[key] !== undefined && typeof definition[key] !== "object") {
                 return this.getName(definition, key) + Configuration.MUST_BE_OBJECT_OR_UNDEFINED;
@@ -208,7 +221,10 @@ module Ompluscript.Core.Configuration {
         }
         
         protected getName(definition: Object, key: string): string {
-            return definition[Configuration.PARAMETER_NAME] + "." + key;
+            if (definition[Configuration.PARAMETER_NAME] !== undefined) {
+                return definition[Configuration.PARAMETER_NAME] + "." + key;
+            }
+            return key;
         }
     }
 }

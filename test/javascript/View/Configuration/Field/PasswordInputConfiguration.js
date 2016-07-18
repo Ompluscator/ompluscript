@@ -246,7 +246,7 @@ describe("PasswordInputConfiguration class tests - invalid PasswordInput", funct
         };
         expect(passwordInputConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(passwordInputConfiguration.getErrors(definition)).toEqual([
-            "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
+            Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
     });
 

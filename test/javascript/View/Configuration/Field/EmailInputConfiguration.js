@@ -246,7 +246,7 @@ describe("EmailInputConfiguration class tests - invalid EmailInput", function() 
         };
         expect(emailInputConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(emailInputConfiguration.getErrors(definition)).toEqual([
-            "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
+            Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
     });
 

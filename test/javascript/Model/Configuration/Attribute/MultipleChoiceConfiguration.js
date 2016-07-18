@@ -83,7 +83,7 @@ describe("MultipleChoiceConfiguration class tests - invalid multipleChoice", fun
         };
         expect(multipleChoiceConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(multipleChoiceConfiguration.getErrors(definition)).toEqual([
-            "undefined." + Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
+            Configuration.PARAMETER_NAME + Configuration.MUST_BE_STRING
         ]);
     });
 
