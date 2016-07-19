@@ -1,5 +1,6 @@
 /// <reference path="../Component/Component.ts" />
 /// <reference path="../Container/Page.ts" />
+/// <reference path="../Container/Navigation.ts" />
 
 /**
  * Module that contains viewport component
@@ -11,6 +12,7 @@ module Ompluscript.View.Viewport {
     
     import Component = Ompluscript.View.Component.Component;
     import Page = Ompluscript.View.Container.Page;
+    import Navigation = Ompluscript.View.Container.Navigation;
 
     /**
      * Class that defines viewport component
@@ -30,6 +32,11 @@ module Ompluscript.View.Viewport {
         public static PARAMETER_PAGES: string = "pages";
 
         /**
+         * @type {string} PARAMETER_NAVIGATION Name for navigation parameter
+         */
+        public static PARAMETER_NAVIGATION: string = "navigation";
+
+        /**
          * @type {string} CLASS_VIEWPORT Class of HTML body element
          */
         private static CLASS_VIEWPORT: string = "viewport";
@@ -45,15 +52,21 @@ module Ompluscript.View.Viewport {
         protected activePageIndex: number;
 
         /**
+         * @type {number} activePageIndex Index of active page
+         */
+        protected navigation: Navigation;
+
+        /**
          * Class constructor.
          * 
          * Sets a list of all pages and calls constructor of superclass.
          * 
          * @param {Page[]} pages List of all pages
          */
-        constructor(pages: Page[] = []) {
+        constructor(navigation: Navigation, pages: Page[] = []) {
             super(Viewport.TYPE_VIEWPORT);
             this.pages = pages;
+            this.navigation = navigation;
             if (pages.length > 0) {
                 this.setActivePageIndex(0);
             }
@@ -107,6 +120,7 @@ module Ompluscript.View.Viewport {
         public getStackTrace(): Object {
             let trace: Object = super.getStackTrace();
             trace["activePageIndex"] = this.activePageIndex;
+            trace[Viewport.PARAMETER_NAVIGATION] = this.navigation.getStackTrace();
             trace[Viewport.PARAMETER_PAGES] = [];
             for (let i: number = 0; i < this.pages.length; i++) {
                 trace[Viewport.PARAMETER_PAGES].push(this.pages[i].getStackTrace());
@@ -121,7 +135,7 @@ module Ompluscript.View.Viewport {
          */
         public render(): HTMLElement {
             this.clear();
-            this.pages[this.activePageIndex].render();
+            this.appendChild(this.navigation);
             this.appendChild(this.pages[this.activePageIndex]);
             return this.htmlElement;
         }

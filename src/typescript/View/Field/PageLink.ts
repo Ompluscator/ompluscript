@@ -56,7 +56,7 @@ module Ompluscript.View.Field {
          * @param {Object} styles Styles for component
          * @constructs
          */
-        constructor(name: string, text: string, page: string, styles: Object = {}) {
+        constructor(name: string, text: string = undefined, page: string = undefined, styles: Object = {}) {
             super(name, text, page, styles);
             this.page = page;
             this.addClass(Link.CLASS_LINK);

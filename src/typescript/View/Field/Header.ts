@@ -81,7 +81,7 @@ module Ompluscript.View.Field {
          * @param {Object} styles Styles for component
          * @constructs
          */
-        constructor(name: string, text: string, level: string = Header.LEVEL_FIRST, styles: Object = {}) {
+        constructor(name: string, text: string = undefined, level: string = Header.LEVEL_FIRST, styles: Object = {}) {
             super(Header.ELEMENT_HEADER + level, text, styles);
             this.name = name;
             this.level = level;

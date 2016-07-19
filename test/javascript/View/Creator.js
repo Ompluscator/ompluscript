@@ -57,7 +57,17 @@ describe("Creator class tests - valid creator", function() {
                 name: "ninth",
                 text: "ninth",
                 page: "page"
-            }
+            },
+            {
+                type: "Button",
+                name: "tenth",
+                text: "tenth"
+            },
+            {
+                type: "Label",
+                name: "eleventh",
+                text: "eleventh"
+            },
         ]
     };
 

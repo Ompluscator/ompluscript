@@ -9,26 +9,26 @@ module Ompluscript.View.Field {
     "use strict";
 
     /**
-     * Class that defines paragraph field
+     * Class that defines button field
      *
-     * @class Paragraph
+     * @class Button
      */
-    export class Paragraph extends TextContent {
+    export class Button extends TextContent {
 
         /**
-         * @type {string} TYPE_PARAGRAPH Type of paragraph
+         * @type {string} TYPE_BUTTON Type of button
          */
-        public static TYPE_PARAGRAPH: string = Paragraph["name"];
+        public static TYPE_BUTTON: string = Button["name"];
 
         /**
-         * @type {string} CLASS_PARAGRAPH Class of HTML paragraph element
+         * @type {string} CLASS_BUTTON Class of HTML button element
          */
-        public static CLASS_PARAGRAPH: string = "paragraph";
+        public static CLASS_BUTTON: string = "button";
 
         /**
-         * @type {string} ELEMENT_PARAGRAPH HTML paragraph element
+         * @type {string} ELEMENT_BUTTON HTML button element
          */
-        public static ELEMENT_PARAGRAPH: string = "p";
+        public static ELEMENT_BUTTON: string = "button";
 
         /**
          * Class constructor.
@@ -42,14 +42,14 @@ module Ompluscript.View.Field {
          */
         constructor(name: string, text: string = undefined, styles: Object = {}) {
             super(name, text, styles);
-            this.addClass(Paragraph.CLASS_PARAGRAPH);
+            this.addClass(Button.CLASS_BUTTON);
         }
 
         /**
          * Method that generates HTML content of component
          */
         protected initializeHtmlElement(): void {
-            this.htmlElement = document.createElement(Paragraph.ELEMENT_PARAGRAPH);
+            this.htmlElement = document.createElement(Button.ELEMENT_BUTTON);
         }
     }
 }

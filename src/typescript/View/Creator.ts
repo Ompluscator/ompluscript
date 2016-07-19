@@ -3,6 +3,8 @@
 /// <reference path="../Core/Configuration/Configuration.ts" />
 /// <reference path="../Core/Configuration/ErrorConfiguration.ts" />
 /// <reference path="Configuration/Container/PageConfiguration.ts" />
+/// <reference path="Configuration/Container/ListConfiguration.ts" />
+/// <reference path="Configuration/Container/NavigationConfiguration.ts" />
 /// <reference path="Configuration/Field/CheckBoxInputConfiguration.ts" />
 /// <reference path="Configuration/Field/EmailInputConfiguration.ts" />
 /// <reference path="Configuration/Field/NumberInputConfiguration.ts" />
@@ -10,6 +12,8 @@
 /// <reference path="Configuration/Field/TextInputConfiguration.ts" />
 /// <reference path="Configuration/Field/DateInputConfiguration.ts" />
 /// <reference path="Configuration/Field/ParagraphConfiguration.ts" />
+/// <reference path="Configuration/Field/ButtonConfiguration.ts" />
+/// <reference path="Configuration/Field/LabelConfiguration.ts" />
 /// <reference path="Configuration/Field/PageLinkConfiguration.ts" />
 /// <reference path="Configuration/Field/HeaderConfiguration.ts" />
 
@@ -20,6 +24,7 @@
  */
 module Ompluscript.View {
     "use strict";
+    
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import CreatorParent = Ompluscript.Core.Configuration.Creator;
     import Configuration = Ompluscript.Core.Configuration.Configuration;
@@ -34,6 +39,10 @@ module Ompluscript.View {
     import ParagraphConfiguration = Ompluscript.View.Configuration.Field.ParagraphConfiguration;
     import HeaderConfiguration = Ompluscript.View.Configuration.Field.HeaderConfiguration;
     import PageLinkConfiguration = Ompluscript.View.Configuration.Field.PageLinkConfiguration;
+    import ListConfiguration = Ompluscript.View.Configuration.Container.ListConfiguration;
+    import ButtonConfiguration = Ompluscript.View.Configuration.Field.ButtonConfiguration;
+    import NavigationConfiguration = Ompluscript.View.Configuration.Container.NavigationConfiguration;
+    import LabelConfiguration = Ompluscript.View.Configuration.Field.LabelConfiguration;
 
     /**
      * Class that contains functionality for model creator.
@@ -78,9 +87,13 @@ module Ompluscript.View {
                 Configuration.getInstance(TextInputConfiguration),
                 Configuration.getInstance(DateInputConfiguration),
                 Configuration.getInstance(ParagraphConfiguration),
+                Configuration.getInstance(ButtonConfiguration),
                 Configuration.getInstance(HeaderConfiguration),
+                Configuration.getInstance(LabelConfiguration),
+                Configuration.getInstance(ListConfiguration),
                 Configuration.getInstance(PageLinkConfiguration),
                 Configuration.getInstance(PageConfiguration),
+                Configuration.getInstance(NavigationConfiguration),
             ];
             super(configurations);
             this.pages = [];

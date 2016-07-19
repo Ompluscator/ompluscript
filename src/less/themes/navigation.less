@@ -1,0 +1,17 @@
+@import (reference) "../../../node_modules/less-mixins/mixins";
+
+.navigationTheme(@primaryColor, @secondaryColor, @tertiaryColor) {
+  .viewport > .navigation {
+    background: @primaryColor;
+    .box-shadow(0 1px 2px @primaryColor);
+  }
+
+  .button.navigation-element {
+    background: @tertiaryColor;
+
+    &:before {
+      border-top-color: @primaryColor;
+      border-bottom-color: @primaryColor;
+    }
+  }
+}

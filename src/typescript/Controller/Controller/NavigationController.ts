@@ -3,6 +3,9 @@
 /// <reference path="../../Core/Observer/OEvent.ts" />
 /// <reference path="../../View/Container/Page.ts" />
 /// <reference path="../../View/Viewport/Viewport.ts" />
+/// <reference path="../../View/Container/Navigation.ts" />
+/// <reference path="../../View/Container/List.ts" />
+/// <reference path="../../View/Field/PageLink.ts" />
 /// <reference path="../Event/OnActionRun.ts" />
 
 module Ompluscript.Controller.Controller {
@@ -14,6 +17,9 @@ module Ompluscript.Controller.Controller {
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import IObserver = Ompluscript.Core.Observer.IObserver;
     import OEvent = Ompluscript.Core.Observer.OEvent;
+    import Navigation = Ompluscript.View.Container.Navigation;
+    import List = Ompluscript.View.Container.List;
+    import PageLink = Ompluscript.View.Field.PageLink;
 
     export class NavigationController extends Controller implements IObserver {
 
@@ -108,7 +114,17 @@ module Ompluscript.Controller.Controller {
                     pageList.push(pageController.getPage());
                 }
             }
-            this.viewport = new Viewport(pageList);
+            let navigation: Navigation = <Navigation>Ompluscript.View.Creator.getInstance().create(Navigation.TYPE_NAVIGATION);
+            if (navigation === undefined) {
+                let component: PageLink[] = [];
+                for (let i: number = 0; i < this.pageControllers.length; i++) {
+                    let name: string = this.pageControllers[i].getPage().getName();
+                    component.push(new PageLink(name, name, name));
+                }
+                let list: List = new List("firstLevel", undefined, component);
+                navigation = new Navigation([list]);
+            }
+            this.viewport = new Viewport(navigation, pageList);
             this.setupHistoryHandler();
         }
         

@@ -4,18 +4,21 @@ describe("Viewport class tests", function() {
     var secondPage;
     var thirdPage;
     var viewport;
+    var navigation;
 
     var Viewport = Ompluscript.View.Viewport.Viewport;
     var Page = Ompluscript.View.Container.Page;
+    var Navigation = Ompluscript.View.Container.Navigation;
 
     beforeAll(function() {
         firstPage = new Page("first");
         secondPage = new Page("second");
         thirdPage = new Page("third");
+        navigation = new Navigation();
     });
 
     it("get configuration", function() {
-        viewport = new Viewport([firstPage, secondPage, thirdPage]);
+        viewport = new Viewport(navigation, [firstPage, secondPage, thirdPage]);
         expect(viewport.hasClass(Viewport.CLASS_VIEWPORT)).toBeTruthy();
         expect(viewport.getPageByIndex(1)).toBe(secondPage);
         expect(viewport.findPageIndexByName("third")).toBe(2);
@@ -24,6 +27,7 @@ describe("Viewport class tests", function() {
             html: '<body class="viewport"></body>',
             name: "Viewport",
             activePageIndex: 0,
+            navigation: navigation.getStackTrace(),
             pages: [
                 firstPage.getStackTrace(),
                 secondPage.getStackTrace(),
@@ -33,7 +37,7 @@ describe("Viewport class tests", function() {
     });
 
     it("switch page", function() {
-        viewport = new Viewport([firstPage, secondPage, thirdPage]);
+        viewport = new Viewport(navigation, [firstPage, secondPage, thirdPage]);
         expect(viewport.hasClass(Viewport.CLASS_VIEWPORT)).toBeTruthy();
         expect(viewport.getPageByIndex(1)).toBe(secondPage);
         expect(viewport.findPageIndexByName("third")).toBe(2);
@@ -47,6 +51,7 @@ describe("Viewport class tests", function() {
             html: '<body class="viewport"></body>',
             name: "Viewport",
             activePageIndex: 1,
+            navigation: navigation.getStackTrace(),
             pages: [
                 firstPage.getStackTrace(),
                 secondPage.getStackTrace(),

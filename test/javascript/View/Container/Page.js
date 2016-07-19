@@ -770,7 +770,7 @@ describe("Page class tests - events", function() {
     var OnPageClose = Ompluscript.View.Event.OnPageClose;
     var OnPageLoad = Ompluscript.View.Event.OnPageLoad;
 
-    it("simulate keypress - unit test", function() {
+    it("simulate page load and close - unit test", function() {
         page = new Page("firstPage");
 
         spyOn(page, 'notifyObservers');

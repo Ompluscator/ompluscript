@@ -3962,16 +3962,129 @@ var __extends = (this && this.__extends) || function (d, b) {
 (function (Ompluscript) {
     var View;
     (function (View) {
+        var Field;
+        (function (Field) {
+            "use strict";
+            var OnUpdateAsset = Ompluscript.Model.Event.OnUpdateAsset;
+            var TextContent = (function (_super) {
+                __extends(TextContent, _super);
+                function TextContent(name, text, styles) {
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, styles);
+                    this.text = text;
+                    if (this.isTranslated()) {
+                        this.translation.attachToAsset(text, this);
+                    }
+                }
+                TextContent.prototype.update = function (event) {
+                    if (event instanceof OnUpdateAsset && this.isTranslated()) {
+                        var onUpdateAsset = event;
+                        this.updateText(onUpdateAsset.getNewValue());
+                    }
+                };
+                TextContent.prototype.getTextContent = function () {
+                    if (this.textContent !== undefined) {
+                        return this.textContent;
+                    }
+                    return this.text;
+                };
+                TextContent.prototype.isTranslated = function () {
+                    return this.translation !== undefined && this.text !== undefined;
+                };
+                TextContent.prototype.getStackTrace = function () {
+                    var trace = _super.prototype.getStackTrace.call(this);
+                    trace[TextContent.PARAMETER_TEXT] = this.text;
+                    return trace;
+                };
+                TextContent.prototype.updateText = function (value) {
+                    this.textContent = value;
+                    this.htmlElement.innerHTML = this.getTextContent();
+                };
+                TextContent.PARAMETER_TEXT = "text";
+                return TextContent;
+            }(Field.Field));
+            Field.TextContent = TextContent;
+        })(Field = View.Field || (View.Field = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Field;
+        (function (Field) {
+            "use strict";
+            var Button = (function (_super) {
+                __extends(Button, _super);
+                function Button(name, text, styles) {
+                    if (text === void 0) { text = undefined; }
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, text, styles);
+                    this.addClass(Button.CLASS_BUTTON);
+                }
+                Button.prototype.initializeHtmlElement = function () {
+                    this.htmlElement = document.createElement(Button.ELEMENT_BUTTON);
+                };
+                Button.TYPE_BUTTON = Button["name"];
+                Button.CLASS_BUTTON = "button";
+                Button.ELEMENT_BUTTON = "button";
+                return Button;
+            }(Field.TextContent));
+            Field.Button = Button;
+        })(Field = View.Field || (View.Field = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Container;
+        (function (Container) {
+            "use strict";
+            var Button = Ompluscript.View.Field.Button;
+            var Navigation = (function (_super) {
+                __extends(Navigation, _super);
+                function Navigation(children, styles) {
+                    if (children === void 0) { children = []; }
+                    if (styles === void 0) { styles = undefined; }
+                    children.push(new Button(Navigation.CLASS_NAVIGATION));
+                    for (var i = 0; i < children.length; i++) {
+                        children[i].addClass(Navigation.CLASS_NAVIGATION_ELEMENT);
+                    }
+                    _super.call(this, Navigation.TYPE_NAVIGATION, undefined, children, styles);
+                    this.addClass(Navigation.CLASS_NAVIGATION);
+                    this.addClass(name);
+                }
+                Navigation.prototype.getStackTrace = function () {
+                    var trace = _super.prototype.getStackTrace.call(this);
+                    delete trace[Container.List.PARAMETER_LAYOUT];
+                    return trace;
+                };
+                Navigation.prototype.initializeHtmlElement = function () {
+                    this.htmlElement = document.createElement(Navigation.ELEMENT_NAV);
+                };
+                Navigation.TYPE_NAVIGATION = Navigation["name"];
+                Navigation.ELEMENT_NAV = "nav";
+                Navigation.CLASS_NAVIGATION = "navigation";
+                Navigation.CLASS_NAVIGATION_ELEMENT = "navigation-element";
+                return Navigation;
+            }(Container.Container));
+            Container.Navigation = Navigation;
+        })(Container = View.Container || (View.Container = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
         var Viewport;
         (function (Viewport_1) {
             "use strict";
             var Component = Ompluscript.View.Component.Component;
             var Viewport = (function (_super) {
                 __extends(Viewport, _super);
-                function Viewport(pages) {
+                function Viewport(navigation, pages) {
                     if (pages === void 0) { pages = []; }
                     _super.call(this, Viewport.TYPE_VIEWPORT);
                     this.pages = pages;
+                    this.navigation = navigation;
                     if (pages.length > 0) {
                         this.setActivePageIndex(0);
                     }
@@ -3999,6 +4112,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Viewport.prototype.getStackTrace = function () {
                     var trace = _super.prototype.getStackTrace.call(this);
                     trace["activePageIndex"] = this.activePageIndex;
+                    trace[Viewport.PARAMETER_NAVIGATION] = this.navigation.getStackTrace();
                     trace[Viewport.PARAMETER_PAGES] = [];
                     for (var i = 0; i < this.pages.length; i++) {
                         trace[Viewport.PARAMETER_PAGES].push(this.pages[i].getStackTrace());
@@ -4007,7 +4121,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 Viewport.prototype.render = function () {
                     this.clear();
-                    this.pages[this.activePageIndex].render();
+                    this.appendChild(this.navigation);
                     this.appendChild(this.pages[this.activePageIndex]);
                     return this.htmlElement;
                 };
@@ -4025,11 +4139,135 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 Viewport.TYPE_VIEWPORT = Viewport["name"];
                 Viewport.PARAMETER_PAGES = "pages";
+                Viewport.PARAMETER_NAVIGATION = "navigation";
                 Viewport.CLASS_VIEWPORT = "viewport";
                 return Viewport;
             }(Component));
             Viewport_1.Viewport = Viewport;
         })(Viewport = View.Viewport || (View.Viewport = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Container;
+        (function (Container) {
+            "use strict";
+            var List = (function (_super) {
+                __extends(List, _super);
+                function List(name, list, children, styles) {
+                    if (list === void 0) { list = List.LIST_UNORDERED; }
+                    if (children === void 0) { children = undefined; }
+                    if (styles === void 0) { styles = undefined; }
+                    _super.call(this, name, undefined, children, styles);
+                    this.list = list;
+                    this.addClass(List.CLASS_LIST);
+                    this.addClass(list);
+                }
+                List.prototype.getStackTrace = function () {
+                    var trace = _super.prototype.getStackTrace.call(this);
+                    delete trace[List.PARAMETER_LAYOUT];
+                    trace[List.PARAMETER_LIST] = this.list;
+                    return trace;
+                };
+                List.prototype.render = function () {
+                    this.clear();
+                    for (var i = 0; i < this.children.length; i++) {
+                        this.appendChild(this.children[i]);
+                    }
+                    return this.htmlElement;
+                };
+                List.prototype.appendChild = function (component) {
+                    var element = document.createElement(List.ELEMENT_LIST_ITEM);
+                    element.appendChild(component.render());
+                    this.htmlElement.appendChild(element);
+                };
+                List.prototype.initializeHtmlElement = function () {
+                    this.htmlElement = document.createElement(List.ELEMENT_LIST);
+                };
+                List.TYPE_LIST = List["name"];
+                List.PARAMETER_LIST = "list";
+                List.LIST_ORDERED = "ordered";
+                List.LIST_UNORDERED = "unordered";
+                List.LIST_NONE = "none";
+                List.CLASS_LIST = "list";
+                List.ELEMENT_LIST = "ul";
+                List.ELEMENT_LIST_ITEM = "li";
+                return List;
+            }(Container.Container));
+            Container.List = List;
+        })(Container = View.Container || (View.Container = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Field;
+        (function (Field) {
+            "use strict";
+            var OnFieldClick = Ompluscript.View.Event.OnFieldClick;
+            var Link = (function (_super) {
+                __extends(Link, _super);
+                function Link(name, text, href, styles) {
+                    if (text === void 0) { text = undefined; }
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, text, styles);
+                    this.addClass(Link.CLASS_LINK);
+                    this.setAttribute(Link.ATTRIBUTE_HREF, href);
+                }
+                Link.prototype.update = function (event) {
+                    _super.prototype.update.call(this, event);
+                    if (event instanceof OnFieldClick) {
+                        this.handleLinking(event);
+                    }
+                };
+                Link.prototype.initializeHtmlElement = function () {
+                    this.htmlElement = document.createElement(Link.ELEMENT_LINK);
+                };
+                Link.CLASS_LINK = "link";
+                Link.ELEMENT_LINK = "a";
+                Link.ATTRIBUTE_HREF = "href";
+                return Link;
+            }(Field.TextContent));
+            Field.Link = Link;
+        })(Field = View.Field || (View.Field = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Field;
+        (function (Field) {
+            "use strict";
+            var FieldEvent = Ompluscript.View.Event.FieldEvent;
+            var PageLink = (function (_super) {
+                __extends(PageLink, _super);
+                function PageLink(name, text, page, styles) {
+                    if (text === void 0) { text = undefined; }
+                    if (page === void 0) { page = undefined; }
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, text, page, styles);
+                    this.page = page;
+                    this.addClass(Field.Link.CLASS_LINK);
+                    this.addObserverByType(this, FieldEvent.ON_FIELD_CLICK);
+                }
+                PageLink.prototype.getStackTrace = function () {
+                    var trace = _super.prototype.getStackTrace.call(this);
+                    trace[PageLink.PARAMETER_PAGE] = this.page;
+                    return trace;
+                };
+                PageLink.prototype.handleLinking = function (event) {
+                    event.preventDefault();
+                    window.history.pushState(this.page);
+                };
+                PageLink.TYPE_PAGE_LINK = PageLink["name"];
+                PageLink.PARAMETER_PAGE = "page";
+                PageLink.CLASS_LINK = "link";
+                PageLink.ELEMENT_LINK = "a";
+                return PageLink;
+            }(Field.Link));
+            Field.PageLink = PageLink;
+        })(Field = View.Field || (View.Field = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
 (function (Ompluscript) {
@@ -4068,6 +4306,9 @@ var __extends = (this && this.__extends) || function (d, b) {
             var Page = Ompluscript.View.Container.Page;
             var Viewport = Ompluscript.View.Viewport.Viewport;
             var OnActionRun = Ompluscript.Controller.Event.OnActionRun;
+            var Navigation = Ompluscript.View.Container.Navigation;
+            var List = Ompluscript.View.Container.List;
+            var PageLink = Ompluscript.View.Field.PageLink;
             var NavigationController = (function (_super) {
                 __extends(NavigationController, _super);
                 function NavigationController(pages) {
@@ -4148,7 +4389,17 @@ var __extends = (this && this.__extends) || function (d, b) {
                             pageList.push(pageController.getPage());
                         }
                     }
-                    this.viewport = new Viewport(pageList);
+                    var navigation = Ompluscript.View.Creator.getInstance().create(Navigation.TYPE_NAVIGATION);
+                    if (navigation === undefined) {
+                        var component = [];
+                        for (var i = 0; i < this.pageControllers.length; i++) {
+                            var name_1 = this.pageControllers[i].getPage().getName();
+                            component.push(new PageLink(name_1, name_1, name_1));
+                        }
+                        var list = new List("firstLevel", undefined, component);
+                        navigation = new Navigation([list]);
+                    }
+                    this.viewport = new Viewport(navigation, pageList);
                     this.setupHistoryHandler();
                 };
                 NavigationController.prototype.setupHistoryHandler = function () {
@@ -4189,57 +4440,10 @@ var __extends = (this && this.__extends) || function (d, b) {
         var Field;
         (function (Field) {
             "use strict";
-            var OnUpdateAsset = Ompluscript.Model.Event.OnUpdateAsset;
-            var TextContent = (function (_super) {
-                __extends(TextContent, _super);
-                function TextContent(name, text, styles) {
-                    if (styles === void 0) { styles = {}; }
-                    _super.call(this, name, styles);
-                    this.text = text;
-                    if (this.isTranslated()) {
-                        this.translation.attachToAsset(text, this);
-                    }
-                }
-                TextContent.prototype.update = function (event) {
-                    if (event instanceof OnUpdateAsset && this.isTranslated()) {
-                        var onUpdateAsset = event;
-                        this.updateText(onUpdateAsset.getNewValue());
-                    }
-                };
-                TextContent.prototype.getTextContent = function () {
-                    if (this.textContent !== undefined) {
-                        return this.textContent;
-                    }
-                    return this.text;
-                };
-                TextContent.prototype.isTranslated = function () {
-                    return this.translation !== undefined && this.text !== undefined;
-                };
-                TextContent.prototype.getStackTrace = function () {
-                    var trace = _super.prototype.getStackTrace.call(this);
-                    trace[TextContent.PARAMETER_TEXT] = this.text;
-                    return trace;
-                };
-                TextContent.prototype.updateText = function (value) {
-                    this.textContent = value;
-                    this.htmlElement.innerHTML = this.getTextContent();
-                };
-                TextContent.PARAMETER_TEXT = "text";
-                return TextContent;
-            }(Field.Field));
-            Field.TextContent = TextContent;
-        })(Field = View.Field || (View.Field = {}));
-    })(View = Ompluscript.View || (Ompluscript.View = {}));
-})(Ompluscript || (Ompluscript = {}));
-(function (Ompluscript) {
-    var View;
-    (function (View) {
-        var Field;
-        (function (Field) {
-            "use strict";
             var Paragraph = (function (_super) {
                 __extends(Paragraph, _super);
                 function Paragraph(name, text, styles) {
+                    if (text === void 0) { text = undefined; }
                     if (styles === void 0) { styles = {}; }
                     _super.call(this, name, text, styles);
                     this.addClass(Paragraph.CLASS_PARAGRAPH);
@@ -4265,6 +4469,7 @@ var __extends = (this && this.__extends) || function (d, b) {
             var Header = (function (_super) {
                 __extends(Header, _super);
                 function Header(name, text, level, styles) {
+                    if (text === void 0) { text = undefined; }
                     if (level === void 0) { level = Header.LEVEL_FIRST; }
                     if (styles === void 0) { styles = {}; }
                     _super.call(this, Header.ELEMENT_HEADER + level, text, styles);
@@ -4735,6 +4940,41 @@ var __extends = (this && this.__extends) || function (d, b) {
 (function (Ompluscript) {
     var View;
     (function (View) {
+        var Configuration;
+        (function (Configuration) {
+            var Container;
+            (function (Container_10) {
+                "use strict";
+                var Container = Ompluscript.View.Container.Container;
+                var ComponentConfiguration = Ompluscript.View.Configuration.Component.ComponentConfiguration;
+                var ContainerConfiguration = (function (_super) {
+                    __extends(ContainerConfiguration, _super);
+                    function ContainerConfiguration() {
+                        _super.apply(this, arguments);
+                    }
+                    ContainerConfiguration.prototype.getErrors = function (definition) {
+                        var errors = _super.prototype.getErrors.call(this, definition);
+                        errors.push(this.shouldBeArray(definition, Container.PARAMETER_CHILDREN));
+                        errors = this.filterErrors(errors);
+                        if (Array.isArray(definition[Container.PARAMETER_CHILDREN])) {
+                            errors.push.apply(errors, _super.prototype.getErrorsForChildren.call(this, definition, Container.PARAMETER_CHILDREN, Ompluscript.View.Creator.getInstance()));
+                        }
+                        errors.push(this.shouldBeObject(definition, Container.PARAMETER_LAYOUT));
+                        if (typeof definition[Container.PARAMETER_LAYOUT] === "object") {
+                            errors.push.apply(errors, _super.prototype.getErrorsForChildren.call(this, definition, Container.PARAMETER_LAYOUT));
+                        }
+                        return this.filterErrors(errors);
+                    };
+                    return ContainerConfiguration;
+                }(ComponentConfiguration));
+                Container_10.ContainerConfiguration = ContainerConfiguration;
+            })(Container = Configuration.Container || (Configuration.Container = {}));
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
         var Field;
         (function (Field) {
             "use strict";
@@ -4870,6 +5110,42 @@ var __extends = (this && this.__extends) || function (d, b) {
                 "use strict";
                 var Configuration = Ompluscript.Core.Configuration.Configuration;
                 var Component = Ompluscript.View.Component.Component;
+                var Buton = Ompluscript.View.Field.Button;
+                var TextContent = Ompluscript.View.Field.TextContent;
+                var ButtonConfiguration = (function (_super) {
+                    __extends(ButtonConfiguration, _super);
+                    function ButtonConfiguration() {
+                        _super.apply(this, arguments);
+                    }
+                    ButtonConfiguration.prototype.isRelatedTo = function (definition) {
+                        return definition[Configuration.PARAMETER_TYPE] === Buton.TYPE_BUTTON;
+                    };
+                    ButtonConfiguration.prototype.getErrors = function (definition) {
+                        return this.filterErrors(_super.prototype.getErrors.call(this, definition));
+                    };
+                    ButtonConfiguration.prototype.create = function (definition) {
+                        var name = definition[Configuration.PARAMETER_NAME];
+                        var text = definition[TextContent.PARAMETER_TEXT];
+                        var styles = definition[Component.PARAMETER_STYLES];
+                        return new Buton(name, text, styles);
+                    };
+                    return ButtonConfiguration;
+                }(Field.TextContentConfiguration));
+                Field.ButtonConfiguration = ButtonConfiguration;
+            })(Field = Configuration_34.Field || (Configuration_34.Field = {}));
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Configuration;
+        (function (Configuration_35) {
+            var Field;
+            (function (Field) {
+                "use strict";
+                var Configuration = Ompluscript.Core.Configuration.Configuration;
+                var Component = Ompluscript.View.Component.Component;
                 var TextContent = Ompluscript.View.Field.TextContent;
                 var Header = Ompluscript.View.Field.Header;
                 var HeaderConfiguration = (function (_super) {
@@ -4906,7 +5182,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return HeaderConfiguration;
                 }(Field.TextContentConfiguration));
                 Field.HeaderConfiguration = HeaderConfiguration;
-            })(Field = Configuration_34.Field || (Configuration_34.Field = {}));
+            })(Field = Configuration_35.Field || (Configuration_35.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -4916,65 +5192,23 @@ var __extends = (this && this.__extends) || function (d, b) {
         var Field;
         (function (Field) {
             "use strict";
-            var OnFieldClick = Ompluscript.View.Event.OnFieldClick;
-            var Link = (function (_super) {
-                __extends(Link, _super);
-                function Link(name, text, href, styles) {
+            var Label = (function (_super) {
+                __extends(Label, _super);
+                function Label(name, text, styles) {
+                    if (text === void 0) { text = undefined; }
                     if (styles === void 0) { styles = {}; }
                     _super.call(this, name, text, styles);
-                    this.addClass(Link.CLASS_LINK);
-                    this.setAttribute(Link.ATTRIBUTE_HREF, href);
+                    this.addClass(Label.CLASS_LABEL);
                 }
-                Link.prototype.update = function (event) {
-                    _super.prototype.update.call(this, event);
-                    if (event instanceof OnFieldClick) {
-                        this.handleLinking(event);
-                    }
+                Label.prototype.initializeHtmlElement = function () {
+                    this.htmlElement = document.createElement(Label.ELEMENT_LABEL);
                 };
-                Link.prototype.initializeHtmlElement = function () {
-                    this.htmlElement = document.createElement(Link.ELEMENT_LINK);
-                };
-                Link.CLASS_LINK = "link";
-                Link.ELEMENT_LINK = "a";
-                Link.ATTRIBUTE_HREF = "href";
-                return Link;
+                Label.TYPE_LABEL = Label["name"];
+                Label.CLASS_LABEL = "label";
+                Label.ELEMENT_LABEL = "label";
+                return Label;
             }(Field.TextContent));
-            Field.Link = Link;
-        })(Field = View.Field || (View.Field = {}));
-    })(View = Ompluscript.View || (Ompluscript.View = {}));
-})(Ompluscript || (Ompluscript = {}));
-(function (Ompluscript) {
-    var View;
-    (function (View) {
-        var Field;
-        (function (Field) {
-            "use strict";
-            var FieldEvent = Ompluscript.View.Event.FieldEvent;
-            var PageLink = (function (_super) {
-                __extends(PageLink, _super);
-                function PageLink(name, text, page, styles) {
-                    if (styles === void 0) { styles = {}; }
-                    _super.call(this, name, text, page, styles);
-                    this.page = page;
-                    this.addClass(Field.Link.CLASS_LINK);
-                    this.addObserverByType(this, FieldEvent.ON_FIELD_CLICK);
-                }
-                PageLink.prototype.getStackTrace = function () {
-                    var trace = _super.prototype.getStackTrace.call(this);
-                    trace[PageLink.PARAMETER_PAGE] = this.page;
-                    return trace;
-                };
-                PageLink.prototype.handleLinking = function (event) {
-                    event.preventDefault();
-                    window.history.pushState(this.page);
-                };
-                PageLink.TYPE_PAGE_LINK = PageLink["name"];
-                PageLink.PARAMETER_PAGE = "page";
-                PageLink.CLASS_LINK = "link";
-                PageLink.ELEMENT_LINK = "a";
-                return PageLink;
-            }(Field.Link));
-            Field.PageLink = PageLink;
+            Field.Label = Label;
         })(Field = View.Field || (View.Field = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -4982,7 +5216,43 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_35) {
+        (function (Configuration_36) {
+            var Field;
+            (function (Field) {
+                "use strict";
+                var Configuration = Ompluscript.Core.Configuration.Configuration;
+                var Component = Ompluscript.View.Component.Component;
+                var Label = Ompluscript.View.Field.Label;
+                var TextContent = Ompluscript.View.Field.TextContent;
+                var LabelConfiguration = (function (_super) {
+                    __extends(LabelConfiguration, _super);
+                    function LabelConfiguration() {
+                        _super.apply(this, arguments);
+                    }
+                    LabelConfiguration.prototype.isRelatedTo = function (definition) {
+                        return definition[Configuration.PARAMETER_TYPE] === Label.TYPE_LABEL;
+                    };
+                    LabelConfiguration.prototype.getErrors = function (definition) {
+                        return this.filterErrors(_super.prototype.getErrors.call(this, definition));
+                    };
+                    LabelConfiguration.prototype.create = function (definition) {
+                        var name = definition[Configuration.PARAMETER_NAME];
+                        var text = definition[TextContent.PARAMETER_TEXT];
+                        var styles = definition[Component.PARAMETER_STYLES];
+                        return new Label(name, text, styles);
+                    };
+                    return LabelConfiguration;
+                }(Field.TextContentConfiguration));
+                Field.LabelConfiguration = LabelConfiguration;
+            })(Field = Configuration_36.Field || (Configuration_36.Field = {}));
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Configuration;
+        (function (Configuration_37) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -5013,7 +5283,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return PageLinkConfiguration;
                 }(Field.TextContentConfiguration));
                 Field.PageLinkConfiguration = PageLinkConfiguration;
-            })(Field = Configuration_35.Field || (Configuration_35.Field = {}));
+            })(Field = Configuration_37.Field || (Configuration_37.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -5021,12 +5291,138 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_36) {
+        (function (Configuration_38) {
             var Container;
-            (function (Container_10) {
+            (function (Container_11) {
                 "use strict";
-                var Container = Ompluscript.View.Container.Container;
                 var Configuration = Ompluscript.Core.Configuration.Configuration;
+                var List = Ompluscript.View.Container.List;
+                var Component = Ompluscript.View.Component.Component;
+                var Container = Ompluscript.View.Container.Container;
+                var CheckBoxInputConfiguration = Ompluscript.View.Configuration.Field.CheckBoxInputConfiguration;
+                var EmailInputConfiguration = Ompluscript.View.Configuration.Field.EmailInputConfiguration;
+                var NumberInputConfiguration = Ompluscript.View.Configuration.Field.NumberInputConfiguration;
+                var PasswordInputConfiguration = Ompluscript.View.Configuration.Field.PasswordInputConfiguration;
+                var TextInputConfiguration = Ompluscript.View.Configuration.Field.TextInputConfiguration;
+                var DateInputConfiguration = Ompluscript.View.Configuration.Field.DateInputConfiguration;
+                var ParagraphConfiguration = Ompluscript.View.Configuration.Field.ParagraphConfiguration;
+                var HeaderConfiguration = Ompluscript.View.Configuration.Field.HeaderConfiguration;
+                var PageLinkConfiguration = Ompluscript.View.Configuration.Field.PageLinkConfiguration;
+                var ErrorConfiguration = Ompluscript.Core.Configuration.ErrorConfiguration;
+                var ButtonConfiguration = Ompluscript.View.Configuration.Field.ButtonConfiguration;
+                var LabelConfiguration = Ompluscript.View.Configuration.Field.LabelConfiguration;
+                var ListConfiguration = (function (_super) {
+                    __extends(ListConfiguration, _super);
+                    function ListConfiguration() {
+                        var children = [
+                            Configuration.getInstance(CheckBoxInputConfiguration),
+                            Configuration.getInstance(EmailInputConfiguration),
+                            Configuration.getInstance(NumberInputConfiguration),
+                            Configuration.getInstance(PasswordInputConfiguration),
+                            Configuration.getInstance(TextInputConfiguration),
+                            Configuration.getInstance(DateInputConfiguration),
+                            Configuration.getInstance(ParagraphConfiguration),
+                            Configuration.getInstance(ButtonConfiguration),
+                            Configuration.getInstance(HeaderConfiguration),
+                            Configuration.getInstance(LabelConfiguration),
+                            Configuration.getInstance(PageLinkConfiguration),
+                            Configuration.getInstance(ErrorConfiguration),
+                        ];
+                        var configurations = {};
+                        configurations[Container.PARAMETER_CHILDREN] = children;
+                        _super.call(this, configurations);
+                    }
+                    ListConfiguration.prototype.isRelatedTo = function (definition) {
+                        return definition[Configuration.PARAMETER_TYPE] === List.TYPE_LIST;
+                    };
+                    ListConfiguration.prototype.getErrors = function (definition) {
+                        var errors = _super.prototype.getErrors.call(this, definition);
+                        errors.push(this.shouldBeString(definition, List.PARAMETER_LIST));
+                        if (typeof definition[List.PARAMETER_LIST] === "string") {
+                            var values = [
+                                List.LIST_NONE,
+                                List.LIST_ORDERED,
+                                List.LIST_UNORDERED,
+                            ];
+                            errors.push(this.mustBeValue(definition, List.PARAMETER_LIST, values));
+                        }
+                        return this.filterErrors(errors);
+                    };
+                    ListConfiguration.prototype.create = function (definition, children) {
+                        if (children === void 0) { children = undefined; }
+                        var name = definition[Configuration.PARAMETER_NAME];
+                        var list = definition[List.PARAMETER_LIST];
+                        if (children === undefined) {
+                            children = _super.prototype.createChildren.call(this, definition, Container.PARAMETER_CHILDREN, Ompluscript.View.Creator.getInstance());
+                        }
+                        var styles = definition[Component.PARAMETER_STYLES];
+                        return new List(name, list, children, styles);
+                    };
+                    return ListConfiguration;
+                }(Container_11.ContainerConfiguration));
+                Container_11.ListConfiguration = ListConfiguration;
+            })(Container = Configuration_38.Container || (Configuration_38.Container = {}));
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Configuration;
+        (function (Configuration_39) {
+            var Container;
+            (function (Container_12) {
+                "use strict";
+                var Configuration = Ompluscript.Core.Configuration.Configuration;
+                var Navigation = Ompluscript.View.Container.Navigation;
+                var Component = Ompluscript.View.Component.Component;
+                var Container = Ompluscript.View.Container.Container;
+                var ErrorConfiguration = Ompluscript.Core.Configuration.ErrorConfiguration;
+                var NavigationConfiguration = (function (_super) {
+                    __extends(NavigationConfiguration, _super);
+                    function NavigationConfiguration() {
+                        var children = [
+                            Configuration.getInstance(Container_12.ListConfiguration),
+                            Configuration.getInstance(ErrorConfiguration),
+                        ];
+                        var configurations = {};
+                        configurations[Container.PARAMETER_CHILDREN] = children;
+                        _super.call(this, configurations);
+                    }
+                    NavigationConfiguration.prototype.isRelatedTo = function (definition) {
+                        return definition[Configuration.PARAMETER_TYPE] === Navigation.TYPE_NAVIGATION;
+                    };
+                    NavigationConfiguration.prototype.getErrors = function (definition) {
+                        definition[Configuration.PARAMETER_NAME] = definition[Configuration.PARAMETER_TYPE];
+                        return this.filterErrors(_super.prototype.getErrors.call(this, definition));
+                    };
+                    NavigationConfiguration.prototype.create = function (definition, children) {
+                        if (children === void 0) { children = undefined; }
+                        if (children === undefined) {
+                            children = _super.prototype.createChildren.call(this, definition, Container.PARAMETER_CHILDREN, Ompluscript.View.Creator.getInstance());
+                        }
+                        var styles = definition[Component.PARAMETER_STYLES];
+                        return new Navigation(children, styles);
+                    };
+                    return NavigationConfiguration;
+                }(Container_12.ContainerConfiguration));
+                Container_12.NavigationConfiguration = NavigationConfiguration;
+            })(Container = Configuration_39.Container || (Configuration_39.Container = {}));
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Configuration;
+        (function (Configuration_40) {
+            var Container;
+            (function (Container_13) {
+                "use strict";
+                var Configuration = Ompluscript.Core.Configuration.Configuration;
+                var Page = Ompluscript.View.Container.Page;
+                var Component = Ompluscript.View.Component.Component;
+                var Container = Ompluscript.View.Container.Container;
                 var ErrorConfiguration = Ompluscript.Core.Configuration.ErrorConfiguration;
                 var NullLayoutConfiguration = Ompluscript.View.Configuration.Layout.NullLayoutConfiguration;
                 var RelativeLayoutConfiguration = Ompluscript.View.Configuration.Layout.RelativeLayoutConfiguration;
@@ -5037,14 +5433,15 @@ var __extends = (this && this.__extends) || function (d, b) {
                 var NumberInputConfiguration = Ompluscript.View.Configuration.Field.NumberInputConfiguration;
                 var PasswordInputConfiguration = Ompluscript.View.Configuration.Field.PasswordInputConfiguration;
                 var TextInputConfiguration = Ompluscript.View.Configuration.Field.TextInputConfiguration;
-                var ComponentConfiguration = Ompluscript.View.Configuration.Component.ComponentConfiguration;
                 var DateInputConfiguration = Ompluscript.View.Configuration.Field.DateInputConfiguration;
                 var ParagraphConfiguration = Ompluscript.View.Configuration.Field.ParagraphConfiguration;
                 var HeaderConfiguration = Ompluscript.View.Configuration.Field.HeaderConfiguration;
                 var PageLinkConfiguration = Ompluscript.View.Configuration.Field.PageLinkConfiguration;
-                var ContainerConfiguration = (function (_super) {
-                    __extends(ContainerConfiguration, _super);
-                    function ContainerConfiguration() {
+                var ButtonConfiguration = Ompluscript.View.Configuration.Field.ButtonConfiguration;
+                var LabelConfiguration = Ompluscript.View.Configuration.Field.LabelConfiguration;
+                var PageConfiguration = (function (_super) {
+                    __extends(PageConfiguration, _super);
+                    function PageConfiguration() {
                         var layouts = [
                             Configuration.getInstance(NullLayoutConfiguration),
                             Configuration.getInstance(RelativeLayoutConfiguration),
@@ -5060,51 +5457,17 @@ var __extends = (this && this.__extends) || function (d, b) {
                             Configuration.getInstance(TextInputConfiguration),
                             Configuration.getInstance(DateInputConfiguration),
                             Configuration.getInstance(ParagraphConfiguration),
+                            Configuration.getInstance(ButtonConfiguration),
                             Configuration.getInstance(HeaderConfiguration),
+                            Configuration.getInstance(LabelConfiguration),
                             Configuration.getInstance(PageLinkConfiguration),
+                            Configuration.getInstance(Container_13.ListConfiguration),
                             Configuration.getInstance(ErrorConfiguration),
                         ];
                         var configurations = {};
                         configurations[Container.PARAMETER_LAYOUT] = layouts;
                         configurations[Container.PARAMETER_CHILDREN] = children;
                         _super.call(this, configurations);
-                    }
-                    ContainerConfiguration.prototype.getErrors = function (definition) {
-                        var errors = _super.prototype.getErrors.call(this, definition);
-                        errors.push(this.shouldBeArray(definition, Container.PARAMETER_CHILDREN));
-                        errors = this.filterErrors(errors);
-                        if (Array.isArray(definition[Container.PARAMETER_CHILDREN])) {
-                            errors.push.apply(errors, _super.prototype.getErrorsForChildren.call(this, definition, Container.PARAMETER_CHILDREN, Ompluscript.View.Creator.getInstance()));
-                        }
-                        errors.push(this.shouldBeObject(definition, Container.PARAMETER_LAYOUT));
-                        if (typeof definition[Container.PARAMETER_LAYOUT] === "object") {
-                            errors.push.apply(errors, _super.prototype.getErrorsForChildren.call(this, definition, Container.PARAMETER_LAYOUT));
-                        }
-                        return this.filterErrors(errors);
-                    };
-                    return ContainerConfiguration;
-                }(ComponentConfiguration));
-                Container_10.ContainerConfiguration = ContainerConfiguration;
-            })(Container = Configuration_36.Container || (Configuration_36.Container = {}));
-        })(Configuration = View.Configuration || (View.Configuration = {}));
-    })(View = Ompluscript.View || (Ompluscript.View = {}));
-})(Ompluscript || (Ompluscript = {}));
-(function (Ompluscript) {
-    var View;
-    (function (View) {
-        var Configuration;
-        (function (Configuration_37) {
-            var Container;
-            (function (Container_11) {
-                "use strict";
-                var Configuration = Ompluscript.Core.Configuration.Configuration;
-                var Page = Ompluscript.View.Container.Page;
-                var Component = Ompluscript.View.Component.Component;
-                var Container = Ompluscript.View.Container.Container;
-                var PageConfiguration = (function (_super) {
-                    __extends(PageConfiguration, _super);
-                    function PageConfiguration() {
-                        _super.apply(this, arguments);
                     }
                     PageConfiguration.prototype.isRelatedTo = function (definition) {
                         return definition[Configuration.PARAMETER_TYPE] === Page.TYPE_PAGE;
@@ -5123,59 +5486,9 @@ var __extends = (this && this.__extends) || function (d, b) {
                         return new Page(name, layout, children, styles);
                     };
                     return PageConfiguration;
-                }(Container_11.ContainerConfiguration));
-                Container_11.PageConfiguration = PageConfiguration;
-            })(Container = Configuration_37.Container || (Configuration_37.Container = {}));
-        })(Configuration = View.Configuration || (View.Configuration = {}));
-    })(View = Ompluscript.View || (Ompluscript.View = {}));
-})(Ompluscript || (Ompluscript = {}));
-(function (Ompluscript) {
-    var View;
-    (function (View) {
-        var Configuration;
-        (function (Configuration_38) {
-            var Viewport;
-            (function (Viewport_2) {
-                "use strict";
-                var ComponentConfiguration = Ompluscript.View.Configuration.Component.ComponentConfiguration;
-                var Configuration = Ompluscript.Core.Configuration.Configuration;
-                var PageConfiguration = Ompluscript.View.Configuration.Container.PageConfiguration;
-                var ErrorConfiguration = Ompluscript.Core.Configuration.ErrorConfiguration;
-                var Viewport = Ompluscript.View.Viewport.Viewport;
-                var ViewportConfiguration = (function (_super) {
-                    __extends(ViewportConfiguration, _super);
-                    function ViewportConfiguration() {
-                        var pages = [
-                            Configuration.getInstance(PageConfiguration),
-                            Configuration.getInstance(ErrorConfiguration),
-                        ];
-                        var configurations = {};
-                        configurations[Viewport.PARAMETER_PAGES] = pages;
-                        _super.call(this, configurations);
-                    }
-                    ViewportConfiguration.prototype.isRelatedTo = function (definition) {
-                        return definition[Configuration.PARAMETER_TYPE] === Viewport.TYPE_VIEWPORT;
-                    };
-                    ViewportConfiguration.prototype.getErrors = function (definition) {
-                        definition[Configuration.PARAMETER_NAME] = definition[Configuration.PARAMETER_TYPE];
-                        var errors = _super.prototype.getErrors.call(this, definition);
-                        errors.push(this.shouldBeArray(definition, Viewport.PARAMETER_PAGES));
-                        if (Array.isArray(definition[Viewport.PARAMETER_PAGES])) {
-                            errors.push.apply(errors, _super.prototype.getErrorsForChildren.call(this, definition, Viewport.PARAMETER_PAGES, Ompluscript.View.Creator.getInstance()));
-                        }
-                        return this.filterErrors(errors);
-                    };
-                    ViewportConfiguration.prototype.create = function (definition, pages) {
-                        if (pages === void 0) { pages = undefined; }
-                        if (pages === undefined) {
-                            pages = this.createChildren(definition, Viewport.PARAMETER_PAGES, Ompluscript.View.Creator.getInstance());
-                        }
-                        return new Viewport(pages);
-                    };
-                    return ViewportConfiguration;
-                }(ComponentConfiguration));
-                Viewport_2.ViewportConfiguration = ViewportConfiguration;
-            })(Viewport = Configuration_38.Viewport || (Configuration_38.Viewport = {}));
+                }(Container_13.ContainerConfiguration));
+                Container_13.PageConfiguration = PageConfiguration;
+            })(Container = Configuration_40.Container || (Configuration_40.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -5196,6 +5509,10 @@ var __extends = (this && this.__extends) || function (d, b) {
         var ParagraphConfiguration = Ompluscript.View.Configuration.Field.ParagraphConfiguration;
         var HeaderConfiguration = Ompluscript.View.Configuration.Field.HeaderConfiguration;
         var PageLinkConfiguration = Ompluscript.View.Configuration.Field.PageLinkConfiguration;
+        var ListConfiguration = Ompluscript.View.Configuration.Container.ListConfiguration;
+        var ButtonConfiguration = Ompluscript.View.Configuration.Field.ButtonConfiguration;
+        var NavigationConfiguration = Ompluscript.View.Configuration.Container.NavigationConfiguration;
+        var LabelConfiguration = Ompluscript.View.Configuration.Field.LabelConfiguration;
         var Creator = (function (_super) {
             __extends(Creator, _super);
             function Creator() {
@@ -5207,9 +5524,13 @@ var __extends = (this && this.__extends) || function (d, b) {
                     Configuration.getInstance(TextInputConfiguration),
                     Configuration.getInstance(DateInputConfiguration),
                     Configuration.getInstance(ParagraphConfiguration),
+                    Configuration.getInstance(ButtonConfiguration),
                     Configuration.getInstance(HeaderConfiguration),
+                    Configuration.getInstance(LabelConfiguration),
+                    Configuration.getInstance(ListConfiguration),
                     Configuration.getInstance(PageLinkConfiguration),
                     Configuration.getInstance(PageConfiguration),
+                    Configuration.getInstance(NavigationConfiguration),
                 ];
                 _super.call(this, configurations);
                 this.pages = [];

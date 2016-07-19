@@ -2,7 +2,7 @@
 /// <reference path="TextContentConfiguration.ts" />
 /// <reference path="../../Component/Component.ts" />
 /// <reference path="../../Field/TextContent.ts" />
-/// <reference path="../../Field/Paragraph.ts" />
+/// <reference path="../../Field/Label.ts" />
 
 /**
  * Module that contains fields' configuration classes.
@@ -15,15 +15,15 @@ module Ompluscript.View.Configuration.Field {
     import Configuration = Ompluscript.Core.Configuration.Configuration;
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import Component = Ompluscript.View.Component.Component;
-    import Paragraph = Ompluscript.View.Field.Paragraph;
+    import Label = Ompluscript.View.Field.Label;
     import TextContent = Ompluscript.View.Field.TextContent;
 
     /**
-     * Class that contains functionality for paragraph configuration.
+     * Class that contains functionality for label configuration.
      *
-     * @class ParagraphConfiguration
+     * @class LabelConfiguration
      */
-    export class ParagraphConfiguration extends TextContentConfiguration {
+    export class LabelConfiguration extends TextContentConfiguration {
 
         /**
          * Method that decides if this configuration is related to this class.
@@ -32,7 +32,7 @@ module Ompluscript.View.Configuration.Field {
          * @returns {boolean} Is related to this class
          */
         public isRelatedTo(definition: Object): boolean {
-            return definition[Configuration.PARAMETER_TYPE] === Paragraph.TYPE_PARAGRAPH;
+            return definition[Configuration.PARAMETER_TYPE] === Label.TYPE_LABEL;
         }
 
         /**
@@ -55,7 +55,7 @@ module Ompluscript.View.Configuration.Field {
             let name: string = definition[Configuration.PARAMETER_NAME];
             let text: string = definition[TextContent.PARAMETER_TEXT];
             let styles: Object = definition[Component.PARAMETER_STYLES];
-            return new Paragraph(name, text, styles);
+            return new Label(name, text, styles);
         }
     }
 }

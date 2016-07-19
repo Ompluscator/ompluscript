@@ -1,0 +1,55 @@
+@import (reference) "../../../node_modules/less-mixins/mixins";
+@import (reference) "../variables/page";
+@import "../variables/index";
+
+.viewport > .navigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: @navigationHeight;
+  z-index: 1;
+
+  & > .layout {
+    width: 90%;
+    max-width: @desktopMaxWidth;
+    margin: auto;
+  }
+}
+
+.button.navigation-element {
+  display: block;
+  position: absolute;
+  right: 0;
+  top: (@navigationHeight - 5 * @navigationButtonTick) / 2;
+  width: @navigationButtonHeight;
+  padding: @navigationButtonTick 0;
+  .box-sizing(border-box);
+  background: transparent;
+  border: transparent;
+  cursor: pointer;
+  outline: none;
+
+  @media screen and (min-width: @tabletMaxWidth) {
+    display: none;
+  }
+
+  &:before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: @navigationButtonTick;
+    background: transparent;
+    border-top: @navigationButtonTick solid;
+    border-bottom: @navigationButtonTick solid;
+  }
+}
+
+.list.navigation-element {
+  display: none;
+
+  @media screen and (min-width: @tabletMaxWidth) {
+    display: block;
+  }
+}
