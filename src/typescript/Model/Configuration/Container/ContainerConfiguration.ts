@@ -51,20 +51,20 @@ module Ompluscript.Model.Configuration.Container {
          * @constructs
          */
         constructor() {
-            let definition: Configuration[] = [
-                Configuration.getInstance(BooleanConfiguration),
-                Configuration.getInstance(DatetimeConfiguration),
-                Configuration.getInstance(MultipleChoiceConfiguration),
-                Configuration.getInstance(NumberConfiguration),
-                Configuration.getInstance(SingleChoiceConfiguration),
-                Configuration.getInstance(StringConfiguration),
-                Configuration.getInstance(ErrorConfiguration),
+            let definition: Object[] = [
+                BooleanConfiguration,
+                DatetimeConfiguration,
+                MultipleChoiceConfiguration,
+                NumberConfiguration,
+                SingleChoiceConfiguration,
+                StringConfiguration,
+                ErrorConfiguration,
             ];
-            let proxies: Configuration[] = [
-                Configuration.getInstance(AjaxProxyConfiguration),
-                Configuration.getInstance(SessionStorageProxyConfiguration),
-                Configuration.getInstance(LocalStorageProxyConfiguration),
-                Configuration.getInstance(ErrorConfiguration),
+            let proxies: Object[] = [
+                AjaxProxyConfiguration,
+                SessionStorageProxyConfiguration,
+                LocalStorageProxyConfiguration,
+                ErrorConfiguration,
             ];
             let configurations: Object = {};
             configurations[Container.PARAMETER_ATTRIBUTES] = definition;

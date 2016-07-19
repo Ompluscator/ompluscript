@@ -79,21 +79,21 @@ module Ompluscript.View {
          * Initializes definition map and errors list
          */
         constructor() {
-            let configurations: Configuration[] = [
-                Configuration.getInstance(CheckBoxInputConfiguration),
-                Configuration.getInstance(EmailInputConfiguration),
-                Configuration.getInstance(NumberInputConfiguration),
-                Configuration.getInstance(PasswordInputConfiguration),
-                Configuration.getInstance(TextInputConfiguration),
-                Configuration.getInstance(DateInputConfiguration),
-                Configuration.getInstance(ParagraphConfiguration),
-                Configuration.getInstance(ButtonConfiguration),
-                Configuration.getInstance(HeaderConfiguration),
-                Configuration.getInstance(LabelConfiguration),
-                Configuration.getInstance(ListConfiguration),
-                Configuration.getInstance(PageLinkConfiguration),
-                Configuration.getInstance(PageConfiguration),
-                Configuration.getInstance(NavigationConfiguration),
+            let configurations: Object[] = [
+                CheckBoxInputConfiguration,
+                EmailInputConfiguration,
+                NumberInputConfiguration,
+                PasswordInputConfiguration,
+                TextInputConfiguration,
+                DateInputConfiguration,
+                ParagraphConfiguration,
+                ButtonConfiguration,
+                HeaderConfiguration,
+                LabelConfiguration,
+                ListConfiguration,
+                PageLinkConfiguration,
+                PageConfiguration,
+                NavigationConfiguration,
             ];
             super(configurations);
             this.pages = [];

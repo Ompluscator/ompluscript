@@ -142,9 +142,9 @@ describe("PageConfiguration class tests - valid Page", function() {
         expect(page instanceof Page).toBeTruthy();
         expect(page.getName()).toBe("firstPage");
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
-            '<div class="layout linear-layout flex-vertical flex-center">' +
-            '<div class="layout linear-layout flex-horizontal flex-center"></div>' +
-            '<div class="layout linear-layout flex-horizontal flex-center"></div>' +
+            '<div class="layout linear-layout flex-vertical flex-start">' +
+            '<div class="layout linear-layout flex-horizontal flex-start"></div>' +
+            '<div class="layout linear-layout flex-horizontal flex-start"></div>' +
             '</div>' +
             '</div>');
         expect(page.getStackTrace()).toEqual({
@@ -152,27 +152,27 @@ describe("PageConfiguration class tests - valid Page", function() {
             name: "firstPage",
             children: [],
             layout: {
-                html: '<div class="layout linear-layout flex-vertical flex-center"></div>',
+                html: '<div class="layout linear-layout flex-vertical flex-start"></div>',
                 name: "TableLayout",
                 children: [
                     {
-                        html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                        html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                         name: "TableLayout",
                         children: [],
-                        align: TableLayout.ALIGN_CENTER,
+                        align: TableLayout.ALIGN_START,
                         direction: TableLayout.DIRECTION_HORIZONTAL,
                         reverse: false
                     },
                     {
-                        html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                        html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                         name: "TableLayout",
                         children: [],
-                        align: TableLayout.ALIGN_CENTER,
+                        align: TableLayout.ALIGN_START,
                         direction: TableLayout.DIRECTION_HORIZONTAL,
                         reverse: false
                     }
                 ],
-                align: TableLayout.ALIGN_CENTER,
+                align: TableLayout.ALIGN_START,
                 direction: TableLayout.DIRECTION_VERTICAL,
                 reverse: false,
                 rows: 2,
@@ -212,12 +212,12 @@ describe("PageConfiguration class tests - valid Page", function() {
         expect(page instanceof Page).toBeTruthy();
         expect(page.getName()).toBe("firstPage");
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
-            '<div class="layout linear-layout flex-vertical flex-center">' +
-            '<div class="layout linear-layout flex-horizontal flex-center">' +
+            '<div class="layout linear-layout flex-vertical flex-start">' +
+            '<div class="layout linear-layout flex-horizontal flex-start">' +
             '<input type="text" name="first" class="input">' +
             '<input type="text" name="second" class="input">' +
             '</div>' +
-            '<div class="layout linear-layout flex-horizontal flex-center">' +
+            '<div class="layout linear-layout flex-horizontal flex-start">' +
             '<input type="text" name="third" class="input">' +
             '</div>' +
             '</div>' +
@@ -243,11 +243,11 @@ describe("PageConfiguration class tests - valid Page", function() {
                 }
             ],
             layout: {
-                html: '<div class="layout linear-layout flex-vertical flex-center"></div>',
+                html: '<div class="layout linear-layout flex-vertical flex-start"></div>',
                 name: "TableLayout",
                 children: [
                     {
-                        html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                        html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                         name: "TableLayout",
                         children: [
                             {
@@ -261,12 +261,12 @@ describe("PageConfiguration class tests - valid Page", function() {
                                 attribute: void(0),
                             }
                         ],
-                        align: TableLayout.ALIGN_CENTER,
+                        align: TableLayout.ALIGN_START,
                         direction: TableLayout.DIRECTION_HORIZONTAL,
                         reverse: false
                     },
                     {
-                        html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                        html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                         name: "TableLayout",
                         children: [
                             {
@@ -275,12 +275,12 @@ describe("PageConfiguration class tests - valid Page", function() {
                                 attribute: void(0),
                             }
                         ],
-                        align: TableLayout.ALIGN_CENTER,
+                        align: TableLayout.ALIGN_START,
                         direction: TableLayout.DIRECTION_HORIZONTAL,
                         reverse: false
                     }
                 ],
-                align: TableLayout.ALIGN_CENTER,
+                align: TableLayout.ALIGN_START,
                 direction: TableLayout.DIRECTION_VERTICAL,
                 reverse: false,
                 rows: 2,
@@ -306,12 +306,12 @@ describe("PageConfiguration class tests - valid Page", function() {
         expect(page instanceof Page).toBeTruthy();
         expect(page.getName()).toBe("firstPage");
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
-            '<div class="layout linear-layout flex-vertical flex-center">' +
-            '<div class="layout linear-layout flex-horizontal flex-center">' +
+            '<div class="layout linear-layout flex-vertical flex-start">' +
+            '<div class="layout linear-layout flex-horizontal flex-start">' +
             '<input type="text" name="first" class="input">' +
             '<input type="text" name="second" class="input">' +
             '</div>' +
-            '<div class="layout linear-layout flex-horizontal flex-center">' +
+            '<div class="layout linear-layout flex-horizontal flex-start">' +
             '<input type="text" name="third" class="input">' +
             '</div>' +
             '</div>' +
@@ -337,11 +337,11 @@ describe("PageConfiguration class tests - valid Page", function() {
                 }
             ],
             layout: {
-                html: '<div class="layout linear-layout flex-vertical flex-center"></div>',
+                html: '<div class="layout linear-layout flex-vertical flex-start"></div>',
                 name: "TableLayout",
                 children: [
                     {
-                        html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                        html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                         name: "TableLayout",
                         children: [
                             {
@@ -355,12 +355,12 @@ describe("PageConfiguration class tests - valid Page", function() {
                                 attribute: void(0),
                             }
                         ],
-                        align: TableLayout.ALIGN_CENTER,
+                        align: TableLayout.ALIGN_START,
                         direction: TableLayout.DIRECTION_HORIZONTAL,
                         reverse: false
                     },
                     {
-                        html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                        html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                         name: "TableLayout",
                         children: [
                             {
@@ -369,12 +369,12 @@ describe("PageConfiguration class tests - valid Page", function() {
                                 attribute: void(0),
                             }
                         ],
-                        align: TableLayout.ALIGN_CENTER,
+                        align: TableLayout.ALIGN_START,
                         direction: TableLayout.DIRECTION_HORIZONTAL,
                         reverse: false
                     }
                 ],
-                align: TableLayout.ALIGN_CENTER,
+                align: TableLayout.ALIGN_START,
                 direction: TableLayout.DIRECTION_VERTICAL,
                 reverse: false,
                 rows: 2,
@@ -417,12 +417,12 @@ describe("PageConfiguration class tests - valid Page", function() {
         expect(page instanceof Page).toBeTruthy();
         expect(page.getName()).toBe("firstPage");
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
-            '<div class="layout linear-layout flex-vertical flex-center">' +
-            '<div class="layout linear-layout flex-horizontal flex-center">' +
+            '<div class="layout linear-layout flex-vertical flex-start">' +
+            '<div class="layout linear-layout flex-horizontal flex-start">' +
             '<input type="text" name="first" class="input">' +
             '<input type="text" name="second" class="input">' +
             '</div>' +
-            '<div class="layout linear-layout flex-horizontal flex-center">' +
+            '<div class="layout linear-layout flex-horizontal flex-start">' +
             '<input type="text" name="third" class="input">' +
             '</div>' +
             '</div>' +
@@ -448,11 +448,11 @@ describe("PageConfiguration class tests - valid Page", function() {
                 }
             ],
             layout: {
-                html: '<div class="layout linear-layout flex-vertical flex-center"></div>',
+                html: '<div class="layout linear-layout flex-vertical flex-start"></div>',
                 name: "TableLayout",
                 children: [
                     {
-                        html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                        html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                         name: "TableLayout",
                         children: [
                             {
@@ -466,12 +466,12 @@ describe("PageConfiguration class tests - valid Page", function() {
                                 attribute: void(0),
                             }
                         ],
-                        align: TableLayout.ALIGN_CENTER,
+                        align: TableLayout.ALIGN_START,
                         direction: TableLayout.DIRECTION_HORIZONTAL,
                         reverse: false
                     },
                     {
-                        html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                        html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                         name: "TableLayout",
                         children: [
                             {
@@ -480,12 +480,12 @@ describe("PageConfiguration class tests - valid Page", function() {
                                 attribute: void(0),
                             }
                         ],
-                        align: TableLayout.ALIGN_CENTER,
+                        align: TableLayout.ALIGN_START,
                         direction: TableLayout.DIRECTION_HORIZONTAL,
                         reverse: false
                     }
                 ],
-                align: TableLayout.ALIGN_CENTER,
+                align: TableLayout.ALIGN_START,
                 direction: TableLayout.DIRECTION_VERTICAL,
                 reverse: false,
                 rows: 2,

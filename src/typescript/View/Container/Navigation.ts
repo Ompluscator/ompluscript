@@ -36,6 +36,11 @@ module Ompluscript.View.Container {
         public static CLASS_NAVIGATION: string = "navigation";
 
         /**
+         * @type {string} CLASS_ACTIVE_NAVIGATION Class of HTML nav element for active mobile navigation
+         */
+        public static CLASS_ACTIVE_NAVIGATION: string = "active";
+
+        /**
          * @type {string} CLASS_NAVIGATION_ELEMENT Class of HTML navigation element
          */
         public static CLASS_NAVIGATION_ELEMENT: string = "navigation-element";
@@ -50,13 +55,15 @@ module Ompluscript.View.Container {
          * @constructs
          */
         constructor(children: Component[] = [], styles: Object = undefined) {
-            children.push(new Button(Navigation.CLASS_NAVIGATION));
+            let button: Button = new Button(Navigation.CLASS_NAVIGATION);
+            children.push(button);
             for (let i: number = 0; i < children.length; i++) {
                 children[i].addClass(Navigation.CLASS_NAVIGATION_ELEMENT);
             }
             super(Navigation.TYPE_NAVIGATION, undefined, children, styles);
             this.addClass(Navigation.CLASS_NAVIGATION);
             this.addClass(name);
+            button.attachOnFieldClickEvent(this, this.toggleMobileNavigation);
         }
 
         /**
@@ -75,6 +82,12 @@ module Ompluscript.View.Container {
          */
         protected initializeHtmlElement(): void {
             this.htmlElement = document.createElement(Navigation.ELEMENT_NAV);
+        }
+
+        private toggleMobileNavigation(): void {
+            for (let i: number = 0; i < this.children.length - 1; i++) {
+                this.children[i].toggleClass(Navigation.CLASS_ACTIVE_NAVIGATION);
+            }
         }
     }
 }

@@ -1,4 +1,14 @@
 {
   "text_welcome_title": "Welcome to Ompluscript",
-  "text_welcome_message": "Welcome text!"
+  "text_welcome_message": "Welcome to new framework, Ompluscript. Ompluscript is new JavaScript & CSS framework, developed for dynamic rendering of web pages. Framework is represented as MVC pattern, designed by TypeScript and Less technologies. It gives opportunity for fast page design (including responsive web design paradigm) and adding logic web application, as forms, translation, user session handling, and many other features. Even better, code is extensible, so many other, new features can be added easily.",
+  "text_home_title": "Home",
+  "text_layouts_title": "Layouts",
+  "text_layouts_message": "This section contains description for core of Ompluscript design - layouts. With layouts, you can create various page designs, choosing the one that fits the best for web page purpose. In framework Ompluscript, there are (currently) 4 different layouts:",
+  "text_null_layout_title": "Null Layout",
+  "text_null_layout_message": "Null Layout represents the simplest layout as it just place components one bellow another.",
+  "text_null_layout_message_2": "Null Layout is default layout for each component, so it's not necessary to use special configuration for it.",
+  "text_relative_layout_title": "Relative Layout",
+  "text_relative_layout_message": "Although Relative Layout is not good choice when you want to use responsive web design, still there are some cases when you want to add string position for component, like in this case: <pre>{\n  ...\n  styles:\n  {\n    top: \"50px\",\n    left: \"100px\",\n    width: \"200px\"\n  }\n}</pre>",
+  "text_relative_layout_configuration": "Tu setup Relative Layout, just place next configuration as part of single container:<pre>{\n  ...\n  layout:\n  {\n    type: \"RelativeLayout\",\n  }\n}</pre>",
+  "text_table_layout_title": "Table Layout"
 }

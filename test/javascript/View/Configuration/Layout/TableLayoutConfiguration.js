@@ -19,19 +19,19 @@ describe("TableLayoutConfiguration class tests - valid TableLayout", function() 
         expect(tableLayout instanceof TableLayout).toBeTruthy();
         expect(tableLayout.getName()).toBe("TableLayout");
         expect(tableLayout.getStackTrace()).toEqual({
-            html: '<div class="layout linear-layout flex-vertical flex-center"></div>',
+            html: '<div class="layout linear-layout flex-vertical flex-start"></div>',
             name: "TableLayout",
             children: [
                 {
-                    html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                    html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                     name: "TableLayout",
                     children: [],
-                    align: TableLayout.ALIGN_CENTER,
+                    align: TableLayout.ALIGN_START,
                     direction: TableLayout.DIRECTION_HORIZONTAL,
                     reverse: false
                 }
             ],
-            align: TableLayout.ALIGN_CENTER,
+            align: TableLayout.ALIGN_START,
             direction: TableLayout.DIRECTION_VERTICAL,
             reverse: false,
             rows: 1,
@@ -51,27 +51,27 @@ describe("TableLayoutConfiguration class tests - valid TableLayout", function() 
         expect(tableLayout instanceof TableLayout).toBeTruthy();
         expect(tableLayout.getName()).toBe("TableLayout");
         expect(tableLayout.getStackTrace()).toEqual({
-            html: '<div class="layout linear-layout flex-vertical flex-center"></div>',
+            html: '<div class="layout linear-layout flex-vertical flex-start"></div>',
             name: "TableLayout",
             children: [
                 {
-                    html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                    html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                     name: "TableLayout",
                     children: [],
-                    align: TableLayout.ALIGN_CENTER,
+                    align: TableLayout.ALIGN_START,
                     direction: TableLayout.DIRECTION_HORIZONTAL,
                     reverse: false
                 },
                 {
-                    html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                    html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                     name: "TableLayout",
                     children: [],
-                    align: TableLayout.ALIGN_CENTER,
+                    align: TableLayout.ALIGN_START,
                     direction: TableLayout.DIRECTION_HORIZONTAL,
                     reverse: false
                 }
             ],
-            align: TableLayout.ALIGN_CENTER,
+            align: TableLayout.ALIGN_START,
             direction: TableLayout.DIRECTION_VERTICAL,
             reverse: false,
             rows: 2,

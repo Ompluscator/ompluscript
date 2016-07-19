@@ -57,19 +57,20 @@ module Ompluscript.View.Configuration.Container {
          * @constructs
          */
         constructor() {
-            let children: Configuration[] = [
-                Configuration.getInstance(CheckBoxInputConfiguration),
-                Configuration.getInstance(EmailInputConfiguration),
-                Configuration.getInstance(NumberInputConfiguration),
-                Configuration.getInstance(PasswordInputConfiguration),
-                Configuration.getInstance(TextInputConfiguration),
-                Configuration.getInstance(DateInputConfiguration),
-                Configuration.getInstance(ParagraphConfiguration),
-                Configuration.getInstance(ButtonConfiguration),
-                Configuration.getInstance(HeaderConfiguration),
-                Configuration.getInstance(LabelConfiguration),
-                Configuration.getInstance(PageLinkConfiguration),
-                Configuration.getInstance(ErrorConfiguration),
+            let children: Object[] = [
+                CheckBoxInputConfiguration,
+                EmailInputConfiguration,
+                NumberInputConfiguration,
+                PasswordInputConfiguration,
+                TextInputConfiguration,
+                DateInputConfiguration,
+                ParagraphConfiguration,
+                ButtonConfiguration,
+                HeaderConfiguration,
+                LabelConfiguration,
+                PageLinkConfiguration,
+                ListConfiguration,
+                ErrorConfiguration,
             ];
             let configurations: Object = {};
             configurations[Container.PARAMETER_CHILDREN] = children;

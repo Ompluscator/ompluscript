@@ -134,7 +134,7 @@ module Ompluscript.Controller.Controller {
                         }
                     };
                     ajax.addEventListener("readystatechange", listener, false);
-                    ajax.open("GET", source, true);
+                    ajax.open("GET", source, false);
                     ajax.send();
                 }
             }

@@ -1,6 +1,5 @@
 /// <reference path="../Core/Interfaces/IBase.ts" />
 /// <reference path="../Core/Configuration/Creator.ts" />
-/// <reference path="../Core/Configuration/Configuration.ts" />
 /// <reference path="../Core/Configuration/ErrorConfiguration.ts" />
 /// <reference path="Configuration/Controller/ApplicationControllerConfiguration.ts" />
 
@@ -14,7 +13,6 @@ module Ompluscript.Controller {
     
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import CreatorParent = Ompluscript.Core.Configuration.Creator;
-    import Configuration = Ompluscript.Core.Configuration.Configuration;
     import ErrorConfiguration = Ompluscript.Core.Configuration.ErrorConfiguration;
     import ApplicationControllerConfiguration = Ompluscript.Controller.Configuration.Controller.ApplicationControllerConfiguration;
 
@@ -48,9 +46,9 @@ module Ompluscript.Controller {
          * Initializes definition map and errors list
          */
         constructor() {
-            let configurations: Configuration[] = [
-                Configuration.getInstance(ApplicationControllerConfiguration),
-                Configuration.getInstance(ErrorConfiguration),
+            let configurations: Object[] = [
+                ApplicationControllerConfiguration,
+                ErrorConfiguration,
             ];
             super(configurations);
         }

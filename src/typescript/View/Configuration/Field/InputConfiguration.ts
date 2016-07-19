@@ -39,12 +39,12 @@ module Ompluscript.View.Configuration.Field {
          * Creates configuration list and save attribute's type. 
          * Calls constructor of superclass.
          * 
-         * @param {Configuration[]} attributes List of attributes' configurations
+         * @param {Object[]} attributes List of attributes' configurations
          * @param {string} type Type of attribute that input should contain
          * @constructs
          */
-        constructor(attributes: Configuration[], type: string) {
-            attributes.push(Configuration.getInstance(ErrorConfiguration));
+        constructor(attributes: Object[], type: string) {
+            attributes.push(ErrorConfiguration);
             let configurations: Object = {};
             configurations[Input.PARAMETER_ATTRIBUTE] = attributes;
             super(configurations);

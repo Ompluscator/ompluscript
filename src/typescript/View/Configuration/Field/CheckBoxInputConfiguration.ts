@@ -36,8 +36,8 @@ module Ompluscript.View.Configuration.Field {
          * @constructs
          */
         constructor() {
-            let attributes: Configuration[] = [
-                Configuration.getInstance(BooleanConfiguration),
+            let attributes: Object[] = [
+                BooleanConfiguration,
             ];
             super(attributes, Boolean.TYPE_BOOLEAN);
         }

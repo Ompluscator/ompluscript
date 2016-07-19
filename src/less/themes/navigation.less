@@ -1,17 +1,52 @@
 @import (reference) "../../../node_modules/less-mixins/mixins";
+@import "../variables/index";
 
-.navigationTheme(@primaryColor, @secondaryColor, @tertiaryColor) {
+.navigationTheme(@primaryColor, @secondaryColor, @tertiaryColor, @textColor, @shadowColor) {
   .viewport > .navigation {
     background: @primaryColor;
-    .box-shadow(0 1px 2px @primaryColor);
+    .box-shadow(0 1px 2px @shadowColor);
+
+    a,
+    label {
+      color: @textColor;
+
+      &:hover,
+      &:active {
+        background: @secondaryColor;
+        text-shadow: 1px 1px 1px @shadowColor;
+        .box-shadow(inset 0 0 1px @shadowColor);
+      }
+    }
+
+    li .list:hover {
+      background: @secondaryColor;
+      .box-shadow(0 0 1px @shadowColor);
+    }
   }
 
   .button.navigation-element {
-    background: @tertiaryColor;
+    background: @textColor;
+    .box-shadow(inset 0 1px 0 @shadowColor);
 
-    &:before {
-      border-top-color: @primaryColor;
-      border-bottom-color: @primaryColor;
+    &:before,
+    &:after {
+      background: @primaryColor;
+      .box-shadow(inset 0 1px 0 @shadowColor);
+    }
+
+    &:hover,
+    &:active {
+      background: @textColor;
+    }
+  }
+
+  @media screen and (max-width: @tabletMaxWidth) {
+    .list {
+      background: @secondaryColor;
+
+      li {
+        border-bottom-color: @textColor;
+      }
     }
   }
 }

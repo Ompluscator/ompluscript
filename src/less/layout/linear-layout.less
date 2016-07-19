@@ -2,18 +2,18 @@
   display: flex;
 
   &.flex-horizontal {
-    flex-direction: column;
-
-    &.flex-reverse {
-      flex-direction: column-reverse;
-    }
-  }
-
-  &.flex-vertical {
     flex-direction: row;
 
     &.flex-reverse {
       flex-direction: row-reverse;
+    }
+  }
+
+  &.flex-vertical {
+    flex-direction: column;
+
+    &.flex-reverse {
+      flex-direction: column-reverse;
     }
   }
 
@@ -27,5 +27,33 @@
 
   &.flex-end {
     justify-content: flex-end;
+  }
+}
+
+.flex-right,
+.flex-left.flex-reverse {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  label {
+    text-align: right;
+  }
+}
+
+.flex-left,
+.flex-right.flex-reverse {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  label {
+    text-align: left;
   }
 }

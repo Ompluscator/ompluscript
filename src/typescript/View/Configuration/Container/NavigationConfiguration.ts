@@ -37,9 +37,9 @@ module Ompluscript.View.Configuration.Container {
          * @constructs
          */
         constructor() {
-            let children: Configuration[] = [
-                Configuration.getInstance(ListConfiguration),
-                Configuration.getInstance(ErrorConfiguration),
+            let children: Object[] = [
+                ListConfiguration,
+                ErrorConfiguration,
             ];
             let configurations: Object = {};
             configurations[Container.PARAMETER_CHILDREN] = children;

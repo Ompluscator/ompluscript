@@ -68,27 +68,27 @@ module Ompluscript.View.Configuration.Container {
          * @constructs
          */
         constructor() {
-            let layouts: Configuration[] = [
-                Configuration.getInstance(NullLayoutConfiguration),
-                Configuration.getInstance(RelativeLayoutConfiguration),
-                Configuration.getInstance(LinearLayoutConfiguration),
-                Configuration.getInstance(TableLayoutConfiguration),
-                Configuration.getInstance(ErrorConfiguration),
+            let layouts: Object[] = [
+                NullLayoutConfiguration,
+                RelativeLayoutConfiguration,
+                LinearLayoutConfiguration,
+                TableLayoutConfiguration,
+                ErrorConfiguration,
             ];
-            let children: Configuration[] = [
-                Configuration.getInstance(CheckBoxInputConfiguration),
-                Configuration.getInstance(EmailInputConfiguration),
-                Configuration.getInstance(NumberInputConfiguration),
-                Configuration.getInstance(PasswordInputConfiguration),
-                Configuration.getInstance(TextInputConfiguration),
-                Configuration.getInstance(DateInputConfiguration),
-                Configuration.getInstance(ParagraphConfiguration),
-                Configuration.getInstance(ButtonConfiguration),
-                Configuration.getInstance(HeaderConfiguration),
-                Configuration.getInstance(LabelConfiguration),
-                Configuration.getInstance(PageLinkConfiguration),
-                Configuration.getInstance(ListConfiguration),
-                Configuration.getInstance(ErrorConfiguration),
+            let children: Object[] = [
+                CheckBoxInputConfiguration,
+                EmailInputConfiguration,
+                NumberInputConfiguration,
+                PasswordInputConfiguration,
+                TextInputConfiguration,
+                DateInputConfiguration,
+                ParagraphConfiguration,
+                ButtonConfiguration,
+                HeaderConfiguration,
+                LabelConfiguration,
+                PageLinkConfiguration,
+                ListConfiguration,
+                ErrorConfiguration,
             ];
             let configurations: Object = {};
             configurations[Container.PARAMETER_LAYOUT] = layouts;

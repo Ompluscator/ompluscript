@@ -58,12 +58,12 @@ module Ompluscript.View.Layout {
          * @constructs
          */
         constructor(rows: number = 1, cells: number = 1) {
-            super(LinearLayout.DIRECTION_VERTICAL, false, LinearLayout.ALIGN_CENTER, TableLayout.TYPE_TABLE_LAYOUT);
+            super(LinearLayout.DIRECTION_VERTICAL, false, LinearLayout.ALIGN_START, TableLayout.TYPE_TABLE_LAYOUT);
             this.rows = rows;
             this.cells = cells;
             for (let i: number = 0; i < this.rows; i++) {
                 this.children.push(
-                    new LinearLayout(LinearLayout.DIRECTION_HORIZONTAL, false, LinearLayout.ALIGN_CENTER, TableLayout.TYPE_TABLE_LAYOUT)
+                    new LinearLayout(LinearLayout.DIRECTION_HORIZONTAL, false, LinearLayout.ALIGN_START, TableLayout.TYPE_TABLE_LAYOUT)
                 );
             }
             this.copies = [];

@@ -44,11 +44,11 @@ module Ompluscript.Model.Configuration.Container {
          * @constructs
          */
         constructor() {
-            let proxies: Configuration[] = [
-                Configuration.getInstance(AjaxProxyConfiguration),
-                Configuration.getInstance(SessionStorageProxyConfiguration),
-                Configuration.getInstance(LocalStorageProxyConfiguration),
-                Configuration.getInstance(ErrorConfiguration),
+            let proxies: Object[] = [
+                AjaxProxyConfiguration,
+                SessionStorageProxyConfiguration,
+                LocalStorageProxyConfiguration,
+                ErrorConfiguration,
             ];
             let configurations: Object = {};
             configurations[Container.PARAMETER_PROXIES] = proxies;

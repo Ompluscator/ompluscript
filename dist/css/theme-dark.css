@@ -1,16 +1,66 @@
 body {
-  background: #CFD8DC;
+  background: #455A64;
+}
+* {
+  color: #FFFFFF;
+  line-height: 1.4em;
 }
 .viewport > .navigation {
   background: #263238;
-  -webkit-box-shadow: 0 1px 2px #263238;
-  -moz-box-shadow: 0 1px 2px #263238;
-  box-shadow: 0 1px 2px #263238;
+  -webkit-box-shadow: 0 1px 2px #000000;
+  -moz-box-shadow: 0 1px 2px #000000;
+  box-shadow: 0 1px 2px #000000;
+}
+.viewport > .navigation a,
+.viewport > .navigation label {
+  color: #FFFFFF;
+}
+.viewport > .navigation a:hover,
+.viewport > .navigation label:hover,
+.viewport > .navigation a:active,
+.viewport > .navigation label:active {
+  background: #37474F;
+  text-shadow: 1px 1px 1px #000000;
+  -webkit-box-shadow: inset 0 0 1px #000000;
+  -moz-box-shadow: inset 0 0 1px #000000;
+  box-shadow: inset 0 0 1px #000000;
+}
+.viewport > .navigation li .list:hover {
+  background: #37474F;
+  -webkit-box-shadow: 0 0 1px #000000;
+  -moz-box-shadow: 0 0 1px #000000;
+  box-shadow: 0 0 1px #000000;
 }
 .button.navigation-element {
-  background: #CFD8DC;
+  background: #FFFFFF;
+  -webkit-box-shadow: inset 0 1px 0 #000000;
+  -moz-box-shadow: inset 0 1px 0 #000000;
+  box-shadow: inset 0 1px 0 #000000;
 }
-.button.navigation-element:before {
-  border-top-color: #263238;
-  border-bottom-color: #263238;
+.button.navigation-element:before,
+.button.navigation-element:after {
+  background: #263238;
+  -webkit-box-shadow: inset 0 1px 0 #000000;
+  -moz-box-shadow: inset 0 1px 0 #000000;
+  box-shadow: inset 0 1px 0 #000000;
+}
+.button.navigation-element:hover,
+.button.navigation-element:active {
+  background: #FFFFFF;
+}
+@media screen and (max-width: 768px) {
+  .list {
+    background: #37474F;
+  }
+  .list li {
+    border-bottom-color: #FFFFFF;
+  }
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-shadow: 1px 1px 1px #000000;
 }

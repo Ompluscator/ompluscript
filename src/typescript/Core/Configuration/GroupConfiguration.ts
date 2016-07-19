@@ -19,7 +19,7 @@ module Ompluscript.Core.Configuration {
         public getErrorsForChildren(definition: Object, key: string = undefined, creator: Creator = undefined): string[] {
             let errors: string[] = [];
             if (this.configurations.hasOwnProperty(key)) {
-                let configuration: Configuration[] = this.configurations[key];
+                let configuration: {new ()}[] = this.configurations[key];
                 if (definition.hasOwnProperty(key)) {
                     if (Array.isArray(definition[key])) {
                         for (let i: number = 0; i < definition[key].length; i++) {
@@ -29,8 +29,10 @@ module Ompluscript.Core.Configuration {
                                 }
                             } else {
                                 for (let j: number = 0; j < configuration.length; j++) {
-                                    if (configuration[j].isRelatedTo(definition[key][i])) {
-                                        errors.push.apply(errors, configuration[j].getErrors(definition[key][i]));
+                                    if (Configuration.getInstance(configuration[j]).isRelatedTo(definition[key][i])) {
+                                        errors.push.apply(
+                                            errors, Configuration.getInstance(configuration[j]).getErrors(definition[key][i])
+                                        );
                                         break;
                                     }
                                 }
@@ -43,8 +45,8 @@ module Ompluscript.Core.Configuration {
                             }
                         } else {
                             for (let i: number = 0; i < configuration.length; i++) {
-                                if (configuration[i].isRelatedTo(definition[key])) {
-                                    errors.push.apply(errors, configuration[i].getErrors(definition[key]));
+                                if (Configuration.getInstance(configuration[i]).isRelatedTo(definition[key])) {
+                                    errors.push.apply(errors, Configuration.getInstance(configuration[i]).getErrors(definition[key]));
                                     break;
                                 }
                             }
@@ -59,14 +61,14 @@ module Ompluscript.Core.Configuration {
             let children: IBase[] = [];
             if (this.configurations.hasOwnProperty(key)) {
                 if (definition.hasOwnProperty(key)) {
-                    let configuration: Configuration[] = this.configurations[key];
+                    let configuration: {new ()}[] = this.configurations[key];
                     for (let i: number = 0; i < definition[key].length; i++) {
                         if (creator !== undefined && typeof definition[key][i] === "string") {
                             children.push(creator.create(definition[key][i]));
                         } else {
                             for (let j: number = 0; j < configuration.length; j++) {
-                                if (configuration[j].isRelatedTo(definition[key][i])) {
-                                    children.push(configuration[j].create(definition[key][i]));
+                                if (Configuration.getInstance(configuration[j]).isRelatedTo(definition[key][i])) {
+                                    children.push(Configuration.getInstance(configuration[j]).create(definition[key][i]));
                                     break;
                                 }
                             }
@@ -81,11 +83,11 @@ module Ompluscript.Core.Configuration {
             if (creator !== undefined && typeof definition[key] === "string") {
                 return creator.create(definition[key]);
             } else if (this.configurations.hasOwnProperty(key)) {
-                let configuration: Configuration[] = this.configurations[key];
+                let configuration: {new ()}[] = this.configurations[key];
                 if (definition.hasOwnProperty(key)) {
                     for (let i: number = 0; i < configuration.length; i++) {
-                        if (configuration[i].isRelatedTo(definition[key])) {
-                            return configuration[i].create(definition[key]);
+                        if (Configuration.getInstance(configuration[i]).isRelatedTo(definition[key])) {
+                            return Configuration.getInstance(configuration[i]).create(definition[key]);
                         }
                     }
                 }

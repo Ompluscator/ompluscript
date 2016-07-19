@@ -38,8 +38,8 @@ module Ompluscript.View.Configuration.Field {
          * @constructs
          */
         constructor() {
-            let attributes: Configuration[] = [
-                Configuration.getInstance(DatetimeConfiguration),
+            let attributes: Object[] = [
+                DatetimeConfiguration,
             ];
             super(attributes, Datetime.TYPE_DATETIME);
         }

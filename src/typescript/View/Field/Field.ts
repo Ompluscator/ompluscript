@@ -21,6 +21,7 @@ module Ompluscript.View.Field {
     import FieldEvent = Ompluscript.View.Event.FieldEvent;
     import IObserver = Ompluscript.Core.Observer.IObserver;
     import OEvent = Ompluscript.Core.Observer.OEvent;
+    import IBase = Ompluscript.Core.Interfaces.IBase;
 
     /**
      * Class that defines basic field
@@ -76,10 +77,11 @@ module Ompluscript.View.Field {
         /**
          * Method that attach handler for clicking on field
          *
+         * @param {IBase} observer Observer that handles event
          * @param {Function} callback Event handler
          */
-        public attachOnFieldClickEvent(callback: Function): void {
-            this.addGenericObserverByType(this, FieldEvent.ON_FIELD_CLICK, callback);
+        public attachOnFieldClickEvent(observer: IBase, callback: Function): void {
+            this.addGenericObserverByType(observer, FieldEvent.ON_FIELD_CLICK, callback);
         }
 
         /**

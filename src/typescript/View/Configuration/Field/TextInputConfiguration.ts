@@ -38,8 +38,8 @@ module Ompluscript.View.Configuration.Field {
          * @constructs
          */
         constructor() {
-            let attributes: Configuration[] = [
-                Configuration.getInstance(StringConfiguration),
+            let attributes: Object[] = [
+                StringConfiguration,
             ];
             super(attributes, String.TYPE_STRING);
         }

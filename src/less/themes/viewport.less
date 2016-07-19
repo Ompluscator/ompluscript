@@ -1,5 +1,10 @@
-.viewportTheme(@primaryColor, @secondaryColor, @tertiaryColor) {
+.viewportTheme(@primaryColor, @secondaryColor, @tertiaryColor, @textColor, @shadowColor) {
   body {
     background: @tertiaryColor;
+  }
+
+  * {
+    color: @textColor;
+    line-height: 1.4em;
   }
 }

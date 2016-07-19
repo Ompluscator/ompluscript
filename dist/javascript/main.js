@@ -186,8 +186,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                                     }
                                     else {
                                         for (var j = 0; j < configuration.length; j++) {
-                                            if (configuration[j].isRelatedTo(definition[key][i])) {
-                                                errors.push.apply(errors, configuration[j].getErrors(definition[key][i]));
+                                            if (Configuration.getInstance(configuration[j]).isRelatedTo(definition[key][i])) {
+                                                errors.push.apply(errors, Configuration.getInstance(configuration[j]).getErrors(definition[key][i]));
                                                 break;
                                             }
                                         }
@@ -202,8 +202,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                                 }
                                 else {
                                     for (var i = 0; i < configuration.length; i++) {
-                                        if (configuration[i].isRelatedTo(definition[key])) {
-                                            errors.push.apply(errors, configuration[i].getErrors(definition[key]));
+                                        if (Configuration.getInstance(configuration[i]).isRelatedTo(definition[key])) {
+                                            errors.push.apply(errors, Configuration.getInstance(configuration[i]).getErrors(definition[key]));
                                             break;
                                         }
                                     }
@@ -225,8 +225,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                                 }
                                 else {
                                     for (var j = 0; j < configuration.length; j++) {
-                                        if (configuration[j].isRelatedTo(definition[key][i])) {
-                                            children.push(configuration[j].create(definition[key][i]));
+                                        if (Configuration.getInstance(configuration[j]).isRelatedTo(definition[key][i])) {
+                                            children.push(Configuration.getInstance(configuration[j]).create(definition[key][i]));
                                             break;
                                         }
                                     }
@@ -245,8 +245,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                         var configuration = this.configurations[key];
                         if (definition.hasOwnProperty(key)) {
                             for (var i = 0; i < configuration.length; i++) {
-                                if (configuration[i].isRelatedTo(definition[key])) {
-                                    return configuration[i].create(definition[key]);
+                                if (Configuration.getInstance(configuration[i]).isRelatedTo(definition[key])) {
+                                    return Configuration.getInstance(configuration[i]).create(definition[key]);
                                 }
                             }
                         }
@@ -901,11 +901,11 @@ var __extends = (this && this.__extends) || function (d, b) {
                 function TableLayout(rows, cells) {
                     if (rows === void 0) { rows = 1; }
                     if (cells === void 0) { cells = 1; }
-                    _super.call(this, Layout.LinearLayout.DIRECTION_VERTICAL, false, Layout.LinearLayout.ALIGN_CENTER, TableLayout.TYPE_TABLE_LAYOUT);
+                    _super.call(this, Layout.LinearLayout.DIRECTION_VERTICAL, false, Layout.LinearLayout.ALIGN_START, TableLayout.TYPE_TABLE_LAYOUT);
                     this.rows = rows;
                     this.cells = cells;
                     for (var i = 0; i < this.rows; i++) {
-                        this.children.push(new Layout.LinearLayout(Layout.LinearLayout.DIRECTION_HORIZONTAL, false, Layout.LinearLayout.ALIGN_CENTER, TableLayout.TYPE_TABLE_LAYOUT));
+                        this.children.push(new Layout.LinearLayout(Layout.LinearLayout.DIRECTION_HORIZONTAL, false, Layout.LinearLayout.ALIGN_START, TableLayout.TYPE_TABLE_LAYOUT));
                     }
                     this.copies = [];
                 }
@@ -1706,8 +1706,9 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Creator.prototype.define = function (definition) {
                     var errors = [];
                     for (var i = 0; i < this.configurations.length; i++) {
-                        if (this.configurations[i].isRelatedTo(definition)) {
-                            errors = this.configurations[i].getErrors(definition);
+                        var configuration = this.configurations[i];
+                        if (ConfigurationClass.getInstance(configuration).isRelatedTo(definition)) {
+                            errors = ConfigurationClass.getInstance(configuration).getErrors(definition);
                             break;
                         }
                     }
@@ -1726,8 +1727,9 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Creator.prototype.create = function (name) {
                     if (this.definition.hasOwnProperty(name)) {
                         for (var i = 0; i < this.configurations.length; i++) {
-                            if (this.configurations[i].isRelatedTo(this.definition[name])) {
-                                return this.configurations[i].create(this.definition[name]);
+                            var configuration = this.configurations[i];
+                            if (ConfigurationClass.getInstance(configuration).isRelatedTo(this.definition[name])) {
+                                return ConfigurationClass.getInstance(configuration).create(this.definition[name]);
                             }
                         }
                     }
@@ -2636,19 +2638,19 @@ var __extends = (this && this.__extends) || function (d, b) {
                     __extends(ContainerConfiguration, _super);
                     function ContainerConfiguration() {
                         var definition = [
-                            Configuration.getInstance(BooleanConfiguration),
-                            Configuration.getInstance(DatetimeConfiguration),
-                            Configuration.getInstance(MultipleChoiceConfiguration),
-                            Configuration.getInstance(NumberConfiguration),
-                            Configuration.getInstance(SingleChoiceConfiguration),
-                            Configuration.getInstance(StringConfiguration),
-                            Configuration.getInstance(ErrorConfiguration),
+                            BooleanConfiguration,
+                            DatetimeConfiguration,
+                            MultipleChoiceConfiguration,
+                            NumberConfiguration,
+                            SingleChoiceConfiguration,
+                            StringConfiguration,
+                            ErrorConfiguration,
                         ];
                         var proxies = [
-                            Configuration.getInstance(AjaxProxyConfiguration),
-                            Configuration.getInstance(SessionStorageProxyConfiguration),
-                            Configuration.getInstance(LocalStorageProxyConfiguration),
-                            Configuration.getInstance(ErrorConfiguration),
+                            AjaxProxyConfiguration,
+                            SessionStorageProxyConfiguration,
+                            LocalStorageProxyConfiguration,
+                            ErrorConfiguration,
                         ];
                         var configurations = {};
                         configurations[Container.PARAMETER_ATTRIBUTES] = definition;
@@ -3051,10 +3053,10 @@ var __extends = (this && this.__extends) || function (d, b) {
                     __extends(TranslationConfiguration, _super);
                     function TranslationConfiguration() {
                         var proxies = [
-                            Configuration.getInstance(AjaxProxyConfiguration),
-                            Configuration.getInstance(SessionStorageProxyConfiguration),
-                            Configuration.getInstance(LocalStorageProxyConfiguration),
-                            Configuration.getInstance(ErrorConfiguration),
+                            AjaxProxyConfiguration,
+                            SessionStorageProxyConfiguration,
+                            LocalStorageProxyConfiguration,
+                            ErrorConfiguration,
                         ];
                         var configurations = {};
                         configurations[Container.PARAMETER_PROXIES] = proxies;
@@ -3089,7 +3091,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     (function (Model) {
         "use strict";
         var CreatorParent = Ompluscript.Core.Configuration.Creator;
-        var Configuration = Ompluscript.Core.Configuration.Configuration;
         var BooleanConfiguration = Ompluscript.Model.Configuration.Attribute.BooleanConfiguration;
         var DatetimeConfiguration = Ompluscript.Model.Configuration.Attribute.DatetimeConfiguration;
         var MultipleChoiceConfiguration = Ompluscript.Model.Configuration.Attribute.MultipleChoiceConfiguration;
@@ -3105,16 +3106,16 @@ var __extends = (this && this.__extends) || function (d, b) {
             __extends(Creator, _super);
             function Creator() {
                 var configurations = [
-                    Configuration.getInstance(BooleanConfiguration),
-                    Configuration.getInstance(DatetimeConfiguration),
-                    Configuration.getInstance(MultipleChoiceConfiguration),
-                    Configuration.getInstance(NumberConfiguration),
-                    Configuration.getInstance(SingleChoiceConfiguration),
-                    Configuration.getInstance(StringConfiguration),
-                    Configuration.getInstance(ModelConfiguration),
-                    Configuration.getInstance(TableConfiguration),
-                    Configuration.getInstance(TranslationConfiguration),
-                    Configuration.getInstance(ErrorConfiguration),
+                    BooleanConfiguration,
+                    DatetimeConfiguration,
+                    MultipleChoiceConfiguration,
+                    NumberConfiguration,
+                    SingleChoiceConfiguration,
+                    StringConfiguration,
+                    ModelConfiguration,
+                    TableConfiguration,
+                    TranslationConfiguration,
+                    ErrorConfiguration,
                 ];
                 _super.call(this, configurations);
             }
@@ -3210,8 +3211,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Field.prototype.render = function () {
                     return this.htmlElement;
                 };
-                Field.prototype.attachOnFieldClickEvent = function (callback) {
-                    this.addGenericObserverByType(this, FieldEvent.ON_FIELD_CLICK, callback);
+                Field.prototype.attachOnFieldClickEvent = function (observer, callback) {
+                    this.addGenericObserverByType(observer, FieldEvent.ON_FIELD_CLICK, callback);
                 };
                 Field.prototype.addOnFieldClickEvent = function () {
                     var that = this;
@@ -3385,7 +3386,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 var InputConfiguration = (function (_super) {
                     __extends(InputConfiguration, _super);
                     function InputConfiguration(attributes, type) {
-                        attributes.push(Configuration.getInstance(ErrorConfiguration));
+                        attributes.push(ErrorConfiguration);
                         var configurations = {};
                         configurations[Input.PARAMETER_ATTRIBUTE] = attributes;
                         _super.call(this, configurations);
@@ -3484,7 +3485,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     __extends(CheckBoxInputConfiguration, _super);
                     function CheckBoxInputConfiguration() {
                         var attributes = [
-                            Configuration.getInstance(BooleanConfiguration),
+                            BooleanConfiguration,
                         ];
                         _super.call(this, attributes, Boolean.TYPE_BOOLEAN);
                     }
@@ -3567,7 +3568,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     __extends(TextInputConfiguration, _super);
                     function TextInputConfiguration() {
                         var attributes = [
-                            Configuration.getInstance(StringConfiguration),
+                            StringConfiguration,
                         ];
                         _super.call(this, attributes, String.TYPE_STRING);
                     }
@@ -3712,7 +3713,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     __extends(NumberInputConfiguration, _super);
                     function NumberInputConfiguration() {
                         var attributes = [
-                            Configuration.getInstance(NumberConfiguration),
+                            NumberConfiguration,
                         ];
                         _super.call(this, attributes, Number.TYPE_NUMBER);
                     }
@@ -4045,13 +4046,15 @@ var __extends = (this && this.__extends) || function (d, b) {
                 function Navigation(children, styles) {
                     if (children === void 0) { children = []; }
                     if (styles === void 0) { styles = undefined; }
-                    children.push(new Button(Navigation.CLASS_NAVIGATION));
+                    var button = new Button(Navigation.CLASS_NAVIGATION);
+                    children.push(button);
                     for (var i = 0; i < children.length; i++) {
                         children[i].addClass(Navigation.CLASS_NAVIGATION_ELEMENT);
                     }
                     _super.call(this, Navigation.TYPE_NAVIGATION, undefined, children, styles);
                     this.addClass(Navigation.CLASS_NAVIGATION);
                     this.addClass(name);
+                    button.attachOnFieldClickEvent(this, this.toggleMobileNavigation);
                 }
                 Navigation.prototype.getStackTrace = function () {
                     var trace = _super.prototype.getStackTrace.call(this);
@@ -4061,9 +4064,15 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Navigation.prototype.initializeHtmlElement = function () {
                     this.htmlElement = document.createElement(Navigation.ELEMENT_NAV);
                 };
+                Navigation.prototype.toggleMobileNavigation = function () {
+                    for (var i = 0; i < this.children.length - 1; i++) {
+                        this.children[i].toggleClass(Navigation.CLASS_ACTIVE_NAVIGATION);
+                    }
+                };
                 Navigation.TYPE_NAVIGATION = Navigation["name"];
                 Navigation.ELEMENT_NAV = "nav";
                 Navigation.CLASS_NAVIGATION = "navigation";
+                Navigation.CLASS_ACTIVE_NAVIGATION = "active";
                 Navigation.CLASS_NAVIGATION_ELEMENT = "navigation-element";
                 return Navigation;
             }(Container.Container));
@@ -4641,7 +4650,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                                 }
                             };
                             ajax_1.addEventListener("readystatechange", listener, false);
-                            ajax_1.open("GET", source, true);
+                            ajax_1.open("GET", source, false);
                             ajax_1.send();
                         }
                     };
@@ -4892,15 +4901,14 @@ var __extends = (this && this.__extends) || function (d, b) {
     (function (Controller) {
         "use strict";
         var CreatorParent = Ompluscript.Core.Configuration.Creator;
-        var Configuration = Ompluscript.Core.Configuration.Configuration;
         var ErrorConfiguration = Ompluscript.Core.Configuration.ErrorConfiguration;
         var ApplicationControllerConfiguration = Ompluscript.Controller.Configuration.Controller.ApplicationControllerConfiguration;
         var Creator = (function (_super) {
             __extends(Creator, _super);
             function Creator() {
                 var configurations = [
-                    Configuration.getInstance(ApplicationControllerConfiguration),
-                    Configuration.getInstance(ErrorConfiguration),
+                    ApplicationControllerConfiguration,
+                    ErrorConfiguration,
                 ];
                 _super.call(this, configurations);
             }
@@ -5012,7 +5020,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     __extends(DateInputConfiguration, _super);
                     function DateInputConfiguration() {
                         var attributes = [
-                            Configuration.getInstance(DatetimeConfiguration),
+                            DatetimeConfiguration,
                         ];
                         _super.call(this, attributes, Datetime.TYPE_DATETIME);
                     }
@@ -5315,18 +5323,19 @@ var __extends = (this && this.__extends) || function (d, b) {
                     __extends(ListConfiguration, _super);
                     function ListConfiguration() {
                         var children = [
-                            Configuration.getInstance(CheckBoxInputConfiguration),
-                            Configuration.getInstance(EmailInputConfiguration),
-                            Configuration.getInstance(NumberInputConfiguration),
-                            Configuration.getInstance(PasswordInputConfiguration),
-                            Configuration.getInstance(TextInputConfiguration),
-                            Configuration.getInstance(DateInputConfiguration),
-                            Configuration.getInstance(ParagraphConfiguration),
-                            Configuration.getInstance(ButtonConfiguration),
-                            Configuration.getInstance(HeaderConfiguration),
-                            Configuration.getInstance(LabelConfiguration),
-                            Configuration.getInstance(PageLinkConfiguration),
-                            Configuration.getInstance(ErrorConfiguration),
+                            CheckBoxInputConfiguration,
+                            EmailInputConfiguration,
+                            NumberInputConfiguration,
+                            PasswordInputConfiguration,
+                            TextInputConfiguration,
+                            DateInputConfiguration,
+                            ParagraphConfiguration,
+                            ButtonConfiguration,
+                            HeaderConfiguration,
+                            LabelConfiguration,
+                            PageLinkConfiguration,
+                            ListConfiguration,
+                            ErrorConfiguration,
                         ];
                         var configurations = {};
                         configurations[Container.PARAMETER_CHILDREN] = children;
@@ -5382,8 +5391,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                     __extends(NavigationConfiguration, _super);
                     function NavigationConfiguration() {
                         var children = [
-                            Configuration.getInstance(Container_12.ListConfiguration),
-                            Configuration.getInstance(ErrorConfiguration),
+                            Container_12.ListConfiguration,
+                            ErrorConfiguration,
                         ];
                         var configurations = {};
                         configurations[Container.PARAMETER_CHILDREN] = children;
@@ -5443,26 +5452,26 @@ var __extends = (this && this.__extends) || function (d, b) {
                     __extends(PageConfiguration, _super);
                     function PageConfiguration() {
                         var layouts = [
-                            Configuration.getInstance(NullLayoutConfiguration),
-                            Configuration.getInstance(RelativeLayoutConfiguration),
-                            Configuration.getInstance(LinearLayoutConfiguration),
-                            Configuration.getInstance(TableLayoutConfiguration),
-                            Configuration.getInstance(ErrorConfiguration),
+                            NullLayoutConfiguration,
+                            RelativeLayoutConfiguration,
+                            LinearLayoutConfiguration,
+                            TableLayoutConfiguration,
+                            ErrorConfiguration,
                         ];
                         var children = [
-                            Configuration.getInstance(CheckBoxInputConfiguration),
-                            Configuration.getInstance(EmailInputConfiguration),
-                            Configuration.getInstance(NumberInputConfiguration),
-                            Configuration.getInstance(PasswordInputConfiguration),
-                            Configuration.getInstance(TextInputConfiguration),
-                            Configuration.getInstance(DateInputConfiguration),
-                            Configuration.getInstance(ParagraphConfiguration),
-                            Configuration.getInstance(ButtonConfiguration),
-                            Configuration.getInstance(HeaderConfiguration),
-                            Configuration.getInstance(LabelConfiguration),
-                            Configuration.getInstance(PageLinkConfiguration),
-                            Configuration.getInstance(Container_13.ListConfiguration),
-                            Configuration.getInstance(ErrorConfiguration),
+                            CheckBoxInputConfiguration,
+                            EmailInputConfiguration,
+                            NumberInputConfiguration,
+                            PasswordInputConfiguration,
+                            TextInputConfiguration,
+                            DateInputConfiguration,
+                            ParagraphConfiguration,
+                            ButtonConfiguration,
+                            HeaderConfiguration,
+                            LabelConfiguration,
+                            PageLinkConfiguration,
+                            Container_13.ListConfiguration,
+                            ErrorConfiguration,
                         ];
                         var configurations = {};
                         configurations[Container.PARAMETER_LAYOUT] = layouts;
@@ -5517,20 +5526,20 @@ var __extends = (this && this.__extends) || function (d, b) {
             __extends(Creator, _super);
             function Creator() {
                 var configurations = [
-                    Configuration.getInstance(CheckBoxInputConfiguration),
-                    Configuration.getInstance(EmailInputConfiguration),
-                    Configuration.getInstance(NumberInputConfiguration),
-                    Configuration.getInstance(PasswordInputConfiguration),
-                    Configuration.getInstance(TextInputConfiguration),
-                    Configuration.getInstance(DateInputConfiguration),
-                    Configuration.getInstance(ParagraphConfiguration),
-                    Configuration.getInstance(ButtonConfiguration),
-                    Configuration.getInstance(HeaderConfiguration),
-                    Configuration.getInstance(LabelConfiguration),
-                    Configuration.getInstance(ListConfiguration),
-                    Configuration.getInstance(PageLinkConfiguration),
-                    Configuration.getInstance(PageConfiguration),
-                    Configuration.getInstance(NavigationConfiguration),
+                    CheckBoxInputConfiguration,
+                    EmailInputConfiguration,
+                    NumberInputConfiguration,
+                    PasswordInputConfiguration,
+                    TextInputConfiguration,
+                    DateInputConfiguration,
+                    ParagraphConfiguration,
+                    ButtonConfiguration,
+                    HeaderConfiguration,
+                    LabelConfiguration,
+                    ListConfiguration,
+                    PageLinkConfiguration,
+                    PageConfiguration,
+                    NavigationConfiguration,
                 ];
                 _super.call(this, configurations);
                 this.pages = [];

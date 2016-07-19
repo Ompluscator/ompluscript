@@ -383,17 +383,31 @@ body {
   z-index: 1;
 }
 .viewport > .navigation > .layout {
-  width: 90%;
+  position: static;
+  width: 100%;
   max-width: 1024px;
   margin: auto;
+  padding: 0;
+}
+.viewport > .navigation a,
+.viewport > .navigation label {
+  display: block;
+  height: 60px;
+  line-height: 20px;
+  padding: 20px;
+  -ms-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-decoration: none;
 }
 .button.navigation-element {
   display: block;
   position: absolute;
-  right: 0;
+  right: 5px;
   top: 17.5px;
   width: 40px;
-  padding: 5px 0;
+  padding: 0 0 5px 0;
   -ms-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -408,21 +422,72 @@ body {
     display: none;
   }
 }
-.button.navigation-element:before {
+.button.navigation-element:before,
+.button.navigation-element:after {
   content: "";
   display: block;
   width: 100%;
   height: 5px;
-  background: transparent;
-  border-top: 5px solid;
-  border-bottom: 5px solid;
+  margin-top: 5px;
 }
 .list.navigation-element {
-  display: none;
+  display: block;
+  padding: 0;
 }
-@media screen and (min-width: 768px) {
+.list.navigation-element > li {
+  list-style: none;
+  display: block;
+  float: left;
+  margin-right: 0px;
+}
+.list.navigation-element > li > .list {
+  height: 60px;
+  padding: 0;
+  overflow: hidden;
+}
+.list.navigation-element > li > .list:hover {
+  height: auto;
+}
+.list.navigation-element > li > .list > li {
+  list-style: none;
+}
+@media screen and (max-width: 768px) {
   .list.navigation-element {
-    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    float: left;
+    -webkit-transform: translateY(-100%);
+    -moz-transform: translateY(-100%);
+    -o-transform: translateY(-100%);
+    -ms-transform: translateY(-100%);
+    transform: translateY(-100%);
+    transition: transform 200ms ease-out;
+  }
+  .list.navigation-element .list,
+  .list.navigation-element li,
+  .list.navigation-element a,
+  .list.navigation-element label {
+    width: 100%;
+  }
+  .list.navigation-element li {
+    border-bottom: 1px solid;
+  }
+  .list.navigation-element > li > .list {
+    height: auto;
+  }
+  .list.navigation-element > li > .list li:last-child {
+    border: none;
+  }
+  .list.navigation-element.active {
+    -webkit-transform: translateY(60px);
+    -moz-transform: translateY(60px);
+    -o-transform: translateY(60px);
+    -ms-transform: translateY(60px);
+    transform: translateY(60px);
+    transition: transform 300ms ease-in;
   }
 }
 .page {
@@ -430,6 +495,11 @@ body {
   width: 100%;
   max-width: 1024px;
   margin: 80px auto 20px auto;
+  padding: 20px;
+  -ms-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .layout {
   position: relative;
@@ -453,16 +523,16 @@ body {
   display: flex;
 }
 .linear-layout.flex-horizontal {
-  flex-direction: column;
-}
-.linear-layout.flex-horizontal.flex-reverse {
-  flex-direction: column-reverse;
-}
-.linear-layout.flex-vertical {
   flex-direction: row;
 }
-.linear-layout.flex-vertical.flex-reverse {
+.linear-layout.flex-horizontal.flex-reverse {
   flex-direction: row-reverse;
+}
+.linear-layout.flex-vertical {
+  flex-direction: column;
+}
+.linear-layout.flex-vertical.flex-reverse {
+  flex-direction: column-reverse;
 }
 .linear-layout.flex-start {
   justify-content: flex-start;
@@ -472,4 +542,61 @@ body {
 }
 .linear-layout.flex-end {
   justify-content: flex-end;
+}
+.flex-right h1,
+.flex-left.flex-reverse h1,
+.flex-right h2,
+.flex-left.flex-reverse h2,
+.flex-right h3,
+.flex-left.flex-reverse h3,
+.flex-right h4,
+.flex-left.flex-reverse h4,
+.flex-right h5,
+.flex-left.flex-reverse h5,
+.flex-right h6,
+.flex-left.flex-reverse h6,
+.flex-right p,
+.flex-left.flex-reverse p,
+.flex-right label,
+.flex-left.flex-reverse label {
+  text-align: right;
+}
+.flex-left h1,
+.flex-right.flex-reverse h1,
+.flex-left h2,
+.flex-right.flex-reverse h2,
+.flex-left h3,
+.flex-right.flex-reverse h3,
+.flex-left h4,
+.flex-right.flex-reverse h4,
+.flex-left h5,
+.flex-right.flex-reverse h5,
+.flex-left h6,
+.flex-right.flex-reverse h6,
+.flex-left p,
+.flex-right.flex-reverse p,
+.flex-left label,
+.flex-right.flex-reverse label {
+  text-align: left;
+}
+.linear-layout > .linear-layout > * {
+  padding: 5px;
+  -ms-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-align: center;
+}
+label {
+  text-align: justify;
+}
+p {
+  text-align: justify;
 }

@@ -50,18 +50,18 @@ module Ompluscript.Core.Configuration {
         private errors: Object[];
 
         /**
-         * @type {Configuration[]} configurations Contains a list with all configurations
+         * @type {Object[]} configurations Contains a list with all configurations
          */
-        private configurations: Configuration[];
+        private configurations: Object[];
 
         /**
          * Class constructor
          *
          * Initializes definition map and errors list
          * 
-         * @param {Configuration[]} configurations Contains a list with all configurations
+         * @param {Object[]} configurations Contains a list with all configurations
          */
-        constructor(configurations: Configuration[]) {
+        constructor(configurations: Object[]) {
             this.definition = {};
             this.errors = [];
             this.configurations = configurations;
@@ -111,8 +111,9 @@ module Ompluscript.Core.Configuration {
         public define(definition: Object): void {
             let errors: string[] = [];
             for (let i: number = 0; i < this.configurations.length; i++) {
-                if (this.configurations[i].isRelatedTo(definition)) {
-                    errors = this.configurations[i].getErrors(definition);
+                let configuration: {new ()} = <{new ()}>this.configurations[i];
+                if (ConfigurationClass.getInstance(configuration).isRelatedTo(definition)) {
+                    errors = ConfigurationClass.getInstance(configuration).getErrors(definition);
                     break;
                 }
             }
@@ -137,8 +138,9 @@ module Ompluscript.Core.Configuration {
         public create(name: string): IBase {
             if (this.definition.hasOwnProperty(name)) {
                 for (let i: number = 0; i < this.configurations.length; i++) {
-                    if (this.configurations[i].isRelatedTo(this.definition[name])) {
-                        return this.configurations[i].create(this.definition[name]);
+                    let configuration: {new ()} = <{new ()}>this.configurations[i];
+                    if (ConfigurationClass.getInstance(configuration).isRelatedTo(this.definition[name])) {
+                        return ConfigurationClass.getInstance(configuration).create(this.definition[name]);
                     }
                 }
             }

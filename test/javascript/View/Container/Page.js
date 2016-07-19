@@ -479,15 +479,15 @@ describe("Page class tests - initialization", function() {
         });
     });
 
-    it("empty with linear layout", function() {
+    it("empty with table layout", function() {
         page = new Page("firstPage", new TableLayout(2, 2));
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(0);
         expect(page.isActive()).toBeFalsy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
-            '<div class="layout linear-layout flex-vertical flex-center">' +
-            '<div class="layout linear-layout flex-horizontal flex-center"></div>' +
-            '<div class="layout linear-layout flex-horizontal flex-center"></div>' +
+            '<div class="layout linear-layout flex-vertical flex-start">' +
+            '<div class="layout linear-layout flex-horizontal flex-start"></div>' +
+            '<div class="layout linear-layout flex-horizontal flex-start"></div>' +
             '</div>'+
             '</div>');
         expect(page.getStackTrace()).toEqual({
@@ -495,27 +495,27 @@ describe("Page class tests - initialization", function() {
             name: "firstPage",
             children: [],
             layout: {
-                html: '<div class="layout linear-layout flex-vertical flex-center"></div>',
+                html: '<div class="layout linear-layout flex-vertical flex-start"></div>',
                 name: "TableLayout",
                 children: [
                     {
-                        html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                        html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                         name: "TableLayout",
                         children: [],
-                        align: TableLayout.ALIGN_CENTER,
+                        align: TableLayout.ALIGN_START,
                         direction: TableLayout.DIRECTION_HORIZONTAL,
                         reverse: false
                     },
                     {
-                        html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                        html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                         name: "TableLayout",
                         children: [],
-                        align: TableLayout.ALIGN_CENTER,
+                        align: TableLayout.ALIGN_START,
                         direction: TableLayout.DIRECTION_HORIZONTAL,
                         reverse: false
                     },
                 ],
-                align: TableLayout.ALIGN_CENTER,
+                align: TableLayout.ALIGN_START,
                 direction: TableLayout.DIRECTION_VERTICAL,
                 reverse: false,
                 rows: 2,
@@ -525,7 +525,7 @@ describe("Page class tests - initialization", function() {
         });
     });
 
-    it("components with linear layout", function() {
+    it("components with table layout", function() {
         page = new Page("firstPage", new TableLayout(2, 2));
         page.addChild(firstInput);
         page.addChild(secondInput);
@@ -534,12 +534,12 @@ describe("Page class tests - initialization", function() {
         expect(page.getChildrenCount()).toBe(3);
         expect(page.isActive()).toBeFalsy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
-            '<div class="layout linear-layout flex-vertical flex-center">' +
-            '<div class="layout linear-layout flex-horizontal flex-center">' +
+            '<div class="layout linear-layout flex-vertical flex-start">' +
+            '<div class="layout linear-layout flex-horizontal flex-start">' +
             '<input type="text" name="first" class="input">' +
             '<input type="text" name="second" class="input">' +
             '</div>' +
-            '<div class="layout linear-layout flex-horizontal flex-center">' +
+            '<div class="layout linear-layout flex-horizontal flex-start">' +
             '<input type="text" name="third" class="input">' +
             '</div>' +
             '</div>'+
@@ -553,32 +553,32 @@ describe("Page class tests - initialization", function() {
                 thirdInput.getStackTrace()
             ],
             layout: {
-                html: '<div class="layout linear-layout flex-vertical flex-center"></div>',
+                html: '<div class="layout linear-layout flex-vertical flex-start"></div>',
                 name: "TableLayout",
                 children: [
                     {
-                        html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                        html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                         name: "TableLayout",
                         children: [
                             firstInput.getStackTrace(),
                             secondInput.getStackTrace(),
                         ],
-                        align: TableLayout.ALIGN_CENTER,
+                        align: TableLayout.ALIGN_START,
                         direction: TableLayout.DIRECTION_HORIZONTAL,
                         reverse: false
                     },
                     {
-                        html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                        html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                         name: "TableLayout",
                         children: [
                             thirdInput.getStackTrace()
                         ],
-                        align: TableLayout.ALIGN_CENTER,
+                        align: TableLayout.ALIGN_START,
                         direction: TableLayout.DIRECTION_HORIZONTAL,
                         reverse: false
                     },
                 ],
-                align: TableLayout.ALIGN_CENTER,
+                align: TableLayout.ALIGN_START,
                 direction: TableLayout.DIRECTION_VERTICAL,
                 reverse: false,
                 rows: 2,
@@ -588,7 +588,7 @@ describe("Page class tests - initialization", function() {
         });
     });
 
-    it("components with linear layout - removal", function() {
+    it("components with table layout - removal", function() {
         page = new Page("firstPage", new TableLayout(2, 2));
         page.addChild(firstInput);
         page.addChild(secondInput);
@@ -598,12 +598,12 @@ describe("Page class tests - initialization", function() {
         expect(page.getChildrenCount()).toBe(2);
         expect(page.isActive()).toBeFalsy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
-            '<div class="layout linear-layout flex-vertical flex-center">' +
-            '<div class="layout linear-layout flex-horizontal flex-center">' +
+            '<div class="layout linear-layout flex-vertical flex-start">' +
+            '<div class="layout linear-layout flex-horizontal flex-start">' +
             '<input type="text" name="second" class="input">' +
             '<input type="text" name="third" class="input">' +
             '</div>' +
-            '<div class="layout linear-layout flex-horizontal flex-center"></div>' +
+            '<div class="layout linear-layout flex-horizontal flex-start"></div>' +
             '</div>'+
             '</div>');
         expect(page.getStackTrace()).toEqual({
@@ -614,30 +614,30 @@ describe("Page class tests - initialization", function() {
                 thirdInput.getStackTrace()
             ],
             layout: {
-                html: '<div class="layout linear-layout flex-vertical flex-center"></div>',
+                html: '<div class="layout linear-layout flex-vertical flex-start"></div>',
                 name: "TableLayout",
                 children: [
                     {
-                        html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                        html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                         name: "TableLayout",
                         children: [
                             secondInput.getStackTrace(),
                             thirdInput.getStackTrace()
                         ],
-                        align: TableLayout.ALIGN_CENTER,
+                        align: TableLayout.ALIGN_START,
                         direction: TableLayout.DIRECTION_HORIZONTAL,
                         reverse: false
                     },
                     {
-                        html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                        html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                         name: "TableLayout",
                         children: [],
-                        align: TableLayout.ALIGN_CENTER,
+                        align: TableLayout.ALIGN_START,
                         direction: TableLayout.DIRECTION_HORIZONTAL,
                         reverse: false
                     },
                 ],
-                align: TableLayout.ALIGN_CENTER,
+                align: TableLayout.ALIGN_START,
                 direction: TableLayout.DIRECTION_VERTICAL,
                 reverse: false,
                 rows: 2,
@@ -647,7 +647,7 @@ describe("Page class tests - initialization", function() {
         });
     });
 
-    it("components with linear layout - switch position", function() {
+    it("components with table layout - switch position", function() {
         page = new Page("firstPage", new TableLayout(2, 2));
         page.addChild(firstInput);
         page.addChild(secondInput);
@@ -657,12 +657,12 @@ describe("Page class tests - initialization", function() {
         expect(page.getChildrenCount()).toBe(3);
         expect(page.isActive()).toBeFalsy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
-            '<div class="layout linear-layout flex-vertical flex-center">' +
-            '<div class="layout linear-layout flex-horizontal flex-center">' +
+            '<div class="layout linear-layout flex-vertical flex-start">' +
+            '<div class="layout linear-layout flex-horizontal flex-start">' +
             '<input type="text" name="second" class="input">' +
             '<input type="text" name="third" class="input">' +
             '</div>' +
-            '<div class="layout linear-layout flex-horizontal flex-center">' +
+            '<div class="layout linear-layout flex-horizontal flex-start">' +
             '<input type="text" name="first" class="input">' +
             '</div>' +
             '</div>'+
@@ -676,32 +676,32 @@ describe("Page class tests - initialization", function() {
                 firstInput.getStackTrace()
             ],
             layout: {
-                html: '<div class="layout linear-layout flex-vertical flex-center"></div>',
+                html: '<div class="layout linear-layout flex-vertical flex-start"></div>',
                 name: "TableLayout",
                 children: [
                     {
-                        html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                        html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                         name: "TableLayout",
                         children: [
                             secondInput.getStackTrace(),
                             thirdInput.getStackTrace()
                         ],
-                        align: TableLayout.ALIGN_CENTER,
+                        align: TableLayout.ALIGN_START,
                         direction: TableLayout.DIRECTION_HORIZONTAL,
                         reverse: false
                     },
                     {
-                        html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                        html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                         name: "TableLayout",
                         children: [
                             firstInput.getStackTrace()
                         ],
-                        align: TableLayout.ALIGN_CENTER,
+                        align: TableLayout.ALIGN_START,
                         direction: TableLayout.DIRECTION_HORIZONTAL,
                         reverse: false
                     },
                 ],
-                align: TableLayout.ALIGN_CENTER,
+                align: TableLayout.ALIGN_START,
                 direction: TableLayout.DIRECTION_VERTICAL,
                 reverse: false,
                 rows: 2,
@@ -711,7 +711,7 @@ describe("Page class tests - initialization", function() {
         });
     });
 
-    it("components with linear layout - clearing", function() {
+    it("components with table layout - clearing", function() {
         page = new Page("firstPage", new TableLayout(2, 2));
         page.addChild(firstInput);
         page.addChild(secondInput);
@@ -721,9 +721,9 @@ describe("Page class tests - initialization", function() {
         expect(page.getChildrenCount()).toBe(0);
         expect(page.isActive()).toBeFalsy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
-            '<div class="layout linear-layout flex-vertical flex-center">' +
-            '<div class="layout linear-layout flex-horizontal flex-center"></div>' +
-            '<div class="layout linear-layout flex-horizontal flex-center"></div>' +
+            '<div class="layout linear-layout flex-vertical flex-start">' +
+            '<div class="layout linear-layout flex-horizontal flex-start"></div>' +
+            '<div class="layout linear-layout flex-horizontal flex-start"></div>' +
             '</div>'+
             '</div>');
         expect(page.getStackTrace()).toEqual({
@@ -731,27 +731,27 @@ describe("Page class tests - initialization", function() {
             name: "firstPage",
             children: [],
             layout: {
-                html: '<div class="layout linear-layout flex-vertical flex-center"></div>',
+                html: '<div class="layout linear-layout flex-vertical flex-start"></div>',
                 name: "TableLayout",
                 children: [
                     {
-                        html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                        html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                         name: "TableLayout",
                         children: [],
-                        align: TableLayout.ALIGN_CENTER,
+                        align: TableLayout.ALIGN_START,
                         direction: TableLayout.DIRECTION_HORIZONTAL,
                         reverse: false
                     },
                     {
-                        html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                        html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                         name: "TableLayout",
                         children: [],
-                        align: TableLayout.ALIGN_CENTER,
+                        align: TableLayout.ALIGN_START,
                         direction: TableLayout.DIRECTION_HORIZONTAL,
                         reverse: false
                     },
                 ],
-                align: TableLayout.ALIGN_CENTER,
+                align: TableLayout.ALIGN_START,
                 direction: TableLayout.DIRECTION_VERTICAL,
                 reverse: false,
                 rows: 2,

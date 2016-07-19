@@ -1,6 +1,5 @@
 /// <reference path="../Core/Interfaces/IBase.ts" />
 /// <reference path="../Core/Configuration/Creator.ts" />
-/// <reference path="../Core/Configuration/Configuration.ts" />
 /// <reference path="../Core/Configuration/ErrorConfiguration.ts" />
 /// <reference path="Container/Translation.ts" />
 /// <reference path="Configuration/Attribute/BooleanConfiguration.ts" />
@@ -22,7 +21,6 @@ module Ompluscript.Model {
     "use strict";
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import CreatorParent = Ompluscript.Core.Configuration.Creator;
-    import Configuration = Ompluscript.Core.Configuration.Configuration;
     import BooleanConfiguration = Ompluscript.Model.Configuration.Attribute.BooleanConfiguration;
     import DatetimeConfiguration = Ompluscript.Model.Configuration.Attribute.DatetimeConfiguration;
     import MultipleChoiceConfiguration = Ompluscript.Model.Configuration.Attribute.MultipleChoiceConfiguration;
@@ -70,17 +68,17 @@ module Ompluscript.Model {
          * Initializes definition map and errors list
          */
         constructor() {
-            let configurations: Configuration[] = [
-                Configuration.getInstance(BooleanConfiguration),
-                Configuration.getInstance(DatetimeConfiguration),
-                Configuration.getInstance(MultipleChoiceConfiguration),
-                Configuration.getInstance(NumberConfiguration),
-                Configuration.getInstance(SingleChoiceConfiguration),
-                Configuration.getInstance(StringConfiguration),
-                Configuration.getInstance(ModelConfiguration),
-                Configuration.getInstance(TableConfiguration),
-                Configuration.getInstance(TranslationConfiguration),
-                Configuration.getInstance(ErrorConfiguration),
+            let configurations: Object[] = [
+                BooleanConfiguration,
+                DatetimeConfiguration,
+                MultipleChoiceConfiguration,
+                NumberConfiguration,
+                SingleChoiceConfiguration,
+                StringConfiguration,
+                ModelConfiguration,
+                TableConfiguration,
+                TranslationConfiguration,
+                ErrorConfiguration,
             ];
             super(configurations);
         }

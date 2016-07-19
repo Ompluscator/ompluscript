@@ -19,41 +19,41 @@ describe("TableLayout class tests", function() {
         expect(tableLayout.hasClass(TableLayout.CLASS_LINEAR_LAYOUT)).toBeTruthy();
         expect(tableLayout.hasClass(TableLayout.CLASS_LAYOUT)).toBeTruthy();
         expect(tableLayout.getChildrenCount()).toBe(0);
-        expect(tableLayout.render().outerHTML).toBe('<div class="layout linear-layout flex-vertical flex-center">' +
-            '<div class="layout linear-layout flex-horizontal flex-center"></div>' +
-            '<div class="layout linear-layout flex-horizontal flex-center"></div>' +
-            '<div class="layout linear-layout flex-horizontal flex-center"></div>' +
+        expect(tableLayout.render().outerHTML).toBe('<div class="layout linear-layout flex-vertical flex-start">' +
+            '<div class="layout linear-layout flex-horizontal flex-start"></div>' +
+            '<div class="layout linear-layout flex-horizontal flex-start"></div>' +
+            '<div class="layout linear-layout flex-horizontal flex-start"></div>' +
             '</div>');
         expect(tableLayout.getStackTrace()).toEqual({
-            html: '<div class="layout linear-layout flex-vertical flex-center"></div>',
+            html: '<div class="layout linear-layout flex-vertical flex-start"></div>',
             name: "TableLayout",
             children: [
                 {
-                    html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                    html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                     name: "TableLayout",
                     children: [],
-                    align: TableLayout.ALIGN_CENTER,
+                    align: TableLayout.ALIGN_START,
                     direction: TableLayout.DIRECTION_HORIZONTAL,
                     reverse: false
                 },
                 {
-                    html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                    html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                     name: "TableLayout",
                     children: [],
-                    align: TableLayout.ALIGN_CENTER,
+                    align: TableLayout.ALIGN_START,
                     direction: TableLayout.DIRECTION_HORIZONTAL,
                     reverse: false
                 },
                 {
-                    html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                    html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                     name: "TableLayout",
                     children: [],
-                    align: TableLayout.ALIGN_CENTER,
+                    align: TableLayout.ALIGN_START,
                     direction: TableLayout.DIRECTION_HORIZONTAL,
                     reverse: false
                 }
             ],
-            align: TableLayout.ALIGN_CENTER,
+            align: TableLayout.ALIGN_START,
             direction: TableLayout.DIRECTION_VERTICAL,
             reverse: false,
             rows: 3,
@@ -69,42 +69,42 @@ describe("TableLayout class tests", function() {
         expect(tableLayout.hasClass(TableLayout.CLASS_LINEAR_LAYOUT)).toBeTruthy();
         expect(tableLayout.hasClass(TableLayout.CLASS_LAYOUT)).toBeTruthy();
         expect(tableLayout.getChildrenCount()).toBe(3);
-        expect(tableLayout.render().outerHTML).toBe('<div class="layout linear-layout flex-vertical flex-center">' +
-            '<div class="layout linear-layout flex-horizontal flex-center">' +
+        expect(tableLayout.render().outerHTML).toBe('<div class="layout linear-layout flex-vertical flex-start">' +
+            '<div class="layout linear-layout flex-horizontal flex-start">' +
             '<input type="text" name="first" class="input">' +
             '<input type="text" name="second" class="input">' +
             '</div>' +
-            '<div class="layout linear-layout flex-horizontal flex-center">' +
+            '<div class="layout linear-layout flex-horizontal flex-start">' +
             '<input type="text" name="third" class="input">' +
             '</div>' +
             '</div>');
         expect(tableLayout.getStackTrace()).toEqual({
-            html: '<div class="layout linear-layout flex-vertical flex-center"></div>',
+            html: '<div class="layout linear-layout flex-vertical flex-start"></div>',
             name: "TableLayout",
             children: [
                 {
-                    html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                    html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                     name: "TableLayout",
                     children: [
                         firstInput.getStackTrace(),
                         secondInput.getStackTrace(),
                     ],
-                    align: TableLayout.ALIGN_CENTER,
+                    align: TableLayout.ALIGN_START,
                     direction: TableLayout.DIRECTION_HORIZONTAL,
                     reverse: false
                 },
                 {
-                    html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                    html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                     name: "TableLayout",
                     children: [
                         thirdInput.getStackTrace()
                     ],
-                    align: TableLayout.ALIGN_CENTER,
+                    align: TableLayout.ALIGN_START,
                     direction: TableLayout.DIRECTION_HORIZONTAL,
                     reverse: false
                 },
             ],
-            align: TableLayout.ALIGN_CENTER,
+            align: TableLayout.ALIGN_START,
             direction: TableLayout.DIRECTION_VERTICAL,
             reverse: false,
             rows: 2,
@@ -121,38 +121,38 @@ describe("TableLayout class tests", function() {
         expect(tableLayout.hasClass(TableLayout.CLASS_LINEAR_LAYOUT)).toBeTruthy();
         expect(tableLayout.hasClass(TableLayout.CLASS_LAYOUT)).toBeTruthy();
         expect(tableLayout.getChildrenCount()).toBe(2);
-        expect(tableLayout.render().outerHTML).toBe('<div class="layout linear-layout flex-vertical flex-center">' +
-            '<div class="layout linear-layout flex-horizontal flex-center">' +
+        expect(tableLayout.render().outerHTML).toBe('<div class="layout linear-layout flex-vertical flex-start">' +
+            '<div class="layout linear-layout flex-horizontal flex-start">' +
             '<input type="text" name="first" class="input">' +
             '<input type="text" name="third" class="input">' +
             '</div>' +
-            '<div class="layout linear-layout flex-horizontal flex-center"></div>' +
+            '<div class="layout linear-layout flex-horizontal flex-start"></div>' +
             '</div>');
         expect(tableLayout.getStackTrace()).toEqual({
-            html: '<div class="layout linear-layout flex-vertical flex-center"></div>',
+            html: '<div class="layout linear-layout flex-vertical flex-start"></div>',
             name: "TableLayout",
             children: [
                 {
-                    html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                    html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                     name: "TableLayout",
                     children: [
                         firstInput.getStackTrace(),
                         thirdInput.getStackTrace(),
                     ],
-                    align: TableLayout.ALIGN_CENTER,
+                    align: TableLayout.ALIGN_START,
                     direction: TableLayout.DIRECTION_HORIZONTAL,
                     reverse: false
                 },
                 {
-                    html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                    html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                     name: "TableLayout",
                     children: [],
-                    align: TableLayout.ALIGN_CENTER,
+                    align: TableLayout.ALIGN_START,
                     direction: TableLayout.DIRECTION_HORIZONTAL,
                     reverse: false
                 },
             ],
-            align: TableLayout.ALIGN_CENTER,
+            align: TableLayout.ALIGN_START,
             direction: TableLayout.DIRECTION_VERTICAL,
             reverse: false,
             rows: 2,
@@ -169,32 +169,32 @@ describe("TableLayout class tests", function() {
         expect(tableLayout.hasClass(TableLayout.CLASS_LINEAR_LAYOUT)).toBeTruthy();
         expect(tableLayout.hasClass(TableLayout.CLASS_LAYOUT)).toBeTruthy();
         expect(tableLayout.getChildrenCount()).toBe(0);
-        expect(tableLayout.render().outerHTML).toBe('<div class="layout linear-layout flex-vertical flex-center">' +
-            '<div class="layout linear-layout flex-horizontal flex-center"></div>' +
-            '<div class="layout linear-layout flex-horizontal flex-center"></div>' +
+        expect(tableLayout.render().outerHTML).toBe('<div class="layout linear-layout flex-vertical flex-start">' +
+            '<div class="layout linear-layout flex-horizontal flex-start"></div>' +
+            '<div class="layout linear-layout flex-horizontal flex-start"></div>' +
             '</div>');
         expect(tableLayout.getStackTrace()).toEqual({
-            html: '<div class="layout linear-layout flex-vertical flex-center"></div>',
+            html: '<div class="layout linear-layout flex-vertical flex-start"></div>',
             name: "TableLayout",
             children: [
                 {
-                    html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                    html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                     name: "TableLayout",
                     children: [],
-                    align: TableLayout.ALIGN_CENTER,
+                    align: TableLayout.ALIGN_START,
                     direction: TableLayout.DIRECTION_HORIZONTAL,
                     reverse: false
                 },
                 {
-                    html: '<div class="layout linear-layout flex-horizontal flex-center"></div>',
+                    html: '<div class="layout linear-layout flex-horizontal flex-start"></div>',
                     name: "TableLayout",
                     children: [],
-                    align: TableLayout.ALIGN_CENTER,
+                    align: TableLayout.ALIGN_START,
                     direction: TableLayout.DIRECTION_HORIZONTAL,
                     reverse: false
                 },
             ],
-            align: TableLayout.ALIGN_CENTER,
+            align: TableLayout.ALIGN_START,
             direction: TableLayout.DIRECTION_VERTICAL,
             reverse: false,
             rows: 2,
