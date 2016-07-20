@@ -27,22 +27,22 @@ module Ompluscript.Model.Event {
         /**
          * @type {string} TYPE_SAVED Defines result for save proxy
          */
-        public static TYPE_SAVED: string = "saved";
+        public static TYPE_SAVED: string = "save";
 
         /**
          * @type {string} TYPE_UPDATED Defines result for update proxy
          */
-        public static TYPE_UPDATED: string = "updated";
+        public static TYPE_UPDATED: string = "update";
 
         /**
          * @type {string} TYPE_DELETED Defines result for delete proxy
          */
-        public static TYPE_DELETED: string = "deleted";
+        public static TYPE_DELETED: string = "delete";
 
         /**
          * @type {string} TYPE_SELECTED Defines result for select proxy
          */
-        public static TYPE_SELECTED: string = "selected";
+        public static TYPE_SELECTED: string = "select";
 
         /**
          *

@@ -10,5 +10,6 @@
   "text_relative_layout_title": "Relative Layout",
   "text_relative_layout_message": "Although Relative Layout is not good choice when you want to use responsive web design, still there are some cases when you want to add string position for component, like in this case: <pre>{\n  ...\n  styles:\n  {\n    top: \"50px\",\n    left: \"100px\",\n    width: \"200px\"\n  }\n}</pre>",
   "text_relative_layout_configuration": "Tu setup Relative Layout, just place next configuration as part of single container:<pre>{\n  ...\n  layout:\n  {\n    type: \"RelativeLayout\",\n  }\n}</pre>",
-  "text_table_layout_title": "Table Layout"
+  "text_table_layout_title": "Table Layout",
+  "text_form_title": "Form"
 }

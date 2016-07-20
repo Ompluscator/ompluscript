@@ -9,7 +9,7 @@ module Ompluscript.Core.Configuration {
 
     export abstract class GroupConfiguration extends Configuration {
         
-        private configurations: Object;
+        protected configurations: Object;
         
         constructor(configurations: Object) {
             super();

@@ -152,6 +152,11 @@ module Ompluscript.Model.Container {
         public abstract getValues(): Object;
 
         /**
+         * Method that reset values in container.
+         */
+        public abstract resetValues(): void;
+
+        /**
          * Method that fires event when proxy is done
          *
          * @param {string} action Proxy action that was performed

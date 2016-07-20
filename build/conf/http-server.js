@@ -9,7 +9,8 @@ module.exports = {
             "/layouts": "index.html",
             "/null-layout": "index.html",
             "/relative-layout": "index.html",
-            "/table-layout": "index.html"
+            "/table-layout": "index.html",
+            "/form": "index.html"
         },
     }
 }

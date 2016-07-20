@@ -24,11 +24,11 @@ describe("NumberInput class tests - events", function() {
         });
     });
 
-    it("simulate keypress - unit test", function() {
+    it("simulate keyup - unit test", function() {
         spyOn(numberInput, 'notifyObservers');
 
         var event = document.createEvent("KeyboardEvent");
-        event.initKeyboardEvent("keypress", true, true, null, false, false, false, false, 65, 0);
+        event.initKeyboardEvent("keyup", true, true, null, false, false, false, false, 65, 0);
         numberInput.render().dispatchEvent(event);
 
         var onUpdateInput = new OnUpdateInput(numberInput, numberInput.getValue());
@@ -43,7 +43,7 @@ describe("NumberInput class tests - events", function() {
         numberInput.setValue("1");
 
         expect(numberInput.getStackTrace()).toEqual({
-            html: '<input type="number" name="param" class="input" value="1">',
+            html: '<input type="number" name="param" class="input">',
             name: "param",
             attribute: numberObject.getStackTrace(),
         });
@@ -55,18 +55,18 @@ describe("NumberInput class tests - events", function() {
         numberInput.setValue("1");
 
         expect(numberInput.getStackTrace()).toEqual({
-            html: '<input type="number" name="param" class="input" value="1">',
+            html: '<input type="number" name="param" class="input">',
             name: "param",
             attribute: numberObject.getStackTrace(),
         });
         expect(numberObject.getValue()).toBe(1);
     });
 
-    it("simulate keypress - functional test", function() {
+    it("simulate keyup - functional test", function() {
         spyOn(numberObject, 'setValue');
 
         var event = document.createEvent("KeyboardEvent");
-        event.initKeyboardEvent("keypress", true, true, null, false, false, false, false, 65, 0);
+        event.initKeyboardEvent("keyup", true, true, null, false, false, false, false, 65, 0);
         numberInput.render().dispatchEvent(event);
 
         expect(numberObject.setValue.calls.argsFor(0)).toEqual([numberInput.getValue()]);
@@ -83,17 +83,15 @@ describe("NumberInput class tests - events", function() {
     });
 
     it("set attributes", function() {
-        numberInput.setAttribute(Input.ATTRIBUTE_VALUE, "value");
         numberInput.setId("id");
         numberInput.addClass("class");
         numberInput.removeClass("input");
 
         expect(numberInput.getStackTrace()).toEqual({
-            html: '<input type="number" name="param" class="class" value="value" id="id">',
+            html: '<input type="number" name="param" class="class" id="id">',
             name: "param",
             attribute: numberObject.getStackTrace(),
         });
-        expect(numberInput.getAttribute(Input.ATTRIBUTE_VALUE)).toBe("value");
         expect(numberInput.getId()).toBe("id");
         expect(numberInput.getAttribute(Input.ATTRIBUTE_CLASS)).toBe("class");
     });

@@ -49,9 +49,12 @@ module Ompluscript.View.Field {
          * @returns {any} value for input HTML element
          */
         public getValue(): any {
-            let value: string = this.getAttribute(Input.ATTRIBUTE_VALUE);
+            let value: string = this.htmlElement["value"];
             if (typeof value === "string") {
                 if (isNaN(parseInt(value, 10))) {
+                    if (typeof value === "string" && value.length === 0) {
+                        return undefined;
+                    }
                     return value;
                 }
                 return parseInt(value, 10);
@@ -67,7 +70,7 @@ module Ompluscript.View.Field {
             let listener: () => void = function(): void {
                 that.fireOnUpdateInputEvent(that.getValue());
             };
-            that.htmlElement.addEventListener(TextInput.EVENT_KEY_PRESS, listener, false);
+            that.htmlElement.addEventListener(TextInput.EVENT_KEY_UP, listener, false);
         }
 
         /**
@@ -76,7 +79,11 @@ module Ompluscript.View.Field {
          * @param {any} value New value for input HTML element
          */
         protected updateValue(value: number): void {
-            this.setAttribute(Input.ATTRIBUTE_VALUE, value.toString());
+            if (value === undefined) {
+                this.htmlElement["value"] = "";
+            } else {
+                this.htmlElement["value"] = value.toString();
+            }
         }
     }
 

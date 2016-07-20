@@ -24,11 +24,11 @@ describe("PasswordInput class tests - events", function() {
         });
     });
 
-    it("simulate keypress - unit test", function() {
+    it("simulate keyup - unit test", function() {
         spyOn(passwordInput, 'notifyObservers');
 
         var event = document.createEvent("KeyboardEvent");
-        event.initKeyboardEvent("keypress", true, true, null, false, false, false, false, 65, 0);
+        event.initKeyboardEvent("keyup", true, true, null, false, false, false, false, 65, 0);
         passwordInput.render().dispatchEvent(event);
 
         var onUpdateInput = new OnUpdateInput(passwordInput, passwordInput.getValue());
@@ -43,7 +43,7 @@ describe("PasswordInput class tests - events", function() {
         passwordInput.setValue("value");
 
         expect(passwordInput.getStackTrace()).toEqual({
-            html: '<input type="password" name="param" class="input" value="value">',
+            html: '<input type="password" name="param" class="input">',
             name: "param",
             attribute: stringObject.getStackTrace(),
         });
@@ -55,18 +55,18 @@ describe("PasswordInput class tests - events", function() {
         passwordInput.setValue("value");
 
         expect(passwordInput.getStackTrace()).toEqual({
-            html: '<input type="password" name="param" class="input" value="value">',
+            html: '<input type="password" name="param" class="input">',
             name: "param",
             attribute: stringObject.getStackTrace(),
         });
         expect(stringObject.getValue()).toBe("value");
     });
 
-    it("simulate keypress - functional test", function() {
+    it("simulate keyup - functional test", function() {
         spyOn(stringObject, 'setValue');
 
         var event = document.createEvent("KeyboardEvent");
-        event.initKeyboardEvent("keypress", true, true, null, false, false, false, false, 65, 0);
+        event.initKeyboardEvent("keyup", true, true, null, false, false, false, false, 65, 0);
         passwordInput.render().dispatchEvent(event);
 
         expect(stringObject.setValue.calls.argsFor(0)).toEqual([passwordInput.getValue()]);
@@ -83,17 +83,15 @@ describe("PasswordInput class tests - events", function() {
     });
 
     it("set attributes", function() {
-        passwordInput.setAttribute(Input.ATTRIBUTE_VALUE, "value");
         passwordInput.setId("id");
         passwordInput.addClass("class");
         passwordInput.removeClass("input");
 
         expect(passwordInput.getStackTrace()).toEqual({
-            html: '<input type="password" name="param" class="class" value="value" id="id">',
+            html: '<input type="password" name="param" class="class" id="id">',
             name: "param",
             attribute: stringObject.getStackTrace(),
         });
-        expect(passwordInput.getAttribute(Input.ATTRIBUTE_VALUE)).toBe("value");
         expect(passwordInput.getId()).toBe("id");
         expect(passwordInput.getAttribute(Input.ATTRIBUTE_CLASS)).toBe("class");
     });

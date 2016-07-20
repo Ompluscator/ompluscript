@@ -29,7 +29,7 @@ module Ompluscript.View.Field {
         public static INPUT_CHECK_BOX: string = "checkbox";
 
         /**
-         * @type {string} EVENT_KEY_PRESS Name of event when state of input is changed
+         * @type {string} EVENT_CHANGE Name of event when state of input is changed
          */
         public static EVENT_CHANGE: string = "change";
 

@@ -140,6 +140,19 @@ module Ompluscript.Model.Container {
             }
             return values;
         }
+
+        /**
+         * Method that reset values in container.
+         *
+         * @returns {Object}
+         */
+        public resetValues(): void {
+            for (let key in this.attributes) {
+                if (this.attributes.hasOwnProperty(key)) {
+                    this.attributes[key].resetValue();
+                }
+            }
+        }
     }
 }
 

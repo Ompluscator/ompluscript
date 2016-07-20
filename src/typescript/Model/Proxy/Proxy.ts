@@ -18,7 +18,7 @@ module Ompluscript.Model.Proxy {
      * @class Proxy
      */
     export abstract class Proxy implements IBase {
-
+        
         /**
          * @type {string} name Name of the proxy
          */
@@ -35,7 +35,6 @@ module Ompluscript.Model.Proxy {
          * Sets name of proxy and container.
          *
          * @param {string} name Name of proxy
-         * @param {Container} container Container for which proxy refers
          * @constructs
          */
         constructor(name: string) {

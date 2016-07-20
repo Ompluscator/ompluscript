@@ -224,7 +224,5 @@ module Ompluscript.Model.Attribute {
             let event: OnInvalidAttribute = new OnInvalidAttribute(this, value, validationCode);
             this.notifyObservers(event);
         }
-
     }
-
 }

@@ -29,9 +29,9 @@ module Ompluscript.View.Field {
         public static INPUT_TEXT: string = "text";
 
         /**
-         * @type {string} EVENT_KEY_PRESS Name of event for key press on input
+         * @type {string} EVENT_KEY_UP Name of event for key u[ on input
          */
-        public static EVENT_KEY_PRESS: string = "keypress";
+        public static EVENT_KEY_UP: string = "keyup";
 
         /**
          * Class constructor.
@@ -56,7 +56,7 @@ module Ompluscript.View.Field {
          * @returns {any} value for input HTML element
          */
         public getValue(): string {
-            let value: string = this.getAttribute(Input.ATTRIBUTE_VALUE);
+            let value: string = this.htmlElement["value"];
             if (typeof value === "string") {
                 return value;
             }
@@ -71,7 +71,7 @@ module Ompluscript.View.Field {
             let listener: () => void = function(): void {
                 that.fireOnUpdateInputEvent(that.getValue());
             };
-            that.htmlElement.addEventListener(TextInput.EVENT_KEY_PRESS, listener, false);
+            that.htmlElement.addEventListener(TextInput.EVENT_KEY_UP, listener, false);
         }
 
         /**
@@ -80,7 +80,11 @@ module Ompluscript.View.Field {
          * @param {any} value New value for input HTML element
          */
         protected updateValue(value: any): void {
-            this.setAttribute(Input.ATTRIBUTE_VALUE, value);
+            if (value === undefined) {
+                this.htmlElement["value"] = "";
+            } else {
+                this.htmlElement["value"] = value;
+            }
         }
     }
 

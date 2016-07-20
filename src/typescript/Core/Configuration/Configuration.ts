@@ -28,6 +28,11 @@ module Ompluscript.Core.Configuration {
         public static MUST_BE_STRING_OR_UNDEFINED: string = " must be a string or undefined.";
 
         /**
+         * @type {string} MUST_BE_STRING_OR_OBJECT_OR_UNDEFINED Message for definition that should be string or object or undefined.
+         */
+        public static MUST_BE_STRING_OR_OBJECT_OR_UNDEFINED: string = " must be a string or object or undefined.";
+
+        /**
          * @type {string} MUST_BE_STRING_OR_OBJECT_OR_BOOLEAN_UNDEFINED Message for definition that should be string or object or undefined.
          */
         public static MUST_BE_STRING_OR_OBJECT_OR_BOOLEAN_OR_UNDEFINED: string = " must be a string or object or boolean or undefined.";
@@ -63,6 +68,11 @@ module Ompluscript.Core.Configuration {
         public static MUST_BE_ARRAY_OR_UNDEFINED: string = " must be an array object or undefined.";
 
         /**
+         * @type {string} MUST_BE_OBJECT Message for definition that must be object.
+         */
+        public static MUST_BE_OBJECT: string = " must be an object.";
+
+        /**
          * @type {string} MUST_BE_OBJECT_OR_UNDEFINED Message for definition that should be object or undefined.
          */
         public static MUST_BE_OBJECT_OR_UNDEFINED: string = " must be an object or undefined.";
@@ -80,7 +90,12 @@ module Ompluscript.Core.Configuration {
         /**
          * @type {string} MUST_BE_DEFINED Message for model definition that should defined.
          */
-        public static MUST_BE_DEFINED: string = " must be defined ";
+        public static MUST_BE_DEFINED: string = " must be defined.";
+
+        /**
+         * @type {string} IS_MISSING Message for definition that is missing.
+         */
+        public static IS_MISSING: string = " are missing.";
 
         /**
          * @type {string} PARAMETER_TYPE Type parameter name.
@@ -141,6 +156,13 @@ module Ompluscript.Core.Configuration {
             return undefined;
         }
 
+        protected shouldBeStringOrObject(definition: Object, key: string): string {
+            if (definition[key] !== undefined && typeof definition[key] !== "string" && typeof definition[key] !== "object") {
+                return this.getName(definition, key) + Configuration.MUST_BE_STRING_OR_OBJECT_OR_UNDEFINED;
+            }
+            return undefined;
+        }
+
         protected shouldBeStringOrObjectBoolean(definition: Object, key: string): string {
             if (definition[key] !== undefined && typeof definition[key] !== "boolean"
                 && typeof definition[key] !== "string" && typeof definition[key] !== "object") {
@@ -195,6 +217,13 @@ module Ompluscript.Core.Configuration {
             let helper: Object = {};
             if (definition[key] !== undefined && helper.toString.call(definition[key]) !== "[object Function]") {
                 return this.getName(definition, key) + Configuration.MUST_BE_FUNCTION_OR_UNDEFINED;
+            }
+            return undefined;
+        }
+
+        protected mustBeObject(definition: Object, key: string): string {
+            if (definition[key] === undefined || typeof definition[key] !== "object" || Array.isArray(definition[key])) {
+                return this.getName(definition, key) + Configuration.MUST_BE_OBJECT_OR_UNDEFINED;
             }
             return undefined;
         }

@@ -25,11 +25,11 @@ describe("TextInput class tests - events", function() {
         });
     });
 
-    it("simulate keypress - unit test", function() {
+    it("simulate keyup - unit test", function() {
         spyOn(textInput, 'notifyObservers');
 
         var event = document.createEvent("KeyboardEvent");
-        event.initKeyboardEvent("keypress", true, true, null, false, false, false, false, 65, 0);
+        event.initKeyboardEvent("keyup", true, true, null, false, false, false, false, 65, 0);
         textInput.render().dispatchEvent(event);
 
         var onUpdateInput = new OnUpdateInput(textInput, textInput.getValue());
@@ -44,7 +44,7 @@ describe("TextInput class tests - events", function() {
         textInput.setValue("value");
 
         expect(textInput.getStackTrace()).toEqual({
-            html: '<input type="text" name="param" class="input" value="value">',
+            html: '<input type="text" name="param" class="input">',
             name: "param",
             attribute: stringObject.getStackTrace(),
         });
@@ -56,18 +56,18 @@ describe("TextInput class tests - events", function() {
         textInput.setValue("value");
 
         expect(textInput.getStackTrace()).toEqual({
-            html: '<input type="text" name="param" class="input" value="value">',
+            html: '<input type="text" name="param" class="input">',
             name: "param",
             attribute: stringObject.getStackTrace(),
         });
         expect(stringObject.getValue()).toBe("value");
     });
 
-    it("simulate keypress - functional test", function() {
+    it("simulate keyup - functional test", function() {
         spyOn(stringObject, 'setValue');
 
         var event = document.createEvent("KeyboardEvent");
-        event.initKeyboardEvent("keypress", true, true, null, false, false, false, false, 65, 0);
+        event.initKeyboardEvent("keyup", true, true, null, false, false, false, false, 65, 0);
         textInput.render().dispatchEvent(event);
 
         expect(stringObject.setValue.calls.argsFor(0)).toEqual([textInput.getValue()]);
@@ -84,17 +84,15 @@ describe("TextInput class tests - events", function() {
     });
 
     it("set attributes", function() {
-        textInput.setAttribute(Input.ATTRIBUTE_VALUE, "value");
         textInput.setId("id");
         textInput.addClass("class");
         textInput.removeClass("input");
 
         expect(textInput.getStackTrace()).toEqual({
-            html: '<input type="text" name="param" class="class" value="value" id="id">',
+            html: '<input type="text" name="param" class="class" id="id">',
             name: "param",
             attribute: stringObject.getStackTrace(),
         });
-        expect(textInput.getAttribute(Input.ATTRIBUTE_VALUE)).toBe("value");
         expect(textInput.getId()).toBe("id");
         expect(textInput.getAttribute(Input.ATTRIBUTE_CLASS)).toBe("class");
     });

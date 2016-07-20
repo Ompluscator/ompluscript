@@ -58,6 +58,12 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                     return undefined;
                 };
+                Configuration.prototype.shouldBeStringOrObject = function (definition, key) {
+                    if (definition[key] !== undefined && typeof definition[key] !== "string" && typeof definition[key] !== "object") {
+                        return this.getName(definition, key) + Configuration.MUST_BE_STRING_OR_OBJECT_OR_UNDEFINED;
+                    }
+                    return undefined;
+                };
                 Configuration.prototype.shouldBeStringOrObjectBoolean = function (definition, key) {
                     if (definition[key] !== undefined && typeof definition[key] !== "boolean"
                         && typeof definition[key] !== "string" && typeof definition[key] !== "object") {
@@ -108,6 +114,12 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                     return undefined;
                 };
+                Configuration.prototype.mustBeObject = function (definition, key) {
+                    if (definition[key] === undefined || typeof definition[key] !== "object" || Array.isArray(definition[key])) {
+                        return this.getName(definition, key) + Configuration.MUST_BE_OBJECT_OR_UNDEFINED;
+                    }
+                    return undefined;
+                };
                 Configuration.prototype.shouldBeObject = function (definition, key) {
                     if (definition[key] !== undefined && typeof definition[key] !== "object") {
                         return this.getName(definition, key) + Configuration.MUST_BE_OBJECT_OR_UNDEFINED;
@@ -137,6 +149,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Configuration.HAS_WRONG_VALUE = " has wrong value.";
                 Configuration.MUST_BE_STRING = " must be a string.";
                 Configuration.MUST_BE_STRING_OR_UNDEFINED = " must be a string or undefined.";
+                Configuration.MUST_BE_STRING_OR_OBJECT_OR_UNDEFINED = " must be a string or object or undefined.";
                 Configuration.MUST_BE_STRING_OR_OBJECT_OR_BOOLEAN_OR_UNDEFINED = " must be a string or object or boolean or undefined.";
                 Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED = " must be a boolean or undefined.";
                 Configuration.MUST_BE_NUMBER = " must be a number.";
@@ -144,10 +157,12 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Configuration.MUST_BE_REGEX_OR_UNDEFINED = " must be a regex object or undefined.";
                 Configuration.MUST_BE_DATETIME_OR_UNDEFINED = " must be in datetime format or undefined.";
                 Configuration.MUST_BE_ARRAY_OR_UNDEFINED = " must be an array object or undefined.";
+                Configuration.MUST_BE_OBJECT = " must be an object.";
                 Configuration.MUST_BE_OBJECT_OR_UNDEFINED = " must be an object or undefined.";
                 Configuration.MUST_BE_FUNCTION_OR_UNDEFINED = " must be a function or undefined.";
                 Configuration.MUST_BE_GREATER = " must be greater than ";
-                Configuration.MUST_BE_DEFINED = " must be defined ";
+                Configuration.MUST_BE_DEFINED = " must be defined.";
+                Configuration.IS_MISSING = " are missing.";
                 Configuration.PARAMETER_TYPE = "type";
                 Configuration.PARAMETER_NAME = "name";
                 Configuration.instances = {};
@@ -1038,10 +1053,10 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return this.response;
                 };
                 OnDoneProxy.ON_DONE_PROXY = "onDoneProxy";
-                OnDoneProxy.TYPE_SAVED = "saved";
-                OnDoneProxy.TYPE_UPDATED = "updated";
-                OnDoneProxy.TYPE_DELETED = "deleted";
-                OnDoneProxy.TYPE_SELECTED = "selected";
+                OnDoneProxy.TYPE_SAVED = "save";
+                OnDoneProxy.TYPE_UPDATED = "update";
+                OnDoneProxy.TYPE_DELETED = "delete";
+                OnDoneProxy.TYPE_SELECTED = "select";
                 OnDoneProxy.TYPE_FAILED = "failed";
                 return OnDoneProxy;
             }(OEvent));
@@ -1503,7 +1518,10 @@ var __extends = (this && this.__extends) || function (d, b) {
                             }
                             var value = parameters[key];
                             if (Array.isArray(value)) {
-                                value += value.join(",");
+                                value = value.join(",");
+                            }
+                            else if (value === undefined) {
+                                value = "";
                             }
                             if (prefix !== undefined) {
                                 key = prefix + "[" + key + "]";
@@ -1588,6 +1606,16 @@ var __extends = (this && this.__extends) || function (d, b) {
                     var event = new OnUpdateAsset(this, oldValue, newValue);
                     observer.update(event);
                 };
+                Translation.prototype.detachFromAsset = function (name, observer) {
+                    if (!this.observers.hasOwnProperty(name)) {
+                        return;
+                    }
+                    var index = this.observers[name].indexOf(observer);
+                    this.observers[name].splice(index, 1);
+                    if (this.observers[name].length === 0) {
+                        delete this.observers[name];
+                    }
+                };
                 Translation.prototype.hasAsset = function (name) {
                     return this.assets.hasOwnProperty(name);
                 };
@@ -1644,6 +1672,13 @@ var __extends = (this && this.__extends) || function (d, b) {
                         }
                     }
                     return values;
+                };
+                Translation.prototype.resetValues = function () {
+                    for (var key in this.assets) {
+                        if (this.assets.hasOwnProperty(key)) {
+                            this.assets[key].setValue(key);
+                        }
+                    }
                 };
                 Translation.prototype.fireOnUpdateAssetEvent = function (name, oldValue, newValue) {
                     var event = new OnUpdateAsset(this, oldValue, newValue);
@@ -2745,6 +2780,13 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                     return values;
                 };
+                Model.prototype.resetValues = function () {
+                    for (var key in this.attributes) {
+                        if (this.attributes.hasOwnProperty(key)) {
+                            this.attributes[key].resetValue();
+                        }
+                    }
+                };
                 Model.TYPE_MODEL = Model["name"];
                 return Model;
             }(Container));
@@ -2978,6 +3020,11 @@ var __extends = (this && this.__extends) || function (d, b) {
                         values.push(this.rows[i].getValues());
                     }
                     return values;
+                };
+                Table.prototype.resetValues = function () {
+                    for (var i = 0; i < this.rows.length; i++) {
+                        this.rows[i].resetValues();
+                    }
                 };
                 Table.prototype.fireOnAddRowToTableEvent = function (index, model) {
                     var event = new OnAddRowToTable(this, index, model);
@@ -3525,7 +3572,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     _super.call(this, name, attribute, placeholder, styles, type);
                 }
                 TextInput.prototype.getValue = function () {
-                    var value = this.getAttribute(Field.Input.ATTRIBUTE_VALUE);
+                    var value = this.htmlElement["value"];
                     if (typeof value === "string") {
                         return value;
                     }
@@ -3536,14 +3583,19 @@ var __extends = (this && this.__extends) || function (d, b) {
                     var listener = function () {
                         that.fireOnUpdateInputEvent(that.getValue());
                     };
-                    that.htmlElement.addEventListener(TextInput.EVENT_KEY_PRESS, listener, false);
+                    that.htmlElement.addEventListener(TextInput.EVENT_KEY_UP, listener, false);
                 };
                 TextInput.prototype.updateValue = function (value) {
-                    this.setAttribute(Field.Input.ATTRIBUTE_VALUE, value);
+                    if (value === undefined) {
+                        this.htmlElement["value"] = "";
+                    }
+                    else {
+                        this.htmlElement["value"] = value;
+                    }
                 };
                 TextInput.TYPE_TEXT_INPUT = TextInput["name"];
                 TextInput.INPUT_TEXT = "text";
-                TextInput.EVENT_KEY_PRESS = "keypress";
+                TextInput.EVENT_KEY_UP = "keyup";
                 return TextInput;
             }(Field.Input));
             Field.TextInput = TextInput;
@@ -3668,9 +3720,12 @@ var __extends = (this && this.__extends) || function (d, b) {
                     _super.call(this, name, numberAttribute, placeholder, styles, NumberInput.INPUT_NUMBER);
                 }
                 NumberInput.prototype.getValue = function () {
-                    var value = this.getAttribute(Field.Input.ATTRIBUTE_VALUE);
+                    var value = this.htmlElement["value"];
                     if (typeof value === "string") {
                         if (isNaN(parseInt(value, 10))) {
+                            if (typeof value === "string" && value.length === 0) {
+                                return undefined;
+                            }
                             return value;
                         }
                         return parseInt(value, 10);
@@ -3682,10 +3737,15 @@ var __extends = (this && this.__extends) || function (d, b) {
                     var listener = function () {
                         that.fireOnUpdateInputEvent(that.getValue());
                     };
-                    that.htmlElement.addEventListener(Field.TextInput.EVENT_KEY_PRESS, listener, false);
+                    that.htmlElement.addEventListener(Field.TextInput.EVENT_KEY_UP, listener, false);
                 };
                 NumberInput.prototype.updateValue = function (value) {
-                    this.setAttribute(Field.Input.ATTRIBUTE_VALUE, value.toString());
+                    if (value === undefined) {
+                        this.htmlElement["value"] = "";
+                    }
+                    else {
+                        this.htmlElement["value"] = value.toString();
+                    }
                 };
                 NumberInput.TYPE_NUMBER_INPUT = NumberInput["name"];
                 NumberInput.INPUT_NUMBER = "number";
@@ -3973,10 +4033,13 @@ var __extends = (this && this.__extends) || function (d, b) {
                     if (styles === void 0) { styles = {}; }
                     _super.call(this, name, styles);
                     this.text = text;
-                    if (this.isTranslated()) {
-                        this.translation.attachToAsset(text, this);
-                    }
+                    this.attachToTranslation();
                 }
+                TextContent.prototype.setTextAsset = function (text) {
+                    this.detachFromTranslation();
+                    this.text = text;
+                    this.attachToTranslation();
+                };
                 TextContent.prototype.update = function (event) {
                     if (event instanceof OnUpdateAsset && this.isTranslated()) {
                         var onUpdateAsset = event;
@@ -4000,6 +4063,16 @@ var __extends = (this && this.__extends) || function (d, b) {
                 TextContent.prototype.updateText = function (value) {
                     this.textContent = value;
                     this.htmlElement.innerHTML = this.getTextContent();
+                };
+                TextContent.prototype.attachToTranslation = function () {
+                    if (this.isTranslated()) {
+                        this.translation.attachToAsset(this.text, this);
+                    }
+                };
+                TextContent.prototype.detachFromTranslation = function () {
+                    if (this.isTranslated()) {
+                        this.translation.detachFromAsset(this.text, this);
+                    }
                 };
                 TextContent.PARAMETER_TEXT = "text";
                 return TextContent;
@@ -4948,6 +5021,29 @@ var __extends = (this && this.__extends) || function (d, b) {
 (function (Ompluscript) {
     var View;
     (function (View) {
+        var Container;
+        (function (Container) {
+            "use strict";
+            var Box = (function (_super) {
+                __extends(Box, _super);
+                function Box(name, layout, children, styles) {
+                    if (layout === void 0) { layout = undefined; }
+                    if (children === void 0) { children = undefined; }
+                    if (styles === void 0) { styles = undefined; }
+                    _super.call(this, name, layout, children, styles);
+                    this.addClass(Box.CLASS_BOX);
+                }
+                Box.TYPE_BOX = Box["name"];
+                Box.CLASS_BOX = "box";
+                return Box;
+            }(Container.Container));
+            Container.Box = Box;
+        })(Container = View.Container || (View.Container = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
         var Configuration;
         (function (Configuration) {
             var Container;
@@ -4963,7 +5059,6 @@ var __extends = (this && this.__extends) || function (d, b) {
                     ContainerConfiguration.prototype.getErrors = function (definition) {
                         var errors = _super.prototype.getErrors.call(this, definition);
                         errors.push(this.shouldBeArray(definition, Container.PARAMETER_CHILDREN));
-                        errors = this.filterErrors(errors);
                         if (Array.isArray(definition[Container.PARAMETER_CHILDREN])) {
                             errors.push.apply(errors, _super.prototype.getErrorsForChildren.call(this, definition, Container.PARAMETER_CHILDREN, Ompluscript.View.Creator.getInstance()));
                         }
@@ -5383,6 +5478,397 @@ var __extends = (this && this.__extends) || function (d, b) {
             (function (Container_12) {
                 "use strict";
                 var Configuration = Ompluscript.Core.Configuration.Configuration;
+                var Box = Ompluscript.View.Container.Box;
+                var Component = Ompluscript.View.Component.Component;
+                var Container = Ompluscript.View.Container.Container;
+                var ErrorConfiguration = Ompluscript.Core.Configuration.ErrorConfiguration;
+                var NullLayoutConfiguration = Ompluscript.View.Configuration.Layout.NullLayoutConfiguration;
+                var RelativeLayoutConfiguration = Ompluscript.View.Configuration.Layout.RelativeLayoutConfiguration;
+                var LinearLayoutConfiguration = Ompluscript.View.Configuration.Layout.LinearLayoutConfiguration;
+                var TableLayoutConfiguration = Ompluscript.View.Configuration.Layout.TableLayoutConfiguration;
+                var CheckBoxInputConfiguration = Ompluscript.View.Configuration.Field.CheckBoxInputConfiguration;
+                var EmailInputConfiguration = Ompluscript.View.Configuration.Field.EmailInputConfiguration;
+                var NumberInputConfiguration = Ompluscript.View.Configuration.Field.NumberInputConfiguration;
+                var PasswordInputConfiguration = Ompluscript.View.Configuration.Field.PasswordInputConfiguration;
+                var TextInputConfiguration = Ompluscript.View.Configuration.Field.TextInputConfiguration;
+                var DateInputConfiguration = Ompluscript.View.Configuration.Field.DateInputConfiguration;
+                var ParagraphConfiguration = Ompluscript.View.Configuration.Field.ParagraphConfiguration;
+                var HeaderConfiguration = Ompluscript.View.Configuration.Field.HeaderConfiguration;
+                var PageLinkConfiguration = Ompluscript.View.Configuration.Field.PageLinkConfiguration;
+                var ButtonConfiguration = Ompluscript.View.Configuration.Field.ButtonConfiguration;
+                var LabelConfiguration = Ompluscript.View.Configuration.Field.LabelConfiguration;
+                var BoxConfiguration = (function (_super) {
+                    __extends(BoxConfiguration, _super);
+                    function BoxConfiguration() {
+                        var layouts = [
+                            NullLayoutConfiguration,
+                            RelativeLayoutConfiguration,
+                            LinearLayoutConfiguration,
+                            TableLayoutConfiguration,
+                            ErrorConfiguration,
+                        ];
+                        var children = [
+                            CheckBoxInputConfiguration,
+                            EmailInputConfiguration,
+                            NumberInputConfiguration,
+                            PasswordInputConfiguration,
+                            TextInputConfiguration,
+                            DateInputConfiguration,
+                            ParagraphConfiguration,
+                            ButtonConfiguration,
+                            HeaderConfiguration,
+                            LabelConfiguration,
+                            PageLinkConfiguration,
+                            Container_12.ListConfiguration,
+                            ErrorConfiguration,
+                        ];
+                        var configurations = {};
+                        configurations[Container.PARAMETER_LAYOUT] = layouts;
+                        configurations[Container.PARAMETER_CHILDREN] = children;
+                        _super.call(this, configurations);
+                    }
+                    BoxConfiguration.prototype.isRelatedTo = function (definition) {
+                        return definition[Configuration.PARAMETER_TYPE] === Box.TYPE_BOX;
+                    };
+                    BoxConfiguration.prototype.getErrors = function (definition) {
+                        return this.filterErrors(_super.prototype.getErrors.call(this, definition));
+                    };
+                    BoxConfiguration.prototype.create = function (definition, children) {
+                        if (children === void 0) { children = undefined; }
+                        var name = definition[Configuration.PARAMETER_NAME];
+                        var layout = _super.prototype.createChild.call(this, definition, Container.PARAMETER_LAYOUT);
+                        if (children === undefined) {
+                            children = _super.prototype.createChildren.call(this, definition, Container.PARAMETER_CHILDREN, Ompluscript.View.Creator.getInstance());
+                        }
+                        var styles = definition[Component.PARAMETER_STYLES];
+                        return new Box(name, layout, children, styles);
+                    };
+                    return BoxConfiguration;
+                }(Container_12.ContainerConfiguration));
+                Container_12.BoxConfiguration = BoxConfiguration;
+            })(Container = Configuration_39.Container || (Configuration_39.Container = {}));
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Container;
+        (function (Container) {
+            "use strict";
+            var Label = Ompluscript.View.Field.Label;
+            var AttributeEvent = Ompluscript.Model.Event.AttributeEvent;
+            var OnInvalidAttribute = Ompluscript.Model.Event.OnInvalidAttribute;
+            var OnUpdateAttribute = Ompluscript.Model.Event.OnUpdateAttribute;
+            var InputContainer = (function (_super) {
+                __extends(InputContainer, _super);
+                function InputContainer(input) {
+                    var label = new Label(input.getName() + "Error");
+                    var children = [label, input];
+                    _super.call(this, input.getName(), undefined, children);
+                    this.addClass(InputContainer.CLASS_INPUT_CONTAINER);
+                    this.label = label;
+                    this.input = input;
+                    input.getBindingAttribute().addObserverByType(this, AttributeEvent.ON_INVALID_ATTRIBUTE);
+                    input.getBindingAttribute().addObserverByType(this, AttributeEvent.ON_UPDATE_ATTRIBUTE);
+                }
+                InputContainer.prototype.update = function (event) {
+                    if (event instanceof OnInvalidAttribute) {
+                        var onInvalidAttribute = event;
+                        this.label.setTextAsset(this.name + "." + onInvalidAttribute.getValidationCode());
+                        this.label.addClass(InputContainer.CLASS_SHOW);
+                    }
+                    else if (event instanceof OnUpdateAttribute) {
+                        if (this.input.getBindingAttribute().validate()) {
+                            this.label.removeClass(InputContainer.CLASS_SHOW);
+                        }
+                    }
+                };
+                InputContainer.prototype.clearError = function () {
+                    this.label.removeClass(InputContainer.CLASS_SHOW);
+                };
+                InputContainer.CLASS_INPUT_CONTAINER = "input-container";
+                InputContainer.CLASS_SHOW = "show";
+                return InputContainer;
+            }(Container.Container));
+            Container.InputContainer = InputContainer;
+        })(Container = View.Container || (View.Container = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Event;
+        (function (Event) {
+            "use strict";
+            var OEvent = Ompluscript.Core.Observer.OEvent;
+            var FormEvent = (function (_super) {
+                __extends(FormEvent, _super);
+                function FormEvent(sender, type, response) {
+                    _super.call(this, sender, type);
+                    this.response = response;
+                }
+                FormEvent.prototype.getResponse = function () {
+                    return this.response;
+                };
+                FormEvent.ON_FORM_SUBMIT = "onFormSubmit";
+                FormEvent.ON_FORM_FAIL = "onFormFail";
+                return FormEvent;
+            }(OEvent));
+            Event.FormEvent = FormEvent;
+        })(Event = View.Event || (View.Event = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Event;
+        (function (Event) {
+            "use strict";
+            var OnFormFail = (function (_super) {
+                __extends(OnFormFail, _super);
+                function OnFormFail(sender, response) {
+                    _super.call(this, sender, Event.FormEvent.ON_FORM_FAIL, response);
+                }
+                return OnFormFail;
+            }(Event.FormEvent));
+            Event.OnFormFail = OnFormFail;
+        })(Event = View.Event || (View.Event = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Event;
+        (function (Event) {
+            "use strict";
+            var OnFormSubmit = (function (_super) {
+                __extends(OnFormSubmit, _super);
+                function OnFormSubmit(sender, response) {
+                    _super.call(this, sender, Event.FormEvent.ON_FORM_SUBMIT, response);
+                }
+                return OnFormSubmit;
+            }(Event.FormEvent));
+            Event.OnFormSubmit = OnFormSubmit;
+        })(Event = View.Event || (View.Event = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Container;
+        (function (Container) {
+            "use strict";
+            var Button = Ompluscript.View.Field.Button;
+            var FieldEvent = Ompluscript.View.Event.FieldEvent;
+            var OnFieldClick = Ompluscript.View.Event.OnFieldClick;
+            var OnDoneProxy = Ompluscript.Model.Event.OnDoneProxy;
+            var AjaxProxy = Ompluscript.Model.Proxy.AjaxProxy;
+            var OnFormSubmit = Ompluscript.View.Event.OnFormSubmit;
+            var OnFormFail = Ompluscript.View.Event.OnFormFail;
+            var FormEvent = Ompluscript.View.Event.FormEvent;
+            var Label = Ompluscript.View.Field.Label;
+            var Form = (function (_super) {
+                __extends(Form, _super);
+                function Form(name, layout, proxy, buttonAsset, model, inputs, styles) {
+                    if (layout === void 0) { layout = undefined; }
+                    if (inputs === void 0) { inputs = undefined; }
+                    if (styles === void 0) { styles = undefined; }
+                    var button = new Button(name + "Submit", buttonAsset);
+                    var containers = [];
+                    var label = new Label(name + "Status");
+                    containers.push(label);
+                    for (var i = 0; i < inputs.length; i++) {
+                        containers.push(new Container.InputContainer(inputs[i]));
+                    }
+                    containers.push(button);
+                    _super.call(this, name, layout, containers, styles);
+                    this.addClass(Form.CLASS_FORM);
+                    this.proxy = proxy;
+                    this.model = model;
+                    this.button = button;
+                    this.label = label;
+                    this.button.addObserverByType(this, FieldEvent.ON_FIELD_CLICK);
+                    this.model.addObserverByType(this, OnDoneProxy.ON_DONE_PROXY);
+                }
+                Form.prototype.update = function (event) {
+                    if (event instanceof OnFieldClick) {
+                        this.submit();
+                    }
+                    else if (event instanceof OnDoneProxy) {
+                        var onDoneProxy = event;
+                        this.handleResponse(onDoneProxy);
+                    }
+                };
+                Form.prototype.setStatusAsset = function (asset) {
+                    this.label.setTextAsset(asset);
+                    this.label.addClass(Form.CLASS_STATUS);
+                };
+                Form.prototype.reset = function () {
+                    this.model.resetValues();
+                    this.label.removeClass(Form.CLASS_STATUS);
+                    for (var i = 0; i < this.children.length; i++) {
+                        if (this.children[i] instanceof Container.InputContainer) {
+                            this.children[i].clearError();
+                        }
+                    }
+                };
+                Form.prototype.attachOnFormSubmitEvent = function (observer, callback) {
+                    this.addGenericObserverByType(observer, FormEvent.ON_FORM_SUBMIT, callback);
+                };
+                Form.prototype.attachOnFormFailEvent = function (observer, callback) {
+                    this.addGenericObserverByType(observer, FormEvent.ON_FORM_FAIL, callback);
+                };
+                Form.prototype.submit = function () {
+                    if (this.model.validate() === true) {
+                        switch (this.proxy) {
+                            case OnDoneProxy.TYPE_SAVED:
+                                this.model.getProxy(AjaxProxy.TYPE_AJAX_PROXY).save();
+                                break;
+                            case OnDoneProxy.TYPE_UPDATED:
+                                this.model.getProxy(AjaxProxy.TYPE_AJAX_PROXY).update();
+                                break;
+                            case OnDoneProxy.TYPE_DELETED:
+                                this.model.getProxy(AjaxProxy.TYPE_AJAX_PROXY).delete();
+                                break;
+                            default:
+                                return;
+                        }
+                    }
+                };
+                Form.prototype.handleResponse = function (onDoneProxy) {
+                    if (onDoneProxy.getAction() === this.proxy) {
+                        this.setStatusAsset(this.name + "." + this.proxy);
+                        this.fireOnFormSubmitEvent(onDoneProxy.getResponse());
+                    }
+                    else if (onDoneProxy.getAction() === OnDoneProxy.TYPE_FAILED) {
+                        this.setStatusAsset(this.name + "." + OnDoneProxy.TYPE_FAILED);
+                        this.fireOnFormFailEvent(onDoneProxy.getResponse());
+                    }
+                };
+                Form.prototype.fireOnFormSubmitEvent = function (response) {
+                    var event = new OnFormSubmit(this, response);
+                    this.notifyObservers(event);
+                };
+                Form.prototype.fireOnFormFailEvent = function (response) {
+                    var event = new OnFormFail(this, response);
+                    this.notifyObservers(event);
+                };
+                Form.TYPE_FORM = Form["name"];
+                Form.PARAMETER_MODEL = "model";
+                Form.PARAMETER_PROXY = "proxy";
+                Form.PARAMETER_BUTTON_ASSET = "buttonAsset";
+                Form.CLASS_FORM = "form";
+                Form.CLASS_STATUS = "status";
+                return Form;
+            }(Container.Container));
+            Container.Form = Form;
+        })(Container = View.Container || (View.Container = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Configuration;
+        (function (Configuration_40) {
+            var Container;
+            (function (Container_13) {
+                "use strict";
+                var Configuration = Ompluscript.Core.Configuration.Configuration;
+                var Form = Ompluscript.View.Container.Form;
+                var Component = Ompluscript.View.Component.Component;
+                var Container = Ompluscript.View.Container.Container;
+                var ErrorConfiguration = Ompluscript.Core.Configuration.ErrorConfiguration;
+                var NullLayoutConfiguration = Ompluscript.View.Configuration.Layout.NullLayoutConfiguration;
+                var RelativeLayoutConfiguration = Ompluscript.View.Configuration.Layout.RelativeLayoutConfiguration;
+                var LinearLayoutConfiguration = Ompluscript.View.Configuration.Layout.LinearLayoutConfiguration;
+                var TableLayoutConfiguration = Ompluscript.View.Configuration.Layout.TableLayoutConfiguration;
+                var CheckBoxInputConfiguration = Ompluscript.View.Configuration.Field.CheckBoxInputConfiguration;
+                var EmailInputConfiguration = Ompluscript.View.Configuration.Field.EmailInputConfiguration;
+                var NumberInputConfiguration = Ompluscript.View.Configuration.Field.NumberInputConfiguration;
+                var PasswordInputConfiguration = Ompluscript.View.Configuration.Field.PasswordInputConfiguration;
+                var TextInputConfiguration = Ompluscript.View.Configuration.Field.TextInputConfiguration;
+                var DateInputConfiguration = Ompluscript.View.Configuration.Field.DateInputConfiguration;
+                var ModelConfiguration = Ompluscript.Model.Configuration.Container.ModelConfiguration;
+                var FormConfiguration = (function (_super) {
+                    __extends(FormConfiguration, _super);
+                    function FormConfiguration() {
+                        var layouts = [
+                            NullLayoutConfiguration,
+                            RelativeLayoutConfiguration,
+                            LinearLayoutConfiguration,
+                            TableLayoutConfiguration,
+                            ErrorConfiguration,
+                        ];
+                        var children = [
+                            CheckBoxInputConfiguration,
+                            EmailInputConfiguration,
+                            NumberInputConfiguration,
+                            PasswordInputConfiguration,
+                            TextInputConfiguration,
+                            DateInputConfiguration,
+                            ErrorConfiguration,
+                        ];
+                        var model = [
+                            ModelConfiguration,
+                        ];
+                        var configurations = {};
+                        configurations[Container.PARAMETER_LAYOUT] = layouts;
+                        configurations[Container.PARAMETER_CHILDREN] = children;
+                        configurations[Form.PARAMETER_MODEL] = model;
+                        _super.call(this, configurations);
+                    }
+                    FormConfiguration.prototype.isRelatedTo = function (definition) {
+                        return definition[Configuration.PARAMETER_TYPE] === Form.TYPE_FORM;
+                    };
+                    FormConfiguration.prototype.getErrors = function (definition) {
+                        var errors = _super.prototype.getErrors.call(this, definition);
+                        errors.push(this.shouldBeStringOrObject(definition, Form.PARAMETER_MODEL));
+                        if (typeof definition[Form.PARAMETER_MODEL] === "object") {
+                            errors.push.apply(errors, _super.prototype.getErrorsForChildren.call(this, definition, Form.PARAMETER_MODEL));
+                        }
+                        errors.push(this.mustBeString(definition, Form.PARAMETER_PROXY));
+                        errors.push(this.mustBeString(definition, Form.PARAMETER_BUTTON_ASSET));
+                        errors = this.filterErrors(errors);
+                        return this.filterErrors(errors);
+                    };
+                    FormConfiguration.prototype.create = function (definition) {
+                        var name = definition[Configuration.PARAMETER_NAME];
+                        var layout = _super.prototype.createChild.call(this, definition, Container.PARAMETER_LAYOUT);
+                        var model = _super.prototype.createChild.call(this, definition, Form.PARAMETER_MODEL, Ompluscript.Model.Creator.getInstance());
+                        var styles = definition[Component.PARAMETER_STYLES];
+                        var proxy = definition[Form.PARAMETER_PROXY];
+                        var buttonAsset = definition[Form.PARAMETER_BUTTON_ASSET];
+                        var inputs = [];
+                        var children = definition[Form.PARAMETER_CHILDREN];
+                        var configurations = this.configurations[Form.PARAMETER_CHILDREN];
+                        for (var i = 0; i < children.length; i++) {
+                            for (var j = 0; j < configurations.length; j++) {
+                                var configuration = Configuration.getInstance(configurations[j]);
+                                if (configuration.isRelatedTo(children[i])) {
+                                    inputs.push(configuration.create(children[i], model.getAttribute(children[i][Configuration.PARAMETER_NAME])));
+                                    break;
+                                }
+                            }
+                        }
+                        return new Form(name, layout, proxy, buttonAsset, model, inputs, styles);
+                    };
+                    return FormConfiguration;
+                }(Container_13.ContainerConfiguration));
+                Container_13.FormConfiguration = FormConfiguration;
+            })(Container = Configuration_40.Container || (Configuration_40.Container = {}));
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Configuration;
+        (function (Configuration_41) {
+            var Container;
+            (function (Container_14) {
+                "use strict";
+                var Configuration = Ompluscript.Core.Configuration.Configuration;
                 var Navigation = Ompluscript.View.Container.Navigation;
                 var Component = Ompluscript.View.Component.Component;
                 var Container = Ompluscript.View.Container.Container;
@@ -5391,7 +5877,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     __extends(NavigationConfiguration, _super);
                     function NavigationConfiguration() {
                         var children = [
-                            Container_12.ListConfiguration,
+                            Container_14.ListConfiguration,
                             ErrorConfiguration,
                         ];
                         var configurations = {};
@@ -5414,9 +5900,9 @@ var __extends = (this && this.__extends) || function (d, b) {
                         return new Navigation(children, styles);
                     };
                     return NavigationConfiguration;
-                }(Container_12.ContainerConfiguration));
-                Container_12.NavigationConfiguration = NavigationConfiguration;
-            })(Container = Configuration_39.Container || (Configuration_39.Container = {}));
+                }(Container_14.ContainerConfiguration));
+                Container_14.NavigationConfiguration = NavigationConfiguration;
+            })(Container = Configuration_41.Container || (Configuration_41.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -5424,9 +5910,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_40) {
+        (function (Configuration_42) {
             var Container;
-            (function (Container_13) {
+            (function (Container_15) {
                 "use strict";
                 var Configuration = Ompluscript.Core.Configuration.Configuration;
                 var Page = Ompluscript.View.Container.Page;
@@ -5470,7 +5956,9 @@ var __extends = (this && this.__extends) || function (d, b) {
                             HeaderConfiguration,
                             LabelConfiguration,
                             PageLinkConfiguration,
-                            Container_13.ListConfiguration,
+                            Container_15.ListConfiguration,
+                            Container_15.BoxConfiguration,
+                            Container_15.FormConfiguration,
                             ErrorConfiguration,
                         ];
                         var configurations = {};
@@ -5495,9 +5983,9 @@ var __extends = (this && this.__extends) || function (d, b) {
                         return new Page(name, layout, children, styles);
                     };
                     return PageConfiguration;
-                }(Container_13.ContainerConfiguration));
-                Container_13.PageConfiguration = PageConfiguration;
-            })(Container = Configuration_40.Container || (Configuration_40.Container = {}));
+                }(Container_15.ContainerConfiguration));
+                Container_15.PageConfiguration = PageConfiguration;
+            })(Container = Configuration_42.Container || (Configuration_42.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -5522,6 +6010,8 @@ var __extends = (this && this.__extends) || function (d, b) {
         var ButtonConfiguration = Ompluscript.View.Configuration.Field.ButtonConfiguration;
         var NavigationConfiguration = Ompluscript.View.Configuration.Container.NavigationConfiguration;
         var LabelConfiguration = Ompluscript.View.Configuration.Field.LabelConfiguration;
+        var BoxConfiguration = Ompluscript.View.Configuration.Container.BoxConfiguration;
+        var FormConfiguration = Ompluscript.View.Configuration.Container.FormConfiguration;
         var Creator = (function (_super) {
             __extends(Creator, _super);
             function Creator() {
@@ -5540,6 +6030,8 @@ var __extends = (this && this.__extends) || function (d, b) {
                     PageLinkConfiguration,
                     PageConfiguration,
                     NavigationConfiguration,
+                    BoxConfiguration,
+                    FormConfiguration,
                 ];
                 _super.call(this, configurations);
                 this.pages = [];

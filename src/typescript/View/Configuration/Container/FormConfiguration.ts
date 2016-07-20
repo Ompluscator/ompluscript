@@ -1,28 +1,24 @@
 /// <reference path="../../../Core/Interfaces/IBase.ts" />
 /// <reference path="../../Component/Component.ts" />
-/// <reference path="../../Container/Page.ts" />
+/// <reference path="../../Container/Form.ts" />
 /// <reference path="../../../Core/Configuration/Configuration.ts" />
 /// <reference path="../../Container/Container.ts" />
 /// <reference path="../../Layout/Layout.ts" />
+/// <reference path="../../Field/Input.ts" />
 /// <reference path="ContainerConfiguration.ts" />
-/// <reference path="ListConfiguration.ts" />
-/// <reference path="BoxConfiguration.ts" />
-/// <reference path="FormConfiguration.ts" />
 /// <reference path="../Field/CheckBoxInputConfiguration.ts" />
 /// <reference path="../Field/EmailInputConfiguration.ts" />
 /// <reference path="../Field/NumberInputConfiguration.ts" />
 /// <reference path="../Field/PasswordInputConfiguration.ts" />
 /// <reference path="../Field/TextInputConfiguration.ts" />
 /// <reference path="../Field/DateInputConfiguration.ts" />
-/// <reference path="../Field/ParagraphConfiguration.ts" />
-/// <reference path="../Field/ButtonConfiguration.ts" />
-/// <reference path="../Field/HeaderConfiguration.ts" />
-/// <reference path="../Field/PageLinkConfiguration.ts" />
-/// <reference path="../Field/LabelConfiguration.ts" />
+/// <reference path="../Field/InputConfiguration.ts" />
 /// <reference path="../Layout/NullLayoutConfiguration.ts" />
 /// <reference path="../Layout/RelativeLayoutConfiguration.ts" />
 /// <reference path="../Layout/LinearLayoutConfiguration.ts" />
 /// <reference path="../Layout/TableLayoutConfiguration.ts" />
+/// <reference path="../../../Model/Configuration/Container/ModelConfiguration.ts" />
+/// <reference path="../../../Model/Container/Model.ts" />
 /**
  * Module that contains containers' configuration classes.
  *
@@ -32,7 +28,7 @@ module Ompluscript.View.Configuration.Container {
     "use strict";
     
     import Configuration = Ompluscript.Core.Configuration.Configuration;
-    import Page = Ompluscript.View.Container.Page;
+    import Form = Ompluscript.View.Container.Form;
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import Component = Ompluscript.View.Component.Component;
     import Container = Ompluscript.View.Container.Container;
@@ -48,18 +44,17 @@ module Ompluscript.View.Configuration.Container {
     import PasswordInputConfiguration = Ompluscript.View.Configuration.Field.PasswordInputConfiguration;
     import TextInputConfiguration = Ompluscript.View.Configuration.Field.TextInputConfiguration;
     import DateInputConfiguration = Ompluscript.View.Configuration.Field.DateInputConfiguration;
-    import ParagraphConfiguration = Ompluscript.View.Configuration.Field.ParagraphConfiguration;
-    import HeaderConfiguration = Ompluscript.View.Configuration.Field.HeaderConfiguration;
-    import PageLinkConfiguration = Ompluscript.View.Configuration.Field.PageLinkConfiguration;
-    import ButtonConfiguration = Ompluscript.View.Configuration.Field.ButtonConfiguration;
-    import LabelConfiguration = Ompluscript.View.Configuration.Field.LabelConfiguration;
+    import ModelConfiguration = Ompluscript.Model.Configuration.Container.ModelConfiguration;
+    import Model = Ompluscript.Model.Container.Model;
+    import Input = Ompluscript.View.Field.Input;
+    import InputConfiguration = Ompluscript.View.Configuration.Field.InputConfiguration;
 
     /**
-     * Class that contains functionality for page configuration.
+     * Class that contains functionality for form configuration.
      *
-     * @class PageConfiguration
+     * @class FormConfiguration
      */
-    export class PageConfiguration extends ContainerConfiguration {
+    export class FormConfiguration extends ContainerConfiguration {
 
         /**
          * Class constructor.
@@ -84,19 +79,15 @@ module Ompluscript.View.Configuration.Container {
                 PasswordInputConfiguration,
                 TextInputConfiguration,
                 DateInputConfiguration,
-                ParagraphConfiguration,
-                ButtonConfiguration,
-                HeaderConfiguration,
-                LabelConfiguration,
-                PageLinkConfiguration,
-                ListConfiguration,
-                BoxConfiguration,
-                FormConfiguration,
                 ErrorConfiguration,
+            ];
+            let model: Object[] = [
+                ModelConfiguration,
             ];
             let configurations: Object = {};
             configurations[Container.PARAMETER_LAYOUT] = layouts;
             configurations[Container.PARAMETER_CHILDREN] = children;
+            configurations[Form.PARAMETER_MODEL] = model;
             super(configurations);
         }
 
@@ -107,7 +98,7 @@ module Ompluscript.View.Configuration.Container {
          * @returns {boolean} Is related to this class
          */
         public isRelatedTo(definition: Object): boolean {
-            return definition[Configuration.PARAMETER_TYPE] === Page.TYPE_PAGE;
+            return definition[Configuration.PARAMETER_TYPE] === Form.TYPE_FORM;
         }
 
         /**
@@ -117,26 +108,45 @@ module Ompluscript.View.Configuration.Container {
          * @returns {string[]} List of errors
          */
         public getErrors(definition: Object): string[] {
-            return this.filterErrors(super.getErrors(definition));
+            let errors: string[] = super.getErrors(definition);
+            errors.push(this.shouldBeStringOrObject(definition, Form.PARAMETER_MODEL));
+            if (typeof definition[Form.PARAMETER_MODEL] === "object") {
+                errors.push.apply(errors, super.getErrorsForChildren(definition, Form.PARAMETER_MODEL));
+            }
+            errors.push(this.mustBeString(definition, Form.PARAMETER_PROXY));
+            errors.push(this.mustBeString(definition, Form.PARAMETER_BUTTON_ASSET));
+            errors = this.filterErrors(errors);
+            return this.filterErrors(errors);
         }
 
         /**
          * Method that creates new instance from configuration
          *
          * @param {Object} definition Class definition
-         * @param {Component[]} children List of children
          * @returns {IBase} New instance
          */
-        public create(definition: Object, children: Component[] = undefined): IBase {
+        public create(definition: Object): IBase {
             let name: string = definition[Configuration.PARAMETER_NAME];
             let layout: Layout = <Layout>super.createChild(definition, Container.PARAMETER_LAYOUT);
-            if (children === undefined) {
-                children = <Component[]>super.createChildren(
-                    definition, Container.PARAMETER_CHILDREN, Ompluscript.View.Creator.getInstance()
-                );
+            let model: Model = <Model>super.createChild(definition, Form.PARAMETER_MODEL, Ompluscript.Model.Creator.getInstance());
+            let styles: Object = definition[Component.PARAMETER_STYLES];
+            let proxy: string = definition[Form.PARAMETER_PROXY];
+            let buttonAsset: string = definition[Form.PARAMETER_BUTTON_ASSET];
+            let inputs: Input[] = [];
+            let children: Object[] = definition[Form.PARAMETER_CHILDREN];
+            let configurations: {new ()}[] = this.configurations[Form.PARAMETER_CHILDREN];
+            for (let i: number = 0; i < children.length; i++) {
+                for (let j: number = 0; j < configurations.length; j++) {
+                    let configuration: InputConfiguration = <InputConfiguration>Configuration.getInstance(configurations[j]);
+                    if (configuration.isRelatedTo(children[i])) {
+                        inputs.push(<Input>configuration.create(
+                            children[i], model.getAttribute(children[i][Configuration.PARAMETER_NAME])
+                        ));
+                        break;
+                    }
+                }
             }
-            let styles: string = definition[Component.PARAMETER_STYLES];
-            return new Page(name, layout, children, styles);
+            return new Form(name, layout, proxy, buttonAsset, model, inputs, styles);
         }
     }
 }

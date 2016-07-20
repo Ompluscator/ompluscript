@@ -24,11 +24,11 @@ describe("EmailInput class tests - events", function() {
         });
     });
 
-    it("simulate keypress - unit test", function() {
+    it("simulate keyup - unit test", function() {
         spyOn(emailInput, 'notifyObservers');
 
         var event = document.createEvent("KeyboardEvent");
-        event.initKeyboardEvent("keypress", true, true, null, false, false, false, false, 65, 0);
+        event.initKeyboardEvent("keyup", true, true, null, false, false, false, false, 65, 0);
         emailInput.render().dispatchEvent(event);
 
         var onUpdateInput = new OnUpdateInput(emailInput, emailInput.getValue());
@@ -43,7 +43,7 @@ describe("EmailInput class tests - events", function() {
         emailInput.setValue("value");
 
         expect(emailInput.getStackTrace()).toEqual({
-            html: '<input type="email" name="param" class="input" value="value">',
+            html: '<input type="email" name="param" class="input">',
             name: "param",
             attribute: stringObject.getStackTrace(),
         });
@@ -55,18 +55,18 @@ describe("EmailInput class tests - events", function() {
         emailInput.setValue("value");
 
         expect(emailInput.getStackTrace()).toEqual({
-            html: '<input type="email" name="param" class="input" value="value">',
+            html: '<input type="email" name="param" class="input">',
             name: "param",
             attribute: stringObject.getStackTrace(),
         });
         expect(stringObject.getValue()).toBe("value");
     });
 
-    it("simulate keypress - functional test", function() {
+    it("simulate keyup - functional test", function() {
         spyOn(stringObject, 'setValue');
 
         var event = document.createEvent("KeyboardEvent");
-        event.initKeyboardEvent("keypress", true, true, null, false, false, false, false, 65, 0);
+        event.initKeyboardEvent("keyup", true, true, null, false, false, false, false, 65, 0);
         emailInput.render().dispatchEvent(event);
 
         expect(stringObject.setValue.calls.argsFor(0)).toEqual([emailInput.getValue()]);
@@ -83,17 +83,15 @@ describe("EmailInput class tests - events", function() {
     });
 
     it("set attributes", function() {
-        emailInput.setAttribute(Input.ATTRIBUTE_VALUE, "value");
         emailInput.setId("id");
         emailInput.addClass("class");
         emailInput.removeClass("input");
 
         expect(emailInput.getStackTrace()).toEqual({
-            html: '<input type="email" name="param" class="class" value="value" id="id">',
+            html: '<input type="email" name="param" class="class" id="id">',
             name: "param",
             attribute: stringObject.getStackTrace(),
         });
-        expect(emailInput.getAttribute(Input.ATTRIBUTE_VALUE)).toBe("value");
         expect(emailInput.getId()).toBe("id");
         expect(emailInput.getAttribute(Input.ATTRIBUTE_CLASS)).toBe("class");
     });

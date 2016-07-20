@@ -218,6 +218,17 @@ module Ompluscript.Model.Container {
         }
 
         /**
+         * Method that reset values in container.
+         *
+         * @returns {Object}
+         */
+        public resetValues(): void {
+            for (let i: number = 0; i < this.rows.length; i++) {
+                this.rows[i].resetValues();
+            }
+        }
+
+        /**
          * Method that fires event when new row is added
          *
          * @param {number} index Index of new row

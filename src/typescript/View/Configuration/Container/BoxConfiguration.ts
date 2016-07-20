@@ -1,13 +1,11 @@
 /// <reference path="../../../Core/Interfaces/IBase.ts" />
 /// <reference path="../../Component/Component.ts" />
-/// <reference path="../../Container/Page.ts" />
+/// <reference path="../../Container/Box.ts" />
 /// <reference path="../../../Core/Configuration/Configuration.ts" />
 /// <reference path="../../Container/Container.ts" />
 /// <reference path="../../Layout/Layout.ts" />
 /// <reference path="ContainerConfiguration.ts" />
 /// <reference path="ListConfiguration.ts" />
-/// <reference path="BoxConfiguration.ts" />
-/// <reference path="FormConfiguration.ts" />
 /// <reference path="../Field/CheckBoxInputConfiguration.ts" />
 /// <reference path="../Field/EmailInputConfiguration.ts" />
 /// <reference path="../Field/NumberInputConfiguration.ts" />
@@ -32,7 +30,7 @@ module Ompluscript.View.Configuration.Container {
     "use strict";
     
     import Configuration = Ompluscript.Core.Configuration.Configuration;
-    import Page = Ompluscript.View.Container.Page;
+    import Box = Ompluscript.View.Container.Box;
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import Component = Ompluscript.View.Component.Component;
     import Container = Ompluscript.View.Container.Container;
@@ -55,11 +53,11 @@ module Ompluscript.View.Configuration.Container {
     import LabelConfiguration = Ompluscript.View.Configuration.Field.LabelConfiguration;
 
     /**
-     * Class that contains functionality for page configuration.
+     * Class that contains functionality for box configuration.
      *
-     * @class PageConfiguration
+     * @class BoxConfiguration
      */
-    export class PageConfiguration extends ContainerConfiguration {
+    export class BoxConfiguration extends ContainerConfiguration {
 
         /**
          * Class constructor.
@@ -90,8 +88,6 @@ module Ompluscript.View.Configuration.Container {
                 LabelConfiguration,
                 PageLinkConfiguration,
                 ListConfiguration,
-                BoxConfiguration,
-                FormConfiguration,
                 ErrorConfiguration,
             ];
             let configurations: Object = {};
@@ -107,7 +103,7 @@ module Ompluscript.View.Configuration.Container {
          * @returns {boolean} Is related to this class
          */
         public isRelatedTo(definition: Object): boolean {
-            return definition[Configuration.PARAMETER_TYPE] === Page.TYPE_PAGE;
+            return definition[Configuration.PARAMETER_TYPE] === Box.TYPE_BOX;
         }
 
         /**
@@ -136,7 +132,7 @@ module Ompluscript.View.Configuration.Container {
                 );
             }
             let styles: string = definition[Component.PARAMETER_STYLES];
-            return new Page(name, layout, children, styles);
+            return new Box(name, layout, children, styles);
         }
     }
 }

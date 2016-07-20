@@ -29,7 +29,6 @@ module Ompluscript.View.Configuration.Container {
         public getErrors(definition: Object): string[] {
             let errors: string[] = super.getErrors(definition);
             errors.push(this.shouldBeArray(definition, Container.PARAMETER_CHILDREN));
-            errors = this.filterErrors(errors);
             if (Array.isArray(definition[Container.PARAMETER_CHILDREN])) {
                 errors.push.apply(errors, super.getErrorsForChildren(
                     definition, Container.PARAMETER_CHILDREN, Ompluscript.View.Creator.getInstance())

@@ -90,6 +90,23 @@ module Ompluscript.Model.Container {
         }
 
         /**
+         * Method that removes observer for the asset.
+         *
+         * @param {string} name Name of asset
+         * @param {IObserver} observer Observer for fetching asset
+         */
+        public detachFromAsset(name: string, observer: IObserver): void {
+            if (!this.observers.hasOwnProperty(name)) {
+                return;
+            }
+            let index: number = this.observers[name].indexOf(observer);
+            this.observers[name].splice(index, 1);
+            if (this.observers[name].length === 0) {
+                delete this.observers[name];
+            }
+        }
+
+        /**
          * Method that returns if there is a asset in the list
          *
          * @param {string} name Name of asset
@@ -185,6 +202,19 @@ module Ompluscript.Model.Container {
                 }
             }
             return values;
+        }
+
+        /**
+         * Method that reset values in container.
+         *
+         * @returns {Object}
+         */
+        public resetValues(): void {
+            for (let key in this.assets) {
+                if (this.assets.hasOwnProperty(key)) {
+                    this.assets[key].setValue(key);
+                }
+            }
         }
 
         /**

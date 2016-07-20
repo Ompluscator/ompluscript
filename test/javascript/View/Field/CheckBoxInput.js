@@ -24,7 +24,7 @@ describe("CheckBoxInput class tests", function() {
         });
     });
 
-    it("simulate keypress - unit test", function() {
+    it("simulate keyup - unit test", function() {
         spyOn(checkBoxInput, 'notifyObservers');
 
         var event = document.createEvent("HTMLEvents");

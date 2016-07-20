@@ -5,6 +5,8 @@
 /// <reference path="Configuration/Container/PageConfiguration.ts" />
 /// <reference path="Configuration/Container/ListConfiguration.ts" />
 /// <reference path="Configuration/Container/NavigationConfiguration.ts" />
+/// <reference path="Configuration/Container/BoxConfiguration.ts" />
+/// <reference path="Configuration/Container/FormConfiguration.ts" />
 /// <reference path="Configuration/Field/CheckBoxInputConfiguration.ts" />
 /// <reference path="Configuration/Field/EmailInputConfiguration.ts" />
 /// <reference path="Configuration/Field/NumberInputConfiguration.ts" />
@@ -43,6 +45,8 @@ module Ompluscript.View {
     import ButtonConfiguration = Ompluscript.View.Configuration.Field.ButtonConfiguration;
     import NavigationConfiguration = Ompluscript.View.Configuration.Container.NavigationConfiguration;
     import LabelConfiguration = Ompluscript.View.Configuration.Field.LabelConfiguration;
+    import BoxConfiguration = Ompluscript.View.Configuration.Container.BoxConfiguration;
+    import FormConfiguration = Ompluscript.View.Configuration.Container.FormConfiguration;
 
     /**
      * Class that contains functionality for model creator.
@@ -94,6 +98,8 @@ module Ompluscript.View {
                 PageLinkConfiguration,
                 PageConfiguration,
                 NavigationConfiguration,
+                BoxConfiguration,
+                FormConfiguration,
             ];
             super(configurations);
             this.pages = [];

@@ -56,7 +56,13 @@ Ompluscript.View.define({
                         "relative_layout_link",
                         "table_layout_link"
                     ]
-                }
+                },
+                {
+                    type: "PageLink",
+                    name: "form",
+                    text: "text_form_title",
+                    page: "form"
+                },
             ]
         }
     ]

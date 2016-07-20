@@ -49,9 +49,19 @@ module Ompluscript.View.Field {
         constructor(name: string, text: string, styles: Object = {}) {
             super(name, styles);
             this.text = text;
-            if (this.isTranslated()) {
-                this.translation.attachToAsset(text, this);
-            }
+            this.attachToTranslation();
+        }
+
+        /**
+         * Method that sets name of assets for translation and attach it
+         * to translation container.
+         *
+         * @param {string} text Name of asset
+         */
+        public setTextAsset(text: string): void {
+            this.detachFromTranslation();
+            this.text = text;
+            this.attachToTranslation();
         }
 
         /**
@@ -107,6 +117,23 @@ module Ompluscript.View.Field {
             this.textContent = value;
             this.htmlElement.innerHTML = this.getTextContent();
         }
-    }
 
+        /**
+         * Method attach content to translation container.
+         */
+        public attachToTranslation(): void {
+            if (this.isTranslated()) {
+                this.translation.attachToAsset(this.text, this);
+            }
+        }
+
+        /**
+         * Method detach content from translation container.
+         */
+        public detachFromTranslation(): void {
+            if (this.isTranslated()) {
+                this.translation.detachFromAsset(this.text, this);
+            }
+        }
+    }
 }

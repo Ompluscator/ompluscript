@@ -270,7 +270,9 @@ module Ompluscript.Model.Proxy {
                     }
                     let value: any = parameters[key];
                     if (Array.isArray(value)) {
-                        value += (<Array<string>>value).join(",");
+                        value = (<Array<string>>value).join(",");
+                    } else if (value === undefined) {
+                        value = "";
                     }
                     if (prefix !== undefined) {
                         key = prefix + "[" + key + "]";

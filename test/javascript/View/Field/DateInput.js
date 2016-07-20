@@ -25,11 +25,11 @@ describe("DateInput class tests - events", function() {
         });
     });
 
-    it("simulate keypress - unit test", function() {
+    it("simulate keyup - unit test", function() {
         spyOn(dateInput, 'notifyObservers');
 
         var event = document.createEvent("KeyboardEvent");
-        event.initKeyboardEvent("keypress", true, true, null, false, false, false, false, 65, 0);
+        event.initKeyboardEvent("keyup", true, true, null, false, false, false, false, 65, 0);
         dateInput.render().dispatchEvent(event);
 
         var onUpdateInput = new OnUpdateInput(dateInput, dateInput.getValue());
@@ -44,7 +44,7 @@ describe("DateInput class tests - events", function() {
         dateInput.setValue("value");
 
         expect(dateInput.getStackTrace()).toEqual({
-            html: '<input type="date" name="param" class="input" value="value">',
+            html: '<input type="date" name="param" class="input">',
             name: "param",
             attribute: datetimeObject.getStackTrace(),
         });
@@ -56,18 +56,18 @@ describe("DateInput class tests - events", function() {
         dateInput.setValue("value");
 
         expect(dateInput.getStackTrace()).toEqual({
-            html: '<input type="date" name="param" class="input" value="value">',
+            html: '<input type="date" name="param" class="input">',
             name: "param",
             attribute: datetimeObject.getStackTrace(),
         });
         expect(datetimeObject.getValue()).toBe("value");
     });
 
-    it("simulate keypress - functional test", function() {
+    it("simulate keyup - functional test", function() {
         spyOn(datetimeObject, 'setValue');
 
         var event = document.createEvent("KeyboardEvent");
-        event.initKeyboardEvent("keypress", true, true, null, false, false, false, false, 65, 0);
+        event.initKeyboardEvent("keyup", true, true, null, false, false, false, false, 65, 0);
         dateInput.render().dispatchEvent(event);
 
         expect(datetimeObject.setValue.calls.argsFor(0)).toEqual([dateInput.getValue()]);
@@ -84,17 +84,15 @@ describe("DateInput class tests - events", function() {
     });
 
     it("set attributes", function() {
-        dateInput.setAttribute(Input.ATTRIBUTE_VALUE, "value");
         dateInput.setId("id");
         dateInput.addClass("class");
         dateInput.removeClass("input");
 
         expect(dateInput.getStackTrace()).toEqual({
-            html: '<input type="date" name="param" class="class" value="value" id="id">',
+            html: '<input type="date" name="param" class="class" id="id">',
             name: "param",
             attribute: datetimeObject.getStackTrace(),
         });
-        expect(dateInput.getAttribute(Input.ATTRIBUTE_VALUE)).toBe("value");
         expect(dateInput.getId()).toBe("id");
         expect(dateInput.getAttribute(Input.ATTRIBUTE_CLASS)).toBe("class");
     });
