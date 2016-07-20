@@ -1,11 +1,21 @@
 /// <reference path="../../Core/Interfaces/IBase.ts" />
 /// <reference path="../../Core/Observer/Observable.ts" />
 
+/**
+ * Module that contains controllers
+ *
+ * @module Ompluscript.Controller.Controller
+ */
 module Ompluscript.Controller.Controller {
     "use strict";
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import Observable = Ompluscript.Core.Observer.Observable;
 
+    /**
+     * Abstract class that defines basic controller
+     *
+     * @class Controller
+     */
     export abstract class Controller extends Observable implements IBase {
 
         /**
@@ -19,12 +29,18 @@ module Ompluscript.Controller.Controller {
         public static PARAMETER_NAME: string = "name";
 
         /**
-         * @type {string} PARAMETER_HANDLERS Name of handlers parameter
+         * @type {string} name Name of controller
          */
-        public static PARAMETER_HANDLERS: string = "handlers";
-
         private name: string;
 
+        /**
+         * Class constructor.
+         * 
+         * Sets name of controller.
+         * 
+         * @param {string} name Name of controller
+         * @constructs
+         */
         constructor(name: string) {
             super();
             this.name = name;

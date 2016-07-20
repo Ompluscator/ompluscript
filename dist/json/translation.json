@@ -11,5 +11,13 @@
   "text_relative_layout_message": "Although Relative Layout is not good choice when you want to use responsive web design, still there are some cases when you want to add string position for component, like in this case: <pre>{\n  ...\n  styles:\n  {\n    top: \"50px\",\n    left: \"100px\",\n    width: \"200px\"\n  }\n}</pre>",
   "text_relative_layout_configuration": "Tu setup Relative Layout, just place next configuration as part of single container:<pre>{\n  ...\n  layout:\n  {\n    type: \"RelativeLayout\",\n  }\n}</pre>",
   "text_table_layout_title": "Table Layout",
-  "text_form_title": "Form"
+  "text_form_title": "Form",
+  "text_first_name_title": "First name",
+  "text_last_name_title": "Last name",
+  "text_user_name_title": "User name",
+  "text_email_title": "Email address",
+  "text_password_title": "Password",
+  "text_birthday_title": "Birthday",
+  "text_card_number_title": "Card number",
+  "text_register_title": "Register"
 }

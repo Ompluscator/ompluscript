@@ -1,0 +1,16 @@
+@import (reference) "../../../node_modules/less-mixins/mixins";
+
+.input[type=text],
+.input[type=date],
+.input[type=email],
+.input[type=number],
+.input[type=password] {
+  width: 100%;
+  padding: 5px;
+  .box-sizing(border-box);
+  border: none;
+  border-bottom: 1px solid;
+  outline: none;
+  background: transparent;
+  transition: all 200ms linear;
+}

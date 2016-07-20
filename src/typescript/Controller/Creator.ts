@@ -2,6 +2,7 @@
 /// <reference path="../Core/Configuration/Creator.ts" />
 /// <reference path="../Core/Configuration/ErrorConfiguration.ts" />
 /// <reference path="Configuration/Controller/ApplicationControllerConfiguration.ts" />
+/// <reference path="Controller/PageController.ts" />
 
 /**
  * Module that contains controller' classes.
@@ -15,6 +16,8 @@ module Ompluscript.Controller {
     import CreatorParent = Ompluscript.Core.Configuration.Creator;
     import ErrorConfiguration = Ompluscript.Core.Configuration.ErrorConfiguration;
     import ApplicationControllerConfiguration = Ompluscript.Controller.Configuration.Controller.ApplicationControllerConfiguration;
+    import Configuration = Ompluscript.Core.Configuration.Configuration;
+    import PageController = Ompluscript.Controller.Controller.PageController;
 
     /**
      * Class that contains functionality for model creator.
@@ -27,6 +30,11 @@ module Ompluscript.Controller {
          * @type {Creator} instance Instance for singleton pattern
          */
         private static instance: Creator;
+
+        /**
+         * @type {string[]} pageControllers List of all page controllers
+         */
+        private pageControllers: string[];
 
         /**
          * Method for singleton pattern
@@ -51,6 +59,28 @@ module Ompluscript.Controller {
                 ErrorConfiguration,
             ];
             super(configurations);
+            this.pageControllers = [];
+        }
+
+        /**
+         * Method that defines different types of containers
+         *
+         * @param {Object[]} definition Definition for container
+         */
+        public define(definition: Object): void {
+            super.define(definition);
+            if (definition[Configuration.PARAMETER_TYPE] === PageController.TYPE_PAGE_CONTROLLER) {
+                this.pageControllers.push(definition[Configuration.PARAMETER_NAME]);
+            }
+        }
+
+        /**
+         * Method that returns list of all page controllers
+         *
+         * @returns {string[]} List of all page controllers
+         */
+        public getPageControllers(): string[] {
+            return this.pageControllers;
         }
     }
 

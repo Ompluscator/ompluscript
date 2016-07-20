@@ -601,3 +601,20 @@ label {
 p {
   text-align: justify;
 }
+.input[type=text],
+.input[type=date],
+.input[type=email],
+.input[type=number],
+.input[type=password] {
+  width: 100%;
+  padding: 5px;
+  -ms-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid;
+  outline: none;
+  background: transparent;
+  transition: all 200ms linear;
+}

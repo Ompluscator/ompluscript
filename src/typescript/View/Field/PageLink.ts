@@ -81,7 +81,7 @@ module Ompluscript.View.Field {
          */
         protected handleLinking(event: OnFieldClick): void {
             event.preventDefault();
-            window.history.pushState(this.page);
+            window.history.pushState(false, this.page);
         }
     }
 }

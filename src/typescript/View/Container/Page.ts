@@ -30,6 +30,11 @@ module Ompluscript.View.Container {
         public static TYPE_PAGE: string = Page["name"];
 
         /**
+         * @type {string} PARAMETER_DEFAULT_PAGE Name of default page parameter
+         */
+        public static PARAMETER_DEFAULT_PAGE: string = "defaultPage";
+
+        /**
          * @type {string} CLASS_PAGE Class of HTML div element for page
          */
         public static CLASS_PAGE: string = "page";
@@ -40,21 +45,29 @@ module Ompluscript.View.Container {
         private active: boolean;
 
         /**
+         * @type {boolean} defaultPage Defines if page is default
+         */
+        private defaultPage: boolean;
+
+        /**
          * Class constructor.
          *
          * Calls constructor of superclass
          *
          * @param {string} name Name of container
+         * @param {boolean} defaultPage Defines if page is default
          * @param {Layout} layout Layout for container
          * @param {Component[]} children List of children components
          * @param {Object} styles Styles for container
          * @constructs
          */
-        constructor(name: string, layout: Layout = undefined, children: Component[] = undefined, styles: Object = undefined) {
+        constructor(name: string, defaultPage: boolean = false, layout: Layout = undefined,
+                    children: Component[] = undefined, styles: Object = undefined) {
             super(name, layout, children, styles);
             this.addClass(Page.CLASS_PAGE);
             this.addClass(name);
             this.active = false;
+            this.defaultPage = defaultPage;
         }
 
         /**
@@ -64,6 +77,15 @@ module Ompluscript.View.Container {
          */
         public isActive(): boolean {
             return this.active;
+        }
+
+        /**
+         * Method that returns value that defines if page is default
+         *
+         * @returns {boolean} Defines if page is default
+         */
+        public isDefaultPage(): boolean {
+            return this.defaultPage;
         }
 
         /**
@@ -105,6 +127,7 @@ module Ompluscript.View.Container {
         public getStackTrace(): Object {
             let trace: Object = super.getStackTrace();
             trace["active"] = this.active;
+            trace[Page.PARAMETER_DEFAULT_PAGE] = this.defaultPage;
             return trace;
         }
     }

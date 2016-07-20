@@ -71,7 +71,7 @@ describe("ApplicationController class tests - initialization", function() {
         });
 
         var wrongConfigurationContainer = new WrongConfigurationContainer(Creator.getInstance().getErrors()[0]);
-        var page = new Page("ApplicationController", void(0), [wrongConfigurationContainer]);
+        var page = new Page("ApplicationController", true, void(0), [wrongConfigurationContainer]);
 
         expect(Ompluscript.Controller.Controller.NavigationController.calls.argsFor(0)).toEqual([[page]]);
         expect(Ompluscript.Controller.Controller.NavigationController.calls.count()).toBe(1);
@@ -99,7 +99,7 @@ describe("ApplicationController class tests - initialization", function() {
             name: "app/page.js",
             type: "Script",
         });
-        var page = new Page("ApplicationController", void(0), [wrongConfigurationContainer]);
+        var page = new Page("ApplicationController", true, void(0), [wrongConfigurationContainer]);
 
         expect(Ompluscript.Controller.Controller.NavigationController.calls.argsFor(0)).toEqual([[page]]);
         expect(Ompluscript.Controller.Controller.NavigationController.calls.count()).toBe(1);

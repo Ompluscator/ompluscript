@@ -22,6 +22,7 @@ describe("Page class tests - initialization", function() {
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(0);
         expect(page.isActive()).toBeFalsy();
+        expect(page.isDefaultPage()).toBeFalsy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage"><div class="layout null-layout"></div></div>');
         expect(page.getStackTrace()).toEqual({
             html: '<div class="page firstPage"></div>',
@@ -32,7 +33,8 @@ describe("Page class tests - initialization", function() {
                 name: "NullLayout",
                 children: []
             },
-            active: false
+            active: false,
+            defaultPage: false
         });
     });
 
@@ -43,6 +45,7 @@ describe("Page class tests - initialization", function() {
         page.addChild(thirdInput);
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(3);
+        expect(page.isActive()).toBeFalsy();
         expect(page.isActive()).toBeFalsy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
             '<div class="layout null-layout">' +
@@ -68,7 +71,8 @@ describe("Page class tests - initialization", function() {
                     thirdInput.getStackTrace()
                 ]
             },
-            active: false
+            active: false,
+            defaultPage: false
         });
     });
 
@@ -81,6 +85,7 @@ describe("Page class tests - initialization", function() {
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(2);
         expect(page.isActive()).toBeFalsy();
+        expect(page.isActive()).toBeFalsy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
             '<div class="layout null-layout">' +
             '<input type="text" name="second" class="input">' +
@@ -102,7 +107,8 @@ describe("Page class tests - initialization", function() {
                     thirdInput.getStackTrace()
                 ]
             },
-            active: false
+            active: false,
+            defaultPage: false
         });
     });
 
@@ -115,6 +121,7 @@ describe("Page class tests - initialization", function() {
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(3);
         expect(page.isActive()).toBeFalsy();
+        expect(page.isActive()).toBeFalsy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
             '<div class="layout null-layout">' +
             '<input type="text" name="second" class="input">' +
@@ -139,7 +146,8 @@ describe("Page class tests - initialization", function() {
                     firstInput.getStackTrace()
                 ]
             },
-            active: false
+            active: false,
+            defaultPage: false
         });
     });
 
@@ -152,6 +160,7 @@ describe("Page class tests - initialization", function() {
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(0);
         expect(page.isActive()).toBeFalsy();
+        expect(page.isActive()).toBeFalsy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage"><div class="layout null-layout"></div></div>');
         expect(page.getStackTrace()).toEqual({
             html: '<div class="page firstPage"></div>',
@@ -162,14 +171,16 @@ describe("Page class tests - initialization", function() {
                 name: "NullLayout",
                 children: []
             },
-            active: false
+            active: false,
+            defaultPage: false
         });
     });
 
     it("empty with relative layout", function() {
-        page = new Page("firstPage", new RelativeLayout());
+        page = new Page("firstPage", false, new RelativeLayout());
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(0);
+        expect(page.isActive()).toBeFalsy();
         expect(page.isActive()).toBeFalsy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage"><div class="layout relative-layout"></div></div>');
         expect(page.getStackTrace()).toEqual({
@@ -181,17 +192,19 @@ describe("Page class tests - initialization", function() {
                 name: "RelativeLayout",
                 children: []
             },
-            active: false
+            active: false,
+            defaultPage: false
         });
     });
 
     it("components with relative layout", function() {
-        page = new Page("firstPage", new RelativeLayout());
+        page = new Page("firstPage", false, new RelativeLayout());
         page.addChild(firstInput);
         page.addChild(secondInput);
         page.addChild(thirdInput);
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(3);
+        expect(page.isActive()).toBeFalsy();
         expect(page.isActive()).toBeFalsy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
             '<div class="layout relative-layout">' +
@@ -217,18 +230,20 @@ describe("Page class tests - initialization", function() {
                     thirdInput.getStackTrace()
                 ]
             },
-            active: false
+            active: false,
+            defaultPage: false
         });
     });
 
     it("components with relative layout - removal", function() {
-        page = new Page("firstPage", new RelativeLayout());
+        page = new Page("firstPage", false, new RelativeLayout());
         page.addChild(firstInput);
         page.addChild(secondInput);
         page.addChild(thirdInput);
         page.removeChild(firstInput);
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(2);
+        expect(page.isActive()).toBeFalsy();
         expect(page.isActive()).toBeFalsy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
             '<div class="layout relative-layout">' +
@@ -251,18 +266,20 @@ describe("Page class tests - initialization", function() {
                     thirdInput.getStackTrace()
                 ]
             },
-            active: false
+            active: false,
+            defaultPage: false
         });
     });
 
     it("components with relative layout - switch position", function() {
-        page = new Page("firstPage", new RelativeLayout());
+        page = new Page("firstPage", false, new RelativeLayout());
         page.addChild(firstInput);
         page.addChild(secondInput);
         page.addChild(thirdInput);
         page.addChild(firstInput);
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(3);
+        expect(page.isActive()).toBeFalsy();
         expect(page.isActive()).toBeFalsy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
             '<div class="layout relative-layout">' +
@@ -288,18 +305,20 @@ describe("Page class tests - initialization", function() {
                     firstInput.getStackTrace()
                 ]
             },
-            active: false
+            active: false,
+            defaultPage: false
         });
     });
 
     it("components with relative layout - clearing", function() {
-        page = new Page("firstPage", new RelativeLayout());
+        page = new Page("firstPage", false, new RelativeLayout());
         page.addChild(firstInput);
         page.addChild(secondInput);
         page.addChild(thirdInput);
         page.clearChildren();
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(0);
+        expect(page.isActive()).toBeFalsy();
         expect(page.isActive()).toBeFalsy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage"><div class="layout relative-layout"></div></div>');
         expect(page.getStackTrace()).toEqual({
@@ -311,15 +330,17 @@ describe("Page class tests - initialization", function() {
                 name: "RelativeLayout",
                 children: []
             },
-            active: false
+            active: false,
+            defaultPage: false
         });
     });
 
     it("empty with linear layout", function() {
-        page = new Page("firstPage", new LinearLayout());
+        page = new Page("firstPage", true, new LinearLayout());
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(0);
         expect(page.isActive()).toBeFalsy();
+        expect(page.isDefaultPage()).toBeTruthy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage"><div class="layout linear-layout flex-horizontal flex-start"></div></div>');
         expect(page.getStackTrace()).toEqual({
             html: '<div class="page firstPage"></div>',
@@ -333,18 +354,20 @@ describe("Page class tests - initialization", function() {
                 direction: LinearLayout.DIRECTION_HORIZONTAL,
                 reverse: false
             },
-            active: false
+            active: false,
+            defaultPage: true
         });
     });
 
     it("components with linear layout", function() {
-        page = new Page("firstPage", new LinearLayout());
+        page = new Page("firstPage", true, new LinearLayout());
         page.addChild(firstInput);
         page.addChild(secondInput);
         page.addChild(thirdInput);
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(3);
         expect(page.isActive()).toBeFalsy();
+        expect(page.isDefaultPage()).toBeTruthy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
             '<input type="text" name="first" class="input">' +
@@ -372,12 +395,13 @@ describe("Page class tests - initialization", function() {
                 direction: LinearLayout.DIRECTION_HORIZONTAL,
                 reverse: false
             },
-            active: false
+            active: false,
+            defaultPage: true
         });
     });
 
     it("components with linear layout - removal", function() {
-        page = new Page("firstPage", new LinearLayout());
+        page = new Page("firstPage", true, new LinearLayout());
         page.addChild(firstInput);
         page.addChild(secondInput);
         page.addChild(thirdInput);
@@ -385,6 +409,7 @@ describe("Page class tests - initialization", function() {
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(2);
         expect(page.isActive()).toBeFalsy();
+        expect(page.isDefaultPage()).toBeTruthy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
             '<input type="text" name="second" class="input">' +
@@ -409,12 +434,13 @@ describe("Page class tests - initialization", function() {
                 direction: LinearLayout.DIRECTION_HORIZONTAL,
                 reverse: false
             },
-            active: false
+            active: false,
+            defaultPage: true
         });
     });
 
     it("components with linear layout - switch position", function() {
-        page = new Page("firstPage", new LinearLayout());
+        page = new Page("firstPage", true, new LinearLayout());
         page.addChild(firstInput);
         page.addChild(secondInput);
         page.addChild(thirdInput);
@@ -422,6 +448,7 @@ describe("Page class tests - initialization", function() {
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(3);
         expect(page.isActive()).toBeFalsy();
+        expect(page.isDefaultPage()).toBeTruthy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
             '<input type="text" name="second" class="input">' +
@@ -449,12 +476,13 @@ describe("Page class tests - initialization", function() {
                 direction: LinearLayout.DIRECTION_HORIZONTAL,
                 reverse: false
             },
-            active: false
+            active: false,
+            defaultPage: true
         });
     });
 
     it("components with linear layout - clearing", function() {
-        page = new Page("firstPage", new LinearLayout());
+        page = new Page("firstPage", true, new LinearLayout());
         page.addChild(firstInput);
         page.addChild(secondInput);
         page.addChild(thirdInput);
@@ -462,6 +490,7 @@ describe("Page class tests - initialization", function() {
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(0);
         expect(page.isActive()).toBeFalsy();
+        expect(page.isDefaultPage()).toBeTruthy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage"><div class="layout linear-layout flex-horizontal flex-start"></div></div>');
         expect(page.getStackTrace()).toEqual({
             html: '<div class="page firstPage"></div>',
@@ -475,15 +504,17 @@ describe("Page class tests - initialization", function() {
                 direction: LinearLayout.DIRECTION_HORIZONTAL,
                 reverse: false
             },
-            active: false
+            active: false,
+            defaultPage: true
         });
     });
 
     it("empty with table layout", function() {
-        page = new Page("firstPage", new TableLayout(2, 2));
+        page = new Page("firstPage", true, new TableLayout(2, 2));
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(0);
         expect(page.isActive()).toBeFalsy();
+        expect(page.isDefaultPage()).toBeTruthy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
             '<div class="layout linear-layout flex-vertical flex-start">' +
             '<div class="layout linear-layout flex-horizontal flex-start"></div>' +
@@ -521,18 +552,20 @@ describe("Page class tests - initialization", function() {
                 rows: 2,
                 cells: 2
             },
-            active: false
+            active: false,
+            defaultPage: true
         });
     });
 
     it("components with table layout", function() {
-        page = new Page("firstPage", new TableLayout(2, 2));
+        page = new Page("firstPage", true, new TableLayout(2, 2));
         page.addChild(firstInput);
         page.addChild(secondInput);
         page.addChild(thirdInput);
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(3);
         expect(page.isActive()).toBeFalsy();
+        expect(page.isDefaultPage()).toBeTruthy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
             '<div class="layout linear-layout flex-vertical flex-start">' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
@@ -584,12 +617,13 @@ describe("Page class tests - initialization", function() {
                 rows: 2,
                 cells: 2
             },
-            active: false
+            active: false,
+            defaultPage: true
         });
     });
 
     it("components with table layout - removal", function() {
-        page = new Page("firstPage", new TableLayout(2, 2));
+        page = new Page("firstPage", true, new TableLayout(2, 2));
         page.addChild(firstInput);
         page.addChild(secondInput);
         page.addChild(thirdInput);
@@ -597,6 +631,7 @@ describe("Page class tests - initialization", function() {
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(2);
         expect(page.isActive()).toBeFalsy();
+        expect(page.isDefaultPage()).toBeTruthy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
             '<div class="layout linear-layout flex-vertical flex-start">' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
@@ -643,12 +678,13 @@ describe("Page class tests - initialization", function() {
                 rows: 2,
                 cells: 2
             },
-            active: false
+            active: false,
+            defaultPage: true
         });
     });
 
     it("components with table layout - switch position", function() {
-        page = new Page("firstPage", new TableLayout(2, 2));
+        page = new Page("firstPage", true, new TableLayout(2, 2));
         page.addChild(firstInput);
         page.addChild(secondInput);
         page.addChild(thirdInput);
@@ -656,6 +692,7 @@ describe("Page class tests - initialization", function() {
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(3);
         expect(page.isActive()).toBeFalsy();
+        expect(page.isDefaultPage()).toBeTruthy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
             '<div class="layout linear-layout flex-vertical flex-start">' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
@@ -707,12 +744,13 @@ describe("Page class tests - initialization", function() {
                 rows: 2,
                 cells: 2
             },
-            active: false
+            active: false,
+            defaultPage: true
         });
     });
 
     it("components with table layout - clearing", function() {
-        page = new Page("firstPage", new TableLayout(2, 2));
+        page = new Page("firstPage", true, new TableLayout(2, 2));
         page.addChild(firstInput);
         page.addChild(secondInput);
         page.addChild(thirdInput);
@@ -720,6 +758,7 @@ describe("Page class tests - initialization", function() {
         expect(page.hasClass(Page.CLASS_PAGE)).toBeTruthy();
         expect(page.getChildrenCount()).toBe(0);
         expect(page.isActive()).toBeFalsy();
+        expect(page.isDefaultPage()).toBeTruthy();
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
             '<div class="layout linear-layout flex-vertical flex-start">' +
             '<div class="layout linear-layout flex-horizontal flex-start"></div>' +
@@ -757,7 +796,8 @@ describe("Page class tests - initialization", function() {
                 rows: 2,
                 cells: 2
             },
-            active: false
+            active: false,
+            defaultPage: true
         });
     });
 });

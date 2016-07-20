@@ -33,7 +33,8 @@ describe("PageConfiguration class tests - valid Page", function() {
                 name: "NullLayout",
                 children: []
             },
-            active: false
+            active: false,
+            defaultPage: false
         });
     });
 
@@ -60,7 +61,8 @@ describe("PageConfiguration class tests - valid Page", function() {
                 name: "NullLayout",
                 children: []
             },
-            active: false
+            active: false,
+            defaultPage: false
         });
     });
 
@@ -87,7 +89,8 @@ describe("PageConfiguration class tests - valid Page", function() {
                 name: "RelativeLayout",
                 children: []
             },
-            active: false
+            active: false,
+            defaultPage: false
         });
     });;
 
@@ -100,7 +103,8 @@ describe("PageConfiguration class tests - valid Page", function() {
                 align: LinearLayout.ALIGN_END,
                 direction: LinearLayout.DIRECTION_VERTICAL,
                 reverse: true
-            }
+            },
+            defaultPage: true
         };
         expect(pageConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(pageConfiguration.getErrors(definition)).toEqual([]);
@@ -122,7 +126,8 @@ describe("PageConfiguration class tests - valid Page", function() {
                 direction: LinearLayout.DIRECTION_VERTICAL,
                 reverse: true
             },
-            active: false
+            active: false,
+            defaultPage: true
         });
     });
 
@@ -134,7 +139,8 @@ describe("PageConfiguration class tests - valid Page", function() {
                 type: "TableLayout",
                 rows: 2,
                 cells: 3
-            }
+            },
+            defaultPage: true
         };
         expect(pageConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(pageConfiguration.getErrors(definition)).toEqual([]);
@@ -178,7 +184,8 @@ describe("PageConfiguration class tests - valid Page", function() {
                 rows: 2,
                 cells: 3
             },
-            active: false
+            active: false,
+            defaultPage: true
         });
     });
 
@@ -204,7 +211,8 @@ describe("PageConfiguration class tests - valid Page", function() {
                     type: "TextInput",
                     name: "third"
                 }
-            ]
+            ],
+            defaultPage: true
         };
         expect(pageConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(pageConfiguration.getErrors(definition)).toEqual([]);
@@ -286,7 +294,8 @@ describe("PageConfiguration class tests - valid Page", function() {
                 rows: 2,
                 cells: 2
             },
-            active: false
+            active: false,
+            defaultPage: true
         });
     });
 
@@ -380,7 +389,8 @@ describe("PageConfiguration class tests - valid Page", function() {
                 rows: 2,
                 cells: 2
             },
-            active: false
+            active: false,
+            defaultPage: false
         });
     });
 
@@ -491,7 +501,8 @@ describe("PageConfiguration class tests - valid Page", function() {
                 rows: 2,
                 cells: 2
             },
-            active: false
+            active: false,
+            defaultPage: false
         });
     });
 });
@@ -523,12 +534,14 @@ describe("PageConfiguration class tests - invalid PageConfiguration", function()
             type: "Page",
             name: "firstPage",
             layout: false,
-            children: "not"
+            children: "not",
+            defaultPage: 1
         };
         expect(pageConfiguration.isRelatedTo(definition)).toBeTruthy();
         expect(pageConfiguration.getErrors(definition)).toEqual([
             "firstPage." + Page.PARAMETER_CHILDREN + Configuration.MUST_BE_ARRAY_OR_UNDEFINED,
             "firstPage." + Page.PARAMETER_LAYOUT + Configuration.MUST_BE_OBJECT_OR_UNDEFINED,
+            "firstPage." + Page.PARAMETER_DEFAULT_PAGE + Configuration.MUST_BE_BOOLEAN_OR_UNDEFINED,
         ]);
     });
 

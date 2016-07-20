@@ -21,6 +21,7 @@ module Ompluscript.Controller.Controller {
     import ApplicationControllerEvent = Ompluscript.Controller.Event.ApplicationControllerEvent;
     import Creator = Ompluscript.Core.Configuration.Creator;
     import WrongConfigurationContainer = Ompluscript.View.Container.WrongConfigurationContainer;
+    import IBase = Ompluscript.Core.Interfaces.IBase;
 
     /**
      * Class that defines application controller
@@ -181,11 +182,15 @@ module Ompluscript.Controller.Controller {
          * Method that launches application
          */
         private launch(): void {
-            let pages: Page[] = [];
+            let pages: IBase[] = [];
             if (this.isValidConfiguration()) {
                 let pageNames: string[] = Ompluscript.View.Creator.getInstance().getPages();
                 for (let i: number = 0; i < pageNames.length; i++) {
-                    pages.push(<Page>Ompluscript.View.Creator.getInstance().create(pageNames[i]));
+                    pages.push(Ompluscript.View.Creator.getInstance().create(pageNames[i]));
+                }
+                let pageControllerNames: string[] = Ompluscript.Controller.Creator.getInstance().getPageControllers();
+                for (let i: number = 0; i < pageControllerNames.length; i++) {
+                    pages.push(Ompluscript.Controller.Creator.getInstance().create(pageControllerNames[i]));
                 }
             } else {
                 let components: WrongConfigurationContainer[] = [];
@@ -197,7 +202,7 @@ module Ompluscript.Controller.Controller {
                 for (let i: number = 0; i < creators.length; i++) {
                     components.push.apply(components, this.createWrongConfigurationContainers(creators[i]));
                 }
-                pages = [new Page(ApplicationController.TYPE_APPLICATION_CONTROLLER, undefined, components)];
+                pages = [new Page(ApplicationController.TYPE_APPLICATION_CONTROLLER, true, undefined, components)];
             }
             this.navigationController = new NavigationController(pages);
             if (this.isValidConfiguration()) {
@@ -220,7 +225,7 @@ module Ompluscript.Controller.Controller {
                     }));
                 }
             }
-            let pages: Page[] = [new Page(ApplicationController.TYPE_APPLICATION_CONTROLLER, undefined, components)];
+            let pages: Page[] = [new Page(ApplicationController.TYPE_APPLICATION_CONTROLLER, true, undefined, components)];
             this.navigationController = new NavigationController(pages);
         }
 

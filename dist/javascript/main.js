@@ -405,7 +405,6 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 Controller.PARAMETER_EVENTS = "events";
                 Controller.PARAMETER_NAME = "name";
-                Controller.PARAMETER_HANDLERS = "handlers";
                 return Controller;
             }(Observable));
             Controller_2.Controller = Controller;
@@ -3977,7 +3976,8 @@ var __extends = (this && this.__extends) || function (d, b) {
             var OnPageClose = Ompluscript.View.Event.OnPageClose;
             var Page = (function (_super) {
                 __extends(Page, _super);
-                function Page(name, layout, children, styles) {
+                function Page(name, defaultPage, layout, children, styles) {
+                    if (defaultPage === void 0) { defaultPage = false; }
                     if (layout === void 0) { layout = undefined; }
                     if (children === void 0) { children = undefined; }
                     if (styles === void 0) { styles = undefined; }
@@ -3985,9 +3985,13 @@ var __extends = (this && this.__extends) || function (d, b) {
                     this.addClass(Page.CLASS_PAGE);
                     this.addClass(name);
                     this.active = false;
+                    this.defaultPage = defaultPage;
                 }
                 Page.prototype.isActive = function () {
                     return this.active;
+                };
+                Page.prototype.isDefaultPage = function () {
+                    return this.defaultPage;
                 };
                 Page.prototype.setActive = function (active) {
                     var beforeChange = this.active;
@@ -4010,9 +4014,11 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Page.prototype.getStackTrace = function () {
                     var trace = _super.prototype.getStackTrace.call(this);
                     trace["active"] = this.active;
+                    trace[Page.PARAMETER_DEFAULT_PAGE] = this.defaultPage;
                     return trace;
                 };
                 Page.TYPE_PAGE = Page["name"];
+                Page.PARAMETER_DEFAULT_PAGE = "defaultPage";
                 Page.CLASS_PAGE = "page";
                 return Page;
             }(Container.Container));
@@ -4340,7 +4346,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 PageLink.prototype.handleLinking = function (event) {
                     event.preventDefault();
-                    window.history.pushState(this.page);
+                    window.history.pushState(false, this.page);
                 };
                 PageLink.TYPE_PAGE_LINK = PageLink["name"];
                 PageLink.PARAMETER_PAGE = "page";
@@ -4394,7 +4400,7 @@ var __extends = (this && this.__extends) || function (d, b) {
             var NavigationController = (function (_super) {
                 __extends(NavigationController, _super);
                 function NavigationController(pages) {
-                    _super.call(this, NavigationController.NAVIGATION_CONTROLLER);
+                    _super.call(this, NavigationController.TYPE_NAVIGATION_CONTROLLER);
                     this.setup(pages);
                 }
                 NavigationController.prototype.switchPageByName = function (name) {
@@ -4416,26 +4422,37 @@ var __extends = (this && this.__extends) || function (d, b) {
                                 paths.push(i, parameters[i]);
                             }
                         }
-                        this.history.pushState(paths.join(NavigationController.PATH_SEPARATOR));
+                        this.history.pushState(true, paths.join(NavigationController.PATH_SEPARATOR));
                     }
                     else {
-                        this.history.pushState(page);
+                        this.history.pushState(true, page);
                     }
                 };
                 NavigationController.prototype.showPageFromPath = function (path) {
-                    var paths = path.split(NavigationController.PATH_SEPARATOR);
-                    var page = paths[0];
-                    this.switchPageByName(page);
-                    if (paths.length > 1) {
-                        var action = paths[1];
-                        paths.splice(0, 2);
-                        var parameters = {};
-                        for (var i = 0; i < paths.length; i += 2) {
-                            parameters[paths[i]] = paths[i + 1];
+                    if (path.length > 0) {
+                        var paths = path.split(NavigationController.PATH_SEPARATOR);
+                        var page = paths[0];
+                        this.switchPageByName(page);
+                        if (paths.length > 1) {
+                            var action = paths[1];
+                            paths.splice(0, 2);
+                            var parameters = {};
+                            for (var i = 0; i < paths.length; i += 2) {
+                                parameters[paths[i]] = paths[i + 1];
+                            }
+                            var pageController = this.findControllerByName(page);
+                            if (pageController !== undefined) {
+                                pageController.runAction(action, parameters);
+                            }
                         }
-                        var pageController = this.findControllerByName(page);
-                        if (pageController !== undefined) {
-                            pageController.runAction(action, parameters);
+                    }
+                    else {
+                        for (var i = 0; i < this.pageControllers.length; i++) {
+                            if (this.pageControllers[i].getPage().isDefaultPage()) {
+                                this.switchPageByName(this.pageControllers[i].getPage().getName());
+                                return;
+                            }
+                            this.switchPageByName(this.pageControllers[0].getPage().getName());
                         }
                     }
                 };
@@ -4483,32 +4500,25 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                     this.viewport = new Viewport(navigation, pageList);
                     this.setupHistoryHandler();
+                    var path = window.location.pathname.substring(1);
+                    this.showPageFromPath(path);
                 };
                 NavigationController.prototype.setupHistoryHandler = function () {
                     var that = this;
                     that.history = window.history;
                     var pushState = that.history.pushState;
-                    that.history.pushState = function (path) {
+                    that.history.pushState = function (navigationController, path) {
                         pushState.apply(that.history, [path, path, path]);
-                        that.showPageFromPath(path);
+                        if (navigationController === false) {
+                            that.showPageFromPath(path);
+                        }
                     };
                     window.onpopstate = function () {
                         var path = window.location.pathname.substring(1);
-                        if (path.length === 0) {
-                            path = that.pageControllers[0].getPage().getName();
-                        }
                         that.showPageFromPath(path);
                     };
-                    var path = location.pathname;
-                    path = path.slice(1);
-                    if (path.length > 0) {
-                        that.showPageFromPath(path);
-                    }
-                    else {
-                        that.switchPageByIndex(0);
-                    }
                 };
-                NavigationController.NAVIGATION_CONTROLLER = "navigationController";
+                NavigationController.TYPE_NAVIGATION_CONTROLLER = NavigationController["name"];
                 NavigationController.PATH_SEPARATOR = "/";
                 return NavigationController;
             }(Controller.Controller));
@@ -4769,6 +4779,10 @@ var __extends = (this && this.__extends) || function (d, b) {
                         for (var i = 0; i < pageNames.length; i++) {
                             pages.push(Ompluscript.View.Creator.getInstance().create(pageNames[i]));
                         }
+                        var pageControllerNames = Ompluscript.Controller.Creator.getInstance().getPageControllers();
+                        for (var i = 0; i < pageControllerNames.length; i++) {
+                            pages.push(Ompluscript.Controller.Creator.getInstance().create(pageControllerNames[i]));
+                        }
                     }
                     else {
                         var components = [];
@@ -4780,7 +4794,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                         for (var i = 0; i < creators.length; i++) {
                             components.push.apply(components, this.createWrongConfigurationContainers(creators[i]));
                         }
-                        pages = [new Page(ApplicationController.TYPE_APPLICATION_CONTROLLER, undefined, components)];
+                        pages = [new Page(ApplicationController.TYPE_APPLICATION_CONTROLLER, true, undefined, components)];
                     }
                     this.navigationController = new Controller.NavigationController(pages);
                     if (this.isValidConfiguration()) {
@@ -4799,7 +4813,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                             }));
                         }
                     }
-                    var pages = [new Page(ApplicationController.TYPE_APPLICATION_CONTROLLER, undefined, components)];
+                    var pages = [new Page(ApplicationController.TYPE_APPLICATION_CONTROLLER, true, undefined, components)];
                     this.navigationController = new Controller.NavigationController(pages);
                 };
                 ApplicationController.prototype.isValidConfiguration = function () {
@@ -4891,39 +4905,6 @@ var __extends = (this && this.__extends) || function (d, b) {
         var Controller;
         (function (Controller) {
             "use strict";
-            var ComponentController = (function (_super) {
-                __extends(ComponentController, _super);
-                function ComponentController(name, models, views) {
-                    if (models === void 0) { models = {}; }
-                    if (views === void 0) { views = {}; }
-                    _super.call(this, name);
-                    this.models = models;
-                    this.views = views;
-                }
-                ComponentController.prototype.getModel = function (name) {
-                    if (this.models.hasOwnProperty(name)) {
-                        return this.models[name];
-                    }
-                    return undefined;
-                };
-                ComponentController.prototype.getView = function (name) {
-                    if (this.views.hasOwnProperty(name)) {
-                        return this.views[name];
-                    }
-                    return undefined;
-                };
-                return ComponentController;
-            }(Controller.Controller));
-            Controller.ComponentController = ComponentController;
-        })(Controller = Controller_9.Controller || (Controller_9.Controller = {}));
-    })(Controller = Ompluscript.Controller || (Ompluscript.Controller = {}));
-})(Ompluscript || (Ompluscript = {}));
-(function (Ompluscript) {
-    var Controller;
-    (function (Controller_10) {
-        var Controller;
-        (function (Controller) {
-            "use strict";
             var OnActionRun = Ompluscript.Controller.Event.OnActionRun;
             var PageController = (function (_super) {
                 __extends(PageController, _super);
@@ -4941,7 +4922,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 PageController.prototype.runAction = function (action, parameters) {
                     if (parameters === void 0) { parameters = {}; }
                     if (this.actions.hasOwnProperty(action)) {
-                        var names = this.getActionParamameterNames(this.actions[action]);
+                        var names = this.getActionParameterNames(this.actions[action]);
                         var values = [];
                         for (var i = 0; i < names.length; i++) {
                             if (parameters.hasOwnProperty(names[i])) {
@@ -4959,14 +4940,68 @@ var __extends = (this && this.__extends) || function (d, b) {
                     var event = new OnActionRun(this, action, parameters);
                     this.notifyObservers(event);
                 };
-                PageController.prototype.getActionParamameterNames = function (action) {
+                PageController.prototype.getActionParameterNames = function (action) {
                     var definition = action.toString();
                     return definition.match(/\(.*?\)/)[0].replace(/[()]/gi, "").replace(/\s/gi, "").split(",");
                 };
+                PageController.TYPE_PAGE_CONTROLLER = PageController["name"];
+                PageController.PARAMETER_PAGE = "page";
+                PageController.PARAMETER_ACTIONS = "actions";
                 return PageController;
             }(Controller.Controller));
             Controller.PageController = PageController;
-        })(Controller = Controller_10.Controller || (Controller_10.Controller = {}));
+        })(Controller = Controller_9.Controller || (Controller_9.Controller = {}));
+    })(Controller = Ompluscript.Controller || (Ompluscript.Controller = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var Controller;
+    (function (Controller_10) {
+        var Configuration;
+        (function (Configuration_32) {
+            var Controller;
+            (function (Controller) {
+                "use strict";
+                var Configuration = Ompluscript.Core.Configuration.Configuration;
+                var PageController = Ompluscript.Controller.Controller.PageController;
+                var PageControllerConfiguration = (function (_super) {
+                    __extends(PageControllerConfiguration, _super);
+                    function PageControllerConfiguration() {
+                        _super.call(this, undefined);
+                    }
+                    PageControllerConfiguration.prototype.isRelatedTo = function (definition) {
+                        return definition[Configuration.PARAMETER_TYPE] === PageController.TYPE_PAGE_CONTROLLER;
+                    };
+                    PageControllerConfiguration.prototype.getErrors = function (definition) {
+                        var errors = _super.prototype.getErrors.call(this, definition);
+                        errors.push(this.shouldBeStringOrObject(definition, PageController.PARAMETER_PAGE));
+                        errors.push(this.shouldBeObject(definition, PageController.PARAMETER_ACTIONS));
+                        if (definition[PageController.PARAMETER_ACTIONS] !== undefined) {
+                            for (var key in definition[PageController.PARAMETER_ACTIONS]) {
+                                if (definition[PageController.PARAMETER_ACTIONS].hasOwnProperty(key)) {
+                                    errors.push(this.shouldBeFunction(definition[PageController.PARAMETER_ACTIONS], key));
+                                }
+                            }
+                        }
+                        return this.filterErrors(errors);
+                    };
+                    PageControllerConfiguration.prototype.create = function (definition) {
+                        var name = definition[Configuration.PARAMETER_NAME];
+                        var page = definition[PageController.PARAMETER_PAGE];
+                        var pageController = new PageController(name, page);
+                        if (definition[PageController.PARAMETER_ACTIONS] !== undefined) {
+                            for (var key in definition[PageController.PARAMETER_ACTIONS]) {
+                                if (definition[PageController.PARAMETER_ACTIONS].hasOwnProperty(key)) {
+                                    pageController.addAction(key, definition[PageController.PARAMETER_ACTIONS][key]);
+                                }
+                            }
+                        }
+                        return pageController;
+                    };
+                    return PageControllerConfiguration;
+                }(Controller.ControllerConfiguration));
+                Controller.PageControllerConfiguration = PageControllerConfiguration;
+            })(Controller = Configuration_32.Controller || (Configuration_32.Controller = {}));
+        })(Configuration = Controller_10.Configuration || (Controller_10.Configuration = {}));
     })(Controller = Ompluscript.Controller || (Ompluscript.Controller = {}));
 })(Ompluscript || (Ompluscript = {}));
 (function (Ompluscript) {
@@ -4976,6 +5011,8 @@ var __extends = (this && this.__extends) || function (d, b) {
         var CreatorParent = Ompluscript.Core.Configuration.Creator;
         var ErrorConfiguration = Ompluscript.Core.Configuration.ErrorConfiguration;
         var ApplicationControllerConfiguration = Ompluscript.Controller.Configuration.Controller.ApplicationControllerConfiguration;
+        var Configuration = Ompluscript.Core.Configuration.Configuration;
+        var PageController = Ompluscript.Controller.Controller.PageController;
         var Creator = (function (_super) {
             __extends(Creator, _super);
             function Creator() {
@@ -4984,12 +5021,22 @@ var __extends = (this && this.__extends) || function (d, b) {
                     ErrorConfiguration,
                 ];
                 _super.call(this, configurations);
+                this.pageControllers = [];
             }
             Creator.getInstance = function () {
                 if (Creator.instance === undefined) {
                     Creator.instance = new Creator();
                 }
                 return Creator.instance;
+            };
+            Creator.prototype.define = function (definition) {
+                _super.prototype.define.call(this, definition);
+                if (definition[Configuration.PARAMETER_TYPE] === PageController.TYPE_PAGE_CONTROLLER) {
+                    this.pageControllers.push(definition[Configuration.PARAMETER_NAME]);
+                }
+            };
+            Creator.prototype.getPageControllers = function () {
+                return this.pageControllers;
             };
             return Creator;
         }(CreatorParent));
@@ -5101,7 +5148,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_32) {
+        (function (Configuration_33) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -5136,7 +5183,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return DateInputConfiguration;
                 }(Field.InputConfiguration));
                 Field.DateInputConfiguration = DateInputConfiguration;
-            })(Field = Configuration_32.Field || (Configuration_32.Field = {}));
+            })(Field = Configuration_33.Field || (Configuration_33.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -5171,7 +5218,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_33) {
+        (function (Configuration_34) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -5199,7 +5246,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return ParagraphConfiguration;
                 }(Field.TextContentConfiguration));
                 Field.ParagraphConfiguration = ParagraphConfiguration;
-            })(Field = Configuration_33.Field || (Configuration_33.Field = {}));
+            })(Field = Configuration_34.Field || (Configuration_34.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -5207,7 +5254,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_34) {
+        (function (Configuration_35) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -5235,7 +5282,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return ButtonConfiguration;
                 }(Field.TextContentConfiguration));
                 Field.ButtonConfiguration = ButtonConfiguration;
-            })(Field = Configuration_34.Field || (Configuration_34.Field = {}));
+            })(Field = Configuration_35.Field || (Configuration_35.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -5243,7 +5290,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_35) {
+        (function (Configuration_36) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -5285,7 +5332,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return HeaderConfiguration;
                 }(Field.TextContentConfiguration));
                 Field.HeaderConfiguration = HeaderConfiguration;
-            })(Field = Configuration_35.Field || (Configuration_35.Field = {}));
+            })(Field = Configuration_36.Field || (Configuration_36.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -5319,7 +5366,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_36) {
+        (function (Configuration_37) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -5347,7 +5394,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return LabelConfiguration;
                 }(Field.TextContentConfiguration));
                 Field.LabelConfiguration = LabelConfiguration;
-            })(Field = Configuration_36.Field || (Configuration_36.Field = {}));
+            })(Field = Configuration_37.Field || (Configuration_37.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -5355,7 +5402,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_37) {
+        (function (Configuration_38) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -5386,7 +5433,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return PageLinkConfiguration;
                 }(Field.TextContentConfiguration));
                 Field.PageLinkConfiguration = PageLinkConfiguration;
-            })(Field = Configuration_37.Field || (Configuration_37.Field = {}));
+            })(Field = Configuration_38.Field || (Configuration_38.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -5394,7 +5441,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_38) {
+        (function (Configuration_39) {
             var Container;
             (function (Container_11) {
                 "use strict";
@@ -5465,7 +5512,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return ListConfiguration;
                 }(Container_11.ContainerConfiguration));
                 Container_11.ListConfiguration = ListConfiguration;
-            })(Container = Configuration_38.Container || (Configuration_38.Container = {}));
+            })(Container = Configuration_39.Container || (Configuration_39.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -5473,7 +5520,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_39) {
+        (function (Configuration_40) {
             var Container;
             (function (Container_12) {
                 "use strict";
@@ -5546,7 +5593,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return BoxConfiguration;
                 }(Container_12.ContainerConfiguration));
                 Container_12.BoxConfiguration = BoxConfiguration;
-            })(Container = Configuration_39.Container || (Configuration_39.Container = {}));
+            })(Container = Configuration_40.Container || (Configuration_40.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -5770,7 +5817,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_40) {
+        (function (Configuration_41) {
             var Container;
             (function (Container_13) {
                 "use strict";
@@ -5856,7 +5903,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return FormConfiguration;
                 }(Container_13.ContainerConfiguration));
                 Container_13.FormConfiguration = FormConfiguration;
-            })(Container = Configuration_40.Container || (Configuration_40.Container = {}));
+            })(Container = Configuration_41.Container || (Configuration_41.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -5864,7 +5911,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_41) {
+        (function (Configuration_42) {
             var Container;
             (function (Container_14) {
                 "use strict";
@@ -5902,7 +5949,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return NavigationConfiguration;
                 }(Container_14.ContainerConfiguration));
                 Container_14.NavigationConfiguration = NavigationConfiguration;
-            })(Container = Configuration_41.Container || (Configuration_41.Container = {}));
+            })(Container = Configuration_42.Container || (Configuration_42.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -5910,7 +5957,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_42) {
+        (function (Configuration_43) {
             var Container;
             (function (Container_15) {
                 "use strict";
@@ -5970,7 +6017,9 @@ var __extends = (this && this.__extends) || function (d, b) {
                         return definition[Configuration.PARAMETER_TYPE] === Page.TYPE_PAGE;
                     };
                     PageConfiguration.prototype.getErrors = function (definition) {
-                        return this.filterErrors(_super.prototype.getErrors.call(this, definition));
+                        var errors = _super.prototype.getErrors.call(this, definition);
+                        errors.push(this.shouldBeBoolean(definition, Page.PARAMETER_DEFAULT_PAGE));
+                        return this.filterErrors(errors);
                     };
                     PageConfiguration.prototype.create = function (definition, children) {
                         if (children === void 0) { children = undefined; }
@@ -5979,13 +6028,14 @@ var __extends = (this && this.__extends) || function (d, b) {
                         if (children === undefined) {
                             children = _super.prototype.createChildren.call(this, definition, Container.PARAMETER_CHILDREN, Ompluscript.View.Creator.getInstance());
                         }
+                        var defaultPage = definition[Page.PARAMETER_DEFAULT_PAGE];
                         var styles = definition[Component.PARAMETER_STYLES];
-                        return new Page(name, layout, children, styles);
+                        return new Page(name, defaultPage, layout, children, styles);
                     };
                     return PageConfiguration;
                 }(Container_15.ContainerConfiguration));
                 Container_15.PageConfiguration = PageConfiguration;
-            })(Container = Configuration_42.Container || (Configuration_42.Container = {}));
+            })(Container = Configuration_43.Container || (Configuration_43.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));

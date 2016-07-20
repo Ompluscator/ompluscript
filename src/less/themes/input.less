@@ -1,0 +1,13 @@
+.inputTheme(@primaryColor, @secondaryColor, @tertiaryColor, @textColor, @shadowColor) {
+  .input[type=text],
+  .input[type=date],
+  .input[type=email],
+  .input[type=number],
+  .input[type=password] {
+    border-bottom-color: @primaryColor;
+
+    &:focus {
+      border-bottom-color: @textColor;
+    }
+  }
+}

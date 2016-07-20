@@ -117,7 +117,9 @@ module Ompluscript.View.Configuration.Container {
          * @returns {string[]} List of errors
          */
         public getErrors(definition: Object): string[] {
-            return this.filterErrors(super.getErrors(definition));
+            let errors: string[] = super.getErrors(definition);
+            errors.push(this.shouldBeBoolean(definition, Page.PARAMETER_DEFAULT_PAGE));
+            return this.filterErrors(errors);
         }
 
         /**
@@ -135,8 +137,9 @@ module Ompluscript.View.Configuration.Container {
                     definition, Container.PARAMETER_CHILDREN, Ompluscript.View.Creator.getInstance()
                 );
             }
+            let defaultPage: boolean = definition[Page.PARAMETER_DEFAULT_PAGE];
             let styles: string = definition[Component.PARAMETER_STYLES];
-            return new Page(name, layout, children, styles);
+            return new Page(name, defaultPage, layout, children, styles);
         }
     }
 }
