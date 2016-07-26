@@ -1,0 +1,44 @@
+@import (reference) "../../../node_modules/less-mixins/mixins";
+@import (reference) "../variables/index";
+
+.form {
+  padding-top: @formPaddingTop;
+
+  & > .layout > .label {
+    opacity: 0;
+    position: absolute;
+    top: -@formPaddingTop;
+    width: ~"calc(100% - 20px)";
+    text-align: center;
+    font-size: @errorLabelFontSize;
+    padding: @statusLabelPadding;
+    .transition(@formAnimationDuration, linear);
+
+    &.status {
+      opacity: 1;
+    }
+  }
+
+  .input-container {
+    .input {
+      margin-bottom: @errorLabelFontSize;
+    }
+
+    .label {
+      display: none;
+      position: absolute;
+      bottom: 0;
+      font-size: @errorLabelFontSize;
+    }
+
+    &.error .label {
+      opacity: 0;
+      display: block;
+      .transition(@formAnimationDuration, linear);
+
+      &.show {
+        opacity: 1;
+      }
+    }
+  }
+}

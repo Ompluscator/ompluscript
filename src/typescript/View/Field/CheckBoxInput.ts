@@ -10,6 +10,7 @@ module Ompluscript.View.Field {
     "use strict";
     
     import Boolean = Ompluscript.Model.Attribute.Boolean;
+    import IBase = Ompluscript.Core.Interfaces.IBase;
 
     /**
      * Class that defines text input
@@ -27,11 +28,6 @@ module Ompluscript.View.Field {
          * @type {string} INPUT_CHECK_BOX Type of check box input HTML element
          */
         public static INPUT_CHECK_BOX: string = "checkbox";
-
-        /**
-         * @type {string} EVENT_CHANGE Name of event when state of input is changed
-         */
-        public static EVENT_CHANGE: string = "change";
 
         /**
          * Class constructor.
@@ -54,6 +50,13 @@ module Ompluscript.View.Field {
          */
         public getValue(): boolean {
             return this.htmlElement["checked"];
+        }
+
+        /**
+         * Method that should be called when class object should be cloned.
+         */
+        public clone(): IBase {
+            return new CheckBoxInput(this.name, <Boolean>this.attribute, this.styles);
         }
 
         /**

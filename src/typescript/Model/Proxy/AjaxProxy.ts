@@ -218,18 +218,22 @@ module Ompluscript.Model.Proxy {
                 }
             };
             ajax.addEventListener(AjaxProxy.AJAX_STATE_CHANGED, listener, false);
-            ajax.open(method, url, true);
             if (request.length === 0) {
+                ajax.open(method, url, true);
                 ajax.send();
-            } else {
+            } else if (method === AjaxProxy.METHOD_POST) {
+                ajax.open(method, url, true);
                 ajax.send(request);
+            } else {
+                ajax.open(method, url + "?" + request, true);
+                ajax.send();
             }
             
         }
 
         /**
          * Method that forms parameters into string for request
-         * 
+         *
          * @param {Object} parameters Contains parameters for request
          * @returns {string} Formed parameters into string
          */

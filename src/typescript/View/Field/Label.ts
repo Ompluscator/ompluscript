@@ -7,6 +7,7 @@
  */
 module Ompluscript.View.Field {
     "use strict";
+    import IBase = Ompluscript.Core.Interfaces.IBase;
 
     /**
      * Class that defines paragraph field
@@ -43,6 +44,13 @@ module Ompluscript.View.Field {
         constructor(name: string, text: string = undefined, styles: Object = {}) {
             super(name, text, styles);
             this.addClass(Label.CLASS_LABEL);
+        }
+
+        /**
+         * Method that should be called when class object should be cloned.
+         */
+        public clone(): IBase {
+            return new Label(this.name, this.text, this.styles);
         }
 
         /**

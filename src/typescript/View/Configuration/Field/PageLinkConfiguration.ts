@@ -58,7 +58,9 @@ module Ompluscript.View.Configuration.Field {
             let text: string = definition[TextContent.PARAMETER_TEXT];
             let page: string = definition[PageLink.PARAMETER_PAGE];
             let styles: Object = definition[Component.PARAMETER_STYLES];
-            return new PageLink(name, text, page, styles);
+            let pageLink: PageLink = new PageLink(name, text, page, styles);
+            this.attachEvents(definition, pageLink);
+            return pageLink;
         }
     }
 }

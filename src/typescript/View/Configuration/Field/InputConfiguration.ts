@@ -1,6 +1,6 @@
 /// <reference path="../../../Core/Interfaces/IBase.ts" />
 /// <reference path="../../../Core/Configuration/ErrorConfiguration.ts" />
-/// <reference path="../Component/ComponentConfiguration.ts" />
+/// <reference path="FieldConfiguration.ts" />
 /// <reference path="../../Field/Input.ts" />
 /// <reference path="../../../Model/Creator.ts" />
 /// <reference path="../../../Model/Attribute/Attribute.ts" />
@@ -16,7 +16,6 @@ module Ompluscript.View.Configuration.Field {
     import Configuration = Ompluscript.Core.Configuration.Configuration;
     import Input = Ompluscript.View.Field.Input;
     import Creator = Ompluscript.Model.Creator;
-    import ComponentConfiguration = Ompluscript.View.Configuration.Component.ComponentConfiguration;
     import ErrorConfiguration = Ompluscript.Core.Configuration.ErrorConfiguration;
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import Attribute = Ompluscript.Model.Attribute.Attribute;
@@ -26,7 +25,7 @@ module Ompluscript.View.Configuration.Field {
      *
      * @class InputConfiguration
      */
-    export abstract class InputConfiguration extends ComponentConfiguration {
+    export abstract class InputConfiguration extends FieldConfiguration {
 
         /**
          * @type {string} type Type of attribute that input should contain

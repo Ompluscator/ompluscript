@@ -503,11 +503,11 @@ describe("Box class tests - initialization", function() {
         expect(box.render().outerHTML).toBe('<div class="box">' +
             '<div class="layout linear-layout flex-vertical flex-start">' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
-            '<input type="text" name="first" class="input">' +
-            '<input type="text" name="second" class="input">' +
+            '<input type="text" name="first" class="input" style="width: calc(100% / 2);">' +
+            '<input type="text" name="second" class="input" style="width: calc(100% / 2);">' +
             '</div>' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
-            '<input type="text" name="third" class="input">' +
+            '<input type="text" name="third" class="input" style="width: calc(100% / 2);">' +
             '</div>' +
             '</div>'+
             '</div>');
@@ -565,8 +565,8 @@ describe("Box class tests - initialization", function() {
         expect(box.render().outerHTML).toBe('<div class="box">' +
             '<div class="layout linear-layout flex-vertical flex-start">' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
-            '<input type="text" name="second" class="input">' +
-            '<input type="text" name="third" class="input">' +
+            '<input type="text" name="second" class="input" style="width: calc(100% / 2);">' +
+            '<input type="text" name="third" class="input" style="width: calc(100% / 2);">' +
             '</div>' +
             '<div class="layout linear-layout flex-horizontal flex-start"></div>' +
             '</div>'+
@@ -622,11 +622,11 @@ describe("Box class tests - initialization", function() {
         expect(box.render().outerHTML).toBe('<div class="box">' +
             '<div class="layout linear-layout flex-vertical flex-start">' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
-            '<input type="text" name="second" class="input">' +
-            '<input type="text" name="third" class="input">' +
+            '<input type="text" name="second" class="input" style="width: calc(100% / 2);">' +
+            '<input type="text" name="third" class="input" style="width: calc(100% / 2);">' +
             '</div>' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
-            '<input type="text" name="first" class="input">' +
+            '<input type="text" name="first" class="input" style="width: calc(100% / 2);">' +
             '</div>' +
             '</div>'+
             '</div>');

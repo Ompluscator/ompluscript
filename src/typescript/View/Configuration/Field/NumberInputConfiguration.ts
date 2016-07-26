@@ -76,7 +76,9 @@ module Ompluscript.View.Configuration.Field {
             attribute = <Number>this.createAttribute(definition, attribute);
             let placeholder: string = definition[Input.PARAMETER_PLACEHOLDER];
             let styles: Object = definition[Component.PARAMETER_STYLES];
-            return new NumberInput(name, attribute, placeholder, styles);
+            let numberInput: NumberInput = new NumberInput(name, attribute, placeholder, styles);
+            this.attachEvents(definition, numberInput);
+            return numberInput;
         }
     }
 }

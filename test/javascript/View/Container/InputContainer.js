@@ -63,18 +63,18 @@ describe("InputContainer class tests", function() {
         stringObject.validate();
         expect(inputContainer.hasClass(InputContainer.CLASS_INPUT_CONTAINER)).toBeTruthy();
         expect(inputContainer.getChildrenCount()).toBe(2);
-        expect(inputContainer.render().outerHTML).toBe('<div class="input-container">' +
+        expect(inputContainer.render().outerHTML).toBe('<div class="input-container error">' +
             '<div class="layout null-layout">' +
-            '<label class="label show">first.101</label>' +
+            '<label class="label">first.101</label>' +
             '<input type="text" name="first" class="input" placeholder="first">' +
             '</div>' +
             '</div>');
         expect(inputContainer.getStackTrace()).toEqual({
-            html: '<div class="input-container"></div>',
+            html: '<div class="input-container error"></div>',
             name: "first",
             children: [
                 {
-                    html: '<label class="label show"></label>',
+                    html: '<label class="label"></label>',
                     name: "firstError",
                     text: "first.101",
                 },
@@ -89,7 +89,7 @@ describe("InputContainer class tests", function() {
                 name: "NullLayout",
                 children: [
                     {
-                        html: '<label class="label show"></label>',
+                        html: '<label class="label"></label>',
                         name: "firstError",
                         text: "first.101",
                     },

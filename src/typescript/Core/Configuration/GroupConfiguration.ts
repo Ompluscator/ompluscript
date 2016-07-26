@@ -1,21 +1,50 @@
 /// <reference path="../Interfaces/IBase.ts" />
 /// <reference path="Configuration.ts" />
 
+/**
+ * Module that contains base configuration classes.
+ *
+ * @module Ompluscript.Core.Configuration
+ */
 module Ompluscript.Core.Configuration {
     "use strict";
     
     import Configuration = Ompluscript.Core.Configuration.Configuration;
     import IBase = Ompluscript.Core.Interfaces.IBase;
 
+    /**
+     * Abstract lass that contains base functionality for group configuration.
+     *
+     * @class Configuration
+     */
     export abstract class GroupConfiguration extends Configuration {
-        
+
+        /**
+         * @type {Object} configurations Container with all configurations
+         */
         protected configurations: Object;
-        
+
+        /**
+         * Class constructor
+         * 
+         * Sets container with all configurations
+         * 
+         * @param {Object} configurations Container with all configurations
+         * @constructs
+         */
         constructor(configurations: Object) {
             super();
             this.configurations = configurations;
         }
 
+        /**
+         * Method that returns list of errors for children elements in definition
+         * 
+         * @param {Object} definition Class definition
+         * @param {string} key Key in definition that should be used
+         * @param {Creator} creator Instance of creator for component
+         * @returns {string[]} List of errors
+         */
         public getErrorsForChildren(definition: Object, key: string = undefined, creator: Creator = undefined): string[] {
             let errors: string[] = [];
             if (this.configurations.hasOwnProperty(key)) {
@@ -57,6 +86,14 @@ module Ompluscript.Core.Configuration {
             return this.filterErrors(errors);
         }
 
+        /**
+         * Method that returns list children elements in definition
+         *
+         * @param {Object} definition Class definition
+         * @param {string} key Key in definition that should be used
+         * @param {Creator} creator Instance of creator for component
+         * @returns {IBase[]} List of children
+         */
         public createChildren(definition: Object, key: string, creator: Creator = undefined): IBase[] {
             let children: IBase[] = [];
             if (this.configurations.hasOwnProperty(key)) {
@@ -79,6 +116,14 @@ module Ompluscript.Core.Configuration {
             return children;
         }
 
+        /**
+         * Method that returns child elements in definition
+         *
+         * @param {Object} definition Class definition
+         * @param {string} key Key in definition that should be used
+         * @param {Creator} creator Instance of creator for component
+         * @returns {IBase} Child
+         */
         public createChild(definition: Object, key: string, creator: Creator = undefined): IBase {
             if (creator !== undefined && typeof definition[key] === "string") {
                 return creator.create(definition[key]);

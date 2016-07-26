@@ -1,4 +1,4 @@
-/// <reference path="../Component/ComponentConfiguration.ts" />
+/// <reference path="FieldConfiguration.ts" />
 /// <reference path="../../Field/TextContent.ts" />
 
 /**
@@ -9,7 +9,6 @@
 module Ompluscript.View.Configuration.Field {
     "use strict";
     
-    import ComponentConfiguration = Ompluscript.View.Configuration.Component.ComponentConfiguration;
     import TextContent = Ompluscript.View.Field.TextContent;
 
     /**
@@ -17,8 +16,7 @@ module Ompluscript.View.Configuration.Field {
      *
      * @class TextContentConfiguration
      */
-    export abstract class TextContentConfiguration extends ComponentConfiguration {
-
+    export abstract class TextContentConfiguration extends FieldConfiguration {
 
         /**
          * Class constructor.
@@ -30,7 +28,7 @@ module Ompluscript.View.Configuration.Field {
         constructor() {
             super(undefined);
         }
-
+        
         /**
          * Method that searches for errors in configuration
          *

@@ -1,6 +1,6 @@
 Ompluscript.View.define({
     type: "Page",
-    name: "layouts",
+    name: "/layouts",
     children: [
         {
             type: "Header",
@@ -26,7 +26,7 @@ Ompluscript.View.define({
 
 Ompluscript.View.define({
     type: "Page",
-    name: "null-layout",
+    name: "/layouts/null-layout",
     children: [
         {
             type: "Header",
@@ -48,7 +48,7 @@ Ompluscript.View.define({
 
 Ompluscript.View.define({
     type: "Page",
-    name: "relative-layout",
+    name: "/layouts/relative-layout",
     layout: {
         type: "RelativeLayout"
     },
@@ -88,7 +88,7 @@ Ompluscript.View.define({
 
 Ompluscript.View.define({
     type: "Page",
-    name: "table-layout",
+    name: "/layouts/table-layout",
     layout: {
         type: "TableLayout",
         rows: 2,
@@ -99,33 +99,21 @@ Ompluscript.View.define({
             type: "Header",
             name: "table_layout_title",
             text: "text_table_layout_title",
-            styles: {
-                width: "50%"
-            }
         },
         {
             type: "Paragraph",
             name: "relative_layout_configuration",
             text: "text_relative_layout_configuration",
-            styles: {
-                width: "50%"
-            }
         },
         {
             type: "Paragraph",
             name: "relative_layout_message",
             text: "text_relative_layout_message",
-            styles: {
-                width: "50%"
-            }
         },
         {
             type: "Paragraph",
             name: "relative_layout_message",
             text: "text_relative_layout_message",
-            styles: {
-                width: "50%"
-            }
         }
     ]
 });

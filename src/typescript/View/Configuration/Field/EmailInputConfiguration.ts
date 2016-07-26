@@ -50,7 +50,9 @@ module Ompluscript.View.Configuration.Field {
             attribute = <String>this.createAttribute(definition, attribute);
             let placeholder: string = definition[Input.PARAMETER_PLACEHOLDER];
             let styles: Object = definition[Component.PARAMETER_STYLES];
-            return new EmailInput(name, attribute, placeholder, styles);
+            let emailInput: EmailInput = new EmailInput(name, attribute, placeholder, styles);
+            this.attachEvents(definition, emailInput);
+            return emailInput;
         }
     }
 }

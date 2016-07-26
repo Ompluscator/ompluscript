@@ -7,10 +7,19 @@ module.exports = {
             "/": "index.html",
             "/home": "index.html",
             "/layouts": "index.html",
-            "/null-layout": "index.html",
-            "/relative-layout": "index.html",
-            "/table-layout": "index.html",
-            "/form": "index.html"
+            "/layouts/null-layout": "index.html",
+            "/layouts/relative-layout": "index.html",
+            "/layouts/table-layout": "index.html",
+            "/form": "index.html",
+            "/table": "index.html",
+            "/table/users": "index.html",
+            "/table/users/type/online": "index.html",
+            "/table/users/type/offline": "index.html",
+            "/json/users.json?type=online": "json/online.json",
+            "/json/users.json?type=offline": "json/offline.json",
+            "/json/translation.json?id=1": "json/prevod.json",
+            "/not-found": "index.html"
         },
+        openBrowser: true
     }
 }

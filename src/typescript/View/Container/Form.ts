@@ -10,6 +10,8 @@
 /// <reference path="../../Model/Event/OnDoneProxy.ts" />
 /// <reference path="../../Model/Proxy/AjaxProxy.ts" />
 /// <reference path="../Event/OnFormFail.ts" />
+/// <reference path="../Event/OnFieldFocus.ts" />
+/// <reference path="../Event/OnFieldBlur.ts" />
 /// <reference path="../Event/OnFormSubmit.ts" />
 
 /**
@@ -36,6 +38,8 @@ module Ompluscript.View.Container {
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import FormEvent = Ompluscript.View.Event.FormEvent;
     import Label = Ompluscript.View.Field.Label;
+    import OnFieldFocus = Ompluscript.View.Event.OnFieldFocus;
+    import OnFieldBlur = Ompluscript.View.Event.OnFieldBlur;
     
     /**
      * Class that defines form
@@ -75,6 +79,11 @@ module Ompluscript.View.Container {
         public static CLASS_STATUS: string = "status";
 
         /**
+         * @type {string} CLASS_SHOW Class of HTML labe element for showing
+         */
+        public static CLASS_SHOW: string = "show";
+
+        /**
          * @type {string} proxy Type of proxy
          */
         private proxy: string;
@@ -109,7 +118,7 @@ module Ompluscript.View.Container {
          * @constructs
          */
         constructor(name: string, layout: Layout = undefined, proxy: string, buttonAsset: string, 
-                    model: Model, inputs: Input[] = undefined, styles: Object = undefined) {
+                    model: Model, inputs: Input[] = [], styles: Object = undefined) {
             let button: Button = new Button(name + "Submit", buttonAsset);
             let containers: Component[] = [];
             let label: Label = new Label(name + "Status");
@@ -119,6 +128,10 @@ module Ompluscript.View.Container {
             }
             containers.push(button);
             super(name, layout, containers, styles);
+            for (let i: number = 0; i < inputs.length; i++) {
+                inputs[i].addObserverByType(this, FieldEvent.ON_FIELD_FOCUS);
+                inputs[i].addObserverByType(this, FieldEvent.ON_FIELD_BLUR);
+            }
             this.addClass(Form.CLASS_FORM);
             this.proxy = proxy;
             this.model = model;
@@ -139,6 +152,12 @@ module Ompluscript.View.Container {
             } else if (event instanceof OnDoneProxy) {
                 let onDoneProxy: OnDoneProxy = <OnDoneProxy>event;
                 this.handleResponse(onDoneProxy);
+            } else if (event instanceof OnFieldFocus) {
+                let onFieldFocus: OnFieldFocus = <OnFieldFocus>event;
+                this.showLabel(<Input>onFieldFocus.getSender());
+            } else if (event instanceof OnFieldBlur) {
+                let onFieldBlur: OnFieldBlur = <OnFieldBlur>event;
+                this.hideLabel(<Input>onFieldBlur.getSender());
             }
         }
 
@@ -203,6 +222,8 @@ module Ompluscript.View.Container {
                     default:
                         return;
                 }
+            } else {
+                this.model.fireEventIfInvalid();
             }
         }
 
@@ -239,6 +260,28 @@ module Ompluscript.View.Container {
         protected fireOnFormFailEvent(response: Object): void {
             let event: OnFormFail = new OnFormFail(this, response);
             this.notifyObservers(event);
+        }
+
+        /**
+         * Method that shod=ws error label for desired input
+         *
+         * @param {Input} input
+         */
+        protected showLabel(input: Input): void {
+            let inputContainer: InputContainer = <InputContainer>input.getParent();
+            let label: Label = <Label>inputContainer.findChildrenByType("Label")[0];
+            label.addClass(Form.CLASS_SHOW);
+        }
+
+        /**
+         * Method that hides error label for desired input
+         *
+         * @param {Input} input
+         */
+        protected hideLabel(input: Input): void {
+            let inputContainer: InputContainer = <InputContainer>input.getParent();
+            let label: Label = <Label>inputContainer.findChildrenByType("Label")[0];
+            label.removeClass(Form.CLASS_SHOW);
         }
     }
 }

@@ -36,9 +36,9 @@ module Ompluscript.View.Container {
         public static CLASS_INPUT_CONTAINER: string = "input-container";
 
         /**
-         * @type {string} CLASS_SHOW Class of HTML label element for visible error label.
+         * @type {string} CLASS_ERROR Class of HTML input container element for error
          */
-        public static CLASS_SHOW: string = "show";
+        public static CLASS_ERROR: string = "error";
 
         /**
          * @tupe {Label} label Label field for displaying errors
@@ -78,10 +78,10 @@ module Ompluscript.View.Container {
             if (event instanceof OnInvalidAttribute) {
                 let onInvalidAttribute: OnInvalidAttribute = <OnInvalidAttribute>event;
                 this.label.setTextAsset(this.name + "." + onInvalidAttribute.getValidationCode());
-                this.label.addClass(InputContainer.CLASS_SHOW);
+                this.label.getParent().addClass(InputContainer.CLASS_ERROR);
             } else if (event instanceof OnUpdateAttribute) {
                 if (this.input.getBindingAttribute().validate()) {
-                    this.label.removeClass(InputContainer.CLASS_SHOW);
+                    this.label.getParent().removeClass(InputContainer.CLASS_ERROR);
                 }
             }
         }
@@ -90,7 +90,7 @@ module Ompluscript.View.Container {
          * Method that hides error label.
          */
         public clearError(): void {
-            this.label.removeClass(InputContainer.CLASS_SHOW);
+            this.label.getParent().removeClass(InputContainer.CLASS_ERROR);
         }
     }
 }

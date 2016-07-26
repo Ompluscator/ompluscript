@@ -33,6 +33,11 @@ module Ompluscript.View.Layout {
         public static PARAMETER_CELLS: string = "cells";
 
         /**
+         * @type {string} STYLE_WIDTH Name for width style
+         */
+        public static STYLE_WIDTH: string = "width";
+
+        /**
          * @type {string} rows Number of rows
          */
         private rows: number;
@@ -75,6 +80,7 @@ module Ompluscript.View.Layout {
          * @param {Component} component
          */
         public addChild(component: Component): void {
+            component.setStyle(TableLayout.STYLE_WIDTH, "calc(100% / " + this.cells + ")");
             let row: number = Math.floor(this.getChildrenCount() / this.cells);
             if (row < this.children.length) {
                 (<Layout>this.children[row]).addChild(component);

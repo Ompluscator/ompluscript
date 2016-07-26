@@ -16,18 +16,39 @@ module Ompluscript.View.Container {
     import Component = Ompluscript.View.Component.Component;
     import OnPageLoad = Ompluscript.View.Event.OnPageLoad;
     import OnPageClose = Ompluscript.View.Event.OnPageClose;
+    import IBase = Ompluscript.Core.Interfaces.IBase;
     
     /**
      * Class that defines page
      *
      * @class Page
      */
-        export class Page extends Container {
+     export class Page extends Container {
 
         /**
          * @type {string} TYPE_PAGE Type of page
          */
         public static TYPE_PAGE: string = Page["name"];
+
+        /**
+         * @type {string} PARAMETER_EVENTS Name of events parameter
+         */
+        public static PARAMETER_EVENTS: string = "events";
+
+        /**
+         * @type {string} PARAMETER_ON_PAGE_LOAD Defines event when page is loaded
+         */
+        public static PARAMETER_ON_PAGE_LOAD: string = "onPageLoad";
+
+        /**
+         * @type {string} PARAMETER_ON_PAGE_CLOSE Defines event when page is closed
+         */
+        public static PARAMETER_ON_PAGE_CLOSE: string = "onPageClose";
+
+        /**
+         * @type {string} NAME_404_PAGE Name for 404 page
+         */
+        public static NAME_404_PAGE: string = "Error-404";
 
         /**
          * @type {string} PARAMETER_DEFAULT_PAGE Name of default page parameter
@@ -80,6 +101,26 @@ module Ompluscript.View.Container {
         }
 
         /**
+         * Method that returns if page is related to path
+         * 
+         * @param {string} path Path to page
+         * @returns {boolean} If page is related to path
+         */
+        public isRelated(path: string): boolean {
+            return path.indexOf(this.name) === 0;
+        }
+
+        /**
+         * Method that returns rest of path without page name.
+         * 
+         * @param {string} path Path to page
+         * @returns {string} Rest of path
+         */
+        public trimPath(path: string): string {
+            return path.replace(this.name, "");
+        }
+
+        /**
          * Method that returns value that defines if page is default
          *
          * @returns {boolean} Defines if page is default
@@ -101,6 +142,26 @@ module Ompluscript.View.Container {
             } else if (this.active === false && this.active !== beforeChange) {
                 this.fireOnPageCloseEvent();
             }
+        }
+
+        /**
+         * Method that attach handler for page load event
+         *
+         * @param {IBase} observer Observer that handles event
+         * @param {Function} callback Event handler
+         */
+        public attachOnPageLoadEvent(observer: IBase, callback: Function): void {
+            this.addGenericObserverByType(observer, OnPageLoad.ON_PAGE_LOAD, callback);
+        }
+
+        /**
+         * Method that attach handler for page close event
+         *
+         * @param {IBase} observer Observer that handles event
+         * @param {Function} callback Event handler
+         */
+        public attachOnPageCloseEvent(observer: IBase, callback: Function): void {
+            this.addGenericObserverByType(observer, OnPageClose.ON_PAGE_CLOSE, callback);
         }
 
         /**

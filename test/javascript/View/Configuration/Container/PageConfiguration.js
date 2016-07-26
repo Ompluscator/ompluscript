@@ -222,11 +222,11 @@ describe("PageConfiguration class tests - valid Page", function() {
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
             '<div class="layout linear-layout flex-vertical flex-start">' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
-            '<input type="text" name="first" class="input">' +
-            '<input type="text" name="second" class="input">' +
+            '<input type="text" name="first" class="input" style="width: calc(100% / 2);">' +
+            '<input type="text" name="second" class="input" style="width: calc(100% / 2);">' +
             '</div>' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
-            '<input type="text" name="third" class="input">' +
+            '<input type="text" name="third" class="input" style="width: calc(100% / 2);">' +
             '</div>' +
             '</div>' +
             '</div>');
@@ -235,17 +235,17 @@ describe("PageConfiguration class tests - valid Page", function() {
             name: "firstPage",
             children: [
                 {
-                    html: '<input type="text" name="first" class="input">',
+                    html: '<input type="text" name="first" class="input" style="width: calc(100% / 2);">',
                     name: "first",
                     attribute: void(0),
                 },
                 {
-                    html: '<input type="text" name="second" class="input">',
+                    html: '<input type="text" name="second" class="input" style="width: calc(100% / 2);">',
                     name: "second",
                     attribute: void(0),
                 },
                 {
-                    html: '<input type="text" name="third" class="input">',
+                    html: '<input type="text" name="third" class="input" style="width: calc(100% / 2);">',
                     name: "third",
                     attribute: void(0),
                 }
@@ -259,12 +259,12 @@ describe("PageConfiguration class tests - valid Page", function() {
                         name: "TableLayout",
                         children: [
                             {
-                                html: '<input type="text" name="first" class="input">',
+                                html: '<input type="text" name="first" class="input" style="width: calc(100% / 2);">',
                                 name: "first",
                                 attribute: void(0),
                             },
                             {
-                                html: '<input type="text" name="second" class="input">',
+                                html: '<input type="text" name="second" class="input" style="width: calc(100% / 2);">',
                                 name: "second",
                                 attribute: void(0),
                             }
@@ -278,7 +278,7 @@ describe("PageConfiguration class tests - valid Page", function() {
                         name: "TableLayout",
                         children: [
                             {
-                                html: '<input type="text" name="third" class="input">',
+                                html: '<input type="text" name="third" class="input" style="width: calc(100% / 2);">',
                                 name: "third",
                                 attribute: void(0),
                             }
@@ -317,11 +317,11 @@ describe("PageConfiguration class tests - valid Page", function() {
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
             '<div class="layout linear-layout flex-vertical flex-start">' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
-            '<input type="text" name="first" class="input">' +
-            '<input type="text" name="second" class="input">' +
+            '<input type="text" name="first" class="input" style="width: calc(100% / 2);">' +
+            '<input type="text" name="second" class="input" style="width: calc(100% / 2);">' +
             '</div>' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
-            '<input type="text" name="third" class="input">' +
+            '<input type="text" name="third" class="input" style="width: calc(100% / 2);">' +
             '</div>' +
             '</div>' +
             '</div>');
@@ -330,17 +330,17 @@ describe("PageConfiguration class tests - valid Page", function() {
             name: "firstPage",
             children: [
                 {
-                    html: '<input type="text" name="first" class="input">',
+                    html: '<input type="text" name="first" class="input" style="width: calc(100% / 2);">',
                     name: "first",
                     attribute: void(0),
                 },
                 {
-                    html: '<input type="text" name="second" class="input">',
+                    html: '<input type="text" name="second" class="input" style="width: calc(100% / 2);">',
                     name: "second",
                     attribute: void(0),
                 },
                 {
-                    html: '<input type="text" name="third" class="input">',
+                    html: '<input type="text" name="third" class="input" style="width: calc(100% / 2);">',
                     name: "third",
                     attribute: void(0),
                 }
@@ -354,12 +354,12 @@ describe("PageConfiguration class tests - valid Page", function() {
                         name: "TableLayout",
                         children: [
                             {
-                                html: '<input type="text" name="first" class="input">',
+                                html: '<input type="text" name="first" class="input" style="width: calc(100% / 2);">',
                                 name: "first",
                                 attribute: void(0),
                             },
                             {
-                                html: '<input type="text" name="second" class="input">',
+                                html: '<input type="text" name="second" class="input" style="width: calc(100% / 2);">',
                                 name: "second",
                                 attribute: void(0),
                             }
@@ -373,7 +373,7 @@ describe("PageConfiguration class tests - valid Page", function() {
                         name: "TableLayout",
                         children: [
                             {
-                                html: '<input type="text" name="third" class="input">',
+                                html: '<input type="text" name="third" class="input" style="width: calc(100% / 2);">',
                                 name: "third",
                                 attribute: void(0),
                             }
@@ -429,11 +429,11 @@ describe("PageConfiguration class tests - valid Page", function() {
         expect(page.render().outerHTML).toBe('<div class="page firstPage">' +
             '<div class="layout linear-layout flex-vertical flex-start">' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
-            '<input type="text" name="first" class="input">' +
-            '<input type="text" name="second" class="input">' +
+            '<input type="text" name="first" class="input" style="width: calc(100% / 2);">' +
+            '<input type="text" name="second" class="input" style="width: calc(100% / 2);">' +
             '</div>' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
-            '<input type="text" name="third" class="input">' +
+            '<input type="text" name="third" class="input" style="width: calc(100% / 2);">' +
             '</div>' +
             '</div>' +
             '</div>');
@@ -442,17 +442,17 @@ describe("PageConfiguration class tests - valid Page", function() {
             name: "firstPage",
             children: [
                 {
-                    html: '<input type="text" name="first" class="input">',
+                    html: '<input type="text" name="first" class="input" style="width: calc(100% / 2);">',
                     name: "first",
                     attribute: void(0),
                 },
                 {
-                    html: '<input type="text" name="second" class="input">',
+                    html: '<input type="text" name="second" class="input" style="width: calc(100% / 2);">',
                     name: "second",
                     attribute: void(0),
                 },
                 {
-                    html: '<input type="text" name="third" class="input">',
+                    html: '<input type="text" name="third" class="input" style="width: calc(100% / 2);">',
                     name: "third",
                     attribute: void(0),
                 }
@@ -466,12 +466,12 @@ describe("PageConfiguration class tests - valid Page", function() {
                         name: "TableLayout",
                         children: [
                             {
-                                html: '<input type="text" name="first" class="input">',
+                                html: '<input type="text" name="first" class="input" style="width: calc(100% / 2);">',
                                 name: "first",
                                 attribute: void(0),
                             },
                             {
-                                html: '<input type="text" name="second" class="input">',
+                                html: '<input type="text" name="second" class="input" style="width: calc(100% / 2);">',
                                 name: "second",
                                 attribute: void(0),
                             }
@@ -485,7 +485,7 @@ describe("PageConfiguration class tests - valid Page", function() {
                         name: "TableLayout",
                         children: [
                             {
-                                html: '<input type="text" name="third" class="input">',
+                                html: '<input type="text" name="third" class="input" style="width: calc(100% / 2);">',
                                 name: "third",
                                 attribute: void(0),
                             }

@@ -73,7 +73,9 @@ module Ompluscript.View.Configuration.Field {
             let name: string = definition[Configuration.PARAMETER_NAME];
             attribute = <Boolean>this.createAttribute(definition, attribute);
             let styles: Object = definition[Component.PARAMETER_STYLES];
-            return new CheckBoxInput(name, attribute, styles);
+            let checkBoxInput: CheckBoxInput = new CheckBoxInput(name, attribute, styles);
+            this.attachEvents(definition, checkBoxInput);
+            return checkBoxInput;
         }
     }
 }

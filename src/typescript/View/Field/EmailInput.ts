@@ -10,6 +10,7 @@ module Ompluscript.View.Field {
     "use strict";
     
     import String = Ompluscript.Model.Attribute.String;
+    import IBase = Ompluscript.Core.Interfaces.IBase;
 
     /**
      * Class that defines email input
@@ -41,6 +42,13 @@ module Ompluscript.View.Field {
          */
         constructor(name: string, stringAttribute: String = undefined, placeholder: string = undefined, styles: Object = {}) {
             super(name, stringAttribute, placeholder, styles, EmailInput.INPUT_EMAIL);
+        }
+
+        /**
+         * Method that should be called when class object should be cloned.
+         */
+        public clone(): IBase {
+            return new EmailInput(this.name, <String>this.attribute, this.placeholder, this.styles);
         }
     }
 

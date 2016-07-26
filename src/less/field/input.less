@@ -1,4 +1,5 @@
 @import (reference) "../../../node_modules/less-mixins/mixins";
+@import (reference) "../variables/index";
 
 .input[type=text],
 .input[type=date],
@@ -12,5 +13,5 @@
   border-bottom: 1px solid;
   outline: none;
   background: transparent;
-  transition: all 200ms linear;
+  .transition(@formAnimationDuration linear);
 }

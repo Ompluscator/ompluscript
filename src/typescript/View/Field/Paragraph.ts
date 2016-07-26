@@ -7,6 +7,7 @@
  */
 module Ompluscript.View.Field {
     "use strict";
+    import IBase = Ompluscript.Core.Interfaces.IBase;
 
     /**
      * Class that defines paragraph field
@@ -50,6 +51,13 @@ module Ompluscript.View.Field {
          */
         protected initializeHtmlElement(): void {
             this.htmlElement = document.createElement(Paragraph.ELEMENT_PARAGRAPH);
+        }
+
+        /**
+         * Method that should be called when class object should be cloned.
+         */
+        public clone(): IBase {
+            return new Paragraph(this.name, this.text, this.styles);
         }
     }
 }

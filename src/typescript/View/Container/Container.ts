@@ -67,6 +67,89 @@ module Ompluscript.View.Container {
         }
 
         /**
+         * Method that add new componenet into the list.
+         *
+         * @param {Component} component
+         */
+        public addChild(component: Component): void {
+            component.setParent(this);
+            super.addChild(component);
+            this.layout.addChild(component);
+        }
+
+        /**
+         * Method that removes component from the list.
+         *
+         * @param {Component} component
+         */
+        public removeChild(component: Component): void {
+            component.removeParent();
+            super.removeChild(component);
+            this.layout.removeChild(component);
+        }
+
+        /**
+         * Method that clears the list of components
+         */
+        public clearChildren(): void {
+            for (let i: number = 0; i < this.children.length; i++) {
+                this.children[i].removeParent();
+            }
+            super.clearChildren();
+            this.layout.clearChildren();
+        }
+
+        /**
+         * Method that returns all children components depending on name
+         *
+         * @param {string} name Name of component
+         * @returns {Component[]} List of parent components by filter
+         */
+        public findChildrenByName(name: string): Component[] {
+            return this.findChildren(name);
+        }
+
+        /**
+         * Method that returns all children components depending on type
+         *
+         * @param {string} type Type of component
+         * @returns {Component[]} List of parent components by filter
+         */
+        public findChildrenByType(type: string): Component[] {
+            return this.findChildren(undefined, type);
+        }
+
+        /**
+         * Method that returns all children components depending on type and name
+         *
+         * @param {string} name Name of component
+         * @param {string} type Type of component
+         * @returns {Component[]} List of parent components by filter
+         */
+        public findChildren(name: string = undefined, type: string = undefined): Component[] {
+            if (this.getChildrenCount() === 0) {
+                return [];
+            }
+            let children: Component[] = [];
+            for (let i: number = 0; i < this.getChildrenCount(); i++) {
+                if (name === undefined && type === undefined) {
+                    children.push(this.children[i]);
+                } else if (name === this.children[i].getName() && type === undefined) {
+                    children.push(this.children[i]);
+                } else if (name === undefined && type === this.children[i].constructor["name"]) {
+                    children.push(this.children[i]);
+                } else if (name === this.children[i].getName() && type === this.children[i].constructor["name"]) {
+                    children.push(this.children[i]);
+                }
+                if (this.children[i] instanceof Container) {
+                    let container: Container = <Container>this.children[i];
+                    children.push.apply(children, container.findChildren(name, type));
+                }
+            }
+            return children;
+        }
+
+        /**
          * Method that returns all current values of object.
          *
          * @returns {Object} contains all values of the object

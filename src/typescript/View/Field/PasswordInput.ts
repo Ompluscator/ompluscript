@@ -10,6 +10,7 @@ module Ompluscript.View.Field {
     "use strict";
     
     import String = Ompluscript.Model.Attribute.String;
+    import IBase = Ompluscript.Core.Interfaces.IBase;
 
     /**
      * Class that defines password input
@@ -41,6 +42,13 @@ module Ompluscript.View.Field {
          */
         constructor(name: string, stringAttribute: String = undefined, placeholder: string = undefined, styles: Object = {}) {
             super(name, stringAttribute, placeholder, styles, PasswordInput.INPUT_PASSWORD);
+        }
+
+        /**
+         * Method that should be called when class object should be cloned.
+         */
+        public clone(): IBase {
+            return new PasswordInput(this.name, <String>this.attribute, this.placeholder, this.styles);
         }
     }
 

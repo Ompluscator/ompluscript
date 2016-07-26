@@ -35,6 +35,11 @@ module Ompluscript.Model.Event {
         public static ON_CLEAR_TABLE: string = "onClearTable";
 
         /**
+         * @type {string} ON_UPDATE_TABLE Defines event when table is updated
+         */
+        public static ON_UPDATE_TABLE: string = "onUpdateTable";
+
+        /**
          * Class constructor
          *
          * Calls superclass' constructor

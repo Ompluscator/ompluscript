@@ -1,6 +1,6 @@
 Ompluscript.View.define({
     type: "Page",
-    name: "home",
+    name: "/home",
     children: [
         {
             type: "Header",

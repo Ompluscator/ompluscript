@@ -43,7 +43,7 @@ describe("ApplicationController class tests - initialization", function() {
 
         applicationController.setup();
 
-        expect(jasmine.Ajax.requests.mostRecent().url).toBe("app/page.js");
+        expect(jasmine.Ajax.requests.mostRecent().url).toBe("/app/page.js");
 
         jasmine.Ajax.requests.mostRecent().respondWith({
             "status": 200,
@@ -63,7 +63,7 @@ describe("ApplicationController class tests - initialization", function() {
 
         applicationController.setup();
 
-        expect(jasmine.Ajax.requests.mostRecent().url).toBe("app/page.js");
+        expect(jasmine.Ajax.requests.mostRecent().url).toBe("/app/page.js");
 
         jasmine.Ajax.requests.mostRecent().respondWith({
             "status": 200,
@@ -84,7 +84,7 @@ describe("ApplicationController class tests - initialization", function() {
 
         applicationController.setup();
 
-        expect(jasmine.Ajax.requests.mostRecent().url).toBe("app/page.js");
+        expect(jasmine.Ajax.requests.mostRecent().url).toBe("/app/page.js");
 
         jasmine.Ajax.requests.mostRecent().respondWith({
             "status": 400,
@@ -95,8 +95,8 @@ describe("ApplicationController class tests - initialization", function() {
             definition: {
                 page: false
             },
-            errors: ["app/page.js not found"],
-            name: "app/page.js",
+            errors: ["/app/page.js not found"],
+            name: "/app/page.js",
             type: "Script",
         });
         var page = new Page("ApplicationController", true, void(0), [wrongConfigurationContainer]);

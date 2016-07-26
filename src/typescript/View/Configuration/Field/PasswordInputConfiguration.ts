@@ -60,7 +60,9 @@ module Ompluscript.View.Configuration.Field {
             attribute = <String>this.createAttribute(definition, attribute);
             let placeholder: string = definition[Input.PARAMETER_PLACEHOLDER];
             let styles: Object = definition[Component.PARAMETER_STYLES];
-            return new PasswordInput(name, attribute, placeholder, styles);
+            let passwordInput: PasswordInput = new PasswordInput(name, attribute, placeholder, styles);
+            this.attachEvents(definition, passwordInput);
+            return passwordInput;
         }
     }
 }

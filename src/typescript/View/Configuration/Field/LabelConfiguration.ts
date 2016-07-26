@@ -55,7 +55,9 @@ module Ompluscript.View.Configuration.Field {
             let name: string = definition[Configuration.PARAMETER_NAME];
             let text: string = definition[TextContent.PARAMETER_TEXT];
             let styles: Object = definition[Component.PARAMETER_STYLES];
-            return new Label(name, text, styles);
+            let label: Label = new Label(name, text, styles);
+            this.attachEvents(definition, label);
+            return label;
         }
     }
 }

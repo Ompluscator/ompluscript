@@ -28,8 +28,8 @@ describe("DateInput class tests - events", function() {
     it("simulate keyup - unit test", function() {
         spyOn(dateInput, 'notifyObservers');
 
-        var event = document.createEvent("KeyboardEvent");
-        event.initKeyboardEvent("keyup", true, true, null, false, false, false, false, 65, 0);
+        var event = document.createEvent("HTMLEvents");
+        event.initEvent("change", false, true);
         dateInput.render().dispatchEvent(event);
 
         var onUpdateInput = new OnUpdateInput(dateInput, dateInput.getValue());
@@ -66,8 +66,8 @@ describe("DateInput class tests - events", function() {
     it("simulate keyup - functional test", function() {
         spyOn(datetimeObject, 'setValue');
 
-        var event = document.createEvent("KeyboardEvent");
-        event.initKeyboardEvent("keyup", true, true, null, false, false, false, false, 65, 0);
+        var event = document.createEvent("HTMLEvents");
+        event.initEvent("change", false, true);
         dateInput.render().dispatchEvent(event);
 
         expect(datetimeObject.setValue.calls.argsFor(0)).toEqual([dateInput.getValue()]);

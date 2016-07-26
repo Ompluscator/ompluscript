@@ -48,6 +48,16 @@ module Ompluscript.View.Component {
         protected name: string;
 
         /**
+         * @type {Component} parent Component that contains this one
+         */
+        protected parent: Component;
+
+        /**
+         * @type {Object} styles Styles for container
+         */
+        protected styles: Object;
+
+        /**
          * Class constructor.
          * 
          * Sets name and styles for component, and
@@ -60,6 +70,7 @@ module Ompluscript.View.Component {
             super();
             this.name = name;
             this.htmlElement = undefined;
+            this.styles = styles;
             this.initializeHtmlElement();
             if (styles !== undefined) {
                 for (let key in styles) {
@@ -222,6 +233,76 @@ module Ompluscript.View.Component {
                     parent.removeChild(this.htmlElement);
                 }
             }
+        }
+
+        /**
+         * Method that sets component that contains this one
+         *
+         * @param {Component} parent Component that contains this one
+         */
+        public setParent(parent: Component): void {
+            this.parent = parent;
+        }
+
+        /**
+         * Method that returns component that contains this one
+         *
+         * @returns {Component} Component that contains this one
+         */
+        public getParent(): Component {
+            return this.parent;
+        }
+
+        /**
+         * Method that removes component that contains this one
+         */
+        public removeParent(): void {
+            this.parent = undefined;
+        }
+
+        /**
+         * Method that returns all parent components depending on  name
+         *
+         * @param {string} name Name of component
+         * @returns {Component[]} List of parent components by filter
+         */
+        public getParentsByName(name: string): Component[] {
+            return this.getParents(name);
+        }
+
+        /**
+         * Method that returns all parent components depending on type
+         *
+         * @param {string} type Type of component
+         * @returns {Component[]} List of parent components by filter
+         */
+        public getParentsByType(type: string): Component[] {
+            return this.getParents(undefined, type);
+        }
+
+        /**
+         * Method that returns all parent components depending on type and name
+         *
+         * @param {string} name Name of component
+         * @param {string} type Type of component
+         * @returns {Component[]} List of parent components by filter
+         */
+        public getParents(name: string = undefined, type: string = undefined): Component[] {
+            if (this.getParent() === undefined) {
+                return [];
+            }
+            let parents: Component[] = [];
+            if (name === undefined && type === undefined) {
+                parents.push(this.getParent());
+            } else if (name === this.getParent().getName() && type === undefined) {
+                parents.push(this.getParent());
+            } else if (name === undefined && type === this.getParent().constructor["name"]) {
+                parents.push(this.getParent());
+            } else if (name === this.getParent().getName() && type === this.getParent().constructor["name"]) {
+                parents.push(this.getParent());
+            }
+            parents.push.apply(parents, this.getParent().getParents(name, type));
+            return parents;
         }
 
         /**

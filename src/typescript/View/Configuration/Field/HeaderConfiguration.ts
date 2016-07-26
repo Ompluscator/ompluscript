@@ -70,7 +70,9 @@ module Ompluscript.View.Configuration.Field {
             let text: string = definition[TextContent.PARAMETER_TEXT];
             let level: string = definition[Header.PARAMETER_LEVEL];
             let styles: Object = definition[Component.PARAMETER_STYLES];
-            return new Header(name, text, level, styles);
+            let header: Header = new Header(name, text, level, styles);
+            this.attachEvents(definition, header);
+            return header;
         }
     }
 }

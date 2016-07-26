@@ -2,6 +2,7 @@
 /// <reference path="ControllerConfiguration.ts" />
 /// <reference path="../../Controller/PageController.ts" />
 /// <reference path="../../../View/Container/Page.ts" />
+/// <reference path="../../../View/Configuration/Container/PageConfiguration.ts" />
 
 /**
  * Module that contains controller' configuration classes.
@@ -15,6 +16,7 @@ module Ompluscript.Controller.Configuration.Controller {
     import PageController = Ompluscript.Controller.Controller.PageController;
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import Page = Ompluscript.View.Container.Page;
+    import PageConfiguration = Ompluscript.View.Configuration.Container.PageConfiguration;
 
     /**
      * Class that contains functionality for application controller configuration.
@@ -31,7 +33,12 @@ module Ompluscript.Controller.Configuration.Controller {
          * @constructs
          */
         constructor() {
-            super(undefined);
+            let pages: Object[] = [
+                PageConfiguration,
+            ];
+            let configurations: Object = {};
+            configurations[PageController.PARAMETER_PAGE] = pages;
+            super(configurations);
         }
         
         /**
@@ -52,6 +59,9 @@ module Ompluscript.Controller.Configuration.Controller {
          */
         public getErrors(definition: Object): string[] {
             let errors: string[] = super.getErrors(definition);
+            if (definition[PageController.PARAMETER_PAGE] !== undefined) {
+                definition[Configuration.PARAMETER_NAME] = definition[PageController.PARAMETER_PAGE][Configuration.PARAMETER_NAME];
+            }
             errors.push(this.shouldBeStringOrObject(definition, PageController.PARAMETER_PAGE));
             errors.push(this.shouldBeObject(definition, PageController.PARAMETER_ACTIONS));
             if (definition[PageController.PARAMETER_ACTIONS] !== undefined) {
@@ -73,9 +83,10 @@ module Ompluscript.Controller.Configuration.Controller {
          * @returns {IBase} New instance
          */
         public create(definition: Object): IBase {
-            let name: string = definition[Configuration.PARAMETER_NAME];
-            let page: Page = definition[PageController.PARAMETER_PAGE];
-            let pageController: PageController = new PageController(name, page);
+            let page: Page = <Page>this.createChild(
+                definition, PageController.PARAMETER_PAGE, Ompluscript.View.Creator.getInstance()
+            );
+            let pageController: PageController = new PageController(page);
             if (definition[PageController.PARAMETER_ACTIONS] !== undefined) {
                 for (let key in definition[PageController.PARAMETER_ACTIONS]) {
                     if (definition[PageController.PARAMETER_ACTIONS].hasOwnProperty(key)) {

@@ -78,3 +78,47 @@ h6 {
 .input[type=password]:focus {
   border-bottom-color: #FFFFFF;
 }
+.form .label {
+  color: #FFFFFF;
+}
+.form .label.status {
+  background: #263238;
+}
+.form .input-container.error .input {
+  border-bottom-color: #FFFFFF;
+  -webkit-box-shadow: inset 0px -10px 10px -10px #FFFFFF;
+  -moz-box-shadow: inset 0px -10px 10px -10px #FFFFFF;
+  box-shadow: inset 0px -10px 10px -10px #FFFFFF;
+}
+.button {
+  background: #263238;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #263238), color-stop(1, #37474F));
+  background: -ms-linear-gradient(bottom, #263238, #37474F);
+  background: -moz-linear-gradient(center bottom, #263238 0%, #37474F 100%);
+  background: -o-linear-gradient(#37474F, #263238);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#37474F', endColorstr='#263238', GradientType=0);
+  text-shadow: -1px -1px #000000;
+  border: 1px solid #263238;
+}
+.button:active,
+.button:hover {
+  background: #37474F;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #37474F), color-stop(1, #263238));
+  background: -ms-linear-gradient(bottom, #37474F, #263238);
+  background: -moz-linear-gradient(center bottom, #37474F 0%, #263238 100%);
+  background: -o-linear-gradient(#263238, #37474F);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#263238', endColorstr='#37474F', GradientType=0);
+  text-shadow: 1px 1px #000000;
+}
+.table .layout .layout * {
+  text-shadow: 1px 1px #000000;
+}
+.table .layout .layout:nth-child(even) {
+  background: #455A64;
+}
+.table .layout .layout:nth-child(even) {
+  background: #37474F;
+}
+.table .layout .layout:first-child {
+  background: #263238;
+}

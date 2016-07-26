@@ -12,6 +12,7 @@ module Ompluscript.View.Field {
 
     import FieldEvent = Ompluscript.View.Event.FieldEvent;
     import OnFieldClick = Ompluscript.View.Event.OnFieldClick;
+    import IBase = Ompluscript.Core.Interfaces.IBase;
 
     /**
      * Class that defines pages' link field
@@ -72,6 +73,13 @@ module Ompluscript.View.Field {
             let trace: Object = super.getStackTrace();
             trace[PageLink.PARAMETER_PAGE] = this.page;
             return trace;
+        }
+
+        /**
+         * Method that should be called when class object should be cloned.
+         */
+        public clone(): IBase {
+            return new PageLink(this.name, this.text, this.page, this.styles);
         }
 
         /**

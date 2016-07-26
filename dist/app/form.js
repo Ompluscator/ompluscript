@@ -1,7 +1,6 @@
 Ompluscript.View.define({
     type: "Page",
-    name: "form",
-    defaultPage: true,
+    name: "/form",
     children: [
         {
             type: "Header",
@@ -22,78 +21,98 @@ Ompluscript.View.define({
                 attributes: [
                     {
                         type: "String",
-                        name: "first_name_title",
+                        name: "first_name",
+                        required: true
                     },
                     {
                         type: "String",
-                        name: "last_name_title",
+                        name: "last_name",
+                        required: true
                     },
                     {
                         type: "String",
-                        name: "user_name_title",
+                        name: "user_name",
+                        required: true,
+                        minimumLength: 8
                     },
                     {
                         type: "String",
-                        name: "email_title",
+                        name: "email",
+                        required: true,
+                        pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                     },
                     {
                         type: "String",
-                        name: "password_title",
+                        name: "password",
+                        required: true,
+                        minimumLength: 8
                     },
                     {
                         type: "Datetime",
-                        name: "birthday_title",
+                        name: "birthday",
+                        required: true,
+                        maximum: new Date().toISOString()
                     },
                     {
                         type: "Number",
-                        name: "card_number_title",
+                        name: "height",
+                        minimum: 0,
+                        maximum: 250
+                    },
+                    {
+                        type: "Number",
+                        name: "weight",
+                        minimum: 0,
+                        maximum: 250
                     }
                 ],
                 proxies: [
                     {
                         type: "AjaxProxy",
-                        saveLink: "save",
-                        updateLink: "update",
-                        deleteLink: "delete",
-                        selectLink: "select"
+                        saveLink: "/json/success.json"
                     }
                 ],
             },
             children: [
                 {
                     type: "TextInput",
-                    name: "first_name_title",
+                    name: "first_name",
                     placeholder: "text_first_name_title"
                 },
                 {
                     type: "TextInput",
-                    name: "last_name_title",
+                    name: "last_name",
                     placeholder: "text_last_name_title"
                 },
                 {
                     type: "TextInput",
-                    name: "user_name_title",
+                    name: "user_name",
                     placeholder: "text_user_name_title"
                 },
                 {
                     type: "EmailInput",
-                    name: "email_title",
+                    name: "email",
                     placeholder: "text_email_title"
                 },
                 {
                     type: "PasswordInput",
-                    name: "password_title",
+                    name: "password",
                     placeholder: "text_password_title"
                 },
                 {
                     type: "DateInput",
-                    name: "birthday_title",
+                    name: "birthday",
                     placeholder: "text_birthday_title"
                 },
                 {
                     type: "NumberInput",
-                    name: "card_number_title",
-                    placeholder: "text_card_number_title"
+                    name: "height",
+                    placeholder: "text_height_title"
+                },
+                {
+                    type: "NumberInput",
+                    name: "weight",
+                    placeholder: "text_weight_title"
                 }
             ]
         }

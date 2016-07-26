@@ -11,6 +11,7 @@ module Ompluscript.View.Field {
     "use strict";
 
     import Datetime = Ompluscript.Model.Attribute.Datetime;
+    import IBase = Ompluscript.Core.Interfaces.IBase;
 
     /**
      * Class that defines number input
@@ -42,6 +43,25 @@ module Ompluscript.View.Field {
          */
         constructor(name: string, datetimeAttribute: Datetime = undefined, placeholder: string = undefined, styles: Object = {}) {
             super(name, datetimeAttribute, placeholder, styles, DateInput.INPUT_DATE);
+        }
+
+        /**
+         * Method that defines event for updating input value
+         */
+        protected addOnUpdateInputEvent(): void {
+            let that: DateInput = this;
+            let listener: () => void = function(): void {
+                that.fireOnUpdateInputEvent(that.getValue());
+            };
+            that.htmlElement.addEventListener(TextInput.EVENT_CHANGE, listener, false);
+            that.htmlElement.addEventListener(TextInput.EVENT_BLUR, listener, false);
+        }
+
+        /**
+         * Method that should be called when class object should be cloned.
+         */
+        public clone(): IBase {
+            return new DateInput(this.name, <Datetime>this.attribute, this.placeholder, this.styles);
         }
 
     }

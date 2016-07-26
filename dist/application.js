@@ -1,5 +1,5 @@
 Ompluscript.application({
-    components: ["configuration", "homepage", "layouts", "form"],
+    components: ["configuration", "homepage", "layouts", "form", "table"],
     events: {
         onComponentLoad: function (event) {
             if (event.getComponent() === "configuration") {

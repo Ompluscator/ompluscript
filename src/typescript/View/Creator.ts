@@ -7,6 +7,7 @@
 /// <reference path="Configuration/Container/NavigationConfiguration.ts" />
 /// <reference path="Configuration/Container/BoxConfiguration.ts" />
 /// <reference path="Configuration/Container/FormConfiguration.ts" />
+/// <reference path="Configuration/Container/TableContainerConfiguration.ts" />
 /// <reference path="Configuration/Field/CheckBoxInputConfiguration.ts" />
 /// <reference path="Configuration/Field/EmailInputConfiguration.ts" />
 /// <reference path="Configuration/Field/NumberInputConfiguration.ts" />
@@ -47,6 +48,7 @@ module Ompluscript.View {
     import LabelConfiguration = Ompluscript.View.Configuration.Field.LabelConfiguration;
     import BoxConfiguration = Ompluscript.View.Configuration.Container.BoxConfiguration;
     import FormConfiguration = Ompluscript.View.Configuration.Container.FormConfiguration;
+    import TableContainerConfiguration = Ompluscript.View.Configuration.Container.TableContainerConfiguration;
 
     /**
      * Class that contains functionality for model creator.
@@ -99,6 +101,7 @@ module Ompluscript.View {
                 PageConfiguration,
                 NavigationConfiguration,
                 BoxConfiguration,
+                TableContainerConfiguration,
                 FormConfiguration,
             ];
             super(configurations);

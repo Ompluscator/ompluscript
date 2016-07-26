@@ -114,9 +114,9 @@ describe("AjaxProxy class tests", function() {
             b: "b"
         });
 
-        expect(jasmine.Ajax.requests.mostRecent().url).toBe("select");
+        expect(jasmine.Ajax.requests.mostRecent().url).toBe("select?b=b");
         expect(jasmine.Ajax.requests.mostRecent().method).toBe("GET");
-        expect(jasmine.Ajax.requests.mostRecent().data()).toEqual({"b":["b"]});
+        expect(jasmine.Ajax.requests.mostRecent().data()).toEqual({});
 
         jasmine.Ajax.requests.mostRecent().respondWith({
             "status": 200,
@@ -140,9 +140,9 @@ describe("AjaxProxy class tests", function() {
             b: "b"
         });
 
-        expect(jasmine.Ajax.requests.mostRecent().url).toBe("select");
+        expect(jasmine.Ajax.requests.mostRecent().url).toBe("select?b=b");
         expect(jasmine.Ajax.requests.mostRecent().method).toBe("GET");
-        expect(jasmine.Ajax.requests.mostRecent().data()).toEqual({"b":["b"]});
+        expect(jasmine.Ajax.requests.mostRecent().data()).toEqual({});
 
         jasmine.Ajax.requests.mostRecent().respondWith({
             "status": 400,

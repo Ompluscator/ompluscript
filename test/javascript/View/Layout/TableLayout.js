@@ -71,11 +71,11 @@ describe("TableLayout class tests", function() {
         expect(tableLayout.getChildrenCount()).toBe(3);
         expect(tableLayout.render().outerHTML).toBe('<div class="layout linear-layout flex-vertical flex-start">' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
-            '<input type="text" name="first" class="input">' +
-            '<input type="text" name="second" class="input">' +
+            '<input type="text" name="first" class="input" style="width: calc(100% / 2);">' +
+            '<input type="text" name="second" class="input" style="width: calc(100% / 2);">' +
             '</div>' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
-            '<input type="text" name="third" class="input">' +
+            '<input type="text" name="third" class="input" style="width: calc(100% / 2);">' +
             '</div>' +
             '</div>');
         expect(tableLayout.getStackTrace()).toEqual({
@@ -123,8 +123,8 @@ describe("TableLayout class tests", function() {
         expect(tableLayout.getChildrenCount()).toBe(2);
         expect(tableLayout.render().outerHTML).toBe('<div class="layout linear-layout flex-vertical flex-start">' +
             '<div class="layout linear-layout flex-horizontal flex-start">' +
-            '<input type="text" name="first" class="input">' +
-            '<input type="text" name="third" class="input">' +
+            '<input type="text" name="first" class="input" style="width: calc(100% / 2);">' +
+            '<input type="text" name="third" class="input" style="width: calc(100% / 2);">' +
             '</div>' +
             '<div class="layout linear-layout flex-horizontal flex-start"></div>' +
             '</div>');

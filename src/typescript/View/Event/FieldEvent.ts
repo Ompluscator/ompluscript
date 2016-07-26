@@ -25,6 +25,26 @@ module Ompluscript.View.Event {
         public static ON_FIELD_CLICK: string = "onFieldClick";
 
         /**
+         * @type {string} ON_FIELD_FOCUS Defines event when it's focused on field
+         */
+        public static ON_FIELD_FOCUS: string = "onFieldFocus";
+
+        /**
+         * @type {string} ON_FIELD_BLUR Defines event when focus is removed from field
+         */
+        public static ON_FIELD_BLUR: string = "onFieldBlur";
+
+        /**
+         * @type {string} ON_FIELD_MOUSE_ENTER Defines event when mouse is entering on field
+         */
+        public static ON_FIELD_MOUSE_ENTER: string = "onFieldMouseEnter";
+
+        /**
+         * @type {string} ON_FIELD_MOUSE_LEAVE Defines event when mouse is leaving on field
+         */
+        public static ON_FIELD_MOUSE_LEAVE: string = "onFieldMouseLeave";
+
+        /**
          * Class constructor
          *
          * Calls superclass' constructor

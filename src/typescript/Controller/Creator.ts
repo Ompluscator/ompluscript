@@ -2,6 +2,7 @@
 /// <reference path="../Core/Configuration/Creator.ts" />
 /// <reference path="../Core/Configuration/ErrorConfiguration.ts" />
 /// <reference path="Configuration/Controller/ApplicationControllerConfiguration.ts" />
+/// <reference path="Configuration/Controller/PageControllerConfiguration.ts" />
 /// <reference path="Controller/PageController.ts" />
 
 /**
@@ -18,6 +19,7 @@ module Ompluscript.Controller {
     import ApplicationControllerConfiguration = Ompluscript.Controller.Configuration.Controller.ApplicationControllerConfiguration;
     import Configuration = Ompluscript.Core.Configuration.Configuration;
     import PageController = Ompluscript.Controller.Controller.PageController;
+    import PageControllerConfiguration = Ompluscript.Controller.Configuration.Controller.PageControllerConfiguration;
 
     /**
      * Class that contains functionality for model creator.
@@ -56,6 +58,7 @@ module Ompluscript.Controller {
         constructor() {
             let configurations: Object[] = [
                 ApplicationControllerConfiguration,
+                PageControllerConfiguration,
                 ErrorConfiguration,
             ];
             super(configurations);

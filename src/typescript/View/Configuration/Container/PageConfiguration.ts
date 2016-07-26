@@ -8,12 +8,14 @@
 /// <reference path="ListConfiguration.ts" />
 /// <reference path="BoxConfiguration.ts" />
 /// <reference path="FormConfiguration.ts" />
+/// <reference path="TableContainerConfiguration.ts" />
 /// <reference path="../Field/CheckBoxInputConfiguration.ts" />
 /// <reference path="../Field/EmailInputConfiguration.ts" />
 /// <reference path="../Field/NumberInputConfiguration.ts" />
 /// <reference path="../Field/PasswordInputConfiguration.ts" />
 /// <reference path="../Field/TextInputConfiguration.ts" />
 /// <reference path="../Field/DateInputConfiguration.ts" />
+/// <reference path="../Field/LabelInputConfiguration.ts" />
 /// <reference path="../Field/ParagraphConfiguration.ts" />
 /// <reference path="../Field/ButtonConfiguration.ts" />
 /// <reference path="../Field/HeaderConfiguration.ts" />
@@ -32,7 +34,6 @@ module Ompluscript.View.Configuration.Container {
     "use strict";
     
     import Configuration = Ompluscript.Core.Configuration.Configuration;
-    import Page = Ompluscript.View.Container.Page;
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import Component = Ompluscript.View.Component.Component;
     import Container = Ompluscript.View.Container.Container;
@@ -53,6 +54,9 @@ module Ompluscript.View.Configuration.Container {
     import PageLinkConfiguration = Ompluscript.View.Configuration.Field.PageLinkConfiguration;
     import ButtonConfiguration = Ompluscript.View.Configuration.Field.ButtonConfiguration;
     import LabelConfiguration = Ompluscript.View.Configuration.Field.LabelConfiguration;
+    import TableContainerConfiguration = Ompluscript.View.Configuration.Container.TableContainerConfiguration;
+    import LabelInputConfiguration = Ompluscript.View.Configuration.Field.LabelInputConfiguration;
+    import Page = Ompluscript.View.Container.Page;
 
     /**
      * Class that contains functionality for page configuration.
@@ -84,6 +88,7 @@ module Ompluscript.View.Configuration.Container {
                 PasswordInputConfiguration,
                 TextInputConfiguration,
                 DateInputConfiguration,
+                LabelInputConfiguration,
                 ParagraphConfiguration,
                 ButtonConfiguration,
                 HeaderConfiguration,
@@ -92,6 +97,7 @@ module Ompluscript.View.Configuration.Container {
                 ListConfiguration,
                 BoxConfiguration,
                 FormConfiguration,
+                TableContainerConfiguration,
                 ErrorConfiguration,
             ];
             let configurations: Object = {};
@@ -139,7 +145,20 @@ module Ompluscript.View.Configuration.Container {
             }
             let defaultPage: boolean = definition[Page.PARAMETER_DEFAULT_PAGE];
             let styles: string = definition[Component.PARAMETER_STYLES];
-            return new Page(name, defaultPage, layout, children, styles);
+            let page: Page = new Page(name, defaultPage, layout, children, styles);
+            if (definition[Page.PARAMETER_EVENTS] !== undefined) {
+                let onPageLoad: Function =
+                    definition[Page.PARAMETER_EVENTS][Page.PARAMETER_ON_PAGE_LOAD];
+                if (onPageLoad !== undefined) {
+                    page.attachOnPageLoadEvent(page, onPageLoad);
+                }
+                let onPageClose: Function =
+                    definition[Page.PARAMETER_EVENTS][Page.PARAMETER_ON_PAGE_CLOSE];
+                if (onPageClose !== undefined) {
+                    page.attachOnPageCloseEvent(page, onPageClose);
+                }
+            }
+            return page;
         }
     }
 }

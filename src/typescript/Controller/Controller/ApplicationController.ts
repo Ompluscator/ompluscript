@@ -58,12 +58,17 @@ module Ompluscript.Controller.Controller {
         /**
          * @type {string} COMPONENTS_FOLDER Name of folder for components
          */
-        private static COMPONENTS_FOLDER: string = "app/";
+        private static COMPONENTS_FOLDER: string = "/app/";
 
         /**
-         * @type {string[]} components Contains a list of all components
+         * @type {Object} componentMap Contains a map of all components
          */
-        private components: Object;
+        private componentMap: Object;
+
+        /**
+         * @type {string[]} componentMap Contains a list of all components
+         */
+        private components: string[];
 
         /**
          * @type {NavigationController} navigationController Contains navigation controller
@@ -81,9 +86,10 @@ module Ompluscript.Controller.Controller {
          */
         constructor(components: string[]) {
             super(ApplicationController.TYPE_APPLICATION_CONTROLLER);
-            this.components = {};
+            this.componentMap = {};
+            this.components = components;
             for (let i: number = 0; i < components.length; i++) {
-                this.components[components[i]] = undefined;
+                this.componentMap[components[i]] = undefined;
             }
             window.addEventListener("load", this.setup.bind(this));
         }
@@ -123,21 +129,20 @@ module Ompluscript.Controller.Controller {
          */
         private setup(): void {
             let that: ApplicationController = this;
-            for (let key in that.components) {
-                if (that.components.hasOwnProperty(key)) {
-                    let ajax: XMLHttpRequest = new XMLHttpRequest();
-                    let source: string = ApplicationController.COMPONENTS_FOLDER + key + ".js";
-                    let listener: () => void = function(): void {
-                        if (ajax.readyState === ajax.DONE && ajax.status === 200) {
-                            that.execute(key, ajax.responseText, true);
-                        } else if (ajax.readyState === ajax.DONE) {
-                            that.execute(key, undefined, false);
-                        }
-                    };
-                    ajax.addEventListener("readystatechange", listener, false);
-                    ajax.open("GET", source, false);
-                    ajax.send();
-                }
+            for (let i: number = 0; i < that.components.length; i++) {
+                that.componentMap[that.components[i]] = undefined;
+                let ajax: XMLHttpRequest = new XMLHttpRequest();
+                let source: string = ApplicationController.COMPONENTS_FOLDER + that.components[i] + ".js";
+                let listener: () => void = function(): void {
+                    if (ajax.readyState === ajax.DONE && ajax.status === 200) {
+                        that.execute(that.components[i], ajax.responseText, true);
+                    } else if (ajax.readyState === ajax.DONE) {
+                        that.execute(that.components[i], undefined, false);
+                    }
+                };
+                ajax.addEventListener("readystatechange", listener, false);
+                ajax.open("GET", source, true);
+                ajax.send();
             }
         }
 
@@ -149,24 +154,17 @@ module Ompluscript.Controller.Controller {
          * @param {boolean} status Ajax result for fetching script
          */
         private execute(name: string, content: string, status: boolean): void {
-            this.components[name] = status;
+            this.componentMap[name] = status;
             if (status === true) {
-                let script: HTMLScriptElement = document.createElement("script");
-                script.type = "text/javascript";
-                script.text = content;
-                document.head.appendChild(script);
-                document.head.removeChild(script);
-                if (this.isValidConfiguration()) {
-                    this.fireOnComponentLoadEvent(name);
-                }
+                this.componentMap[name] = content;
             }
             let numberOfUndefined: number = 0;
             let numberOfFalse: number = 0;
-            for (let key in this.components) {
-                if (this.components.hasOwnProperty(key)) {
-                    if (this.components[key] === undefined) {
+            for (let key in this.componentMap) {
+                if (this.componentMap.hasOwnProperty(key)) {
+                    if (this.componentMap[key] === undefined) {
                         numberOfUndefined++;
-                    } else if (this.components[key] === false) {
+                    } else if (this.componentMap[key] === false) {
                         numberOfFalse++;
                     }
                 }
@@ -182,6 +180,18 @@ module Ompluscript.Controller.Controller {
          * Method that launches application
          */
         private launch(): void {
+            for (let key in this.componentMap) {
+                if (this.componentMap.hasOwnProperty(key)) {
+                    let script: HTMLScriptElement = document.createElement("script");
+                    script.type = "text/javascript";
+                    script.text = this.componentMap[key];
+                    document.head.appendChild(script);
+                    document.head.removeChild(script);
+                    if (this.isValidConfiguration()) {
+                        this.fireOnComponentLoadEvent(key);
+                    }
+                }
+            }
             let pages: IBase[] = [];
             if (this.isValidConfiguration()) {
                 let pageNames: string[] = Ompluscript.View.Creator.getInstance().getPages();
@@ -215,10 +225,10 @@ module Ompluscript.Controller.Controller {
          */
         private exit(): void {
             let components: WrongConfigurationContainer[] = [];
-            for (let key in this.components) {
-                if (this.components.hasOwnProperty(key)) {
+            for (let key in this.componentMap) {
+                if (this.componentMap.hasOwnProperty(key) && this.componentMap[key] === false) {
                     components.push(new WrongConfigurationContainer({
-                        definition: this.components,
+                        definition: this.componentMap,
                         errors: [ApplicationController.COMPONENTS_FOLDER + key + ".js not found"],
                         name: ApplicationController.COMPONENTS_FOLDER + key + ".js",
                         type: "Script",

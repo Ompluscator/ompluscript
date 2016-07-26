@@ -37,8 +37,10 @@ describe("Viewport class tests", function() {
     });
 
     it("switch page", function() {
+        spyOn(Viewport.prototype, "initializeHtmlElement").and.callFake(function(){
+            this.htmlElement = document.createElement("div");
+        });
         viewport = new Viewport(navigation, [firstPage, secondPage, thirdPage]);
-        expect(viewport.hasClass(Viewport.CLASS_VIEWPORT)).toBeTruthy();
         expect(viewport.getPageByIndex(1)).toBe(secondPage);
         expect(viewport.findPageIndexByName("third")).toBe(2);
         expect(viewport.getPageByIndex(0).isActive()).toBeTruthy();
@@ -48,7 +50,7 @@ describe("Viewport class tests", function() {
         expect(viewport.getPageByIndex(0).isActive()).toBeFalsy();
         expect(viewport.getPageByIndex(1).isActive()).toBeTruthy();
         expect(viewport.getStackTrace()).toEqual({
-            html: '<body class="viewport"></body>',
+            html: '<div></div>',
             name: "Viewport",
             activePageIndex: 1,
             navigation: navigation.getStackTrace(),

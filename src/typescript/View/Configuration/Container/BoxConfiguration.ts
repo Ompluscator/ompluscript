@@ -6,12 +6,14 @@
 /// <reference path="../../Layout/Layout.ts" />
 /// <reference path="ContainerConfiguration.ts" />
 /// <reference path="ListConfiguration.ts" />
+/// <reference path="TableContainerConfiguration.ts" />
 /// <reference path="../Field/CheckBoxInputConfiguration.ts" />
 /// <reference path="../Field/EmailInputConfiguration.ts" />
 /// <reference path="../Field/NumberInputConfiguration.ts" />
 /// <reference path="../Field/PasswordInputConfiguration.ts" />
 /// <reference path="../Field/TextInputConfiguration.ts" />
 /// <reference path="../Field/DateInputConfiguration.ts" />
+/// <reference path="../Field/LabelInputConfiguration.ts" />
 /// <reference path="../Field/ParagraphConfiguration.ts" />
 /// <reference path="../Field/ButtonConfiguration.ts" />
 /// <reference path="../Field/HeaderConfiguration.ts" />
@@ -51,6 +53,7 @@ module Ompluscript.View.Configuration.Container {
     import PageLinkConfiguration = Ompluscript.View.Configuration.Field.PageLinkConfiguration;
     import ButtonConfiguration = Ompluscript.View.Configuration.Field.ButtonConfiguration;
     import LabelConfiguration = Ompluscript.View.Configuration.Field.LabelConfiguration;
+    import LabelInputConfiguration = Ompluscript.View.Configuration.Field.LabelInputConfiguration;
 
     /**
      * Class that contains functionality for box configuration.
@@ -82,12 +85,14 @@ module Ompluscript.View.Configuration.Container {
                 PasswordInputConfiguration,
                 TextInputConfiguration,
                 DateInputConfiguration,
+                LabelInputConfiguration,
                 ParagraphConfiguration,
                 ButtonConfiguration,
                 HeaderConfiguration,
                 LabelConfiguration,
                 PageLinkConfiguration,
                 ListConfiguration,
+                TableContainerConfiguration,
                 ErrorConfiguration,
             ];
             let configurations: Object = {};

@@ -7,6 +7,7 @@
  */
 module Ompluscript.View.Field {
     "use strict";
+    import IBase = Ompluscript.Core.Interfaces.IBase;
 
     /**
      * Class that defines header field
@@ -97,6 +98,13 @@ module Ompluscript.View.Field {
             let trace: Object = super.getStackTrace();
             trace[Header.PARAMETER_LEVEL] = this.level;
             return trace;
+        }
+
+        /**
+         * Method that should be called when class object should be cloned.
+         */
+        public clone(): IBase {
+            return new Header(this.name, this.text, this.level, this.styles);
         }
 
         /**

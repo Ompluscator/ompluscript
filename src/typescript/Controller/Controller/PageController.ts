@@ -50,12 +50,11 @@ module Ompluscript.Controller.Controller {
          * 
          * Sets page and calls constructor of superclass.
          * 
-         * @param {string} name Name of controller
          * @param {Page} page Contains page that it handles
          * @constructs
          */
-        constructor(name: string, page: Page) {
-            super(name);
+        constructor(page: Page) {
+            super(page.getName());
             this.page = page;
             this.actions = {};
         }
@@ -70,6 +69,52 @@ module Ompluscript.Controller.Controller {
         }
 
         /**
+         * Method that returns if page is related to path
+         *
+         * @param {string} path Path to page
+         * @returns {boolean} If page is related to path
+         */
+        public isRelated(path: string): boolean {
+            let isRelated: boolean = this.page.isRelated(path);
+            if (!isRelated) {
+                return false;
+            }
+            let rest: string = this.page.trimPath(path);
+            if (rest.charAt(0) === "/") {
+                rest = rest.substring(1);
+            }
+            if (rest.length === 0) {
+                return true;
+            }
+            let paths: any = rest.split("/");
+            return this.actions.hasOwnProperty(paths[0]);
+        }
+
+        /**
+         * Method that runs page by it's path
+         * 
+         * @param {string} path Path to page
+         */
+        public runPage(path: string): void {
+            let rest: string = this.page.trimPath(path);
+            if (rest.charAt(0) === "/") {
+                rest = rest.substring(1);
+            }
+            if (rest.length > 0) {
+                let paths: any = rest.split("/");
+                if (paths.length > 0) {
+                    let action: string = paths[0];
+                    paths.splice(0, 1);
+                    let parameters: Object = {};
+                    for (let i: number = 0; i < paths.length; i += 2) {
+                        parameters[paths[i]] = paths[i + 1];
+                    }
+                    this.runAction(action, parameters);
+                }
+            }
+        }
+
+        /**
          * Method that adds action to list
          * 
          * @param {string} action Name of action
@@ -77,6 +122,23 @@ module Ompluscript.Controller.Controller {
          */
         public addAction(action: string, method: Function): void {
             this.actions[action] = method;
+        }
+
+        /**
+         * Method that returns all current values of object.
+         *
+         * @returns {Object} contains all values of the object
+         */
+        public getStackTrace(): Object {
+            let trace: Object = super.getStackTrace();
+            trace[PageController.PARAMETER_ACTIONS] = [];
+            for (let key in this.actions) {
+                if (this.actions.hasOwnProperty(key)) {
+                    trace[PageController.PARAMETER_ACTIONS].push(key);
+                }
+            }
+            trace[PageController.PARAMETER_PAGE] = this.page.getStackTrace();
+            return trace;
         }
 
         /**

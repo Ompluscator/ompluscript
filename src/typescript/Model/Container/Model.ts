@@ -80,10 +80,21 @@ module Ompluscript.Model.Container {
             let result: boolean = true;
             for (let i in this.attributes) {
                 if (this.attributes.hasOwnProperty(i)) {
-                    result = result && this.attributes[i].validate();
+                    result = result &&  this.attributes[i].validate();
                 }
             }
             return result;
+        }
+
+        /**
+         * Method that fires event when attribute is invalid
+         */
+        public fireEventIfInvalid(): void {
+            for (let i in this.attributes) {
+                if (this.attributes.hasOwnProperty(i)) {
+                    this.attributes[i].fireEventIfInvalid();
+                }
+            }
         }
 
         /**

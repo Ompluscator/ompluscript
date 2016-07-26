@@ -1,0 +1,21 @@
+.tableContainerTheme(@primaryColor, @secondaryColor, @tertiaryColor, @textColor, @shadowColor) {
+  .table {
+    .layout .layout {
+      * {
+        text-shadow: 1px 1px @shadowColor;
+      }
+
+      &:nth-child(even) {
+        background: @tertiaryColor;
+      }
+
+      &:nth-child(even) {
+        background: @secondaryColor;
+      }
+
+      &:first-child {
+        background: @primaryColor;
+      }
+    }
+  }
+}

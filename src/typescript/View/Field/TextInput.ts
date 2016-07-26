@@ -10,6 +10,7 @@ module Ompluscript.View.Field {
     "use strict";
     
     import Attribute = Ompluscript.Model.Attribute.Attribute;
+    import IBase = Ompluscript.Core.Interfaces.IBase;
 
     /**
      * Class that defines text input
@@ -27,11 +28,6 @@ module Ompluscript.View.Field {
          * @type {string} INPUT_TEXT Type of text input HTML element
          */
         public static INPUT_TEXT: string = "text";
-
-        /**
-         * @type {string} EVENT_KEY_UP Name of event for key u[ on input
-         */
-        public static EVENT_KEY_UP: string = "keyup";
 
         /**
          * Class constructor.
@@ -57,10 +53,17 @@ module Ompluscript.View.Field {
          */
         public getValue(): string {
             let value: string = this.htmlElement["value"];
-            if (typeof value === "string") {
+            if (typeof value === "string" && value.length > 0) {
                 return value;
             }
             return undefined;
+        }
+
+        /**
+         * Method that should be called when class object should be cloned.
+         */
+        public clone(): IBase {
+            return new TextInput(this.name, this.attribute, this.placeholder, this.styles, this.type);
         }
 
         /**

@@ -15,7 +15,7 @@ module Ompluscript.View.Configuration.Field {
     import Configuration = Ompluscript.Core.Configuration.Configuration;
     import IBase = Ompluscript.Core.Interfaces.IBase;
     import Component = Ompluscript.View.Component.Component;
-    import Buton = Ompluscript.View.Field.Button;
+    import Button = Ompluscript.View.Field.Button;
     import TextContent = Ompluscript.View.Field.TextContent;
 
     /**
@@ -32,7 +32,7 @@ module Ompluscript.View.Configuration.Field {
          * @returns {boolean} Is related to this class
          */
         public isRelatedTo(definition: Object): boolean {
-            return definition[Configuration.PARAMETER_TYPE] === Buton.TYPE_BUTTON;
+            return definition[Configuration.PARAMETER_TYPE] === Button.TYPE_BUTTON;
         }
 
         /**
@@ -56,7 +56,9 @@ module Ompluscript.View.Configuration.Field {
             let name: string = definition[Configuration.PARAMETER_NAME];
             let text: string = definition[TextContent.PARAMETER_TEXT];
             let styles: Object = definition[Component.PARAMETER_STYLES];
-            return new Buton(name, text, styles);
+            let button: Button = new Button(name, text, styles);
+            this.attachEvents(definition, button);
+            return button;
         }
     }
 }

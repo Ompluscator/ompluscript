@@ -10,6 +10,7 @@ module Ompluscript.View.Field {
     "use strict";
     
     import Number = Ompluscript.Model.Attribute.Number;
+    import IBase = Ompluscript.Core.Interfaces.IBase;
 
     /**
      * Class that defines number input
@@ -63,6 +64,13 @@ module Ompluscript.View.Field {
         }
 
         /**
+         * Method that should be called when class object should be cloned.
+         */
+        public clone(): IBase {
+            return new NumberInput(this.name, <Number>this.attribute, this.placeholder, this.styles);
+        }
+
+        /**
          * Method that defines event for updating input value
          */
         protected addOnUpdateInputEvent(): void {
@@ -71,6 +79,7 @@ module Ompluscript.View.Field {
                 that.fireOnUpdateInputEvent(that.getValue());
             };
             that.htmlElement.addEventListener(TextInput.EVENT_KEY_UP, listener, false);
+            that.htmlElement.addEventListener(TextInput.EVENT_CHANGE, listener, false);
         }
 
         /**

@@ -197,6 +197,12 @@ module Ompluscript.Model.Attribute {
             };
             return trace;
         }
+        
+        public fireEventIfInvalid(): void {
+            if (this.validate() === false) {
+                this.fireOnInvalidAttributeEvent(this.value, this.error);
+            }
+        }
 
         /**
          * Method that should be called when class object should be cloned.
@@ -216,7 +222,7 @@ module Ompluscript.Model.Attribute {
 
         /**
          * Method that fires event when attribute is invalid
-         * 
+         *
          * @param {any} value New value of attribute
          * @param {number} validationCode Error validation code
          */

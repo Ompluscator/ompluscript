@@ -69,6 +69,21 @@ module Ompluscript.View.Field {
         public static ATTRIBUTE_PLACEHOLDER: string = "placeholder";
 
         /**
+         * @type {string} EVENT_KEY_UP Name of event for key u[ on input
+         */
+        public static EVENT_KEY_UP: string = "keyup";
+
+        /**
+         * @type {string} EVENT_CHANGE Name of event when state of input is changed
+         */
+        public static EVENT_CHANGE: string = "change";
+
+        /**
+         * @type {string} EVENT_BLUR Name of event when focus is removed from input
+         */
+        public static EVENT_BLUR: string = "blur";
+
+        /**
          * @type {Attribute<any>} attribute Attribute for binding with
          */
         protected attribute: Attribute<any>;
@@ -82,6 +97,11 @@ module Ompluscript.View.Field {
          * @type {string} placeholderContent Placeholder asset value
          */
         protected placeholderContent: string;
+
+        /**
+         * @type {string} type Type of HTML input element
+         */
+        protected type: string;
 
         /**
          * Class constructor.
@@ -99,6 +119,7 @@ module Ompluscript.View.Field {
         constructor(name: string, attribute: Attribute<any> = undefined, placeholder: string = undefined, 
                     styles: Object = {}, type: string = undefined) {
             super(name, styles);
+            this.type = type;
             this.setAttribute(Input.ATTRIBUTE_TYPE, type);
             this.setAttribute(Input.ATTRIBUTE_NAME, this.name);
             this.addClass(Input.CLASS_INPUT);
@@ -139,6 +160,7 @@ module Ompluscript.View.Field {
             this.attribute = attribute;
             if (this.isBound()) {
                 this.attribute.addObserverByType(this, AttributeEvent.ON_UPDATE_ATTRIBUTE);
+                this.updateValue(this.attribute.getValue());
             }
         }
 

@@ -5,6 +5,7 @@
 /// <reference path="../Event/OnAddRowToTable.ts" />
 /// <reference path="../Event/OnRemoveRowFromTable.ts" />
 /// <reference path="../Event/OnClearTable.ts" />
+/// <reference path="../Event/OnUpdateTable.ts" />
 
 /**
  * Module that contains container classes.
@@ -21,6 +22,7 @@ module Ompluscript.Model.Container {
     import OnClearTable = Ompluscript.Model.Event.OnClearTable;
     import Attribute = Ompluscript.Model.Attribute.Attribute;
     import Proxy = Ompluscript.Model.Proxy.Proxy;
+    import OnUpdateTable = Ompluscript.Model.Event.OnUpdateTable;
 
     /**
      * Class that contains functionality for Table.
@@ -123,7 +125,9 @@ module Ompluscript.Model.Container {
          * Method that removes all rows
          */
         public clearRows(): void {
-            this.dispose();
+            for (let i: number = 0; i < this.rows.length; i++) {
+                this.rows[i].dispose();
+            }
             this.rows = [];
             this.fireOnClearTableEvent();
         }
@@ -179,10 +183,8 @@ module Ompluscript.Model.Container {
          * Method that should be called before removing reference from object.
          */
         public dispose(): void {
-            for (let i in this.rows) {
-                if (this.rows[i] !== undefined) {
-                    this.rows[i].dispose();
-                }
+            for (let i: number = 0; i < this.rows.length; i++) {
+                this.rows[i].dispose();
             }
             this.clearObservers();
         }
@@ -202,6 +204,7 @@ module Ompluscript.Model.Container {
             } else {
                 this.addRow(values);
             }
+            this.fireOnUpdateTableEvent();
         }
 
         /**
@@ -254,6 +257,14 @@ module Ompluscript.Model.Container {
          */
         protected fireOnClearTableEvent(): void {
             let event: OnClearTable = new OnClearTable(this);
+            this.notifyObservers(event);
+        }
+
+        /**
+         * Method that fires event when row is cleared
+         */
+        protected fireOnUpdateTableEvent(): void {
+            let event: OnUpdateTable = new OnUpdateTable(this);
             this.notifyObservers(event);
         }
     }

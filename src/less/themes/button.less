@@ -1,0 +1,15 @@
+@import (reference) "../../../node_modules/less-mixins/mixins";
+
+.buttonTheme(@primaryColor, @secondaryColor, @tertiaryColor, @textColor, @shadowColor) {
+  .button {
+    .gradient(@primaryColor, @primaryColor, @secondaryColor);
+    text-shadow: -1px -1px @shadowColor;
+    border: 1px solid @primaryColor;
+
+    &:active,
+    &:hover {
+      .gradient(@secondaryColor, @secondaryColor, @primaryColor);
+      text-shadow: 1px 1px @shadowColor;
+    }
+  }
+}
