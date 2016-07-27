@@ -1,6 +1,6 @@
 Ompluscript.View.define({
     type: "Page",
-    name: "/home",
+    name: "/about",
     layout: {
         type: "LinearLayout",
         direction: "vertical"
@@ -8,13 +8,13 @@ Ompluscript.View.define({
     children: [
         {
             type: "Header",
-            name: "welcome_title",
-            text: "text_welcome_title"
+            name: "about_title",
+            text: "text_about_title"
         },
         {
             type: "Paragraph",
-            name: "welcome_message",
-            text: "text_welcome_message"
+            name: "about_message",
+            text: "text_about_message"
         }
     ]
 });

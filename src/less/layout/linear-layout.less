@@ -1,8 +1,14 @@
+@import (reference) "../variables/layout";
+
 .linear-layout {
   display: flex;
 
   &.flex-horizontal {
     flex-direction: row;
+
+    & > * {
+      padding: @tableLayoutCellPadding;
+    }
 
     &.flex-reverse {
       flex-direction: row-reverse;

@@ -8,6 +8,11 @@ Ompluscript.View.define({
             text: "text_form_title"
         },
         {
+            type: "Paragraph",
+            name: "form_message",
+            text: "text_form_message"
+        },
+        {
             type: "Form",
             name: "text_form_title",
             proxy: "save",
@@ -115,6 +120,11 @@ Ompluscript.View.define({
                     placeholder: "text_weight_title"
                 }
             ]
+        },
+        {
+            type: "Paragraph",
+            name: "form_configuration",
+            text: "text_form_configuration"
         }
     ]
 });

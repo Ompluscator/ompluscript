@@ -1,6 +1,7 @@
 @import (reference) "../../../node_modules/less-mixins/mixins";
+@import (reference) "../variables/layout";
 
 .linear-layout > .linear-layout > * {
-  padding: 5px;
+  padding: @tableLayoutCellPadding;
   .box-sizing(border-box);
 }

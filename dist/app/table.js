@@ -1,26 +1,22 @@
 Ompluscript.Controller.define({
     type: "PageController",
+    layout: {
+        type: "LinearLayout",
+        direction: "vertical"
+    },
     page: {
         type: "Page",
         name: "/table",
         children: [
             {
-                type: "PageLink",
-                name: "all_users",
-                text: "text_all_users_title",
-                page: "/table"
+                type: "Header",
+                name: "table_title",
+                text: "text_table_title"
             },
             {
-                type: "PageLink",
-                name: "online_users",
-                text: "text_online_users_title",
-                page: "/table/users/type/online"
-            },
-            {
-                type: "PageLink",
-                name: "offline_users",
-                text: "text_offline_users_title",
-                page: "/table/users/type/offline"
+                type: "Paragraph",
+                name: "table_message",
+                text: "text_table_message"
             },
             {
                 type: "TableContainer",
@@ -93,6 +89,29 @@ Ompluscript.Controller.define({
                         name: "birthday"
                     }
                 ]
+            },
+            {
+                type: "PageLink",
+                name: "all_users",
+                text: "text_all_users_title",
+                page: "/table"
+            },
+            {
+                type: "PageLink",
+                name: "online_users",
+                text: "text_online_users_title",
+                page: "/table/users/type/online"
+            },
+            {
+                type: "PageLink",
+                name: "offline_users",
+                text: "text_offline_users_title",
+                page: "/table/users/type/offline"
+            },
+            {
+                type: "Paragraph",
+                name: "table_configuration",
+                text: "text_table_configuration"
             }
         ],
         events: {

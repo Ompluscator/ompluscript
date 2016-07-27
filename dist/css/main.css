@@ -571,6 +571,9 @@ body {
 .linear-layout.flex-horizontal {
   flex-direction: row;
 }
+.linear-layout.flex-horizontal > * {
+  padding: 10px;
+}
 .linear-layout.flex-horizontal.flex-reverse {
   flex-direction: row-reverse;
 }
@@ -626,7 +629,7 @@ body {
   text-align: left;
 }
 .linear-layout > .linear-layout > * {
-  padding: 5px;
+  padding: 10px;
   -ms-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;

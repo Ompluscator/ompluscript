@@ -24,9 +24,44 @@ Ompluscript.View.define({
 
 Ompluscript.View.define({
     type: "PageLink",
+    name: "linear_layout_link",
+    text: "text_linear_layout_title",
+    page: "/layouts/linear-layout"
+});
+
+Ompluscript.View.define({
+    type: "PageLink",
     name: "table_layout_link",
     text: "text_table_layout_title",
     page: "/layouts/table-layout"
+});
+
+Ompluscript.View.define({
+    type: "PageLink",
+    name: "model_link",
+    text: "text_model_title",
+    page: "/getting-started/model"
+});
+
+Ompluscript.View.define({
+    type: "PageLink",
+    name: "view_link",
+    text: "text_view_title",
+    page: "/getting-started/view"
+});
+
+Ompluscript.View.define({
+    type: "PageLink",
+    name: "controller_link",
+    text: "text_controller_title",
+    page: "/getting-started/controller"
+});
+
+Ompluscript.View.define({
+    type: "PageLink",
+    name: "application_link",
+    text: "text_application_title",
+    page: "/getting-started/application"
 });
 
 Ompluscript.View.define({
@@ -74,6 +109,22 @@ Ompluscript.View.define({
                 },
                 {
                     type: "List",
+                    name: "gettingStartedSecondLevel",
+                    children: [
+                        {
+                            type: "PageLink",
+                            name: "getting_started_title",
+                            text: "text_getting_started_title",
+                            page: "/getting-started"
+                        },
+                        "model_link",
+                        "view_link",
+                        "controller_link",
+                        "application_link"
+                    ]
+                },
+                {
+                    type: "List",
                     name: "layoutsSecondLevel",
                     children: [
                         {
@@ -84,21 +135,51 @@ Ompluscript.View.define({
                         },
                         "null_layout_link",
                         "relative_layout_link",
+                        "linear_layout_link",
                         "table_layout_link"
                     ]
                 },
                 {
-                    type: "PageLink",
-                    name: "form",
-                    text: "text_form_title",
-                    page: "/form"
+                    type: "List",
+                    name: "advancedTechniqueSecondLevel",
+                    children: [
+                        {
+                            type: "Label",
+                            name: "advanced_technique_title",
+                            text: "text_advanced_technique_title",
+                        },
+                        {
+                            type: "PageLink",
+                            name: "navigation_title",
+                            text: "text_navigation_title",
+                            page: "/navigation"
+                        },
+                        {
+                            type: "PageLink",
+                            name: "translation_title",
+                            text: "text_translation_title",
+                            page: "/translation"
+                        },
+                        {
+                            type: "PageLink",
+                            name: "form",
+                            text: "text_form_title",
+                            page: "/form"
+                        },
+                        {
+                            type: "PageLink",
+                            name: "table",
+                            text: "text_table_title",
+                            page: "/table"
+                        }
+                    ]
                 },
                 {
                     type: "PageLink",
-                    name: "table",
-                    text: "text_table_title",
-                    page: "/table"
-                },
+                    name: "about",
+                    text: "text_about_title",
+                    page: "/about"
+                }
             ]
         }
     ]
