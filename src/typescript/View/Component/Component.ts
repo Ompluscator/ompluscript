@@ -291,14 +291,15 @@ module Ompluscript.View.Component {
             if (this.getParent() === undefined) {
                 return [];
             }
+            let parentName: string = this.getParent().constructor.toString().match(/^function\s*([^\s(]+)/)[1];
             let parents: Component[] = [];
             if (name === undefined && type === undefined) {
                 parents.push(this.getParent());
             } else if (name === this.getParent().getName() && type === undefined) {
                 parents.push(this.getParent());
-            } else if (name === undefined && type === this.getParent().constructor["name"]) {
+            } else if (name === undefined && type === parentName) {
                 parents.push(this.getParent());
-            } else if (name === this.getParent().getName() && type === this.getParent().constructor["name"]) {
+            } else if (name === this.getParent().getName() && type === parentName) {
                 parents.push(this.getParent());
             }
             parents.push.apply(parents, this.getParent().getParents(name, type));

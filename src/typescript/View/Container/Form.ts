@@ -51,7 +51,7 @@ module Ompluscript.View.Container {
         /**
          * @type {string} TYPE_FORM Type of form
          */
-        public static TYPE_FORM: string = Form["name"];
+        public static TYPE_FORM: string = "Form";
 
         /**
          * @type {string} PARAMETER_MODEL Name of model parameter

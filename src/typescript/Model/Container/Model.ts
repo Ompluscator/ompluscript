@@ -24,7 +24,7 @@ module Ompluscript.Model.Container {
         /**
          * @type {string} TYPE_MODEL Model type.
          */
-        public static TYPE_MODEL: string = Model["name"];
+        public static TYPE_MODEL: string = "Model";
 
         /**
          * @type {Object} attributes Contains map for all attributes.

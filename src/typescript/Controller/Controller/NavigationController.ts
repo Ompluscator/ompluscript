@@ -32,7 +32,7 @@ module Ompluscript.Controller.Controller {
         /**
          * @type {string} TYPE_NAVIGATION_CONTROLLER Type of navigation controller class
          */
-        private static TYPE_NAVIGATION_CONTROLLER: string = NavigationController["name"];
+        private static TYPE_NAVIGATION_CONTROLLER: string = "NavigationController";
 
         /**
          * @type {Viewport} viewport Defines viewport of application

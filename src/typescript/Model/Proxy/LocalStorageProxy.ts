@@ -18,7 +18,7 @@ module Ompluscript.Model.Proxy {
         /**
          * @type {string} TYPE_LOCAL_STORAGE_PROXY Defines type of local storage proxy
          */
-        public static TYPE_LOCAL_STORAGE_PROXY: string = LocalStorageProxy["name"];
+        public static TYPE_LOCAL_STORAGE_PROXY: string = "LocalStorageProxy";
 
         /**
          * Class constructor.

@@ -22,7 +22,7 @@ module Ompluscript.View.Field {
         /**
          * @type {string} TYPE_PASSWORD_INPUT Type of password input
          */
-        public static TYPE_PASSWORD_INPUT: string = PasswordInput["name"];
+        public static TYPE_PASSWORD_INPUT: string = "PasswordInput";
 
         /**
          * @type {string} INPUT_PASSWORD Type of password input HTML element

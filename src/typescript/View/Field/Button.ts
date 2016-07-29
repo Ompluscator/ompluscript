@@ -19,7 +19,7 @@ module Ompluscript.View.Field {
         /**
          * @type {string} TYPE_BUTTON Type of button
          */
-        public static TYPE_BUTTON: string = Button["name"];
+        public static TYPE_BUTTON: string = "Button";
 
         /**
          * @type {string} CLASS_BUTTON Class of HTML button element

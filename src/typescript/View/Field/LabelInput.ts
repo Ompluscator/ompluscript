@@ -23,7 +23,7 @@ module Ompluscript.View.Field {
         /**
          * @type {string} TYPE_LABEL_INPUT Type of label input
          */
-        public static TYPE_LABEL_INPUT: string = LabelInput["name"];
+        public static TYPE_LABEL_INPUT: string = "LabelInput";
 
         /**
          * @type {string} EVENT_KEY_UP Name of event for key u[ on input
@@ -75,6 +75,9 @@ module Ompluscript.View.Field {
          * @param {any} value New value for input HTML element
          */
         protected updateValue(value: any): void {
+            if (value === undefined) {
+                value = "";
+            }
             this.htmlElement.innerHTML = value;
         }
 

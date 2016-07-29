@@ -19,7 +19,7 @@ module Ompluscript.View.Field {
         /**
          * @type {string} TYPE_PARAGRAPH Type of paragraph
          */
-        public static TYPE_PARAGRAPH: string = Paragraph["name"];
+        public static TYPE_PARAGRAPH: string = "Paragraph";
 
         /**
          * @type {string} CLASS_PARAGRAPH Class of HTML paragraph element

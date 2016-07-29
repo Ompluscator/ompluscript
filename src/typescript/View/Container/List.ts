@@ -21,7 +21,7 @@ module Ompluscript.View.Container {
         /**
          * @type {string} TYPE_LIST Type of list
          */
-        public static TYPE_LIST: string = List["name"];
+        public static TYPE_LIST: string = "List";
 
         /**
          * @type {string} PARAMETER_LIST Name of list parameter

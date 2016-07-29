@@ -20,7 +20,7 @@ module Ompluscript.View.Layout {
         /**
          * @type {string} TYPE_LINEAR_LAYOUT Type of linear layout class
          */
-        public static TYPE_LINEAR_LAYOUT: string = LinearLayout["name"];
+        public static TYPE_LINEAR_LAYOUT: string = "LinearLayout";
 
         /**
          * @type {string} PARAMETER_DIRECTION Name of direction parameter

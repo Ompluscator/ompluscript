@@ -19,7 +19,7 @@ module Ompluscript.View.Field {
         /**
          * @type {string} TYPE_LABEL Type of label
          */
-        public static TYPE_LABEL: string = Label["name"];
+        public static TYPE_LABEL: string = "Label";
 
         /**
          * @type {string} CLASS_LABEL Class of HTML label element

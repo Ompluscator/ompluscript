@@ -22,7 +22,7 @@ module Ompluscript.View.Field {
         /**
          * @type {string} TYPE_TEXT_INPUT Type of check box input
          */
-        public static TYPE_CHECK_BOX_INPUT: string = CheckBoxInput["name"];
+        public static TYPE_CHECK_BOX_INPUT: string = "CheckBoxInput";
 
         /**
          * @type {string} INPUT_CHECK_BOX Type of check box input HTML element

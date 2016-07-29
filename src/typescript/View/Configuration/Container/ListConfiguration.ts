@@ -15,6 +15,7 @@
 /// <reference path="../Field/HeaderConfiguration.ts" />
 /// <reference path="../Field/LabelConfiguration.ts" />
 /// <reference path="../Field/PageLinkConfiguration.ts" />
+/// <reference path="../Field/ImageConfiguration.ts" />
 /**
  * Module that contains containers' configuration classes.
  *
@@ -40,6 +41,7 @@ module Ompluscript.View.Configuration.Container {
     import ErrorConfiguration = Ompluscript.Core.Configuration.ErrorConfiguration;
     import ButtonConfiguration = Ompluscript.View.Configuration.Field.ButtonConfiguration;
     import LabelConfiguration = Ompluscript.View.Configuration.Field.LabelConfiguration;
+    import ImageConfiguration = Ompluscript.View.Configuration.Field.ImageConfiguration;
 
     /**
      * Class that contains functionality for list configuration.
@@ -70,6 +72,7 @@ module Ompluscript.View.Configuration.Container {
                 LabelConfiguration,
                 PageLinkConfiguration,
                 ListConfiguration,
+                ImageConfiguration,
                 ErrorConfiguration,
             ];
             let configurations: Object = {};

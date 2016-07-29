@@ -21,7 +21,7 @@ module Ompluscript.Model.Proxy {
         /**
          * @type {string} TYPE_AJAX_PROXY Defines type for ajax proxy
          */
-        public static TYPE_AJAX_PROXY: string = AjaxProxy["name"];
+        public static TYPE_AJAX_PROXY: string = "AjaxProxy";
 
         /**
          * @type {string} PARAMETER_SAVE_LINK Defines parameter's name for save link

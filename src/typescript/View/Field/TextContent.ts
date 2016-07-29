@@ -109,16 +109,6 @@ module Ompluscript.View.Field {
         }
 
         /**
-         * Method that sets value for text HTML content
-         *
-         * @param {string} value for text HTML content
-         */
-        protected updateText(value: string): void {
-            this.textContent = value;
-            this.htmlElement.innerHTML = this.getTextContent();
-        }
-
-        /**
          * Method attach content to translation container.
          */
         public attachToTranslation(): void {
@@ -134,6 +124,16 @@ module Ompluscript.View.Field {
             if (this.isTranslated()) {
                 this.translation.detachFromAsset(this.text, this);
             }
+        }
+
+        /**
+         * Method that sets value for text HTML content
+         *
+         * @param {string} value for text HTML content
+         */
+        protected updateText(value: string): void {
+            this.textContent = value;
+            this.htmlElement.innerHTML = this.getTextContent();
         }
     }
 }

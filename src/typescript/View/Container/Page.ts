@@ -28,7 +28,7 @@ module Ompluscript.View.Container {
         /**
          * @type {string} TYPE_PAGE Type of page
          */
-        public static TYPE_PAGE: string = Page["name"];
+        public static TYPE_PAGE: string = "Page";
 
         /**
          * @type {string} PARAMETER_EVENTS Name of events parameter

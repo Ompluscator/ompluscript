@@ -25,7 +25,7 @@ module Ompluscript.Model.Attribute {
         /**
          * @type {string} TYPE_BOOLEAN Boolean type name.
          */
-        public static TYPE_BOOLEAN: string = Boolean["name"];
+        public static TYPE_BOOLEAN: string = "Boolean";
 
         /**
          * @type {number} ERROR_MUST_BE_TRUE Error code for value that is not true.

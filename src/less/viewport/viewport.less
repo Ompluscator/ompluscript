@@ -3,3 +3,13 @@ body {
   margin: 0;
   height: 100%;
 }
+
+body {
+  .transform(translate(0, 0));
+  transition: transform 200ms ease-out;
+
+  &.active {
+    .transform(translate(-@navigationTransition, 0));
+    transition: transform 300ms ease-in;
+  }
+}

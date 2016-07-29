@@ -24,7 +24,7 @@ module Ompluscript.View.Viewport {
         /**
          * @type {string} TYPE_VIEWPORT Type of viewport component
          */
-        public static TYPE_VIEWPORT: string = Viewport["name"];
+        public static TYPE_VIEWPORT: string = "Viewport";
 
         /**
          * @type {string} PARAMETER_PAGES Name for pages parameter
@@ -67,6 +67,7 @@ module Ompluscript.View.Viewport {
             super(Viewport.TYPE_VIEWPORT);
             this.pages = pages;
             this.navigation = navigation;
+            this.navigation.setParent(this);
             if (pages.length > 0) {
                 this.setActivePageIndex(0);
             }

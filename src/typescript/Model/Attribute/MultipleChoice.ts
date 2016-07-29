@@ -23,7 +23,7 @@ module Ompluscript.Model.Attribute {
         /**
          * @type {string} TYPE_MULTIPLE_CHOICE MultipleChoice type name.
          */
-        public static TYPE_MULTIPLE_CHOICE: string = MultipleChoice["name"];
+        public static TYPE_MULTIPLE_CHOICE: string = "MultipleChoice";
 
         /**
          * Class constructor.

@@ -18,7 +18,7 @@ module Ompluscript.Model.Proxy {
         /**
          * @type {string} TYPE_SESSION_STORAGE_PROXY Defines type of session storage proxy
          */
-        public static TYPE_SESSION_STORAGE_PROXY: string = SessionStorageProxy["name"];
+        public static TYPE_SESSION_STORAGE_PROXY: string = "SessionStorageProxy";
 
         /**
          * Class constructor.

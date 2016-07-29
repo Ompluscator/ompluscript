@@ -20,7 +20,7 @@ module Ompluscript.View.Layout {
         /**
          * @type {string} TYPE_TABLE_LAYOUT Type of table layout class
          */
-        public static TYPE_TABLE_LAYOUT: string = TableLayout["name"];
+        public static TYPE_TABLE_LAYOUT: string = "TableLayout";
 
         /**
          * @type {string} PARAMETER_ROWS Name of rows parameter

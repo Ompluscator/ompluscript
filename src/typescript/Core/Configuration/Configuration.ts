@@ -118,21 +118,13 @@ module Ompluscript.Core.Configuration {
         public static PARAMETER_NAME: string = "name";
 
         /**
-         * @type {Object} instances Container for all configuration instances
-         */
-        private static instances: Object = {};
-
-        /**
          * Method that returns configuration instance by its class
          *
          * @param {Function} configuration Class of configuration
          * @returns {Configuration} Configuration instances
          */
         public static getInstance(configuration: { new () }): Configuration {
-            if (!Configuration.instances.hasOwnProperty(configuration["name"])) {
-                Configuration.instances[configuration["name"]] = new configuration;
-            }
-            return Configuration.instances[configuration["name"]];
+            return new configuration;
         }
 
         /**

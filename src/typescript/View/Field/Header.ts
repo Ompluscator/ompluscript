@@ -19,7 +19,7 @@ module Ompluscript.View.Field {
         /**
          * @type {string} TYPE_HEADER Type of header
          */
-        public static TYPE_HEADER: string = Header["name"];
+        public static TYPE_HEADER: string = "Header";
 
         /**
          * @type {string} PARAMETER_LEVEL Name of level parameter

@@ -49,7 +49,7 @@ module Ompluscript.Model.Attribute {
         /**
          * @type {string} TYPE_STRING String type name.
          */
-        public static TYPE_STRING: string = String["name"];
+        public static TYPE_STRING: string = "String";
 
         /**
          * @type {number} minimumLength Minimum allowed length of the string

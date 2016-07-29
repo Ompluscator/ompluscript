@@ -23,10 +23,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 function Configuration() {
                 }
                 Configuration.getInstance = function (configuration) {
-                    if (!Configuration.instances.hasOwnProperty(configuration["name"])) {
-                        Configuration.instances[configuration["name"]] = new configuration;
-                    }
-                    return Configuration.instances[configuration["name"]];
+                    return new configuration;
                 };
                 Configuration.prototype.filterErrors = function (errors) {
                     var filter = [];
@@ -153,7 +150,6 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Configuration.IS_MISSING = " are missing.";
                 Configuration.PARAMETER_TYPE = "type";
                 Configuration.PARAMETER_NAME = "name";
-                Configuration.instances = {};
                 return Configuration;
             }());
             Configuration_1.Configuration = Configuration;
@@ -541,6 +537,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     if (this.getParent() === undefined) {
                         return [];
                     }
+                    var parentName = this.getParent().constructor.toString().match(/^function\s*([^\s(]+)/)[1];
                     var parents = [];
                     if (name === undefined && type === undefined) {
                         parents.push(this.getParent());
@@ -548,10 +545,10 @@ var __extends = (this && this.__extends) || function (d, b) {
                     else if (name === this.getParent().getName() && type === undefined) {
                         parents.push(this.getParent());
                     }
-                    else if (name === undefined && type === this.getParent().constructor["name"]) {
+                    else if (name === undefined && type === parentName) {
                         parents.push(this.getParent());
                     }
-                    else if (name === this.getParent().getName() && type === this.getParent().constructor["name"]) {
+                    else if (name === this.getParent().getName() && type === parentName) {
                         parents.push(this.getParent());
                     }
                     parents.push.apply(parents, this.getParent().getParents(name, type));
@@ -667,7 +664,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                         this.htmlElement.removeChild(this.htmlElement.firstChild);
                     }
                 };
-                NullLayout.TYPE_NULL_LAYOUT = NullLayout["name"];
+                NullLayout.TYPE_NULL_LAYOUT = "NullLayout";
                 NullLayout.CLASS_NULL_LAYOUT = "null-layout";
                 return NullLayout;
             }(Layout.Layout));
@@ -778,7 +775,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                         this.htmlElement.removeChild(this.htmlElement.firstChild);
                     }
                 };
-                RelativeLayout.TYPE_RELATIVE_LAYOUT = RelativeLayout["name"];
+                RelativeLayout.TYPE_RELATIVE_LAYOUT = "RelativeLayout";
                 RelativeLayout.CLASS_RELATIVE_LAYOUT = "relative-layout";
                 return RelativeLayout;
             }(Layout.Layout));
@@ -856,7 +853,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                         this.addClass(LinearLayout.CLASS_PREFIX + LinearLayout.CLASS_REVERSE);
                     }
                 };
-                LinearLayout.TYPE_LINEAR_LAYOUT = LinearLayout["name"];
+                LinearLayout.TYPE_LINEAR_LAYOUT = "LinearLayout";
                 LinearLayout.PARAMETER_DIRECTION = "direction";
                 LinearLayout.PARAMETER_REVERSE = "reverse";
                 LinearLayout.PARAMETER_ALIGN = "align";
@@ -986,7 +983,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 TableLayout.prototype.clear = function () {
                     return;
                 };
-                TableLayout.TYPE_TABLE_LAYOUT = TableLayout["name"];
+                TableLayout.TYPE_TABLE_LAYOUT = "TableLayout";
                 TableLayout.PARAMETER_ROWS = "rows";
                 TableLayout.PARAMETER_CELLS = "cells";
                 TableLayout.STYLE_WIDTH = "width";
@@ -1426,7 +1423,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 String.PARAMETER_MINIMUM_LENGTH = "minimumLength";
                 String.PARAMETER_MAXIMUM_LENGTH = "maximumLength";
                 String.PARAMETER_PATTERN = "pattern";
-                String.TYPE_STRING = String["name"];
+                String.TYPE_STRING = "String";
                 return String;
             }(Attribute.Attribute));
             Attribute.String = String;
@@ -1568,7 +1565,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                     return request;
                 };
-                AjaxProxy.TYPE_AJAX_PROXY = AjaxProxy["name"];
+                AjaxProxy.TYPE_AJAX_PROXY = "AjaxProxy";
                 AjaxProxy.PARAMETER_SAVE_LINK = "saveLink";
                 AjaxProxy.PARAMETER_UPDATE_LINK = "updateLink";
                 AjaxProxy.PARAMETER_DELETE_LINK = "deleteLink";
@@ -1741,7 +1738,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     this.fireOnUpdateAssetEvent(key, oldValue, key);
                     delete this.assets[key];
                 };
-                Translation.TYPE_TRANSLATION = Translation["name"];
+                Translation.TYPE_TRANSLATION = "Translation";
                 Translation.ATTRIBUTE_ASSET = "asset";
                 return Translation;
             }(Container));
@@ -1882,7 +1879,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return new Ompluscript.Model.Attribute.Boolean(this.name, undefined, this.required, this.mustBeTrue);
                 };
                 Boolean.PARAMETER_MUST_BE_TRUE = "mustBeTrue";
-                Boolean.TYPE_BOOLEAN = Boolean["name"];
+                Boolean.TYPE_BOOLEAN = "Boolean";
                 Boolean.ERROR_MUST_BE_TRUE = 204;
                 return Boolean;
             }(Attribute.Attribute));
@@ -1998,7 +1995,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Datetime.prototype.clone = function () {
                     return new Datetime(this.name, undefined, this.required, this.minimum, this.maximum);
                 };
-                Datetime.TYPE_DATETIME = Datetime["name"];
+                Datetime.TYPE_DATETIME = "Datetime";
                 return Datetime;
             }(Attribute));
             Attribute_4.Datetime = Datetime;
@@ -2201,7 +2198,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                     return new MultipleChoice(this.name, undefined, this.required, choices);
                 };
-                MultipleChoice.TYPE_MULTIPLE_CHOICE = MultipleChoice["name"];
+                MultipleChoice.TYPE_MULTIPLE_CHOICE = "MultipleChoice";
                 return MultipleChoice;
             }(Attribute_6.Choice));
             Attribute_6.MultipleChoice = MultipleChoice;
@@ -2320,7 +2317,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 Number.PARAMETER_INCLUDE_MINIMUM = "includeMinimum";
                 Number.PARAMETER_INCLUDE_MAXIMUM = "includeMaximum";
-                Number.TYPE_NUMBER = Number["name"];
+                Number.TYPE_NUMBER = "Number";
                 return Number;
             }(Attribute));
             Attribute_8.Number = Number;
@@ -2415,7 +2412,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                     return new SingleChoice(this.name, undefined, this.required, choices);
                 };
-                SingleChoice.TYPE_SINGLE_CHOICE = SingleChoice["name"];
+                SingleChoice.TYPE_SINGLE_CHOICE = "SingleChoice";
                 return SingleChoice;
             }(Attribute.Choice));
             Attribute.SingleChoice = SingleChoice;
@@ -2598,7 +2595,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 function LocalStorageProxy() {
                     _super.call(this, LocalStorageProxy.TYPE_LOCAL_STORAGE_PROXY, window.localStorage);
                 }
-                LocalStorageProxy.TYPE_LOCAL_STORAGE_PROXY = LocalStorageProxy["name"];
+                LocalStorageProxy.TYPE_LOCAL_STORAGE_PROXY = "LocalStorageProxy";
                 return LocalStorageProxy;
             }(Proxy.StorageProxy));
             Proxy.LocalStorageProxy = LocalStorageProxy;
@@ -2647,7 +2644,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 function SessionStorageProxy() {
                     _super.call(this, SessionStorageProxy.TYPE_SESSION_STORAGE_PROXY, window.sessionStorage);
                 }
-                SessionStorageProxy.TYPE_SESSION_STORAGE_PROXY = SessionStorageProxy["name"];
+                SessionStorageProxy.TYPE_SESSION_STORAGE_PROXY = "SessionStorageProxy";
                 return SessionStorageProxy;
             }(Proxy.StorageProxy));
             Proxy.SessionStorageProxy = SessionStorageProxy;
@@ -2831,7 +2828,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                         }
                     }
                 };
-                Model.TYPE_MODEL = Model["name"];
+                Model.TYPE_MODEL = "Model";
                 return Model;
             }(Container));
             Container_4.Model = Model;
@@ -3106,7 +3103,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     var event = new OnUpdateTable(this);
                     this.notifyObservers(event);
                 };
-                Table.TYPE_TABLE = Table["name"];
+                Table.TYPE_TABLE = "Table";
                 return Table;
             }(Container));
             Container_6.Table = Table;
@@ -3596,6 +3593,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     if (styles === void 0) { styles = {}; }
                     if (type === void 0) { type = undefined; }
                     _super.call(this, name, styles);
+                    this.isUpdating = false;
                     this.type = type;
                     this.setAttribute(Input.ATTRIBUTE_TYPE, type);
                     this.setAttribute(Input.ATTRIBUTE_NAME, this.name);
@@ -3609,7 +3607,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                 }
                 Input.prototype.update = function (event) {
-                    if (event instanceof OnUpdateAttribute) {
+                    if (event instanceof OnUpdateAttribute && this.isUpdating === false) {
                         var onUpdateAttribute = event;
                         this.updateValue(onUpdateAttribute.getNewValue());
                     }
@@ -3676,8 +3674,10 @@ var __extends = (this && this.__extends) || function (d, b) {
                     this.addOnUpdateInputEvent();
                 };
                 Input.prototype.fireOnUpdateInputEvent = function (value) {
+                    this.isUpdating = true;
                     var event = new OnUpdateInput(this, value);
                     this.notifyObservers(event);
+                    this.isUpdating = false;
                 };
                 Input.PARAMETER_ATTRIBUTE = "attribute";
                 Input.PARAMETER_PLACEHOLDER = "placeholder";
@@ -3787,7 +3787,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 CheckBoxInput.prototype.updateValue = function (value) {
                     this.htmlElement["checked"] = value;
                 };
-                CheckBoxInput.TYPE_CHECK_BOX_INPUT = CheckBoxInput["name"];
+                CheckBoxInput.TYPE_CHECK_BOX_INPUT = "CheckBoxInput";
                 CheckBoxInput.INPUT_CHECK_BOX = "checkbox";
                 return CheckBoxInput;
             }(Field.Input));
@@ -3878,7 +3878,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                         this.htmlElement["value"] = value;
                     }
                 };
-                TextInput.TYPE_TEXT_INPUT = TextInput["name"];
+                TextInput.TYPE_TEXT_INPUT = "TextInput";
                 TextInput.INPUT_TEXT = "text";
                 return TextInput;
             }(Field.Input));
@@ -3948,7 +3948,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 EmailInput.prototype.clone = function () {
                     return new EmailInput(this.name, this.attribute, this.placeholder, this.styles);
                 };
-                EmailInput.TYPE_EMAIL_INPUT = EmailInput["name"];
+                EmailInput.TYPE_EMAIL_INPUT = "EmailInput";
                 EmailInput.INPUT_EMAIL = "email";
                 return EmailInput;
             }(Field.TextInput));
@@ -4042,7 +4042,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                         this.htmlElement["value"] = value.toString();
                     }
                 };
-                NumberInput.TYPE_NUMBER_INPUT = NumberInput["name"];
+                NumberInput.TYPE_NUMBER_INPUT = "NumberInput";
                 NumberInput.INPUT_NUMBER = "number";
                 return NumberInput;
             }(Field.Input));
@@ -4112,7 +4112,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 PasswordInput.prototype.clone = function () {
                     return new PasswordInput(this.name, this.attribute, this.placeholder, this.styles);
                 };
-                PasswordInput.TYPE_PASSWORD_INPUT = PasswordInput["name"];
+                PasswordInput.TYPE_PASSWORD_INPUT = "PasswordInput";
                 PasswordInput.INPUT_PASSWORD = "password";
                 return PasswordInput;
             }(Field.TextInput));
@@ -4217,16 +4217,17 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                     var children = [];
                     for (var i = 0; i < this.getChildrenCount(); i++) {
+                        var childName = this.children[i].constructor.toString().match(/^function\s*([^\s(]+)/)[1];
                         if (name === undefined && type === undefined) {
                             children.push(this.children[i]);
                         }
                         else if (name === this.children[i].getName() && type === undefined) {
                             children.push(this.children[i]);
                         }
-                        else if (name === undefined && type === this.children[i].constructor["name"]) {
+                        else if (name === undefined && type === childName) {
                             children.push(this.children[i]);
                         }
-                        else if (name === this.children[i].getName() && type === this.children[i].constructor["name"]) {
+                        else if (name === this.children[i].getName() && type === childName) {
                             children.push(this.children[i]);
                         }
                         if (this.children[i] instanceof Container) {
@@ -4382,7 +4383,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     trace[Page.PARAMETER_DEFAULT_PAGE] = this.defaultPage;
                     return trace;
                 };
-                Page.TYPE_PAGE = Page["name"];
+                Page.TYPE_PAGE = "Page";
                 Page.PARAMETER_EVENTS = "events";
                 Page.PARAMETER_ON_PAGE_LOAD = "onPageLoad";
                 Page.PARAMETER_ON_PAGE_CLOSE = "onPageClose";
@@ -4435,10 +4436,6 @@ var __extends = (this && this.__extends) || function (d, b) {
                     trace[TextContent.PARAMETER_TEXT] = this.text;
                     return trace;
                 };
-                TextContent.prototype.updateText = function (value) {
-                    this.textContent = value;
-                    this.htmlElement.innerHTML = this.getTextContent();
-                };
                 TextContent.prototype.attachToTranslation = function () {
                     if (this.isTranslated()) {
                         this.translation.attachToAsset(this.text, this);
@@ -4448,6 +4445,10 @@ var __extends = (this && this.__extends) || function (d, b) {
                     if (this.isTranslated()) {
                         this.translation.detachFromAsset(this.text, this);
                     }
+                };
+                TextContent.prototype.updateText = function (value) {
+                    this.textContent = value;
+                    this.htmlElement.innerHTML = this.getTextContent();
                 };
                 TextContent.PARAMETER_TEXT = "text";
                 return TextContent;
@@ -4476,7 +4477,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Button.prototype.initializeHtmlElement = function () {
                     this.htmlElement = document.createElement(Button.ELEMENT_BUTTON);
                 };
-                Button.TYPE_BUTTON = Button["name"];
+                Button.TYPE_BUTTON = "Button";
                 Button.CLASS_BUTTON = "button";
                 Button.ELEMENT_BUTTON = "button";
                 return Button;
@@ -4517,10 +4518,10 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 Navigation.prototype.toggleMobileNavigation = function () {
                     for (var i = 0; i < this.children.length - 1; i++) {
-                        this.children[i].toggleClass(Navigation.CLASS_ACTIVE_NAVIGATION);
+                        this.getParent().toggleClass(Navigation.CLASS_ACTIVE_NAVIGATION);
                     }
                 };
-                Navigation.TYPE_NAVIGATION = Navigation["name"];
+                Navigation.TYPE_NAVIGATION = "Navigation";
                 Navigation.ELEMENT_NAV = "nav";
                 Navigation.CLASS_NAVIGATION = "navigation";
                 Navigation.CLASS_ACTIVE_NAVIGATION = "active";
@@ -4545,6 +4546,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     _super.call(this, Viewport.TYPE_VIEWPORT);
                     this.pages = pages;
                     this.navigation = navigation;
+                    this.navigation.setParent(this);
                     if (pages.length > 0) {
                         this.setActivePageIndex(0);
                     }
@@ -4597,7 +4599,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     this.htmlElement = document.body;
                     this.addClass(Viewport.CLASS_VIEWPORT);
                 };
-                Viewport.TYPE_VIEWPORT = Viewport["name"];
+                Viewport.TYPE_VIEWPORT = "Viewport";
                 Viewport.PARAMETER_PAGES = "pages";
                 Viewport.PARAMETER_NAVIGATION = "navigation";
                 Viewport.CLASS_VIEWPORT = "viewport";
@@ -4645,7 +4647,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 List.prototype.initializeHtmlElement = function () {
                     this.htmlElement = document.createElement(List.ELEMENT_LIST);
                 };
-                List.TYPE_LIST = List["name"];
+                List.TYPE_LIST = "List";
                 List.PARAMETER_LIST = "list";
                 List.LIST_ORDERED = "ordered";
                 List.LIST_UNORDERED = "unordered";
@@ -4723,7 +4725,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     event.preventDefault();
                     window.history.pushState(false, this.page);
                 };
-                PageLink.TYPE_PAGE_LINK = PageLink["name"];
+                PageLink.TYPE_PAGE_LINK = "PageLink";
                 PageLink.PARAMETER_PAGE = "page";
                 PageLink.CLASS_LINK = "link";
                 PageLink.ELEMENT_LINK = "a";
@@ -4761,7 +4763,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Header.prototype.initializeHtmlElement = function () {
                     this.htmlElement = document.createElement(this.name);
                 };
-                Header.TYPE_HEADER = Header["name"];
+                Header.TYPE_HEADER = "Header";
                 Header.PARAMETER_LEVEL = "level";
                 Header.LEVEL_FIRST = "1";
                 Header.LEVEL_SECOND = "2";
@@ -4884,7 +4886,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                         that.showPageFromPath(path);
                     };
                 };
-                NavigationController.TYPE_NAVIGATION_CONTROLLER = NavigationController["name"];
+                NavigationController.TYPE_NAVIGATION_CONTROLLER = "NavigationController";
                 return NavigationController;
             }(Controller.Controller));
             Controller.NavigationController = NavigationController;
@@ -4911,7 +4913,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Paragraph.prototype.clone = function () {
                     return new Paragraph(this.name, this.text, this.styles);
                 };
-                Paragraph.TYPE_PARAGRAPH = Paragraph["name"];
+                Paragraph.TYPE_PARAGRAPH = "Paragraph";
                 Paragraph.CLASS_PARAGRAPH = "paragraph";
                 Paragraph.ELEMENT_PARAGRAPH = "p";
                 return Paragraph;
@@ -4946,7 +4948,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     _super.call(this, WrongConfigurationContainer.TYPE_WRONG_CONFIGURATION_CONTAINER, undefined, children);
                     this.addClass(WrongConfigurationContainer.CLASS_WRONG_CONFIGURATION_CONTAINER);
                 }
-                WrongConfigurationContainer.TYPE_WRONG_CONFIGURATION_CONTAINER = WrongConfigurationContainer["name"];
+                WrongConfigurationContainer.TYPE_WRONG_CONFIGURATION_CONTAINER = "WrongConfigurationContainer";
                 WrongConfigurationContainer.CLASS_WRONG_CONFIGURATION_CONTAINER = "wrong-configuration";
                 return WrongConfigurationContainer;
             }(Container.Container));
@@ -5169,7 +5171,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     var event = new OnComponentLoad(this, component);
                     this.notifyObservers(event);
                 };
-                ApplicationController.TYPE_APPLICATION_CONTROLLER = ApplicationController["name"];
+                ApplicationController.TYPE_APPLICATION_CONTROLLER = "ApplicationController";
                 ApplicationController.PARAMETER_COMPONENTS = "components";
                 ApplicationController.PARAMETER_NAVIGATION_CONTROLLER = "navigationController";
                 ApplicationController.PARAMETER_ON_APPLICATION_START = "onApplicationStart";
@@ -5347,7 +5349,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     var definition = action.toString();
                     return definition.match(/\(.*?\)/)[0].replace(/[()]/gi, "").replace(/\s/gi, "").split(",");
                 };
-                PageController.TYPE_PAGE_CONTROLLER = PageController["name"];
+                PageController.TYPE_PAGE_CONTROLLER = "PageController";
                 PageController.PARAMETER_PAGE = "page";
                 PageController.PARAMETER_ACTIONS = "actions";
                 return PageController;
@@ -5409,13 +5411,14 @@ var __extends = (this && this.__extends) || function (d, b) {
                     var listener = function () {
                         that.fireOnUpdateInputEvent(that.getValue());
                     };
+                    that.htmlElement.addEventListener(Field.TextInput.EVENT_KEY_UP, listener, false);
                     that.htmlElement.addEventListener(Field.TextInput.EVENT_CHANGE, listener, false);
                     that.htmlElement.addEventListener(Field.TextInput.EVENT_BLUR, listener, false);
                 };
                 DateInput.prototype.clone = function () {
                     return new DateInput(this.name, this.attribute, this.placeholder, this.styles);
                 };
-                DateInput.TYPE_DATE_INPUT = DateInput["name"];
+                DateInput.TYPE_DATE_INPUT = "DateInput";
                 DateInput.INPUT_DATE = "date";
                 return DateInput;
             }(Field.TextInput));
@@ -5642,7 +5645,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Label.prototype.initializeHtmlElement = function () {
                     this.htmlElement = document.createElement(Label.ELEMENT_LABEL);
                 };
-                Label.TYPE_LABEL = Label["name"];
+                Label.TYPE_LABEL = "Label";
                 Label.CLASS_LABEL = "label";
                 Label.ELEMENT_LABEL = "label";
                 return Label;
@@ -5733,8 +5736,94 @@ var __extends = (this && this.__extends) || function (d, b) {
 (function (Ompluscript) {
     var View;
     (function (View) {
+        var Field;
+        (function (Field) {
+            "use strict";
+            var Image = (function (_super) {
+                __extends(Image, _super);
+                function Image(name, source, text, styles) {
+                    if (text === void 0) { text = undefined; }
+                    if (styles === void 0) { styles = {}; }
+                    _super.call(this, name, text, styles);
+                    this.addClass(Image.CLASS_IMAGE);
+                    this.source = source;
+                    this.setAttribute(Image.ATTRIBUTE_SRC, this.source);
+                }
+                Image.prototype.clone = function () {
+                    return new Image(this.name, this.source, this.text, this.styles);
+                };
+                Image.prototype.getStackTrace = function () {
+                    var trace = _super.prototype.getStackTrace.call(this);
+                    trace[Image.PARAMETER_SOURCE] = this.source;
+                    return trace;
+                };
+                Image.prototype.updateText = function (value) {
+                    this.textContent = value;
+                    this.setAttribute(Image.ATTRIBUTE_ALT, this.getTextContent());
+                    this.setAttribute(Image.ATTRIBUTE_TITLE, this.getTextContent());
+                };
+                Image.prototype.initializeHtmlElement = function () {
+                    this.htmlElement = document.createElement(Image.ELEMENT_IMAGE);
+                };
+                Image.TYPE_IMAGE = "Image";
+                Image.PARAMETER_SOURCE = "source";
+                Image.CLASS_IMAGE = "image";
+                Image.ELEMENT_IMAGE = "img";
+                Image.ATTRIBUTE_SRC = "src";
+                Image.ATTRIBUTE_TITLE = "title";
+                Image.ATTRIBUTE_ALT = "alt";
+                return Image;
+            }(Field.TextContent));
+            Field.Image = Image;
+        })(Field = View.Field || (View.Field = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
         var Configuration;
         (function (Configuration_38) {
+            var Field;
+            (function (Field) {
+                "use strict";
+                var Configuration = Ompluscript.Core.Configuration.Configuration;
+                var Component = Ompluscript.View.Component.Component;
+                var Image = Ompluscript.View.Field.Image;
+                var TextContent = Ompluscript.View.Field.TextContent;
+                var ImageConfiguration = (function (_super) {
+                    __extends(ImageConfiguration, _super);
+                    function ImageConfiguration() {
+                        _super.apply(this, arguments);
+                    }
+                    ImageConfiguration.prototype.isRelatedTo = function (definition) {
+                        return definition[Configuration.PARAMETER_TYPE] === Image.TYPE_IMAGE;
+                    };
+                    ImageConfiguration.prototype.getErrors = function (definition) {
+                        var errors = _super.prototype.getErrors.call(this, definition);
+                        errors.push(this.mustBeString(definition, Image.PARAMETER_SOURCE));
+                        return this.filterErrors(errors);
+                    };
+                    ImageConfiguration.prototype.create = function (definition) {
+                        var name = definition[Configuration.PARAMETER_NAME];
+                        var text = definition[TextContent.PARAMETER_TEXT];
+                        var styles = definition[Component.PARAMETER_STYLES];
+                        var source = definition[Image.PARAMETER_SOURCE];
+                        var image = new Image(name, source, text, styles);
+                        this.attachEvents(definition, image);
+                        return image;
+                    };
+                    return ImageConfiguration;
+                }(Field.TextContentConfiguration));
+                Field.ImageConfiguration = ImageConfiguration;
+            })(Field = Configuration_38.Field || (Configuration_38.Field = {}));
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Configuration;
+        (function (Configuration_39) {
             var Container;
             (function (Container_11) {
                 "use strict";
@@ -5754,6 +5843,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 var ErrorConfiguration = Ompluscript.Core.Configuration.ErrorConfiguration;
                 var ButtonConfiguration = Ompluscript.View.Configuration.Field.ButtonConfiguration;
                 var LabelConfiguration = Ompluscript.View.Configuration.Field.LabelConfiguration;
+                var ImageConfiguration = Ompluscript.View.Configuration.Field.ImageConfiguration;
                 var ListConfiguration = (function (_super) {
                     __extends(ListConfiguration, _super);
                     function ListConfiguration() {
@@ -5770,6 +5860,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                             LabelConfiguration,
                             PageLinkConfiguration,
                             ListConfiguration,
+                            ImageConfiguration,
                             ErrorConfiguration,
                         ];
                         var configurations = {};
@@ -5805,7 +5896,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return ListConfiguration;
                 }(Container_11.ContainerConfiguration));
                 Container_11.ListConfiguration = ListConfiguration;
-            })(Container = Configuration_38.Container || (Configuration_38.Container = {}));
+            })(Container = Configuration_39.Container || (Configuration_39.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -5824,7 +5915,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     _super.call(this, name, layout, children, styles);
                     this.addClass(Box.CLASS_BOX);
                 }
-                Box.TYPE_BOX = Box["name"];
+                Box.TYPE_BOX = "Box";
                 Box.CLASS_BOX = "box";
                 return Box;
             }(Container.Container));
@@ -6021,7 +6112,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     }
                     this.render();
                 };
-                TableContainer.TYPE_TABLE = TableContainer["name"];
+                TableContainer.TYPE_TABLE = "TableContainer";
                 TableContainer.PARAMETER_TABLE = "table";
                 TableContainer.PARAMETER_HEADERS = "headers";
                 TableContainer.PARAMETER_CELLS = "cells";
@@ -6057,12 +6148,15 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return undefined;
                 };
                 LabelInput.prototype.updateValue = function (value) {
+                    if (value === undefined) {
+                        value = "";
+                    }
                     this.htmlElement.innerHTML = value;
                 };
                 LabelInput.prototype.initializeHtmlElement = function () {
                     this.htmlElement = document.createElement(Field.Label.ELEMENT_LABEL);
                 };
-                LabelInput.TYPE_LABEL_INPUT = LabelInput["name"];
+                LabelInput.TYPE_LABEL_INPUT = "LabelInput";
                 LabelInput.EVENT_KEY_UP = "keyup";
                 return LabelInput;
             }(Field.Input));
@@ -6074,7 +6168,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_39) {
+        (function (Configuration_40) {
             var Field;
             (function (Field) {
                 "use strict";
@@ -6109,7 +6203,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return LabelInputConfiguration;
                 }(Field.InputConfiguration));
                 Field.LabelInputConfiguration = LabelInputConfiguration;
-            })(Field = Configuration_39.Field || (Configuration_39.Field = {}));
+            })(Field = Configuration_40.Field || (Configuration_40.Field = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -6117,7 +6211,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_40) {
+        (function (Configuration_41) {
             var Container;
             (function (Container) {
                 "use strict";
@@ -6138,6 +6232,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 var PageLinkConfiguration = Ompluscript.View.Configuration.Field.PageLinkConfiguration;
                 var TableConfiguration = Ompluscript.Model.Configuration.Container.TableConfiguration;
                 var TableContainer = Ompluscript.View.Container.TableContainer;
+                var ImageConfiguration = Ompluscript.View.Configuration.Field.ImageConfiguration;
                 var TableContainerConfiguration = (function (_super) {
                     __extends(TableContainerConfiguration, _super);
                     function TableContainerConfiguration() {
@@ -6164,6 +6259,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                             HeaderConfiguration,
                             LabelConfiguration,
                             PageLinkConfiguration,
+                            ImageConfiguration,
                             ErrorConfiguration,
                         ];
                         var table = [
@@ -6206,7 +6302,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return TableContainerConfiguration;
                 }(Container.ContainerConfiguration));
                 Container.TableContainerConfiguration = TableContainerConfiguration;
-            })(Container = Configuration_40.Container || (Configuration_40.Container = {}));
+            })(Container = Configuration_41.Container || (Configuration_41.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -6214,7 +6310,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_41) {
+        (function (Configuration_42) {
             var Container;
             (function (Container_12) {
                 "use strict";
@@ -6239,6 +6335,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 var ButtonConfiguration = Ompluscript.View.Configuration.Field.ButtonConfiguration;
                 var LabelConfiguration = Ompluscript.View.Configuration.Field.LabelConfiguration;
                 var LabelInputConfiguration = Ompluscript.View.Configuration.Field.LabelInputConfiguration;
+                var ImageConfiguration = Ompluscript.View.Configuration.Field.ImageConfiguration;
                 var BoxConfiguration = (function (_super) {
                     __extends(BoxConfiguration, _super);
                     function BoxConfiguration() {
@@ -6259,6 +6356,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                             LabelInputConfiguration,
                             ParagraphConfiguration,
                             ButtonConfiguration,
+                            ImageConfiguration,
                             HeaderConfiguration,
                             LabelConfiguration,
                             PageLinkConfiguration,
@@ -6290,7 +6388,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return BoxConfiguration;
                 }(Container_12.ContainerConfiguration));
                 Container_12.BoxConfiguration = BoxConfiguration;
-            })(Container = Configuration_41.Container || (Configuration_41.Container = {}));
+            })(Container = Configuration_42.Container || (Configuration_42.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -6422,7 +6520,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     var label = inputContainer.findChildrenByType("Label")[0];
                     label.removeClass(Form.CLASS_SHOW);
                 };
-                Form.TYPE_FORM = Form["name"];
+                Form.TYPE_FORM = "Form";
                 Form.PARAMETER_MODEL = "model";
                 Form.PARAMETER_PROXY = "proxy";
                 Form.PARAMETER_BUTTON_ASSET = "buttonAsset";
@@ -6439,7 +6537,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_42) {
+        (function (Configuration_43) {
             var Container;
             (function (Container_13) {
                 "use strict";
@@ -6525,7 +6623,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return FormConfiguration;
                 }(Container_13.ContainerConfiguration));
                 Container_13.FormConfiguration = FormConfiguration;
-            })(Container = Configuration_42.Container || (Configuration_42.Container = {}));
+            })(Container = Configuration_43.Container || (Configuration_43.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -6533,7 +6631,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_43) {
+        (function (Configuration_44) {
             var Container;
             (function (Container_14) {
                 "use strict";
@@ -6559,6 +6657,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 var TableContainerConfiguration = Ompluscript.View.Configuration.Container.TableContainerConfiguration;
                 var LabelInputConfiguration = Ompluscript.View.Configuration.Field.LabelInputConfiguration;
                 var Page = Ompluscript.View.Container.Page;
+                var ImageConfiguration = Ompluscript.View.Configuration.Field.ImageConfiguration;
                 var PageConfiguration = (function (_super) {
                     __extends(PageConfiguration, _super);
                     function PageConfiguration() {
@@ -6586,6 +6685,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                             Container_14.BoxConfiguration,
                             Container_14.FormConfiguration,
                             TableContainerConfiguration,
+                            ImageConfiguration,
                             ErrorConfiguration,
                         ];
                         var configurations = {};
@@ -6626,7 +6726,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return PageConfiguration;
                 }(Container_14.ContainerConfiguration));
                 Container_14.PageConfiguration = PageConfiguration;
-            })(Container = Configuration_43.Container || (Configuration_43.Container = {}));
+            })(Container = Configuration_44.Container || (Configuration_44.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -6634,7 +6734,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Controller;
     (function (Controller_10) {
         var Configuration;
-        (function (Configuration_44) {
+        (function (Configuration_45) {
             var Controller;
             (function (Controller) {
                 "use strict";
@@ -6685,7 +6785,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return PageControllerConfiguration;
                 }(Controller.ControllerConfiguration));
                 Controller.PageControllerConfiguration = PageControllerConfiguration;
-            })(Controller = Configuration_44.Controller || (Configuration_44.Controller = {}));
+            })(Controller = Configuration_45.Controller || (Configuration_45.Controller = {}));
         })(Configuration = Controller_10.Configuration || (Controller_10.Configuration = {}));
     })(Controller = Ompluscript.Controller || (Ompluscript.Controller = {}));
 })(Ompluscript || (Ompluscript = {}));
@@ -6756,7 +6856,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_45) {
+        (function (Configuration_46) {
             var Container;
             (function (Container_15) {
                 "use strict";
@@ -6794,7 +6894,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     return NavigationConfiguration;
                 }(Container_15.ContainerConfiguration));
                 Container_15.NavigationConfiguration = NavigationConfiguration;
-            })(Container = Configuration_45.Container || (Configuration_45.Container = {}));
+            })(Container = Configuration_46.Container || (Configuration_46.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));
 })(Ompluscript || (Ompluscript = {}));

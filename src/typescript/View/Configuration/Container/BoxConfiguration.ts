@@ -19,6 +19,7 @@
 /// <reference path="../Field/HeaderConfiguration.ts" />
 /// <reference path="../Field/PageLinkConfiguration.ts" />
 /// <reference path="../Field/LabelConfiguration.ts" />
+/// <reference path="../Field/ImageConfiguration.ts" />
 /// <reference path="../Layout/NullLayoutConfiguration.ts" />
 /// <reference path="../Layout/RelativeLayoutConfiguration.ts" />
 /// <reference path="../Layout/LinearLayoutConfiguration.ts" />
@@ -54,6 +55,7 @@ module Ompluscript.View.Configuration.Container {
     import ButtonConfiguration = Ompluscript.View.Configuration.Field.ButtonConfiguration;
     import LabelConfiguration = Ompluscript.View.Configuration.Field.LabelConfiguration;
     import LabelInputConfiguration = Ompluscript.View.Configuration.Field.LabelInputConfiguration;
+    import ImageConfiguration = Ompluscript.View.Configuration.Field.ImageConfiguration;
 
     /**
      * Class that contains functionality for box configuration.
@@ -88,6 +90,7 @@ module Ompluscript.View.Configuration.Container {
                 LabelInputConfiguration,
                 ParagraphConfiguration,
                 ButtonConfiguration,
+                ImageConfiguration,
                 HeaderConfiguration,
                 LabelConfiguration,
                 PageLinkConfiguration,

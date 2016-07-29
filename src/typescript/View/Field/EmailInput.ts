@@ -22,7 +22,7 @@ module Ompluscript.View.Field {
         /**
          * @type {string} TYPE_EMAIL_INPUT Type of email input
          */
-        public static TYPE_EMAIL_INPUT: string = EmailInput["name"];
+        public static TYPE_EMAIL_INPUT: string = "EmailInput";
 
         /**
          * @type {string} INPUT_EMAIL Type of email input HTML element

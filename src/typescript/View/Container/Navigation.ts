@@ -23,7 +23,7 @@ module Ompluscript.View.Container {
         /**
          * @type {string} TYPE_NAVIGATION Type of navigation
          */
-        public static TYPE_NAVIGATION: string = Navigation["name"];
+        public static TYPE_NAVIGATION: string = "Navigation";
 
         /**
          * @type {string} ELEMENT_NAV HTML nav element
@@ -86,7 +86,7 @@ module Ompluscript.View.Container {
 
         private toggleMobileNavigation(): void {
             for (let i: number = 0; i < this.children.length - 1; i++) {
-                this.children[i].toggleClass(Navigation.CLASS_ACTIVE_NAVIGATION);
+                this.getParent().toggleClass(Navigation.CLASS_ACTIVE_NAVIGATION);
             }
         }
     }

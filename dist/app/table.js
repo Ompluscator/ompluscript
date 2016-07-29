@@ -69,6 +69,11 @@ Ompluscript.Controller.define({
                         type: "Label",
                         name: "birthday",
                         text: "text_birthday_title"
+                    },
+                    {
+                        type: "Label",
+                        name: "user_name",
+                        text: "text_user_name_title"
                     }
                 ],
                 cells: [
@@ -87,6 +92,10 @@ Ompluscript.Controller.define({
                     {
                         type: "LabelInput",
                         name: "birthday"
+                    },
+                    {
+                        type: "TextInput",
+                        name: "user_name"
                     }
                 ]
             },

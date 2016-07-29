@@ -24,7 +24,7 @@ module Ompluscript.View.Field {
         /**
          * @type {string} TYPE_PAGE_LINK Type of page link
          */
-        public static TYPE_PAGE_LINK: string = PageLink["name"];
+        public static TYPE_PAGE_LINK: string = "PageLink";
 
         /**
          * @type {string} PARAMETER_PAGE Name of page parameter

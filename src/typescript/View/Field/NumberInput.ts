@@ -22,7 +22,7 @@ module Ompluscript.View.Field {
         /**
          * @type {string} TYPE_NUMBER_INPUT Type of number input
          */
-        public static TYPE_NUMBER_INPUT: string = NumberInput["name"];
+        public static TYPE_NUMBER_INPUT: string = "NumberInput";
 
         /**
          * @type {string} INPUT_NUMBER Type of number input HTML element

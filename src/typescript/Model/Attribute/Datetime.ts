@@ -21,7 +21,7 @@ module Ompluscript.Model.Attribute {
         /**
          * @type {string} TYPE_DATETIME Datetime type name.
          */
-        public static TYPE_DATETIME: string = Datetime["name"];
+        public static TYPE_DATETIME: string = "Datetime";
 
         /**
          * @type {string} minimum Minimum allowed value of the date, stored as string

@@ -18,7 +18,7 @@ module Ompluscript.View.Layout {
         /**
          * @type {string} TYPE_NULL_LAYOUT Type of null layout class
          */
-        public static TYPE_NULL_LAYOUT: string = NullLayout["name"];
+        public static TYPE_NULL_LAYOUT: string = "NullLayout";
 
         /**
          * @type {string} CLASS_NULL_LAYOUT Class of HTML div element for null layout

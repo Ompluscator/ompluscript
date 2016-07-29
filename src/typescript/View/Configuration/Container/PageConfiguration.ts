@@ -21,6 +21,7 @@
 /// <reference path="../Field/HeaderConfiguration.ts" />
 /// <reference path="../Field/PageLinkConfiguration.ts" />
 /// <reference path="../Field/LabelConfiguration.ts" />
+/// <reference path="../Field/ImageConfiguration.ts" />
 /// <reference path="../Layout/NullLayoutConfiguration.ts" />
 /// <reference path="../Layout/RelativeLayoutConfiguration.ts" />
 /// <reference path="../Layout/LinearLayoutConfiguration.ts" />
@@ -57,6 +58,7 @@ module Ompluscript.View.Configuration.Container {
     import TableContainerConfiguration = Ompluscript.View.Configuration.Container.TableContainerConfiguration;
     import LabelInputConfiguration = Ompluscript.View.Configuration.Field.LabelInputConfiguration;
     import Page = Ompluscript.View.Container.Page;
+    import ImageConfiguration = Ompluscript.View.Configuration.Field.ImageConfiguration;
 
     /**
      * Class that contains functionality for page configuration.
@@ -98,6 +100,7 @@ module Ompluscript.View.Configuration.Container {
                 BoxConfiguration,
                 FormConfiguration,
                 TableContainerConfiguration,
+                ImageConfiguration,
                 ErrorConfiguration,
             ];
             let configurations: Object = {};

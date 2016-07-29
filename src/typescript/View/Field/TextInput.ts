@@ -22,7 +22,7 @@ module Ompluscript.View.Field {
         /**
          * @type {string} TYPE_TEXT_INPUT Type of text input
          */
-        public static TYPE_TEXT_INPUT: string = TextInput["name"];
+        public static TYPE_TEXT_INPUT: string = "TextInput";
 
         /**
          * @type {string} INPUT_TEXT Type of text input HTML element

@@ -49,7 +49,7 @@ module Ompluscript.View.Container {
         /**
          * @type {string} TYPE_TABLE Type of table
          */
-        public static TYPE_TABLE: string = TableContainer["name"];
+        public static TYPE_TABLE: string = "TableContainer";
 
         /**
          * @type {string} PARAMETER_TABLE Name of table parameter

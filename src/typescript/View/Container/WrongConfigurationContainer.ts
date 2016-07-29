@@ -25,7 +25,7 @@ module Ompluscript.View.Container {
         /**
          * @type {string} TYPE_WRONG_CONFIGURATION_CONTAINER Type of wrong configuration container
          */
-        public static TYPE_WRONG_CONFIGURATION_CONTAINER: string = WrongConfigurationContainer["name"];
+        public static TYPE_WRONG_CONFIGURATION_CONTAINER: string = "WrongConfigurationContainer";
 
         /**
          * @type {string} CLASS_PAGE Class of HTML div element for page

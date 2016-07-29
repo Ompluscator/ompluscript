@@ -31,7 +31,7 @@ module Ompluscript.Model.Attribute {
         /**
          * @type {string} TYPE_NUMBER Number type name.
          */
-        public static TYPE_NUMBER: string = Number["name"];
+        public static TYPE_NUMBER: string = "Number";
 
         /**
          * @type {number} minimum Minimum allowed value of the number

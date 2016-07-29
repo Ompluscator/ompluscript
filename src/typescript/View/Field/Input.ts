@@ -104,6 +104,11 @@ module Ompluscript.View.Field {
         protected type: string;
 
         /**
+         * @type {boolean} isUpdating Defines if input is currently in updating state
+         */
+        protected isUpdating: boolean;
+
+        /**
          * Class constructor.
          * 
          * Sets binding with attribute and translation
@@ -119,6 +124,7 @@ module Ompluscript.View.Field {
         constructor(name: string, attribute: Attribute<any> = undefined, placeholder: string = undefined, 
                     styles: Object = {}, type: string = undefined) {
             super(name, styles);
+            this.isUpdating = false;
             this.type = type;
             this.setAttribute(Input.ATTRIBUTE_TYPE, type);
             this.setAttribute(Input.ATTRIBUTE_NAME, this.name);
@@ -138,7 +144,7 @@ module Ompluscript.View.Field {
          * @param {OEvent} event
          */
         public update(event: OEvent): void {
-            if (event instanceof OnUpdateAttribute) {
+            if (event instanceof OnUpdateAttribute && this.isUpdating === false) {
                 let onUpdateAttribute: OnUpdateAttribute = <OnUpdateAttribute>event;
                 this.updateValue(onUpdateAttribute.getNewValue());
             } else if (event instanceof OnUpdateInput && this.isBound()) {
@@ -264,8 +270,10 @@ module Ompluscript.View.Field {
          * @param {string} value for input HTML element
          */
         protected fireOnUpdateInputEvent(value: any): void {
+            this.isUpdating = true;
             let event: OnUpdateInput = new OnUpdateInput(this, value);
             this.notifyObservers(event);
+            this.isUpdating = false;
         }
 
         /**

@@ -33,7 +33,7 @@ module Ompluscript.Controller.Controller {
         /**
          * @type {string} TYPE_APPLICATION_CONTROLLER Type of application controller class
          */
-        public static TYPE_APPLICATION_CONTROLLER: string = ApplicationController["name"];
+        public static TYPE_APPLICATION_CONTROLLER: string = "ApplicationController";
 
         /**
          * @type {string} PARAMETER_COMPONENTS Name of type parameter

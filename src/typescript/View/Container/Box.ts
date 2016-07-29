@@ -23,7 +23,7 @@ module Ompluscript.View.Container {
         /**
          * @type {string} TYPE_BOX Type of box
          */
-        public static TYPE_BOX: string = Box["name"];
+        public static TYPE_BOX: string = "Box";
 
         /**
          * @type {string} CLASS_BOX Class of HTML div element for box

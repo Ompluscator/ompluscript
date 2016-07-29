@@ -19,6 +19,7 @@
 /// <reference path="../Field/PageLinkConfiguration.ts" />
 /// <reference path="../Field/HeaderConfiguration.ts" />
 /// <reference path="../Field/ButtonConfiguration.ts" />
+/// <reference path="../Field/ImageConfiguration.ts" />
 /// <reference path="../Field/LabelInputConfiguration.ts" />
 /// <reference path="../../../Model/Configuration/Container/TableConfiguration.ts" />
 /// <reference path="../../../Model/Container/Table.ts" />
@@ -51,6 +52,7 @@ module Ompluscript.View.Configuration.Container {
     import TableContainer = Ompluscript.View.Container.TableContainer;
     import TextContent = Ompluscript.View.Field.TextContent;
     import Field = Ompluscript.View.Field.Field;
+    import ImageConfiguration = Ompluscript.View.Configuration.Field.ImageConfiguration;
 
     /**
      * Class that contains functionality for table configuration.
@@ -91,6 +93,7 @@ module Ompluscript.View.Configuration.Container {
                 HeaderConfiguration,
                 LabelConfiguration,
                 PageLinkConfiguration,
+                ImageConfiguration,
                 ErrorConfiguration,
             ];
             let table: Object[] = [

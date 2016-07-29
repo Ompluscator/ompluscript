@@ -30,7 +30,7 @@ module Ompluscript.Model.Container {
         /**
          * @type {string} TYPE_TRANSLATION Translation type.
          */
-        public static TYPE_TRANSLATION: string = Translation["name"];
+        public static TYPE_TRANSLATION: string = "Translation";
 
         /**
          * @type {string} ATTRIBUTE_ASSET Name of asset parameter.

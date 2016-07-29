@@ -23,7 +23,7 @@ module Ompluscript.View.Field {
         /**
          * @type {string} TYPE_DATE_INPUT Type of date input
          */
-        public static TYPE_DATE_INPUT: string = DateInput["name"];
+        public static TYPE_DATE_INPUT: string = "DateInput";
 
         /**
          * @type {string} INPUT_DATE Type of date input HTML element
@@ -53,6 +53,7 @@ module Ompluscript.View.Field {
             let listener: () => void = function(): void {
                 that.fireOnUpdateInputEvent(that.getValue());
             };
+            that.htmlElement.addEventListener(TextInput.EVENT_KEY_UP, listener, false);
             that.htmlElement.addEventListener(TextInput.EVENT_CHANGE, listener, false);
             that.htmlElement.addEventListener(TextInput.EVENT_BLUR, listener, false);
         }

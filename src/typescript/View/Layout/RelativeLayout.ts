@@ -18,7 +18,7 @@ module Ompluscript.View.Layout {
         /**
          * @type {string} TYPE_RELATIVE_LAYOUT Type of relative layout class
          */
-        public static TYPE_RELATIVE_LAYOUT: string = RelativeLayout["name"];
+        public static TYPE_RELATIVE_LAYOUT: string = "RelativeLayout";
 
         /**
          * @type {string} CLASS_RELATIVE_LAYOUT Class of HTML div element for relative layout

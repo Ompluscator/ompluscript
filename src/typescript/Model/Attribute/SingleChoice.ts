@@ -19,7 +19,7 @@ module Ompluscript.Model.Attribute {
         /**
          * @type {string} TYPE_SINGLE_CHOICE SingleChoice type name.
          */
-        public static TYPE_SINGLE_CHOICE: string = SingleChoice["name"];
+        public static TYPE_SINGLE_CHOICE: string = "SingleChoice";
 
         /**
          * Class constructor.

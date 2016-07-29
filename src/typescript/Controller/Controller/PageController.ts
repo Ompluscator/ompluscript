@@ -23,7 +23,7 @@ module Ompluscript.Controller.Controller {
         /**
          * @type {string} TYPE_PAGE_CONTROLLER Type of page controller class
          */
-        public static TYPE_PAGE_CONTROLLER: string = PageController["name"];
+        public static TYPE_PAGE_CONTROLLER: string = "PageController";
 
         /**
          * @type {string} PARAMETER_PAGE Name of page parameter

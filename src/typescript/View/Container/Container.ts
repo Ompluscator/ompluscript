@@ -132,13 +132,14 @@ module Ompluscript.View.Container {
             }
             let children: Component[] = [];
             for (let i: number = 0; i < this.getChildrenCount(); i++) {
+                let childName: string = this.children[i].constructor.toString().match(/^function\s*([^\s(]+)/)[1];
                 if (name === undefined && type === undefined) {
                     children.push(this.children[i]);
                 } else if (name === this.children[i].getName() && type === undefined) {
                     children.push(this.children[i]);
-                } else if (name === undefined && type === this.children[i].constructor["name"]) {
+                } else if (name === undefined && type === childName) {
                     children.push(this.children[i]);
-                } else if (name === this.children[i].getName() && type === this.children[i].constructor["name"]) {
+                } else if (name === this.children[i].getName() && type === childName) {
                     children.push(this.children[i]);
                 }
                 if (this.children[i] instanceof Container) {
