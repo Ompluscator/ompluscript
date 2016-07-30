@@ -4,8 +4,18 @@
 .page {
   position: relative;
   width: 100%;
+  overflow-x: hidden;
   max-width: @desktopMaxWidth;
   padding: @pagePadding;
   padding-top: @navigationHeight + @pageMarginTop;
   .box-sizing(border-box);
+  .transform(translate(0, 0));
+  transition: transform 200ms ease-out;
+
+  .active > & {
+    max-height: 100%;
+    overflow-y: hidden;
+    .transform(translate(-@navigationTransition, 0));
+    transition: transform 300ms ease-in;
+  }
 }

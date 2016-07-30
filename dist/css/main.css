@@ -376,22 +376,8 @@ body {
 body {
   overflow-x: hidden;
   max-width: 100%;
-  -webkit-transform: translate(0, 0);
-  -moz-transform: translate(0, 0);
-  -o-transform: translate(0, 0);
-  -ms-transform: translate(0, 0);
-  transform: translate(0, 0);
-  transition: transform 200ms ease-out;
 }
-body.active {
-  -webkit-transform: translate(-80%, 0);
-  -moz-transform: translate(-80%, 0);
-  -o-transform: translate(-80%, 0);
-  -ms-transform: translate(-80%, 0);
-  transform: translate(-80%, 0);
-  transition: transform 300ms ease-in;
-}
-.viewport > .navigation {
+.navigation {
   position: fixed;
   top: 0;
   left: 0;
@@ -399,16 +385,31 @@ body.active {
   width: 100%;
   height: 60px;
   z-index: 1;
+  -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  transform: translate(0, 0);
+  transition: transform 200ms ease-out;
 }
-.viewport > .navigation > .layout {
+.active > .navigation {
+  max-height: 100%;
+  -webkit-transform: translate(-80%, 0);
+  -moz-transform: translate(-80%, 0);
+  -o-transform: translate(-80%, 0);
+  -ms-transform: translate(-80%, 0);
+  transform: translate(-80%, 0);
+  transition: transform 300ms ease-in;
+}
+.navigation > .layout {
   position: static;
   width: 100%;
   max-width: 1024px;
   margin: auto;
   padding: 0;
 }
-.viewport > .navigation a,
-.viewport > .navigation label {
+.navigation a,
+.navigation label {
   display: block;
   height: 60px;
   line-height: 20px;
@@ -504,6 +505,7 @@ body.active {
 .page {
   position: relative;
   width: 100%;
+  overflow-x: hidden;
   max-width: 1024px;
   padding: 20px;
   padding-top: 80px;
@@ -511,6 +513,22 @@ body.active {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  transform: translate(0, 0);
+  transition: transform 200ms ease-out;
+}
+.active > .page {
+  max-height: 100%;
+  overflow-y: hidden;
+  -webkit-transform: translate(-80%, 0);
+  -moz-transform: translate(-80%, 0);
+  -o-transform: translate(-80%, 0);
+  -ms-transform: translate(-80%, 0);
+  transform: translate(-80%, 0);
+  transition: transform 300ms ease-in;
 }
 .form {
   padding-top: 30px;
