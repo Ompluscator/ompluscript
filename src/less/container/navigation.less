@@ -84,13 +84,14 @@
   }
 
   @media screen and (max-width: @tabletMaxWidth) {
-    position: absolute;
     top: 0;
     left: 0;
     right: 0;
     width: @navigationTransition;
+    height: 100vh;
+    overflow-y: scroll;
     float: left;
-    .transform(translateX(ceil(sqrt(1000000% / @navigationTransition)) + 1%));
+    .transform(translateX(100% / @navigationTransition * 100%));
 
     .list,
     li,
