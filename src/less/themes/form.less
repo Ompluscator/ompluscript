@@ -1,19 +1,24 @@
 @import (reference) "../../../node_modules/less-mixins/mixins";
+@import (reference) "../variables/index";
 
-.formTheme(@primaryColor, @secondaryColor, @tertiaryColor, @textColor, @shadowColor) {
+.formTheme(@statusTextColor, @errorColor) {
   .form {
     .label {
-      color: @textColor;
-
-      &.status {
-        background: @primaryColor;
-      }
+      color: @statusTextColor;
     }
 
     .input-container.error {
-      .input {
-        border-bottom-color: @textColor;
-        .box-shadow(inset 0px -10px 10px -10px @textColor);
+      .input[type=text],
+      .input[type=date],
+      .input[type=email],
+      .input[type=number],
+      .input[type=password] {
+        border-bottom-color: @errorColor;
+        .placeholder(@errorColor);
+      }
+
+      .label {
+        color: @errorColor;
       }
     }
   }

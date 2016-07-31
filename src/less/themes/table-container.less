@@ -1,20 +1,13 @@
-.tableContainerTheme(@primaryColor, @secondaryColor, @tertiaryColor, @textColor, @shadowColor) {
+.tableContainerTheme(@headerColor, @oddColor, @shadowColor) {
   .table {
     .layout .layout {
-      * {
-        text-shadow: 1px 1px @shadowColor;
-      }
-
-      &:nth-child(even) {
-        background: @tertiaryColor;
-      }
-
-      &:nth-child(even) {
-        background: @secondaryColor;
+      &:nth-child(odd) {
+        background: @oddColor;
       }
 
       &:first-child {
-        background: @primaryColor;
+        background: @headerColor;
+        text-shadow: 1px 1px rgba(0, 0, 0, .25);
       }
     }
   }

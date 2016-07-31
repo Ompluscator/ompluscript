@@ -10,13 +10,16 @@
   width: 100%;
   height: @navigationHeight;
   z-index: 1;
-  .transform(translate(0, 0));
-  transition: transform 200ms ease-out;
 
-  .active > & {
-    max-height: 100%;
-    .transform(translate(-@navigationTransition, 0));
-    transition: transform 300ms ease-in;
+  @media screen and (max-width: @tabletMaxWidth) {
+    .transform(translate(0, 0));
+    transition: transform 200ms ease-out;
+
+    .active > & {
+      max-height: 100%;
+      .transform(translate(-@navigationTransition, 0));
+      transition: transform 300ms ease-in;
+    }
   }
 
   & > .layout {

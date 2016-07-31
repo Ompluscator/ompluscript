@@ -269,7 +269,7 @@ module Ompluscript.View.Container {
          */
         protected showLabel(input: Input): void {
             let inputContainer: InputContainer = <InputContainer>input.getParent();
-            let label: Label = <Label>inputContainer.findChildrenByType("Label")[0];
+            let label: Label = <Label>inputContainer.getErrorLabel();
             label.addClass(Form.CLASS_SHOW);
         }
 
@@ -280,7 +280,7 @@ module Ompluscript.View.Container {
          */
         protected hideLabel(input: Input): void {
             let inputContainer: InputContainer = <InputContainer>input.getParent();
-            let label: Label = <Label>inputContainer.findChildrenByType("Label")[0];
+            let label: Label = <Label>inputContainer.getErrorLabel();
             label.removeClass(Form.CLASS_SHOW);
         }
     }

@@ -5957,6 +5957,9 @@ var __extends = (this && this.__extends) || function (d, b) {
                         }
                     }
                 };
+                InputContainer.prototype.getErrorLabel = function () {
+                    return this.label;
+                };
                 InputContainer.prototype.clearError = function () {
                     this.label.getParent().removeClass(InputContainer.CLASS_ERROR);
                 };
@@ -6512,12 +6515,12 @@ var __extends = (this && this.__extends) || function (d, b) {
                 };
                 Form.prototype.showLabel = function (input) {
                     var inputContainer = input.getParent();
-                    var label = inputContainer.findChildrenByType("Label")[0];
+                    var label = inputContainer.getErrorLabel();
                     label.addClass(Form.CLASS_SHOW);
                 };
                 Form.prototype.hideLabel = function (input) {
                     var inputContainer = input.getParent();
-                    var label = inputContainer.findChildrenByType("Label")[0];
+                    var label = inputContainer.getErrorLabel();
                     label.removeClass(Form.CLASS_SHOW);
                 };
                 Form.TYPE_FORM = "Form";

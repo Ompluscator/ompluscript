@@ -87,6 +87,15 @@ module Ompluscript.View.Container {
         }
 
         /**
+         * Method that returns label field for displaying errors
+         * 
+         * @returns {Label} Label field for displaying errors
+         */
+        public getErrorLabel(): Label {
+            return this.label;
+        }
+
+        /**
          * Method that hides error label.
          */
         public clearError(): void {

@@ -1,15 +1,17 @@
 @import (reference) "../../../node_modules/less-mixins/mixins";
 
-.buttonTheme(@primaryColor, @secondaryColor, @tertiaryColor, @textColor, @shadowColor) {
+.buttonTheme(@boxColor, @textColor) {
   .button {
-    .gradient(@primaryColor, @primaryColor, @secondaryColor);
-    text-shadow: -1px -1px @shadowColor;
-    border: 1px solid @primaryColor;
+    .gradient(darken(@boxColor, 10%), @boxColor, lighten(@boxColor, 10%));
+    color: @textColor;
+    .box-shadow(0 1px 2px rgba(0, 0, 0, .25));
+    text-shadow: -1px -1px rgba(0, 0, 0, .25);
+    border: none;
 
     &:active,
     &:hover {
-      .gradient(@secondaryColor, @secondaryColor, @primaryColor);
-      text-shadow: 1px 1px @shadowColor;
+      .gradient(lighten(@boxColor, 10%), @boxColor, darken(@boxColor, 10%));
+      text-shadow: 1px 1px rgba(0, 0, 0, .25);
     }
   }
 }

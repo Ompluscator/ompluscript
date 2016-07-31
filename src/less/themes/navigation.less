@@ -1,51 +1,44 @@
 @import (reference) "../../../node_modules/less-mixins/mixins";
 @import "../variables/index";
 
-.navigationTheme(@primaryColor, @secondaryColor, @tertiaryColor, @textColor, @shadowColor) {
+.navigationTheme(@headerBackgroundColor, @headerBoxColor) {
   .viewport > .navigation {
-    .gradient(darken(@primaryColor, 10%), @primaryColor, lighten(@primaryColor, 10%));
-    .box-shadow(0 1px 2px @shadowColor);
+    background: @headerBackgroundColor;
+    .box-shadow(0 1px 2px rgba(0,0,0, .25));
 
     a,
     label {
-      color: @textColor;
+      color: @headerBoxColor;
+      transition: background 200ms ease-out;
 
       &:hover,
       &:active {
-        .gradient(lighten(@secondaryColor, 10%), @secondaryColor, darken(@secondaryColor, 10%));
-        text-shadow: 1px 1px @shadowColor;
-        .box-shadow(inset 0 0 20px darken(@secondaryColor, 10%));
+        background: lighten(@headerBackgroundColor, 20%);
+        text-shadow: 1px 1px rgba(0,0,0, .25);
       }
     }
 
     li .list:hover {
-      background: @secondaryColor;
-      .box-shadow(0 0 1px @shadowColor);
+      background: lighten(@headerBackgroundColor, 10%);
     }
 
     .button.navigation-element {
-      background: @textColor;
-      .box-shadow(inset 0 1px 0 @shadowColor);
+      background: @headerBoxColor;
+      transition: background 200ms ease-out;
 
       &:before,
       &:after {
-        background: @primaryColor;
-        .box-shadow(inset 0 1px 0 @shadowColor);
-      }
-
-      &:hover,
-      &:active {
-        background: @textColor;
+        background: @headerBackgroundColor;
       }
     }
 
     @media screen and (max-width: @tabletMaxWidth) {
-      .list {
-        background: @secondaryColor;
-        .box-shadow(-1px 0px 2px @shadowColor);
+      .list li {
+        background: @headerBackgroundColor;
 
-        li {
-          border-bottom-color: @textColor;
+        a:hover,
+        label:hover {
+          background: lighten(@headerBackgroundColor, 10%);
         }
       }
     }

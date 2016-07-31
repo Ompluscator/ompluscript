@@ -1,9 +1,9 @@
 @import (reference) "../../../node_modules/less-mixins/mixins";
 @import (reference) "../variables/index";
 
-.viewportTheme(@primaryColor, @secondaryColor, @tertiaryColor, @textColor, @shadowColor) {
+.viewportTheme(@bodyColor, @textColor) {
   body {
-    background: lighten(@primaryColor, 10%);
+    background: @bodyColor;
   }
 
   * {

@@ -1,46 +1,46 @@
 body {
-  background: #222222;
+  background: #ffffff;
 }
 * {
-  color: #dfdfdf;
+  color: #222222;
   line-height: 1.4em;
 }
 .viewport > .navigation {
-  background: #303030;
+  background: #00897B;
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 .viewport > .navigation a,
 .viewport > .navigation label {
-  color: #f3c802;
+  color: #ffffff;
   transition: background 200ms ease-out;
 }
 .viewport > .navigation a:hover,
 .viewport > .navigation label:hover,
 .viewport > .navigation a:active,
 .viewport > .navigation label:active {
-  background: #636363;
+  background: #00efd7;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
 }
 .viewport > .navigation li .list:hover {
-  background: #4a4a4a;
+  background: #00bca9;
 }
 .viewport > .navigation .button.navigation-element {
-  background: #f3c802;
+  background: #ffffff;
   transition: background 200ms ease-out;
 }
 .viewport > .navigation .button.navigation-element:before,
 .viewport > .navigation .button.navigation-element:after {
-  background: #303030;
+  background: #00897B;
 }
 @media screen and (max-width: 768px) {
   .viewport > .navigation .list li {
-    background: #303030;
+    background: #00897B;
   }
   .viewport > .navigation .list li a:hover,
   .viewport > .navigation .list li label:hover {
-    background: #4a4a4a;
+    background: #00bca9;
   }
 }
 .input[type=text],
@@ -48,121 +48,121 @@ body {
 .input[type=email],
 .input[type=number],
 .input[type=password] {
-  color: #dfdfdf;
-  border-bottom-color: #dfdfdf;
+  color: #222222;
+  border-bottom-color: #222222;
 }
 .input[type=text]::-webkit-input-placeholder,
 .input[type=date]::-webkit-input-placeholder,
 .input[type=email]::-webkit-input-placeholder,
 .input[type=number]::-webkit-input-placeholder,
 .input[type=password]::-webkit-input-placeholder {
-  color: #dfdfdf;
+  color: #222222;
 }
 .input[type=text]:-moz-placeholder,
 .input[type=date]:-moz-placeholder,
 .input[type=email]:-moz-placeholder,
 .input[type=number]:-moz-placeholder,
 .input[type=password]:-moz-placeholder {
-  color: #dfdfdf;
+  color: #222222;
 }
 .input[type=text]::-moz-placeholder,
 .input[type=date]::-moz-placeholder,
 .input[type=email]::-moz-placeholder,
 .input[type=number]::-moz-placeholder,
 .input[type=password]::-moz-placeholder {
-  color: #dfdfdf;
+  color: #222222;
 }
 .input[type=text]:-ms-input-placeholder,
 .input[type=date]:-ms-input-placeholder,
 .input[type=email]:-ms-input-placeholder,
 .input[type=number]:-ms-input-placeholder,
 .input[type=password]:-ms-input-placeholder {
-  color: #dfdfdf;
+  color: #222222;
 }
 .input[type=text]:focus,
 .input[type=date]:focus,
 .input[type=email]:focus,
 .input[type=number]:focus,
 .input[type=password]:focus {
-  border-bottom-color: #dddd88;
+  border-bottom-color: #00695C;
 }
 .input[type=text]:focus::-webkit-input-placeholder,
 .input[type=date]:focus::-webkit-input-placeholder,
 .input[type=email]:focus::-webkit-input-placeholder,
 .input[type=number]:focus::-webkit-input-placeholder,
 .input[type=password]:focus::-webkit-input-placeholder {
-  color: #dddd88;
+  color: #00695C;
 }
 .input[type=text]:focus:-moz-placeholder,
 .input[type=date]:focus:-moz-placeholder,
 .input[type=email]:focus:-moz-placeholder,
 .input[type=number]:focus:-moz-placeholder,
 .input[type=password]:focus:-moz-placeholder {
-  color: #dddd88;
+  color: #00695C;
 }
 .input[type=text]:focus::-moz-placeholder,
 .input[type=date]:focus::-moz-placeholder,
 .input[type=email]:focus::-moz-placeholder,
 .input[type=number]:focus::-moz-placeholder,
 .input[type=password]:focus::-moz-placeholder {
-  color: #dddd88;
+  color: #00695C;
 }
 .input[type=text]:focus:-ms-input-placeholder,
 .input[type=date]:focus:-ms-input-placeholder,
 .input[type=email]:focus:-ms-input-placeholder,
 .input[type=number]:focus:-ms-input-placeholder,
 .input[type=password]:focus:-ms-input-placeholder {
-  color: #dddd88;
+  color: #00695C;
 }
 .form .label {
-  color: #dddd88;
+  color: #00695C;
 }
 .form .input-container.error .input[type=text],
 .form .input-container.error .input[type=date],
 .form .input-container.error .input[type=email],
 .form .input-container.error .input[type=number],
 .form .input-container.error .input[type=password] {
-  border-bottom-color: #e45735;
+  border-bottom-color: #c62828;
 }
 .form .input-container.error .input[type=text]::-webkit-input-placeholder,
 .form .input-container.error .input[type=date]::-webkit-input-placeholder,
 .form .input-container.error .input[type=email]::-webkit-input-placeholder,
 .form .input-container.error .input[type=number]::-webkit-input-placeholder,
 .form .input-container.error .input[type=password]::-webkit-input-placeholder {
-  color: #e45735;
+  color: #c62828;
 }
 .form .input-container.error .input[type=text]:-moz-placeholder,
 .form .input-container.error .input[type=date]:-moz-placeholder,
 .form .input-container.error .input[type=email]:-moz-placeholder,
 .form .input-container.error .input[type=number]:-moz-placeholder,
 .form .input-container.error .input[type=password]:-moz-placeholder {
-  color: #e45735;
+  color: #c62828;
 }
 .form .input-container.error .input[type=text]::-moz-placeholder,
 .form .input-container.error .input[type=date]::-moz-placeholder,
 .form .input-container.error .input[type=email]::-moz-placeholder,
 .form .input-container.error .input[type=number]::-moz-placeholder,
 .form .input-container.error .input[type=password]::-moz-placeholder {
-  color: #e45735;
+  color: #c62828;
 }
 .form .input-container.error .input[type=text]:-ms-input-placeholder,
 .form .input-container.error .input[type=date]:-ms-input-placeholder,
 .form .input-container.error .input[type=email]:-ms-input-placeholder,
 .form .input-container.error .input[type=number]:-ms-input-placeholder,
 .form .input-container.error .input[type=password]:-ms-input-placeholder {
-  color: #e45735;
+  color: #c62828;
 }
 .form .input-container.error .label {
-  color: #e45735;
+  color: #c62828;
 }
 .button {
-  background: #4c6ba6;
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #6a86bb), color-stop(1, #8da2cb));
-  background: -ms-linear-gradient(bottom, #6a86bb, #8da2cb);
-  background: -moz-linear-gradient(center bottom, #6a86bb 0%, #8da2cb 100%);
-  background: -o-linear-gradient(#8da2cb, #6a86bb);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#8da2cb', endColorstr='#6a86bb', GradientType=0);
-  color: #222222;
+  background: #3c948b;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4DB6AC), color-stop(1, #71c5bd));
+  background: -ms-linear-gradient(bottom, #4DB6AC, #71c5bd);
+  background: -moz-linear-gradient(center bottom, #4DB6AC 0%, #71c5bd 100%);
+  background: -o-linear-gradient(#71c5bd, #4DB6AC);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#71c5bd', endColorstr='#4DB6AC', GradientType=0);
+  color: #ffffff;
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
@@ -171,25 +171,25 @@ body {
 }
 .button:active,
 .button:hover {
-  background: #8da2cb;
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #6a86bb), color-stop(1, #4c6ba6));
-  background: -ms-linear-gradient(bottom, #6a86bb, #4c6ba6);
-  background: -moz-linear-gradient(center bottom, #6a86bb 0%, #4c6ba6 100%);
-  background: -o-linear-gradient(#4c6ba6, #6a86bb);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4c6ba6', endColorstr='#6a86bb', GradientType=0);
+  background: #71c5bd;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4DB6AC), color-stop(1, #3c948b));
+  background: -ms-linear-gradient(bottom, #4DB6AC, #3c948b);
+  background: -moz-linear-gradient(center bottom, #4DB6AC 0%, #3c948b 100%);
+  background: -o-linear-gradient(#3c948b, #4DB6AC);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3c948b', endColorstr='#4DB6AC', GradientType=0);
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
 }
 .table .layout .layout:nth-child(odd) {
-  background: #6a86bb;
+  background: #4DB6AC;
 }
 .table .layout .layout:first-child {
-  background: #303030;
+  background: #00897B;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
 }
 a {
-  color: #6a86bb;
+  color: #4DB6AC;
 }
 a:hover,
 a:active {
-  color: #dddd88;
+  color: #00695C;
 }

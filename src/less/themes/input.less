@@ -1,13 +1,20 @@
-.inputTheme(@primaryColor, @secondaryColor, @tertiaryColor, @textColor, @shadowColor) {
+@import (reference) "../variables/index";
+
+.inputTheme(@inactiveColor, @activeColor) {
   .input[type=text],
   .input[type=date],
   .input[type=email],
   .input[type=number],
   .input[type=password] {
-    border-bottom-color: @primaryColor;
+    color: @inactiveColor;
+    border-bottom-color: @inactiveColor;
+
+    .placeholder(@inactiveColor);
 
     &:focus {
-      border-bottom-color: @textColor;
+      border-bottom-color: @activeColor;
+
+      .placeholder(@activeColor);
     }
   }
 }
