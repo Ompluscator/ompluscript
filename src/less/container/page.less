@@ -1,15 +1,16 @@
-@import (reference) "../variables/page";
-@import "../variables/index";
+@import (reference) "../../../node_modules/less-mixins/mixins";
+@import (reference) "../variables/index";
 
 .page {
   position: relative;
+  margin: auto;
   width: 100%;
   overflow-x: hidden;
   max-width: @desktopMaxWidth;
   padding: @pagePadding;
   padding-top: @navigationHeight + @pageMarginTop;
+
   .box-sizing(border-box);
-  margin: auto;
 
   @media screen and (max-width: @tabletMaxWidth) {
     .transform(translate(0, 0));

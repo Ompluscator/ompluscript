@@ -25,7 +25,7 @@ describe("TextInput class tests - events", function() {
         });
     });
 
-    it("simulate keyup - unit test", function() {
+    it("simulate keyup - functional test with spy", function() {
         spyOn(textInput, 'notifyObservers');
 
         var event = document.createEvent("KeyboardEvent");
@@ -63,7 +63,7 @@ describe("TextInput class tests - events", function() {
         expect(stringObject.getValue()).toBe("value");
     });
 
-    it("simulate keyup - functional test", function() {
+    it("simulate keyup - functional test without spy", function() {
         spyOn(stringObject, 'setValue');
 
         var event = document.createEvent("KeyboardEvent");

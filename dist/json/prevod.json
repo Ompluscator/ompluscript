@@ -1,6 +1,6 @@
 {
   "text_welcome_title": "Dobrodošli u Ompluscript",
-  "text_welcome_message": "Dobrodošli u  okvir, Ompluscript. Ompluscript je novi JavaScript & CSS okvir, razvijen radi dinamičkog renderovanja veb stranica. Okvir je reprezentovan u obliku MVC arhitekturalnog šablona, dizajniran u TypeScript i Less tehnologijama. Pruža mogućnost brzog dizajniranja veb stranica (uključujući i paradigmu prilagodljivog veb dizajna) i davanja logike za veb aplikaciju, kao pto su forme, prevod, upravljanje sesijom, i mnogo drugih mogućnosti. Još bolje, kod je proširiv, tako da mnogo drugih, novih funkcionalnosti se može lako dodati.",
+  "text_welcome_message": "Dobrodošli u  okvir, Ompluscript. Ompluscript je novi JavaScript & CSS okvir, razvijen radi dinamičkog renderovanja veb stranica. Okvir je reprezentovan u obliku MVC arhitekturalnog šablona, dizajniran u TypeScript i Less tehnologijama. Pruža mogućnost brzog dizajniranja veb stranica (uključujući i paradigmu prilagodljivog veb dizajna) i davanja logike za veb aplikaciju, kao što su forme, prevod i mnogo drugih mogućnosti. Još bolje, kod je proširiv, tako da mnogo drugih, novih funkcionalnosti se može lako dodati.",
   "text_home_title": "Početna",
   "text_serbian_title": "Srpski",
   "text_english_title": "Engleski",

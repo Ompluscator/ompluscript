@@ -1,9 +1,5 @@
 Ompluscript.Controller.define({
     type: "PageController",
-    layout: {
-        type: "LinearLayout",
-        direction: "vertical"
-    },
     page: {
         type: "Page",
         name: "/table",

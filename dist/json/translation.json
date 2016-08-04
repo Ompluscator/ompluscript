@@ -1,6 +1,6 @@
 {
   "text_welcome_title": "Welcome to Ompluscript",
-  "text_welcome_message": "Welcome to new framework, Ompluscript. Ompluscript is new JavaScript & CSS framework, developed for dynamic rendering of web pages. Framework is represented as MVC pattern, designed by TypeScript and Less technologies. It gives opportunity for fast page design (including responsive web design paradigm) and adding logic web application, as forms, translation, user session handling, and many other features. Even better, code is extensible, so many other, new features can be added easily.",
+  "text_welcome_message": "Welcome to new framework, Ompluscript. Ompluscript is new JavaScript & CSS framework, developed for dynamic rendering of web pages. Framework is represented as MVC pattern, designed by TypeScript and Less technologies. It gives opportunity for fast page design (including responsive web design paradigm) and adding logic web application, as forms, translation, and many other features. Even better, code is extensible, so many other, new features can be added easily.",
   "text_home_title": "Home",
   "text_serbian_title": "Serbian",
   "text_english_title": "English",
