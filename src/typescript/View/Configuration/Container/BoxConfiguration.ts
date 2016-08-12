@@ -7,6 +7,7 @@
 /// <reference path="ContainerConfiguration.ts" />
 /// <reference path="ListConfiguration.ts" />
 /// <reference path="TableContainerConfiguration.ts" />
+/// <reference path="FormConfiguration.ts" />
 /// <reference path="../Field/CheckBoxInputConfiguration.ts" />
 /// <reference path="../Field/EmailInputConfiguration.ts" />
 /// <reference path="../Field/NumberInputConfiguration.ts" />
@@ -96,6 +97,7 @@ module Ompluscript.View.Configuration.Container {
                 PageLinkConfiguration,
                 ListConfiguration,
                 TableContainerConfiguration,
+                FormConfiguration,
                 ErrorConfiguration,
             ];
             let configurations: Object = {};

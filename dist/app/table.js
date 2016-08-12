@@ -3,120 +3,144 @@ Ompluscript.Controller.define({
     page: {
         type: "Page",
         name: "/table",
+        layout: {
+            type: "LinearLayout",
+            direction: "vertical"
+        },
         children: [
             {
-                type: "Header",
-                name: "table_title",
-                text: "text_table_title"
-            },
-            {
-                type: "Paragraph",
-                name: "table_message",
-                text: "text_table_message"
-            },
-            {
-                type: "TableContainer",
-                name: "table",
-                table: {
-                    type: "Table",
-                    name: "table",
-                    attributes: [
-                        {
-                            type: "String",
-                            name: "user_name",
-                        },
-                        {
-                            type: "String",
-                            name: "first_name",
-                        },
-                        {
-                            type: "String",
-                            name: "last_name",
-                        },
-                        {
-                            type: "String",
-                            name: "birthday",
-                        }
-                    ],
-                    proxies: [
-                        {
-                            type: "AjaxProxy",
-                            selectLink: "/json/users.json"
-                        },
-                    ]
+                type: "Box",
+                name: "table_box_1",
+                layout: {
+                    type: "LinearLayout",
+                    direction: "vertical"
                 },
-                headers: [
+                children: [
                     {
-                        type: "Label",
-                        name: "user_name",
-                        text: "text_user_name_title"
+                        type: "Header",
+                        name: "table_title",
+                        text: "text_table_title"
                     },
                     {
-                        type: "Label",
-                        name: "first_name",
-                        text: "text_first_name_title"
+                        type: "Paragraph",
+                        name: "table_message",
+                        text: "text_table_message"
                     },
                     {
-                        type: "Label",
-                        name: "last_name",
-                        text: "text_last_name_title"
+                        type: "TableContainer",
+                        name: "table",
+                        table: {
+                            type: "Table",
+                            name: "table",
+                            attributes: [
+                                {
+                                    type: "String",
+                                    name: "user_name",
+                                },
+                                {
+                                    type: "String",
+                                    name: "first_name",
+                                },
+                                {
+                                    type: "String",
+                                    name: "last_name",
+                                },
+                                {
+                                    type: "String",
+                                    name: "birthday",
+                                }
+                            ],
+                            proxies: [
+                                {
+                                    type: "AjaxProxy",
+                                    selectLink: "/json/users.json"
+                                },
+                            ]
+                        },
+                        headers: [
+                            {
+                                type: "Label",
+                                name: "user_name",
+                                text: "text_user_name_title"
+                            },
+                            {
+                                type: "Label",
+                                name: "first_name",
+                                text: "text_first_name_title"
+                            },
+                            {
+                                type: "Label",
+                                name: "last_name",
+                                text: "text_last_name_title"
+                            },
+                            {
+                                type: "Label",
+                                name: "birthday",
+                                text: "text_birthday_title"
+                            },
+                            {
+                                type: "Label",
+                                name: "user_name",
+                                text: "text_user_name_title"
+                            }
+                        ],
+                        cells: [
+                            {
+                                type: "LabelInput",
+                                name: "user_name"
+                            },
+                            {
+                                type: "LabelInput",
+                                name: "first_name"
+                            },
+                            {
+                                type: "LabelInput",
+                                name: "last_name"
+                            },
+                            {
+                                type: "LabelInput",
+                                name: "birthday"
+                            },
+                            {
+                                type: "TextInput",
+                                name: "user_name"
+                            }
+                        ]
                     },
                     {
-                        type: "Label",
-                        name: "birthday",
-                        text: "text_birthday_title"
+                        type: "PageLink",
+                        name: "all_users",
+                        text: "text_all_users_title",
+                        page: "/table"
                     },
                     {
-                        type: "Label",
-                        name: "user_name",
-                        text: "text_user_name_title"
-                    }
-                ],
-                cells: [
-                    {
-                        type: "LabelInput",
-                        name: "user_name"
+                        type: "PageLink",
+                        name: "online_users",
+                        text: "text_online_users_title",
+                        page: "/table/users/type/online"
                     },
                     {
-                        type: "LabelInput",
-                        name: "first_name"
-                    },
-                    {
-                        type: "LabelInput",
-                        name: "last_name"
-                    },
-                    {
-                        type: "LabelInput",
-                        name: "birthday"
-                    },
-                    {
-                        type: "TextInput",
-                        name: "user_name"
+                        type: "PageLink",
+                        name: "offline_users",
+                        text: "text_offline_users_title",
+                        page: "/table/users/type/offline"
                     }
                 ]
             },
             {
-                type: "PageLink",
-                name: "all_users",
-                text: "text_all_users_title",
-                page: "/table"
-            },
-            {
-                type: "PageLink",
-                name: "online_users",
-                text: "text_online_users_title",
-                page: "/table/users/type/online"
-            },
-            {
-                type: "PageLink",
-                name: "offline_users",
-                text: "text_offline_users_title",
-                page: "/table/users/type/offline"
-            },
-            {
-                type: "Paragraph",
-                name: "table_configuration",
-                text: "text_table_configuration"
+                type: "Box",
+                name: "translation_box_2",
+                layout: {
+                    type: "LinearLayout",
+                    direction: "vertical"
+                },
+                children: [
+                    {
+                        type: "Paragraph",
+                        name: "table_configuration",
+                        text: "text_table_configuration"
+                    }
+                ]
             }
         ],
         events: {

@@ -1,5 +1,5 @@
 body {
-  background: #ffffff;
+  background: #eeeeee;
 }
 * {
   color: #222222;
@@ -13,7 +13,7 @@ body {
 }
 .viewport > .navigation a,
 .viewport > .navigation label {
-  color: #ffffff;
+  color: #eeeeee;
   transition: background 200ms ease-out;
 }
 .viewport > .navigation a:hover,
@@ -27,7 +27,7 @@ body {
   background: #606fc7;
 }
 .viewport > .navigation .button.navigation-element {
-  background: #ffffff;
+  background: #eeeeee;
   transition: background 200ms ease-out;
 }
 .viewport > .navigation .button.navigation-element:before,
@@ -192,4 +192,9 @@ a {
 a:hover,
 a:active {
   color: #90caf9;
+}
+.box {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.12);
 }

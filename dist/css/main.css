@@ -584,6 +584,11 @@ body {
 .table .layout .layout:first-child {
   font-weight: bold;
 }
+.box {
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 2px;
+}
 .layout {
   position: relative;
   width: 100%;

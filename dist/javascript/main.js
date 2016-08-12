@@ -6312,92 +6312,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 (function (Ompluscript) {
     var View;
     (function (View) {
-        var Configuration;
-        (function (Configuration_42) {
-            var Container;
-            (function (Container_12) {
-                "use strict";
-                var Configuration = Ompluscript.Core.Configuration.Configuration;
-                var Box = Ompluscript.View.Container.Box;
-                var Component = Ompluscript.View.Component.Component;
-                var Container = Ompluscript.View.Container.Container;
-                var ErrorConfiguration = Ompluscript.Core.Configuration.ErrorConfiguration;
-                var NullLayoutConfiguration = Ompluscript.View.Configuration.Layout.NullLayoutConfiguration;
-                var RelativeLayoutConfiguration = Ompluscript.View.Configuration.Layout.RelativeLayoutConfiguration;
-                var LinearLayoutConfiguration = Ompluscript.View.Configuration.Layout.LinearLayoutConfiguration;
-                var TableLayoutConfiguration = Ompluscript.View.Configuration.Layout.TableLayoutConfiguration;
-                var CheckBoxInputConfiguration = Ompluscript.View.Configuration.Field.CheckBoxInputConfiguration;
-                var EmailInputConfiguration = Ompluscript.View.Configuration.Field.EmailInputConfiguration;
-                var NumberInputConfiguration = Ompluscript.View.Configuration.Field.NumberInputConfiguration;
-                var PasswordInputConfiguration = Ompluscript.View.Configuration.Field.PasswordInputConfiguration;
-                var TextInputConfiguration = Ompluscript.View.Configuration.Field.TextInputConfiguration;
-                var DateInputConfiguration = Ompluscript.View.Configuration.Field.DateInputConfiguration;
-                var ParagraphConfiguration = Ompluscript.View.Configuration.Field.ParagraphConfiguration;
-                var HeaderConfiguration = Ompluscript.View.Configuration.Field.HeaderConfiguration;
-                var PageLinkConfiguration = Ompluscript.View.Configuration.Field.PageLinkConfiguration;
-                var ButtonConfiguration = Ompluscript.View.Configuration.Field.ButtonConfiguration;
-                var LabelConfiguration = Ompluscript.View.Configuration.Field.LabelConfiguration;
-                var LabelInputConfiguration = Ompluscript.View.Configuration.Field.LabelInputConfiguration;
-                var ImageConfiguration = Ompluscript.View.Configuration.Field.ImageConfiguration;
-                var BoxConfiguration = (function (_super) {
-                    __extends(BoxConfiguration, _super);
-                    function BoxConfiguration() {
-                        var layouts = [
-                            NullLayoutConfiguration,
-                            RelativeLayoutConfiguration,
-                            LinearLayoutConfiguration,
-                            TableLayoutConfiguration,
-                            ErrorConfiguration,
-                        ];
-                        var children = [
-                            CheckBoxInputConfiguration,
-                            EmailInputConfiguration,
-                            NumberInputConfiguration,
-                            PasswordInputConfiguration,
-                            TextInputConfiguration,
-                            DateInputConfiguration,
-                            LabelInputConfiguration,
-                            ParagraphConfiguration,
-                            ButtonConfiguration,
-                            ImageConfiguration,
-                            HeaderConfiguration,
-                            LabelConfiguration,
-                            PageLinkConfiguration,
-                            Container_12.ListConfiguration,
-                            Container_12.TableContainerConfiguration,
-                            ErrorConfiguration,
-                        ];
-                        var configurations = {};
-                        configurations[Container.PARAMETER_LAYOUT] = layouts;
-                        configurations[Container.PARAMETER_CHILDREN] = children;
-                        _super.call(this, configurations);
-                    }
-                    BoxConfiguration.prototype.isRelatedTo = function (definition) {
-                        return definition[Configuration.PARAMETER_TYPE] === Box.TYPE_BOX;
-                    };
-                    BoxConfiguration.prototype.getErrors = function (definition) {
-                        return this.filterErrors(_super.prototype.getErrors.call(this, definition));
-                    };
-                    BoxConfiguration.prototype.create = function (definition, children) {
-                        if (children === void 0) { children = undefined; }
-                        var name = definition[Configuration.PARAMETER_NAME];
-                        var layout = _super.prototype.createChild.call(this, definition, Container.PARAMETER_LAYOUT);
-                        if (children === undefined) {
-                            children = _super.prototype.createChildren.call(this, definition, Container.PARAMETER_CHILDREN, Ompluscript.View.Creator.getInstance());
-                        }
-                        var styles = definition[Component.PARAMETER_STYLES];
-                        return new Box(name, layout, children, styles);
-                    };
-                    return BoxConfiguration;
-                }(Container_12.ContainerConfiguration));
-                Container_12.BoxConfiguration = BoxConfiguration;
-            })(Container = Configuration_42.Container || (Configuration_42.Container = {}));
-        })(Configuration = View.Configuration || (View.Configuration = {}));
-    })(View = Ompluscript.View || (Ompluscript.View = {}));
-})(Ompluscript || (Ompluscript = {}));
-(function (Ompluscript) {
-    var View;
-    (function (View) {
         var Container;
         (function (Container) {
             "use strict";
@@ -6540,9 +6454,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     var View;
     (function (View) {
         var Configuration;
-        (function (Configuration_43) {
+        (function (Configuration_42) {
             var Container;
-            (function (Container_13) {
+            (function (Container_12) {
                 "use strict";
                 var Configuration = Ompluscript.Core.Configuration.Configuration;
                 var Form = Ompluscript.View.Container.Form;
@@ -6624,8 +6538,95 @@ var __extends = (this && this.__extends) || function (d, b) {
                         return new Form(name, layout, proxy, buttonAsset, model, inputs, styles);
                     };
                     return FormConfiguration;
+                }(Container_12.ContainerConfiguration));
+                Container_12.FormConfiguration = FormConfiguration;
+            })(Container = Configuration_42.Container || (Configuration_42.Container = {}));
+        })(Configuration = View.Configuration || (View.Configuration = {}));
+    })(View = Ompluscript.View || (Ompluscript.View = {}));
+})(Ompluscript || (Ompluscript = {}));
+(function (Ompluscript) {
+    var View;
+    (function (View) {
+        var Configuration;
+        (function (Configuration_43) {
+            var Container;
+            (function (Container_13) {
+                "use strict";
+                var Configuration = Ompluscript.Core.Configuration.Configuration;
+                var Box = Ompluscript.View.Container.Box;
+                var Component = Ompluscript.View.Component.Component;
+                var Container = Ompluscript.View.Container.Container;
+                var ErrorConfiguration = Ompluscript.Core.Configuration.ErrorConfiguration;
+                var NullLayoutConfiguration = Ompluscript.View.Configuration.Layout.NullLayoutConfiguration;
+                var RelativeLayoutConfiguration = Ompluscript.View.Configuration.Layout.RelativeLayoutConfiguration;
+                var LinearLayoutConfiguration = Ompluscript.View.Configuration.Layout.LinearLayoutConfiguration;
+                var TableLayoutConfiguration = Ompluscript.View.Configuration.Layout.TableLayoutConfiguration;
+                var CheckBoxInputConfiguration = Ompluscript.View.Configuration.Field.CheckBoxInputConfiguration;
+                var EmailInputConfiguration = Ompluscript.View.Configuration.Field.EmailInputConfiguration;
+                var NumberInputConfiguration = Ompluscript.View.Configuration.Field.NumberInputConfiguration;
+                var PasswordInputConfiguration = Ompluscript.View.Configuration.Field.PasswordInputConfiguration;
+                var TextInputConfiguration = Ompluscript.View.Configuration.Field.TextInputConfiguration;
+                var DateInputConfiguration = Ompluscript.View.Configuration.Field.DateInputConfiguration;
+                var ParagraphConfiguration = Ompluscript.View.Configuration.Field.ParagraphConfiguration;
+                var HeaderConfiguration = Ompluscript.View.Configuration.Field.HeaderConfiguration;
+                var PageLinkConfiguration = Ompluscript.View.Configuration.Field.PageLinkConfiguration;
+                var ButtonConfiguration = Ompluscript.View.Configuration.Field.ButtonConfiguration;
+                var LabelConfiguration = Ompluscript.View.Configuration.Field.LabelConfiguration;
+                var LabelInputConfiguration = Ompluscript.View.Configuration.Field.LabelInputConfiguration;
+                var ImageConfiguration = Ompluscript.View.Configuration.Field.ImageConfiguration;
+                var BoxConfiguration = (function (_super) {
+                    __extends(BoxConfiguration, _super);
+                    function BoxConfiguration() {
+                        var layouts = [
+                            NullLayoutConfiguration,
+                            RelativeLayoutConfiguration,
+                            LinearLayoutConfiguration,
+                            TableLayoutConfiguration,
+                            ErrorConfiguration,
+                        ];
+                        var children = [
+                            CheckBoxInputConfiguration,
+                            EmailInputConfiguration,
+                            NumberInputConfiguration,
+                            PasswordInputConfiguration,
+                            TextInputConfiguration,
+                            DateInputConfiguration,
+                            LabelInputConfiguration,
+                            ParagraphConfiguration,
+                            ButtonConfiguration,
+                            ImageConfiguration,
+                            HeaderConfiguration,
+                            LabelConfiguration,
+                            PageLinkConfiguration,
+                            Container_13.ListConfiguration,
+                            Container_13.TableContainerConfiguration,
+                            Container_13.FormConfiguration,
+                            ErrorConfiguration,
+                        ];
+                        var configurations = {};
+                        configurations[Container.PARAMETER_LAYOUT] = layouts;
+                        configurations[Container.PARAMETER_CHILDREN] = children;
+                        _super.call(this, configurations);
+                    }
+                    BoxConfiguration.prototype.isRelatedTo = function (definition) {
+                        return definition[Configuration.PARAMETER_TYPE] === Box.TYPE_BOX;
+                    };
+                    BoxConfiguration.prototype.getErrors = function (definition) {
+                        return this.filterErrors(_super.prototype.getErrors.call(this, definition));
+                    };
+                    BoxConfiguration.prototype.create = function (definition, children) {
+                        if (children === void 0) { children = undefined; }
+                        var name = definition[Configuration.PARAMETER_NAME];
+                        var layout = _super.prototype.createChild.call(this, definition, Container.PARAMETER_LAYOUT);
+                        if (children === undefined) {
+                            children = _super.prototype.createChildren.call(this, definition, Container.PARAMETER_CHILDREN, Ompluscript.View.Creator.getInstance());
+                        }
+                        var styles = definition[Component.PARAMETER_STYLES];
+                        return new Box(name, layout, children, styles);
+                    };
+                    return BoxConfiguration;
                 }(Container_13.ContainerConfiguration));
-                Container_13.FormConfiguration = FormConfiguration;
+                Container_13.BoxConfiguration = BoxConfiguration;
             })(Container = Configuration_43.Container || (Configuration_43.Container = {}));
         })(Configuration = View.Configuration || (View.Configuration = {}));
     })(View = Ompluscript.View || (Ompluscript.View = {}));

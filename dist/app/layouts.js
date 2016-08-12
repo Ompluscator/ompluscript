@@ -7,23 +7,33 @@ Ompluscript.View.define({
     },
     children: [
         {
-            type: "Header",
-            name: "layouts_title",
-            text: "text_layouts_title"
-        },
-        {
-            type: "Paragraph",
-            name: "layouts_message",
-            text: "text_layouts_message"
-        },
-        {
-            type: "List",
-            name: "layouts_list",
+            type: "Box",
+            name: "layouts_box_1",
+            layout: {
+                type: "LinearLayout",
+                direction: "vertical"
+            },
             children: [
-                "null_layout_link",
-                "relative_layout_link",
-                "linear_layout_link",
-                "table_layout_link"
+                {
+                    type: "Header",
+                    name: "layouts_title",
+                    text: "text_layouts_title"
+                },
+                {
+                    type: "Paragraph",
+                    name: "layouts_message",
+                    text: "text_layouts_message"
+                },
+                {
+                    type: "List",
+                    name: "layouts_list",
+                    children: [
+                        "null_layout_link",
+                        "relative_layout_link",
+                        "linear_layout_link",
+                        "table_layout_link"
+                    ]
+                }
             ]
         }
     ]
@@ -38,14 +48,14 @@ Ompluscript.View.define({
     },
     children: [
         {
-            type: "Header",
-            name: "null_layout_title",
-            text: "text_null_layout_title"
-        },
-        {
             type: "Box",
-            name: "box_layout",
+            name: "relative_box_1",
             children: [
+                {
+                    type: "Header",
+                    name: "null_layout_title",
+                    text: "text_null_layout_title"
+                },
                 {
                     type: "Paragraph",
                     name: "relative_null_layout_message",
@@ -70,18 +80,17 @@ Ompluscript.View.define({
     },
     children: [
         {
-            type: "Header",
-            name: "relative_layout_title",
-            text: "text_relative_layout_title"
-        },
-        {
             type: "Box",
             name: "box_layout",
             layout: {
                 type: "RelativeLayout"
             },
             children: [
-
+                {
+                    type: "Header",
+                    name: "relative_layout_title",
+                    text: "text_relative_layout_title"
+                },
                 {
                     type: "Paragraph",
                     name: "relative_layout_configuration",
@@ -116,11 +125,6 @@ Ompluscript.View.define({
     },
     children: [
         {
-            type: "Header",
-            name: "linear_layout_title",
-            text: "text_linear_layout_title"
-        },
-        {
             type: "Box",
             name: "box_layout",
             layout: {
@@ -128,6 +132,11 @@ Ompluscript.View.define({
                 reverse: true
             },
             children: [
+                {
+                    type: "Header",
+                    name: "linear_layout_title",
+                    text: "text_linear_layout_title"
+                },
                 {
                     type: "Paragraph",
                     name: "linear_layout_message",
@@ -179,11 +188,6 @@ Ompluscript.View.define({
     },
     children: [
         {
-            type: "Header",
-            name: "table_layout_title",
-            text: "text_table_layout_title",
-        },
-        {
             type: "Box",
             name: "box_layout",
             layout: {
@@ -193,9 +197,9 @@ Ompluscript.View.define({
             },
             children: [
                 {
-                    type: "Paragraph",
-                    name: "table_layout_1_1_message",
-                    text: "text_table_layout_1_1_message",
+                    type: "Header",
+                    name: "table_layout_title",
+                    text: "text_table_layout_title",
                 },
                 {
                     type: "Paragraph",

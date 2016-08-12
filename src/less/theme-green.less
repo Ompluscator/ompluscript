@@ -4,14 +4,15 @@
 @secondaryColor: #ffffff;
 @tertiaryColor: #4DB6AC;
 @headerColor: #00897B;
-@boxColor: #ffffff;
+@boxColor: #eeeeee;
 @highlight: #00695C;
 @danger: #c62828;
 
-.viewportTheme(@secondaryColor, @primaryColor);
+.viewportTheme(@boxColor, @primaryColor);
 .navigationTheme(@headerColor, @boxColor);
 .inputTheme(@primaryColor, @highlight);
 .formTheme(@highlight, @danger);
 .buttonTheme(@tertiaryColor, @secondaryColor);
 .tableContainerTheme(@headerColor, @tertiaryColor, @secondaryColor);
 .pageLinkTheme(@tertiaryColor, @highlight);
+.boxTheme(@secondaryColor);
